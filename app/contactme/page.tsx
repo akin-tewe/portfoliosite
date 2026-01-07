@@ -4,9 +4,9 @@ import Link from "next/link"
 
 export default function Page() {
 
-    const instalink = <Link className="hover:opacity-50 transition-all duration-100" href="https://www.instagram.com/eightybot/"> this Instagram</Link>
-    const instalink2 = <Link className="hover:opacity-50 transition-all duration-100" href="https://www.instagram.com/n8ghbr/"> the cooler Instagram</Link>
-    const linkedlink = <Link className="hover:opacity-50 transition-all duration-100" href="https://www.linkedin.com/in/akin-tewe-38523418a/"> LinkedIn</Link>
+    const instalink = <Link className="hover:opacity-50 transition-all duration-100" target="_blank" href="https://www.instagram.com/eightybot/"> this Instagram</Link>
+    const instalink2 = <Link className="hover:opacity-50 transition-all duration-100" target="_blank" href="https://www.instagram.com/n8ghbr/"> the cooler Instagram</Link>
+    const linkedlink = <Link className="hover:opacity-50 transition-all duration-100" target="_blank" href="https://www.linkedin.com/in/akin-tewe-38523418a/"> LinkedIn</Link>
     const emaillink = <Link className="hover:opacity-50 transition-all duration-100" href="mailto:atewebiz@gmail.com"> email</Link>
 
     return(

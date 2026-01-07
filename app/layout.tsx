@@ -6,6 +6,7 @@ import Link from "next/link"
 import { LoaderProvider } from "@/components/LoaderContext";
 import NavBar from "@/components/NavFoot";
 import { Footer } from "@/components/NavFoot";
+import { BootOverlay } from "@/components/LoadingOverlay";
 
 export const metadata: Metadata = {
   title: "Akin Tewe. Front End Developer",
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <BootOverlay />
         <LoaderProvider>
           <NavBar/>
           <main>{children}</main>

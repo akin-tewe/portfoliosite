@@ -43,10 +43,10 @@ export default function Projects() {
     }
 
     return (
-        <section className="w-full grid grid-cols-[1fr_auto_1fr] z-20">
+        <section className="w-full grid lg:grid-cols-[1fr_5fr_1fr] md:grid-cols-[1fr_7fr_1fr] px-5 md:px-2 z-20">
             <motion.button
                 onClick={prev}
-                className="mr-10 relative -scale-x-100"
+                className="hidden md:block mr-10 relative -scale-x-100"
                 aria-label="Previous project"
                 type="button"
                 animate={{ y: [0, -8, 0]}}
@@ -81,15 +81,15 @@ export default function Projects() {
                         <Link href={project.link}>
                             <button
                                 onClick={() => {show(); setTimeout(hide,800)}}
-                                className="relative block mx-auto grid w-full max-w-5xl grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:-translate-y-2 hover:scale-102 hover:bg-blue-400 border-3 bg-blue-600 p-7 rounded-full">
-                                <div className={`${pixelify.className} relative grid grid-cols-1 text-white uppercase`}>
-                                    <h1 className="text-4xl pl-10 justify-self-end text-right pointer-events-none">{project.title}</h1>
-                                    <div className="justify-self-end text-right pointer-events-none font-bold opacity-60">{project.subtitle}</div>
+                                className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:-translate-y-2 hover:scale-102 hover:bg-blue-400 border-3 bg-blue-600 p-7 rounded-3xl md:rounded-full">
+                                <div className={`${pixelify.className} relative grid grid-cols-1 text-white justify-center uppercase`}>
+                                    <h1 className="text-4xl md:pl- md:text-right pointer-events-none">{project.title}</h1>
+                                    <div className="md:text-right pointer-events-none font-bold opacity-60 md:hidden lg:block">{project.subtitle}</div>
                                 </div>
                                 <div className="relative w-[200px] h-[200px] pointer-events-none">
                                     {project.image}
                                 </div>
-                                <div className={`text-white max-w-xl text-xl ${roboto.className} font-light pr-9`}>
+                                <div className={`text-white max-w-xs text-xl justify-self-center ${roboto.className} font-light pr-9 hidden md:block`}>
                                     <p>{project.body}</p>
                                 </div>
                             </button>
@@ -100,7 +100,7 @@ export default function Projects() {
 
             <motion.button
                 onClick={next}
-                className="ml-10 relative"
+                className="hidden md:block ml-10 relative"
                 aria-label="Previous project"
                 type="button"
                 animate={{ y: [0, -8, 0]}}

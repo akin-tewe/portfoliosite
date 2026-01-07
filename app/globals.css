@@ -34,3 +34,7 @@ body {
 .className {
   font-family: var(--font-pixelify);
 }
+
+* {
+  outline: 1px solid red;
+}

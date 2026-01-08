@@ -11,6 +11,7 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
+import { AboutButton } from "@/components/MagneticButton";
 
 export default function Home() {
 
@@ -31,7 +32,7 @@ export default function Home() {
             />
             <span>UI / UX Designer</span>
             <span>Front End Developer</span>
-          </div>
+          </div>https://chaturbate.com/wasianbby/
           <span className={`md:hidden ${pixelify.className} relative text-9xl text-white text-right pb-10 pr-5 mt-auto`}>
             akin tewe
           </span>
@@ -41,13 +42,13 @@ export default function Home() {
         </section>
       </div>
       <section className="flex flex-col md:h-[46vh] items-center bg-white md:px-20"> {/* Middle White Section */}
-        <div className="flex flex-col md:flex-row items-center justify-center gap-30 py-20 md:py-30 border-b-gray-300 border-b">
-          <p className={`relative text-black text-xl px-10 md:px-0 md:max-w-xl ${roboto.className} font-light`}>Front-End Developer and UI/UX designer creating interfaces that emphasize
+        <div className="flex flex-col md:flex-row items-center justify-center gap-30 py-20 md:py-30 md:border-b-gray-300 md:border-b">
+          <p className={`relative text-black text-xl px-10 md:px-0 md:max-w-xl ${roboto.className} font-light`}>Front-End Developer and UI/UX designer creating interfaces that emphasizeabout:blank#blocked
             the user and add a touch of childhood wonder.
             I build experiences that bring people back to the joy they grew up with.
           </p>
           <Link className="text-center" href="/aboutme" onClick={() => {show(); setTimeout(hide,800)}}>
-            <MagneticButton parameter="w-40 h-40 bg-blue-500 z-40" text="About Me"/>
+            <AboutButton parameter="w-40 h-40 bg-blue-500 z-40" text="About Me"/>
           </Link>
         </div>
         <button

@@ -3,6 +3,7 @@ import { pixelify, roboto } from "@/app/ui/fonts"
 import TransparentVideo from "@/components/SplashVideo"
 import MagneticButton from "@/components/MagneticButton";
 import { useState } from "react";
+import { Video,ChevronDown } from "lucide-react";
 
 export default function Project() {
 
@@ -10,28 +11,36 @@ export default function Project() {
 
     return (
         <main>
-            <section id="splash" className="w-full h-[83vh] md:justify-start justify-center md:min-h-[95svh] grid place-items-center md:px-[5vw] md:px-[5vw]">
-                <div className="flex flex-col md:flex-row gap-20 mt-auto mb-15 md:mb-30 mr-auto">
+            <div className="fixed inset-0 flex h-full w-full gap-[1vw] text-white/10 justify-center">
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+            </div>
+            <section id="splash" className="w-full h-[80vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw] md:px-[5vw]">
+                <div className="flex flex-row md:gap-20 mt-auto md:mb-30 mr-[8vw] mb-[8vh] md:ml-0 w-full px-[10vw]">
                     <div className="relative flex flex-col gap-10">
-                        <h1 className={`${pixelify.className} max-w-sm text-4xl md:text-5xl text-white text-5xl md:max-w-5xl pl-3 md:pl-0`}>instagram web application redesign</h1>
-                        <span className={`${roboto.className} hidden md:block text-white font-light text-2xl max-w-[900px]`}>A simple question: what are people trying to do when they access
+                        <h1 className={`${pixelify.className} max-w-3xs text-4xl md:text-5xl text-white md:max-w-2xl pl-3 md:pl-0`}>instagram web application redesign</h1>
+                        <span className={`${roboto.className} hidden md:block text-white font-light text-2xl md:max-w-2xl`}>A simple question: what are people trying to do when they access
                              Instagram via desktop and where does the platform fail them?
                         </span>
                     </div>
-                <div className={`${pixelify.className} text-xl flex flex-col items-center md:flex-row gap-10 text-l mt-auto justify-center`}>
-                    <button
-                    className="flex justify-center items-center w-[200px] h-[50px] z-10"
-                    onClick={()=> document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                    >
-                        <MagneticButton parameter="w-40 h-15 bg-blue-600/50 md:bg-blue-500 hover:bg-blue-600/50 z-20" text="Read More"/>
-                    </button>
-                </div>
+                    <div className={`${pixelify.className} text-xl flex flex-col items-center md:flex-row gap-15 text-l mt-auto justify-center ml-auto md:ml-0`}>
+                        <button
+                        className="flex justify-center items-center w-auto h-auto z-10"
+                        onClick={()=> document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
+                        >
+                            <MagneticButton icon={<ChevronDown className="md:hidden text-white z-50"/>} parameter="w-15 h-15 md:w-50 md:h-15 bg-blue-600/50 md:bg-blue-500/0 hover:bg-blue-600/50 z-20" text="Read More"/>
+                        </button>
+                    </div>
                 </div>
             </section>
-            < section className="h-[150px]">
+            < section className="h-[150px] md:h-[2vh]">
             </section>
-            <section id="body" className="grid pb-20 md:pb-50 max-w-xs md:max-w-2xl px-5 md:ml-[10vw]">
-                <div className="flex flex-col gap-10">
+            <section id="body" className="pb-20 md:pb-50 px-5 md:px-[11vw]">
+                <div className="flex flex-col gap-10 max-w-xs md:max-w-2xl">
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl mt-10`}>learning from their users</h1>
                         <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}>Before jumping into ideating solutions and creating interfaces,

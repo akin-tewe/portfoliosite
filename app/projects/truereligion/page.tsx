@@ -3,6 +3,7 @@ import { pixelify, roboto } from "@/app/ui/fonts"
 import TransparentVideo from "@/components/SplashVideo"
 import MagneticButton from "@/components/MagneticButton";
 import { useState } from "react";
+import { Video,ChevronDown } from "lucide-react";
 
 export default function Project() {
 
@@ -10,55 +11,63 @@ export default function Project() {
 
     return (
         <main>
-            <section id="splash" className="w-full h-[83vh] md:justify-start justify-center md:min-h-[95svh] grid place-items-center md:px-[5vw]">
-                <div className="flex flex-col md:flex-row gap-20 mt-auto mb-15 md:mb-30 mr-auto">
+            <div className="fixed inset-0 flex h-full w-full gap-[1vw] text-white/10 justify-center">
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+                <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
+            </div>
+            <section id="splash" className="w-full h-[80vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw]">
+                <div className="flex flex-row md:gap-20 mt-auto md:mb-30 mr-[8vw] mb-[8vh] md:ml-0 w-full px-[10vw]">
                     <div className="relative flex flex-col gap-10">
-                        <h1 className={`${pixelify.className} md:max-w-5xl max-w-sm text-4xl md:text-5xl text-white pl-3 md:pl-0`}>true religion x “bluboy” product launch.</h1>
-                        <p className={`${roboto.className} hidden md:block text-white font-light text-2xl max-w-[900px]`}>A 3D animated commercial developed entirely by me made to promote the collaborative
+                        <h1 className={`${pixelify.className} max-w-3xs md:max-w-2xl text-4xl md:text-5xl text-white pl-3 md:pl-0`}>true religion x “bluboy” product launch.</h1>
+                        <p className={`${roboto.className} hidden md:block text-white font-light text-2xl md:max-w-2xl`}>A 3D animated commercial developed entirely by me made to promote the collaborative
                              clothing drop between True Religion Brand Jeans and clothing designer “Bluboy.”
                         </p>
                     </div>
-                <div className={`${pixelify.className} text-xl flex flex-col gap-20 text-l mt-auto justify-center`}>
-                    <button
-                    className="flex justify-center items-center w-[200px] h-[50px] z-10"
-                    onClick={()=> document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                    >
-                        <MagneticButton parameter="w-40 h-15 bg-blue-600/50 md:bg-blue-500 hover:bg-blue-600/50 z-20" text="Read More"/>
-                    </button>
-                    <>
+                    <div className={`${pixelify.className} text-xl flex flex-col gap-15 text-l mt-auto justify-center ml-auto md:ml-0`}>
                         <button
-                            className="flex justify-center items-center w-[200px] h-[50px] z-10"
-                            onClick={()=> setOpen(true)}
+                        className="flex justify-center items-center w-auto h-auto z-10"
+                        onClick={()=> document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
                         >
-                            <MagneticButton parameter="w-50 h-15 bg-blue-600/50 md:bg-blue-500 hover:bg-blue-600/50 z-20" text="Watch Video"/>
+                            <MagneticButton icon={<ChevronDown className="md:hidden text-white z-50"/>} parameter="w-15 h-15 md:w-40 md:h-15 bg-blue-600/50 md:bg-blue-500/0 hover:bg-blue-600/50 z-20" text="Read More"/>
                         </button>
-
-                        {open && (
-                            <div
-                                className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"
-                                onClick={()=> setOpen(false)}
+                        <>
+                            <button
+                                className="flex justify-center items-center w-auto h-auto z-10"
+                                onClick={()=> setOpen(true)}
                             >
+                                <MagneticButton icon={<Video className="md:hidden text-white z-50"/>} parameter="w-15 h-15 md:w-50 md:h-15 bg-blue-600/50 md:bg-blue-500/0 hover:bg-blue-600/50 z-20" text="Watch Video"/>
+                            </button>
+
+                            {open && (
                                 <div
-                                    className="w-full max-w-6xl overflow-hidden rounded-2xl bg-black shadow-2xl"
-                                    onClick={(e) => e.stopPropagation()}
+                                    className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-4"
+                                    onClick={()=> setOpen(false)}
                                 >
-                                    <video
-                                        className="aspect-video w-full z-50"
-                                        src="/projects/truereligion/truvideo.mp4"
-                                        controls
-                                        autoPlay
-                                    />
+                                    <div
+                                        className="w-full max-w-6xl overflow-hidden rounded-2xl bg-black shadow-2xl"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <video
+                                            className="aspect-video w-full z-50"
+                                            src="/projects/truereligion/truvideo.mp4"
+                                            controls
+                                            autoPlay
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </>
-                </div>
+                            )}
+                        </>
+                    </div>
                 </div>
             </section>
-            < section className="h-[150px]">
+            < section className="h-[150px] md:h-[2vh]">
             </section>
-            <section id="body" className="grid pb-20 md:pb-50 px-5 max-w-xs md:max-w-2xl md:ml-[10vw]">
-                <div className="flex flex-col gap-10">
+            <section id="body" className="pb-20 md:pb-50 px-5 md:px-[11vw]">
+                <div className="flex flex-col gap-10 max-w-xs md:max-w-2xl">
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl mt-10`}>premise.</h1>
                         <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}> The intention here was not to make a traditional “product launch” advertisement,

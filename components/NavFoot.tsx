@@ -24,7 +24,7 @@ export function Footer() {
     const { show, hide } = useLoader();
 
     return(
-          <footer  className="flex justify-between p-10 gap-5 md:gap-0"> {/* Footer Element */}
+          <footer  className="flex justify-between p-5 md:p-10 gap-5 md:gap-0"> {/* Footer Element */}
             <span className={`text-[#1650a7] opacity-70  text-md md:text-xl ${pixelify.className}`}>©coded by akin tewe</span>
             <Link href="/contactme" className={`text-white/60 text-xl hover:text-white transition-all ${pixelify.className}`} onClick={() => {show(); setTimeout(hide,800)}}>contact me</Link>
           </footer>

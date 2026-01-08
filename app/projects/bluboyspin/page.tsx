@@ -10,27 +10,27 @@ export default function Project() {
 
     return (
         <main>
-            <section id="splash" className="w-full h-[83vh] justify-center md:min-h-[95svh] grid place-items-center">
-                <div className="flex flex-col md:flex-row gap-20 mt-auto mb-15 md:mb-30 mr-auto md:pl-40">
-                    <div className="relative flex flex-col items-center gap-10">
-                        <h1 className={`${pixelify.className} max-w-xs text-4xl md:text-5xl text-white pl-3 md:pl-0`}>print launch video for “bluboy”</h1>
+            <section id="splash" className="w-full h-[83vh] md:justify-start justify-center md:min-h-[95svh] grid place-items-center md:px-[5vw]">
+                <div className="flex flex-col md:flex-row gap-20 mt-auto mb-15 md:mb-30 mr-auto">
+                    <div className="relative flex flex-col gap-10">
+                        <h1 className={`${pixelify.className} max-w-xs md:max-w-5xl text-4xl md:text-5xl text-white pl-3 md:pl-0`}>print launch video for “bluboy”</h1>
                         <p className={`${roboto.className} hidden md:block text-white font-light text-2xl max-w-[900px]`}>A short-form commercial created to introduce the release of fashion designer
                              “Bluboy’s” art prints.
                         </p>
                     </div>
-                <div className={`${pixelify.className} text-xl flex-col items-center md:flex-row flex gap-10 text-l mt-auto justify-center`}>
+                <div className={`${pixelify.className} text-xl flex-col items-center flex gap-10 text-l mt-auto justify-center`}>
                     <button
                     className="flex justify-center items-center w-[200px] h-[50px] z-10"
                     onClick={()=> document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
                     >
-                        <MagneticButton parameter="w-40 h-15 hover:bg-blue-600/50 z-20" text="Read More"/>
+                        <MagneticButton parameter="w-40 h-15 bg-blue-600/50 md:bg-blue-500 hover:bg-blue-600/50 z-20" text="Read More"/>
                     </button>
                     <>
                         <button
                             className="flex justify-center items-center w-[200px] h-[50px] z-10"
                             onClick={()=> setOpen(true)}
                         >
-                            <MagneticButton parameter="w-50 h-15 hover:bg-blue-600/50 z-20" text="Watch Video"/>
+                            <MagneticButton parameter="w-50 h-15 bg-blue-600/50 md:bg-blue-500 hover:bg-blue-600/50 z-20" text="Watch Video"/>
                         </button>
 
                         {open && (
@@ -57,7 +57,7 @@ export default function Project() {
             </section>
             < section className="h-[150px]">
             </section>
-            <section id="body" className="grid pb-20 md:pb-50 px-5">
+            <section id="body" className="grid pb-20 md:pb-50 px-5 max-w-xs md:max-w-2xl md:ml-[10vw]">
                 <div className="flex flex-col gap-10">
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl mt-10`}>assessment.</h1>

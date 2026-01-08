@@ -42,6 +42,18 @@ export default function Projects() {
         }),
     }
 
+    const SWIPE_DIST = 80;
+    const SWIPE_VELOCITY = 500;
+
+    const handleDragEnd = (_: any, info: { offset: { x: number }, velocity: { x: number } }) => {
+        const { x } = info.offset;
+        const vx = info.velocity.x;
+
+        // swipe left => next, swipe right => prev
+        if (x < -SWIPE_DIST || vx < -SWIPE_VELOCITY) next();
+        else if (x > SWIPE_DIST || vx > SWIPE_VELOCITY) prev();
+    };
+
     return (
         <section className="w-full grid lg:grid-cols-[1fr_5fr_1fr] md:grid-cols-[1fr_7fr_1fr] px-5 md:px-2 z-20">
             <motion.button
@@ -77,13 +89,17 @@ export default function Projects() {
                         exit="exit"
                         transition={{ duration: 0.3, ease: "easeOut"}}
                         className="w-full"
+                        drag="x"
+                        dragConstraints={{ left: 0, right: 0 }}
+                        dragElastic={0.12}
+                        onDragEnd={handleDragEnd}
                     >
                         <Link href={project.link}>
                             <button
                                 onClick={() => {show(); setTimeout(hide,800)}}
                                 className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:-translate-y-2 hover:scale-102 hover:bg-blue-400 border-3 bg-blue-600 p-7 rounded-3xl md:rounded-full">
                                 <div className={`${pixelify.className} relative grid grid-cols-1 text-white justify-center uppercase`}>
-                                    <h1 className="text-4xl md:pl- md:text-right pointer-events-none">{project.title}</h1>
+                                    <h1 className="text-4xl max-w-xs md:pl- md:text-right pointer-events-none">{project.title}</h1>
                                     <div className="md:text-right pointer-events-none font-bold opacity-60 md:hidden lg:block">{project.subtitle}</div>
                                 </div>
                                 <div className="relative w-[200px] h-[200px] pointer-events-none">

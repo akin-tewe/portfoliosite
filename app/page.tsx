@@ -46,8 +46,8 @@ export default function Home() {
             the user and add a touch of childhood wonder.
             I build experiences that bring people back to the joy they grew up with.
           </p>
-          <Link href="/aboutme" onClick={() => {show(); setTimeout(hide,800)}}>
-            <MagneticButton parameter="w-40 h-40 bg-blue-500" text="About Me"/>
+          <Link className="text-center" href="/aboutme" onClick={() => {show(); setTimeout(hide,800)}}>
+            <MagneticButton parameter="w-40 h-40 bg-blue-500 z-40" text="About Me"/>
           </Link>
         </div>
         <button
@@ -66,7 +66,8 @@ export default function Home() {
       {/* Projects Section */}
       <section id="projects" className="relative flex flex-col items-center justify-center h-[auto]">
         <div className=" relative justify-center items-center">   {/* Highlight Project Section */}
-          <div className="relative flex mt-15">
+          <div className= {`lg:hidden ${pixelify.className} mt-5 text-white/50 uppercase justify-self-center`}>←   "swipe"   →</div>
+          <div className="relative flex md:mt-10 mt-5">
             <Projects/>
           </div>
         </div>

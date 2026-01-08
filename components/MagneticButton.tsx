@@ -43,7 +43,7 @@ export default function MagnetButton({text, parameter}: Props) {
         onMouseMove={(e) => handleMovement(e, 0.3)}
         onMouseLeave={handleMovementExit}
     >
-        <span className={`relative inline-block pointer-events-none text-white text-2xl uppercase z-30 duration-100 ease-out ${pixelify.className}`} style={{transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,}}>{text}</span>
+        <span className={`relative inline-block pointer-events-none text-white text-2xl uppercase z-100 duration-100 ease-out ${pixelify.className}`} style={{transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,}}>{text}</span>
         <div className={`${parameter} scale-100 absolute rounded-full left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
         group-hover:scale-110 transition-transform z-10 duration-100 ease-out`} style={{transform: `translate3d(${offset.x}px, ${offset.y}px, 0)`,}}></div>
     </div>

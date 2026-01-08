@@ -10,9 +10,9 @@ export default function Project() {
 
     return (
         <main>
-            <section id="splash" className="w-full h-[83vh] justify-center md:min-h-[95svh] grid place-items-center">
-                <div className="flex flex-col md:flex-row gap-20 mt-auto mb-15 md:mb-30 mr-auto md:pl-40">
-                    <div className="relative flex flex-col items-center gap-10">
+            <section id="splash" className="w-full h-[83vh] md:justify-start justify-center md:min-h-[95svh] grid place-items-center md:px-[5vw] md:px-[5vw]">
+                <div className="flex flex-col md:flex-row gap-20 mt-auto mb-15 md:mb-30 mr-auto">
+                    <div className="relative flex flex-col gap-10">
                         <h1 className={`${pixelify.className} max-w-sm text-4xl md:text-5xl text-white text-5xl md:max-w-5xl pl-3 md:pl-0`}>instagram web application redesign</h1>
                         <span className={`${roboto.className} hidden md:block text-white font-light text-2xl max-w-[900px]`}>A simple question: what are people trying to do when they access
                              Instagram via desktop and where does the platform fail them?
@@ -23,14 +23,14 @@ export default function Project() {
                     className="flex justify-center items-center w-[200px] h-[50px] z-10"
                     onClick={()=> document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
                     >
-                        <MagneticButton parameter="w-40 h-15 hover:bg-blue-600/50 z-20" text="Read More"/>
+                        <MagneticButton parameter="w-40 h-15 bg-blue-600/50 md:bg-blue-500 hover:bg-blue-600/50 z-20" text="Read More"/>
                     </button>
                 </div>
                 </div>
             </section>
             < section className="h-[150px]">
             </section>
-            <section id="body" className="grid pb-20 md:pb-50 px-5">
+            <section id="body" className="grid pb-20 md:pb-50 max-w-xs md:max-w-2xl px-5 md:ml-[10vw]">
                 <div className="flex flex-col gap-10">
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl mt-10`}>learning from their users</h1>

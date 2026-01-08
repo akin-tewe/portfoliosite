@@ -1,9 +1,9 @@
 "use client";
 import { pixelify, roboto } from "@/app/ui/fonts"
-import TransparentVideo from "@/components/SplashVideo"
 import MagneticButton from "@/components/MagneticButton";
 import { useState } from "react";
 import { Video,ChevronDown } from "lucide-react";
+import Image from "next/image";
 
 export default function Project() {
 
@@ -23,7 +23,7 @@ export default function Project() {
                 <div className="flex flex-row md:gap-20 mt-auto md:mb-30 mr-[8vw] mb-[8vh] md:ml-0 w-full px-[10vw]">
                     <div className="relative flex flex-col gap-10">
                         <h1 className={`${pixelify.className} max-w-3xs md:max-w-2xl text-4xl md:text-5xl text-white pl-3 md:pl-0`}>true religion x “bluboy” product launch.</h1>
-                        <p className={`${roboto.className} hidden md:block text-white font-light text-2xl md:max-w-2xl`}>A 3D animated commercial developed entirely by me made to promote the collaborative
+                        <p className={`${roboto.className} hidden md:block text-white font-light text-2xl md:max-w-2xl leading-relaxed`}>A 3D animated commercial developed entirely by me made to promote the collaborative
                              clothing drop between True Religion Brand Jeans and clothing designer “Bluboy.”
                         </p>
                     </div>
@@ -70,37 +70,97 @@ export default function Project() {
                 <div className="flex flex-col gap-10 max-w-xs md:max-w-2xl">
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl mt-10`}>premise.</h1>
-                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}> The intention here was not to make a traditional “product launch” advertisement,
+                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light leading-relaxed`}> The intention here was not to make a traditional “product launch” advertisement,
                              but to frame the moment as a part of Bluboy’s visual narrative, while still carrying the weight and class expected of such a well-known brand.
                               This meant treating the collaboration less as strictly a campaign asset, and more as a shared world-building experience. </p>
                     </div>
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl`}>respect the audience.</h1>
-                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}>To represent a collaboration between two notably different visual entities,
+                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light leading-relaxed`}>To represent a collaboration between two notably different visual entities,
                              this video needed to find a way to resonate with two audience groups at the same time. Bluboy’s audience is used to whimsical, character-driven visuals.
                               The True Religion consumer base however expects familiarity, branding clarity, and to know exactly what’s being presented to them.</p>
-                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}>The video’s pacing lives comfortably between those two ideas.
+                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light leading-relaxed`}>The video’s pacing lives comfortably between those two ideas.
                              Laying out a compelling narrative was important, but it was imperative to avoid mystifying the objective in the process.
                               Clear branding is established early into the sequence, and the focus softly transitions from the antics of our hero character,
                                to the garments that make up this collaborative partnership. </p>
                     </div>
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl`}>our hero.</h1>
-                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}>The star of our video is none other than Bluboy himself.
+                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light leading-relaxed`}>The star of our video is none other than Bluboy himself.
                             Making him the focal point was crucial to selling the nature of the collaboration, so in that effort a 3D model of Bluboy was developed for the project.
                             The character was designed to be recognizable without chasing realism, breaking down the complex details of Bluboy’s aesthetic into an iconic silhouette.</p>
-                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}>This also allows us to show off the clothing through the natural antics of the character
+                        <div className="flex gap-[2vw] mt-10 mb-10 w-[90vw] md:w-[51vw] overflow-hidden relative bg-white/20 rounded-sm">
+                            <Image
+                            src="/projects/truereligion/M1.png"
+                            alt="Bluboy Character Front-Facing"
+                            className="rounded-sm"
+                            width={600}
+                            height={300}
+                            />
+                            <Image
+                            src="/projects/truereligion/M2.png"
+                            alt="Bluboy Character Side-Facing"
+                            className="rounded-sm"
+                            width={600}
+                            height={300}
+                            />
+                            <Image
+                            src="/projects/truereligion/M3.png"
+                            alt="Bluboy Character Back-Facing"
+                            className="rounded-sm"
+                            width={600}
+                            height={300}
+                            />
+                        </div>
+                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light leading-relaxed`}>This also allows us to show off the clothing through the natural antics of the character
                             himself, rather than spinning dioramas or basic product renders. Not only does this sell the collaboration at an engaging level,
                             but it also allows the watcher to focus on wearability rather than display.</p>
+                        <div className="flex gap-[2vw] mt-10 mb-10 relative w-[90vw] md:w-[51vw] overflow-hidden">
+                            <Image
+                            src="/projects/truereligion/1.0.png"
+                            alt="Product Shot 1"
+                            className="rounded-sm"
+                            width={700}
+                            height={700}
+                            />
+                            <Image
+                            src="/projects/truereligion/1.5.png"
+                            alt="Product Shot 2"
+                            className="rounded-sm"
+                            width={700}
+                            height={700}
+                            />
+                            <Image
+                            src="/projects/truereligion/1.3.png"
+                            alt="Product Shot 3"
+                            className="rounded-sm"
+                            width={700}
+                            height={700}
+                            />
+                            <Image
+                            src="/projects/truereligion/1.4.png"
+                            alt="Product Shot 4"
+                            className="rounded-sm"
+                            width={700}
+                            height={700}
+                            />
+                            <Image
+                            src="/projects/truereligion/1.1.png"
+                            alt="Product Shot 5"
+                            className="rounded-sm"
+                            width={700}
+                            height={700}
+                            />
+                        </div>
                     </div>
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl`}>refinement.</h1>
-                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}>This project was completed on a very tight one-month turnaround with constant
+                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light leading-relaxed`}>This project was completed on a very tight one-month turnaround with constant
                             direct feedback from Bluboy and the True Religion team. Revisions had to be done quickly, and once a base was established we were able to focus on
                             multiple layers of refinement to dial in on our key directives; clarity and engagement. Juggling an abstract vision alongside a tight deadline proved
                             to be a daunting challenge, but keeping those two goals at the forefront of the design guided the process to a result that balanced narrative ambition
                             with clear, effective communication.</p>
-                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light`}>The video was very well received, generating thousands
+                        <p className={`${roboto.className} mt-10 text-white text-2xl font-light leading-relaxed`}>The video was very well received, generating thousands
                             of likes across all accounts and notably positive viewer feedback. For me, this project was a learning process in how to carry a
                             client’s vision alongside my own, and present it in a way that felt natural rather than manufactured.</p>
                     </div>

@@ -9,7 +9,7 @@ const projectsdata = [
         title: igtext,
         subtitle: "Front End + Ui/Ux",
         body: `Conceptual redesign of Instagram's web experience.`,
-        image: <TransparentVideo webmSrc="/igspinner.webm" mp4Src="/projects/instadesign/igspinner.mp4"/>,
+        image: <TransparentVideo mp4Src="/projects/instadesign/igspinner.mp4"/>,
         link: "/projects/instadesign",
     },
     {
@@ -17,7 +17,7 @@ const projectsdata = [
         title: "3d Animator Research Study",
         subtitle: "UX Research Study",
         body: `Research-driven interview project exploring what it means to be an independent creator today.`,
-        image: <TransparentVideo webmSrc="/3dprojectspinner.webm" mp4Src="/projects/3dresearch/3dspinner.mp4"/>,
+        image: <TransparentVideo mp4Src="/projects/3dresearch/3dspinner.mp4"/>,
         link: "/projects/3dresearch",
     },
     {
@@ -25,7 +25,7 @@ const projectsdata = [
         title: "True Religion Work",
         subtitle: trutext,
         body: `Commissioned 3D branding piece for True Religion.`,
-        image: <TransparentVideo webmSrc="/truspinner.webm" mp4Src="/projects/truereligion/truspinner.mp4"/>,
+        image: <TransparentVideo mp4Src="/projects/truereligion/truspinner.mp4"/>,
         link: "/projects/truereligion",
     },
 

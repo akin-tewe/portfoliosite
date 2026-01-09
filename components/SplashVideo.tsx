@@ -16,6 +16,7 @@ export default function TransparentVideo ({ mp4Src }: Props) {
             loop
             muted
             playsInline
+            controls={false}
             preload="metadata">
             {mp4Src ? <source src={mp4Src} type="video/mp4" /> : null}
         </video>
@@ -31,6 +32,7 @@ export function MainVideo ({ webmSrc, mp4Src }: Prop2) {
             loop
             muted
             playsInline
+            controls={false}
             preload="metadata">
             {mp4Src ? <source src={mp4Src} type="video/mp4" /> : null}
             <source src= {webmSrc} type="video/webm" />

@@ -37,7 +37,7 @@ export default function Home() {
             akin tewe
           </span>
           <div key={pathname} className="absolute hidden md:block bottom-0 inset-0 z-20 translate-y-2/9">
-            <MainVideo webmSrc="/splashvideo.webm" mp4Src="/splashvid.mp4"/>
+            <MainVideo webmSrc="/splashvideo.webm" mp4Src="/safarisplash.mp4"/>
           </div>
         </section>
       </div>

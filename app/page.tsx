@@ -37,7 +37,6 @@ export default function Home() {
             akin tewe
           </span>
           <div key={pathname} className="absolute hidden md:block bottom-0 inset-0 z-20 translate-y-2/9">
-            <MainVideo webmSrc="/splashvideo.webm"/>
           </div>
         </section>
       </div>
@@ -73,7 +72,6 @@ export default function Home() {
             <span>→</span>
           </div>
           <div className="relative flex md:mt-10 mt-5">
-            <Projects/>
           </div>
           <div className="md:hidden flex flex-row opacity-70 justify-self-center mt-5 justify-between w-full px-[8vw]">
             <p className={`${pixelify.className} uppercase text-white`}>
@@ -83,7 +81,6 @@ export default function Home() {
           </div>
         </div>
         <div className="relative w-full md:h-[550px] h-[300px] z-5">
-          <TransparentVideo mp4Src="/walkingprojects.mp4"/>
         </div>
         <p className={`${pixelify.className} hidden md:block text-white uppercase opacity-70 py-10`}>
           mini projects Below

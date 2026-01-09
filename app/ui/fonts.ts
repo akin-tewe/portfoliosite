@@ -7,4 +7,5 @@ export const pixelify = Pixelify_Sans({
 
 export const roboto = Roboto({
     weight: ['300','400'],
+    style: ['normal', 'italic'],
 })

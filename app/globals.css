@@ -35,6 +35,9 @@ body {
   font-family: var(--font-pixelify);
 }
 
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }
+
 /* * {
   outline: 1px solid red;
 } */

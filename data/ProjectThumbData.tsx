@@ -6,19 +6,19 @@ const trutext = <div><div className= "text-green-500">Commercial Work</div><div>
 const projectsdata = [
     {
         id: 1,
-        title: "3d Animator Research Study",
-        subtitle: "UX Research Study",
-        body: `Research-driven interview project exploring what it means to be an independent creator today.`,
-        image: <TransparentVideo webmSrc="/3dprojectspinner.webm"/>,
-        link: "/projects/3dresearch",
-    },
-    {
-        id: 2,
         title: igtext,
         subtitle: "Front End + Ui/Ux",
         body: `Conceptual redesign of Instagram's web experience.`,
         image: <TransparentVideo webmSrc="/igspinner.webm"/>,
         link: "/projects/instadesign",
+    },
+    {
+        id: 2,
+        title: "3d Animator Research Study",
+        subtitle: "UX Research Study",
+        body: `Research-driven interview project exploring what it means to be an independent creator today.`,
+        image: <TransparentVideo webmSrc="/3dprojectspinner.webm"/>,
+        link: "/projects/3dresearch",
     },
     {
         id: 3,

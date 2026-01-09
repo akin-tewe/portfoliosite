@@ -67,16 +67,26 @@ export default function Home() {
       {/* Projects Section */}
       <section id="projects" className="relative flex flex-col items-center justify-center h-[auto]">
         <div className=" relative justify-center items-center">   {/* Highlight Project Section */}
-          <div className= {`lg:hidden ${pixelify.className} mt-5 text-white/50 uppercase justify-self-center`}>←   "swipe"   →</div>
+          <div className= {`lg:hidden ${pixelify.className} flex mt-5 text-white/50 uppercase justify-between items-center w-full text-lg px-[10vw]`}>
+            <span>←</span>
+            <span>"swipe"</span>
+            <span>→</span>
+          </div>
           <div className="relative flex md:mt-10 mt-5">
             <Projects/>
           </div>
+          <div className="md:hidden flex flex-row opacity-70 justify-self-center mt-5 justify-between w-full px-[8vw]">
+            <p className={`${pixelify.className} uppercase text-white`}>
+            mini projects Below
+            </p>
+            <ChevronDown className="text-white"/>
+          </div>
         </div>
-        <div className="relative w-full h-[550px] z-5">
-          <TransparentVideo webmSrc="/walkingprojects.webm"/>
+        <div className="relative w-full md:h-[550px] h-[300px] z-5">
+          <TransparentVideo mp4Src="/walkingprojects.mp4" webmSrc="/walkingprojects.webm"/>
         </div>
-        <p className={`${pixelify.className} text-white uppercase opacity-70 py-10`}>
-          Other projects Below
+        <p className={`${pixelify.className} hidden md:block text-white uppercase opacity-70 py-10`}>
+          mini projects Below
         </p>
         <ExtraProjects/>
       </section>

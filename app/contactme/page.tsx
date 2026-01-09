@@ -16,7 +16,7 @@ export default function Page() {
                     <div className={`${pixelify.className} md:absolute text-white text-3xl md:text-7xl pl-2 md:pl-10 max-w-sm md:max-w-4xl z-30 mt-5`}>
                         Want to talk? Contact me via {instalink}, {instalink2}, {linkedlink}, or send me an {emaillink}.
                     </div>
-                    <div className="flex w-[100vw] h-auto"><TransparentVideo webmSrc="contactvid.webm"/></div>
+                    <div className="flex w-[100vw] h-auto"><TransparentVideo webmSrc="contactvid.webm" mp4Src="contactvid.mp4"/></div>
                 </div>
             </div>
         </div>

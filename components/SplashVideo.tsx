@@ -13,8 +13,8 @@ export default function TransparentVideo ({ webmSrc, mp4Src }: Props) {
             muted
             playsInline
             preload="metadata">
-            <source src= {webmSrc} type="video/webm" />
             {mp4Src ? <source src={mp4Src} type="video/mp4" /> : null}
+            <source src= {webmSrc} type="video/webm" />
         </video>
     )
 }
@@ -29,8 +29,8 @@ export function MainVideo ({ webmSrc, mp4Src }: Props) {
             muted
             playsInline
             preload="metadata">
-            <source src= {webmSrc} type="video/webm" />
             {mp4Src ? <source src={mp4Src} type="video/mp4" /> : null}
+            <source src= {webmSrc} type="video/webm" />
         </video>
     )
 }

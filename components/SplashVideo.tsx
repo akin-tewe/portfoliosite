@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+
+
 type Props = {
     mp4Src?: string;
 }
@@ -5,6 +8,20 @@ type Props = {
 type Prop2 = {
     webmSrc: string;
     mp4Src?: string;
+}
+
+function useMinWidth(px: number) {
+    const [ok, setOk] = useState(false);
+
+    useEffect(() => {
+        const mq = window.matchMedia(`(min-width: ${px}px)`);
+        const update = () => setOk(mq.matches);
+        update();
+        mq.addEventListener("change", update);
+        return () => mq.removeEventListener("change", update);
+    }, [px]);
+
+  return ok;
 }
 
 
@@ -23,8 +40,10 @@ export default function TransparentVideo ({ mp4Src }: Props) {
     )
 }
 
-
 export function MainVideo ({ webmSrc, mp4Src }: Prop2) {
+
+    const isDesktop = useMinWidth(1024);
+
     return (
         <video
             className="absolute w-[1600px] h-full object-cover object-[26%_50%] pointer-events-none left-1/2 -translate-x-1/2"
@@ -34,8 +53,8 @@ export function MainVideo ({ webmSrc, mp4Src }: Prop2) {
             playsInline
             controls={false}
             preload="metadata">
-            {mp4Src ? <source src={mp4Src} type="video/mp4" /> : null}
-            <source src= {webmSrc} type="video/webm" />
+            {isDesktop && <source src={mp4Src} type="video/mp4;codecs=hvc1" />}
+            {isDesktop && <source src= {webmSrc} type="video/webm" />}
         </video>
     )
 }

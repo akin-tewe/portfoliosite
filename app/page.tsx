@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div>
       <div>
-        <section className="relative flex flex-col md:flex-row h-[83vh] items-center md:h-[50vh] bg-blue-500">
+        <section className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-blue-500">
           <div className={`flex flex-col text-xl pl-5 mt-20 md:mt-0 mr-auto md:mr-60 md:ml-auto text-white z-10 ${pixelify.className}`}>
             <Image
               src="/Pointer.png"
@@ -83,7 +83,7 @@ export default function Home() {
           </div>
         </div>
         <div className="relative w-full md:h-[550px] h-[300px] z-5">
-          <TransparentVideo mp4Src="/walkingprojects.mp4" webmSrc="/walkingprojects.webm"/>
+          <TransparentVideo mp4Src="/walkingprojects.mp4"/>
         </div>
         <p className={`${pixelify.className} hidden md:block text-white uppercase opacity-70 py-10`}>
           mini projects Below

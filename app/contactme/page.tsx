@@ -11,12 +11,12 @@ export default function Page() {
 
     return(
         <div>
-            <div className="flex h-[70vh] md:h-[85vh]">
-                <div className="flex flex-col relative h-full mt-[10vh]">
-                    <div className={`${pixelify.className} md:absolute text-white text-3xl md:text-7xl pl-2 md:pl-10 max-w-sm md:max-w-4xl z-30 mt-5`}>
+            <div className="flex h-[100vh] md:h-[85vh]">
+                <div className="flex flex-col relative h-full">
+                    <div className={`${pixelify.className} md:absolute text-white text-5xl md:text-7xl pl-8 md:pl-10 max-w-sm md:max-w-4xl z-30 mt-8`}>
                         Want to talk? Contact me via {instalink}, {instalink2}, {linkedlink}, or send me an {emaillink}.
                     </div>
-                    <div className="flex w-[100vw] h-auto"><TransparentVideo webmSrc="contactvid.webm" mp4Src="contactvid.mp4"/></div>
+                    <div className="flex w-[100vw] h-auto"><TransparentVideo mp4Src="contactvid.mp4"/></div>
                 </div>
             </div>
         </div>

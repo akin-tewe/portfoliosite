@@ -20,7 +20,7 @@ export default function Project() {
                 <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
                 <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
             </div>
-            <section id="splash" className="w-full h-[80vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw]">
+            <section id="splash" className="w-full h-[100vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw]">
                 <div className="flex flex-row md:gap-20 mt-auto md:mb-30 mr-[8vw] mb-[8vh] md:ml-0 w-full px-[10vw]">
                     <div className="relative flex flex-col gap-10">
                         <h1 className={`${pixelify.className} max-w-3xs md:max-w-2xl text-4xl md:text-5xl text-white pl-3 md:pl-0`}>true religion x “bluboy” product launch.</h1>
@@ -78,23 +78,23 @@ export default function Project() {
                             <Image
                             src="/projects/truereligion/outfit1.avif"
                             alt="Collaboration Release Outfittings"
-                            className="rounded-sm"
-                            width={400}
-                            height={400}
+                            className="rounded-sm object-cover"
+                            width={300}
+                            height={900}
                             />
                             <Image
                             src="/projects/truereligion/outfit2.avif"
                             alt="Collaboration Release Outfittings"
-                            className="rounded-sm"
-                            width={400}
-                            height={400}
+                            className="rounded-sm object-cover"
+                            width={300}
+                            height={900}
                             />
                             <Image
                             src="/projects/truereligion/outfit3.webp"
                             alt="Collaboration Release Outfittings"
-                            className="rounded-sm"
-                            width={400}
-                            height={400}
+                            className="rounded-sm object-cover"
+                            width={300}
+                            height={900}
                             />
                         </DragScroll>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>outfittings released as part of collaboration - image credit: WNTD Apparel</div>

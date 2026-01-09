@@ -21,7 +21,7 @@ export default function Project() {
                 <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
                 <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
             </div>
-            <section id="splash" className="w-full h-[80vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw] md:px-[5vw]">
+            <section id="splash" className="w-full h-[100vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw] md:px-[5vw]">
                 <div className="flex flex-row md:gap-20 mt-auto md:mb-30 mr-[8vw] mb-[8vh] md:ml-0 w-full px-[10vw]">
                     <div className="relative flex flex-col gap-10">
                         <h1 className={`${pixelify.className} max-w-3xs text-4xl md:text-5xl text-white md:max-w-2xl pl-3 md:pl-0`}>instagram web application redesign</h1>
@@ -39,11 +39,22 @@ export default function Project() {
                     </div>
                 </div>
             </section>
-            < section className="h-[150px] md:h-[2vh]">
+            < section className="h-[150px] md:h-0">
             </section>
             <section id="body" className="pb-20 md:pb-50 px-5 md:px-[11vw]">
                 <div className="flex flex-col gap-10 max-w-xs md:max-w-2xl">
                     <div>
+                        <div className="flex relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
+                            <video
+                                className=" h-full w-auto z-50"
+                                src="/projects/instadesign/old/codedvidwip.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                            />
+                        </div>
+                        <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic pb-10`}>figma overhaul implementation.</div>
                         <h1 className={`${pixelify.className} text-white text-3xl mt-10`}>learning from their users</h1>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light leading-relaxed`}>Before jumping into ideating solutions and creating interfaces,
                             it was important to ground the project in real user behavior. I conducted an open-ended survey to better understand how users currently engage
@@ -135,23 +146,25 @@ export default function Project() {
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>search bar and stories merge into one co-existing component. Lives together while
                             maintaining separate identities, and creates a central place for the user to access two monumental features in an intelligent fashion.</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
-                            <Image
-                            src="/projects/instadesign/search.gif"
-                            alt="Search Implementation"
-                            className="rounded-sm"
-                            width={800}
-                            height={800}
+                            <video
+                                className=" h-full w-auto z-50"
+                                src="/projects/instadesign/old/searchwip.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
                             />
                         </div>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>conceptual new search widget.</div>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>solid color when unread messages exist. Creates stronger profile and pulls user attention to new information.</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
-                            <Image
-                            src="/projects/instadesign/messages.gif"
-                            alt="Messaging Implementation"
-                            className="rounded-sm"
-                            width={800}
-                            height={800}
+                            <video
+                                className=" h-full w-auto z-50"
+                                src="/projects/instadesign/old/messageswip.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
                             />
                         </div>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>conceptual messaging changes.</div>
@@ -165,19 +178,20 @@ export default function Project() {
                             height={400}
                             />
                         </div>
-                        <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>new tab additions aid discovery of user-directed content.</div>
+                        <div className={` ${roboto.className} text-white/40 justify-self-center text-https://www.adhamdannaway.com/aboutcenter mt-[0.5vw] italic`}>new tab additions aid discovery of user-directed content.</div>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>A prototype of the entire layout was built using Figma, where all of these changes come together in unison.
                             Additional supporting improvements included:</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
-                            <Image
-                            src="/projects/instadesign/figmavid.gif"
-                            alt="Full Figma Layout Video"
-                            className="rounded-sm"
-                            width={1000}
-                            height={1000}
+                            <video
+                                className=" h-full w-auto z-50"
+                                src="/projects/instadesign/old/figmavidwip.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
                             />
                         </div>
-                        <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>full UI overhaul demonstration.</div>
+                        <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>full UI overhaul demonstration (figma).</div>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light pl-10 leading-relaxed`}>- New “pull-out” comment browser to keep scrolling as seamless as possible</p>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light pl-10 leading-relaxed`}>- Separated reels tab</p>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light pl-10 leading-relaxed`}>- Changes to readability of navigation bar</p>
@@ -216,12 +230,13 @@ export default function Project() {
                             system as closely as possible, and implementing responsive behavior that would scale cleanly between desktop breakpoints. Preserving behavior was
                             equally important as simply recreating visuals. Adjustments were made to conceptual designs during process.</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
-                            <Image
-                            src="/projects/instadesign/codedvid.gif"
-                            alt="Full Coded Layout Video"
-                            className="rounded-sm"
-                            width={1000}
-                            height={1000}
+                            <video
+                                className=" h-full w-auto z-50"
+                                src="/projects/instadesign/old/codedvidwip.mp4"
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
                             />
                         </div>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic pb-10`}>full overhaul implementation.</div>

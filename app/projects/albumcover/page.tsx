@@ -20,7 +20,7 @@ export default function Project() {
                 <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
                 <div className="border-2 w-[15vw] md:w-[12.1vw]"></div>
             </div>
-            <section id="splash" className="w-full h-[80vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw]">
+            <section id="splash" className="w-full h-[100vh] md:justify-start md:h-[50vh] grid place-items-center md:px-[5vw]">
                 <div className="flex flex-row md:gap-20 mt-auto md:mb-30 mr-[8vw] mb-[8vh] md:ml-0 w-full px-[10vw]">
                     <div className="relative flex flex-col gap-10">
                         <h1 className={`${pixelify.className} max-w-3xs md:max-w-2xl text-4xl md:text-5xl text-white pl-3 md:pl-0`}>“peaches and eggplants (remix)” cover art design</h1>

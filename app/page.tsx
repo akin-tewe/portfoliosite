@@ -72,6 +72,7 @@ export default function Home() {
             <span>→</span>
           </div>
           <div className="relative flex md:mt-10 mt-5">
+            <Projects/>
           </div>
           <div className="md:hidden flex flex-row opacity-70 justify-self-center mt-5 justify-between w-full px-[8vw]">
             <p className={`${pixelify.className} uppercase text-white`}>

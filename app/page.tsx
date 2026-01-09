@@ -82,6 +82,7 @@ export default function Home() {
           </div>
         </div>
         <div className="relative w-full md:h-[550px] h-[300px] z-5">
+          <TransparentVideo mp4Src="/walkingprojects.mp4"/>
         </div>
         <p className={`${pixelify.className} hidden md:block text-white uppercase opacity-70 py-10`}>
           mini projects Below

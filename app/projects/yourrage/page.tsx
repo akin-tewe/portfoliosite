@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Video,ChevronDown } from "lucide-react";
 import Image from "next/image";
 
+
 export default function Project() {
 
     const [open, setOpen] = useState(false);
@@ -76,7 +77,7 @@ export default function Project() {
                             <Image
                             src="/projects/yourrage/character.jpg"
                             alt="Character Sheet"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={700}
                             height={700}
                             />
@@ -90,7 +91,7 @@ export default function Project() {
                             <Image
                             src="/projects/yourrage/motionreference.gif"
                             alt="Motion Reference Scene"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={700}
                             height={700}
                             />

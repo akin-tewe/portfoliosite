@@ -4,7 +4,6 @@ import { pixelify } from "@/app/ui/fonts";
 import { roboto } from "@/app/ui/fonts";
 import { ChevronDown } from "lucide-react";
 import Projects from "@/components/Projects";
-import MagneticButton from "@/components/MagneticButton"
 import TransparentVideo from "@/components/SplashVideo"
 import ExtraProjects from "@/components/ExtraProjects"
 import { usePathname } from "next/navigation"

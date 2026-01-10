@@ -47,7 +47,7 @@ export default function Project() {
                         <div className="flex relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
                             <video
                                 className=" h-full w-auto z-50"
-                                src="/projects/instadesign/old/codedvidwip.mp4"
+                                src="/projects/instadesign/old/figmavidwip.mp4"
                                 autoPlay
                                 loop
                                 muted
@@ -60,32 +60,32 @@ export default function Project() {
                             it was important to ground the project in real user behavior. I conducted an open-ended survey to better understand how users currently engage
                             with the platform, and learn directly from them where misalignment stemmed. I chose an open-ended approach to avoid bias and capture patterns
                             beyond my personal social circle. The survey focused on frequency of use, friction points, and perceived usability under both environments.</p>
-                        <DragScroll className="flex gap-[2vw] mt-10 relative w-[90vw] md:w-[51vw] bg-white/20 p-[2vw] rounded-sm">
+                        <DragScroll className="flex gap-[4vw] mt-10 relative w-[90vw] md:w-[51vw] bg-white/20 p-[2vw] rounded-sm">
                             <Image
                             src="/projects/instadesign/mobilesearch.png"
                             alt="Searching via Mobile"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={300}
                             />
                             <Image
                             src="/projects/instadesign/websearch.png"
                             alt="Searching via Web"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={300}
                             />
                             <Image
                             src="/projects/instadesign/mobileuse.png"
                             alt="Frequency of Use (Mobile)"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={200}
                             />
                             <Image
                             src="/projects/instadesign/webuse.png"
                             alt="Frequency of Use (Web)"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={200}
                             />
@@ -101,21 +101,21 @@ export default function Project() {
                             <Image
                             src="/projects/instadesign/usefrequency.png"
                             alt="Daily Use"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={300}
                             />
                             <Image
                             src="/projects/instadesign/webinteraction.png"
                             alt="Level of Interaction Image"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={300}
                             />
                             <Image
                             src="/projects/instadesign/webmessaging.png"
                             alt="Ease of Messaging"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={300}
                             />
@@ -130,7 +130,7 @@ export default function Project() {
                             <Image
                             src="/projects/instadesign/improvements.png"
                             alt="Suggested Improvements"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={600}
                             height={600}
                             />
@@ -143,7 +143,7 @@ export default function Project() {
                             keep things clean, but make them easy. Rather than hiding key features behind mountainous clicks and burying them in a cluster of menus, let’s consolidate
                             the experience so users can instantly see what’s available without feeling overwhelmed. </p>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light leading-relaxed`}>The focus wasn’t on adding more, but better utilization of the space provided.</p>
-                        <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>search bar and stories merge into one co-existing component. Lives together while
+                        <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>Search bar and stories merge into one co-existing component. Lives together while
                             maintaining separate identities, and creates a central place for the user to access two monumental features in an intelligent fashion.</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
                             <video
@@ -156,7 +156,7 @@ export default function Project() {
                             />
                         </div>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>conceptual new search widget.</div>
-                        <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>solid color when unread messages exist. Creates stronger profile and pulls user attention to new information.</p>
+                        <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>Implement solid color when unread messages exist. Creates stronger profile and pulls user attention to new information.</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
                             <video
                                 className=" h-full w-auto z-50"
@@ -168,17 +168,17 @@ export default function Project() {
                             />
                         </div>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>conceptual messaging changes.</div>
-                        <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>new discovery tab implementation. Aids deliberate browsing and helps the user find new topics of interest to them.</p>
+                        <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>New discovery tab implementation. Aids deliberate browsing and helps the user find new topics of interest to them.</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm justify-center">
                             <Image
                             src="/projects/instadesign/discovery.gif"
                             alt="Discovery Implementation"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={400}
                             height={400}
                             />
                         </div>
-                        <div className={` ${roboto.className} text-white/40 justify-self-center text-https://www.adhamdannaway.com/aboutcenter mt-[0.5vw] italic`}>new tab additions aid discovery of user-directed content.</div>
+                        <div className={` ${roboto.className} text-white/40 justify-self-center text-https://www.adhamdannaway.com/aboutcenter mt-[0.5vw] italic`}>New tab additions aid discovery of user-directed content.</div>
                         <p className={`${roboto.className} mt-10 text-white text-xl md:text-2xl font-light opacity-100 leading-relaxed`}>A prototype of the entire layout was built using Figma, where all of these changes come together in unison.
                             Additional supporting improvements included:</p>
                         <div className="flex mt-10 relative overflow-hidden overflow-x-auto bg-white/20 p-[1vw] rounded-sm">
@@ -206,21 +206,21 @@ export default function Project() {
                             <Image
                             src="/projects/instadesign/components.gif"
                             alt="Layout Structure"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={600}
                             height={600}
                             />
                             <Image
                             src="/projects/instadesign/data.gif"
                             alt="Data Files"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={600}
                             height={600}
                             />
                             <Image
                             src="/projects/instadesign/layout.gif"
                             alt="Layout Implementation"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={600}
                             height={600}
                             />
@@ -240,7 +240,7 @@ export default function Project() {
                             />
                         </div>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic pb-10`}>full overhaul implementation.</div>
-                        <Link target="_blank" href="https://github.com/akin-tewe/akintewe-igconcept" className={`${roboto.className} z-40 text-white text-xl font-heavy leading-relaxed transition-all hover:opacity-50`}>You can view the full project file here.</Link>
+                       {/* Temp Hidden */} <Link target="_blank" href="https://github.com/akin-tewe/akintewe-igconcept" className={`${roboto.className} hidden z-40 text-white text-xl font-heavy leading-relaxed transition-all hover:opacity-50`}>You can view the full project file here.</Link>
                     </div>
                     <div>
                         <h1 className={`${pixelify.className} text-white text-3xl`}>why did this matter?</h1>

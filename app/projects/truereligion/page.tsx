@@ -6,6 +6,7 @@ import { Video,ChevronDown } from "lucide-react";
 import Image from "next/image";
 import DragScroll from "@/components/DragScroll";
 
+
 export default function Project() {
 
     const [open, setOpen] = useState(false);
@@ -78,21 +79,21 @@ export default function Project() {
                             <Image
                             src="/projects/truereligion/outfit1.avif"
                             alt="Collaboration Release Outfittings"
-                            className="rounded-sm object-cover"
+                            className="rounded-sm pointer-events none object-cover"
                             width={300}
                             height={900}
                             />
                             <Image
                             src="/projects/truereligion/outfit2.avif"
                             alt="Collaboration Release Outfittings"
-                            className="rounded-sm object-cover"
+                            className="rounded-sm pointer-events none object-cover"
                             width={300}
                             height={900}
                             />
                             <Image
                             src="/projects/truereligion/outfit3.webp"
                             alt="Collaboration Release Outfittings"
-                            className="rounded-sm object-cover"
+                            className="rounded-sm pointer-events none object-cover"
                             width={300}
                             height={900}
                             />
@@ -108,21 +109,21 @@ export default function Project() {
                             <Image
                             src="/projects/truereligion/ex1.jpg"
                             alt="Bluboy Example Art Direction Image"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={400}
                             height={400}
                             />
                             <Image
                             src="/projects/truereligion/ex2.jpg"
                             alt="Bluboy Example Art Direction Image"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={400}
                             height={400}
                             />
                             <Image
                             src="/projects/truereligion/ex3.jpg"
                             alt="Bluboy Example Art Direction Image"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={400}
                             height={400}
                             />
@@ -142,21 +143,21 @@ export default function Project() {
                             <Image
                             src="/projects/truereligion/M1.png"
                             alt="Bluboy Character Front-Facing"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={600}
                             height={300}
                             />
                             <Image
                             src="/projects/truereligion/M2.png"
                             alt="Bluboy Character Side-Facing"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={600}
                             height={300}
                             />
                             <Image
                             src="/projects/truereligion/M3.png"
                             alt="Bluboy Character Back-Facing"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={600}
                             height={300}
                             />
@@ -169,35 +170,35 @@ export default function Project() {
                             <Image
                             src="/projects/truereligion/1.0.png"
                             alt="Product Shot 1"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={700}
                             height={700}
                             />
                             <Image
                             src="/projects/truereligion/1.5.png"
                             alt="Product Shot 2"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={700}
                             height={700}
                             />
                             <Image
                             src="/projects/truereligion/1.3.png"
                             alt="Product Shot 3"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={700}
                             height={700}
                             />
                             <Image
                             src="/projects/truereligion/1.4.png"
                             alt="Product Shot 4"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={700}
                             height={700}
                             />
                             <Image
                             src="/projects/truereligion/1.1.png"
                             alt="Product Shot 5"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events none"
                             width={700}
                             height={700}
                             />

@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import DragScroll from "@/components/DragScroll";
 
+
 export default function Project() {
 
     const [open, setOpen] = useState(false);
@@ -52,7 +53,7 @@ export default function Project() {
                             <Image
                             src="/projects/albumcover/originalcover.jpg"
                             alt="Original Album Cover Art"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={700}
                             height={700}
                             />
@@ -68,16 +69,16 @@ export default function Project() {
                             <Image
                             src="/projects/albumcover/red.jpg"
                             alt="Red Chain Reference Image"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={300}
                             height={700}
                             />
                             <Image
                             src="/projects/albumcover/latto.webp"
                             alt="Latto Chain Reference Image"
-                            className="rounded-sm"
-                            width={400}
-                            height={700}
+                            className="rounded-sm pointer-events-none object-cover"
+                            width={600}
+                            height={400}
                             />
                         </DragScroll>
                         <div className={` ${roboto.className} text-white/40 justify-self-center text-center mt-[0.5vw] italic`}>chain references for artists "Sexyy Redd" and "Latto."</div>
@@ -88,7 +89,7 @@ export default function Project() {
                             <Image
                             src="/projects/albumcover/wip2.png"
                             alt="Work in Progress Render"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={700}
                             height={700}
                             />
@@ -103,7 +104,7 @@ export default function Project() {
                         <Image
                         src="/projects/albumcover/finalcover.jpg"
                         alt="Final Album Cover Art"
-                        className="rounded-sm"
+                        className="rounded-sm pointer-events-none"
                         width={700}
                         height={700}
                         />

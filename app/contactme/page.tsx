@@ -2,6 +2,7 @@ import TransparentVideo from "@/components/SplashVideo"
 import { pixelify } from "../ui/fonts"
 import Link from "next/link"
 
+
 export default function Page() {
 
     const instalink = <Link className="hover:opacity-50 transition-all duration-100 text-blue-800" target="_blank" href="https://www.instagram.com/eightybot/"> Instagram</Link>

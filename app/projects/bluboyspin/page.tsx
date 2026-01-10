@@ -79,21 +79,21 @@ export default function Project() {
                             <Image
                             src="/projects/bluboyspin/fit1.jpg"
                             alt="Reference Print Image 1"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={500}
                             height={500}
                             />
                             <Image
                             src="/projects/bluboyspin/fit2.jpg"
                             alt="Reference Print Image 2"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={500}
                             height={500}
                             />
                             <Image
                             src="/projects/bluboyspin/fit3.jpg"
                             alt="Reference Print Image 3"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={500}
                             height={500}
                             />
@@ -106,21 +106,21 @@ export default function Project() {
                             <Image
                             src="/projects/bluboyspin/char1.jpg"
                             alt="Example Art Direction Image 1"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={500}
                             height={500}
                             />
                             <Image
                             src="/projects/bluboyspin/char2.jpg"
                             alt="Example Art Direction Image 1"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={500}
                             height={500}
                             />
                             <Image
                             src="/projects/bluboyspin/char3.jpg"
                             alt="Example Art Direction Image 1"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={500}
                             height={500}
                             />
@@ -136,7 +136,7 @@ export default function Project() {
                             <Image
                             src="/projects/bluboyspin/principles.gif"
                             alt="Principles of Animation"
-                            className="rounded-sm"
+                            className="rounded-sm pointer-events-none"
                             width={700}
                             height={700}
                             />

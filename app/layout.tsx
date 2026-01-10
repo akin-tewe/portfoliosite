@@ -10,7 +10,7 @@ import { BootOverlay } from "@/components/LoadingOverlay";
 
 export const metadata: Metadata = {
   title: "Akin Tewe. Front End Developer",
-  description: "akin tewe's portfolio page",
+  description: "Akin Tewe's portfolio website.",
 };
 
 export default function RootLayout({

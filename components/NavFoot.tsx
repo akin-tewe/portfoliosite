@@ -86,11 +86,11 @@ export default function NavBar() {
                 </aside>
             </>
             <header className={`hidden md:flex bg-black px-3 md:px-3 py-[1vh] flex flex-col md:flex-row justify-between w-full px-2 md:px-12 py-[3vh] gap-[2vh]`}>
-                <Link href="/" className={`${!aboutMe ? 'text-white/75' : 'text-white/5'} hover:text-white/100 transition-all z-20 ml-auto md:ml-0`} onClick={() => {show(); setTimeout(hide,800)}}><House/></Link>
+                <Link href="/" className={`${!aboutMe ? 'text-white/60' : 'text-white/60'} hover:text-white/100 transition-all z-20 ml-auto md:ml-0`} onClick={() => {show(); setTimeout(hide,800)}}><House/></Link>
                 <nav ref={navbarRef} className={`flex md:flex-row flex-col text-xl gap-[2vw] z-10 text-right uppercase ${pixelify.className} text-white`}>
-                    <Link href="/#projects" className="opacity-75 transform-all duration-200 hover:text-white hover:opacity-100" onClick={() => {show(); setTimeout(hide,800)}}>projects</Link>
-                    <Link href="/aboutme" className="opacity-75 transform-all duration-200 hover:text-white hover:opacity-100" onClick={() => {show(); setTimeout(hide,800)}}>about me</Link>
-                    <Link href="/contactme" className="opacity-75 transform-all duration-200 hover:text-white hover:opacity-100" onClick={() => {show(); setTimeout(hide,800)}}>get in touch</Link>
+                    <Link href="/#projects" className="opacity-60 transform-all duration-200 hover:text-white hover:opacity-100" onClick={() => {show(); setTimeout(hide,800)}}>projects</Link>
+                    <Link href="/aboutme" className="opacity-60 transform-all duration-200 hover:text-white hover:opacity-100" onClick={() => {show(); setTimeout(hide,800)}}>about me</Link>
+                    <Link href="/contactme" className="opacity-60 transform-all duration-200 hover:text-white hover:opacity-100" onClick={() => {show(); setTimeout(hide,800)}}>get in touch</Link>
                 </nav>
             </header>
             {!isHome &&

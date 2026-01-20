@@ -17,9 +17,9 @@ export default function AboutMe() {
                 <div className="mx-auto w-[80vw] border-black/20 border-t-1 mt-20 mb-10"></div>
                 <div className="flex flex-col px-11 md:flex md:flex-row md:px-[10vw] gap-10 w-full h-auto md:justify-between md:px-[10vw]">
                     <div className="mt-10 text-black">
-                        <p className={`${roboto.className} font text-xl mt-5 md:max-w-md`}>With an educational
+                        <p className={`${roboto.className} font text-xl mt-5 md:max-w-md`}>{`With an educational
                             background in Product Design from Georgia Institute of Technology, and practical experience in 3D Design and Web Development, I'm able to approach problems with a
-                            wide set of flexible tools. Each project is an opportunity for me to grow, iterate, and raise the quality standard.
+                            wide set of flexible tools. Each project is an opportunity for me to grow, iterate, and raise the quality standard`}.
                         </p>
                     </div>
                     <div className=" flex mt-10 relative overflow-hidden bg-white/20 p-[1vw] rounded-sm">

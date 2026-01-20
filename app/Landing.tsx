@@ -29,8 +29,8 @@ export default function Landing() {
               height="15"
               className="mb-3"
             />
-            <span>UI / UX Designer</span>
-            <span>Front End Developer</span>
+            <span>UI / UX </span>
+            <span>Product Designer</span>
           </div>
           <span className={`md:hidden ${pixelify.className} relative text-9xl text-white text-right pb-10 pr-5 mt-auto`}>
             akin tewe
@@ -42,7 +42,7 @@ export default function Landing() {
       </div>
       <section className="flex flex-col md:h-[46vh] items-center bg-white md:px-20"> {/* Middle White Section */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-30 py-20 md:py-30 md:border-b-gray-300 md:border-b">
-          <p className={`relative text-black text-xl px-10 md:px-0 md:max-w-xl ${roboto.className} font-light`}>Front-End Developer and UI/UX designer creating interfaces that emphasize
+          <p className={`relative text-black text-xl px-10 md:px-0 md:max-w-xl ${roboto.className} font-light`}>Product Designer positioned in UI/UX development creating interfaces that emphasize
             the user and add a touch of childhood wonder.
             I build experiences that bring people back to the joy they grew up with.
           </p>

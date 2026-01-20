@@ -9,7 +9,7 @@ import { Footer } from "@/components/NavFoot";
 import { BootOverlay } from "@/components/LoadingOverlay";
 
 export const metadata: Metadata = {
-  title: "Akin Tewe. Front End Developer",
+  title: "Akin Tewe. Product Designer",
   description: "Akin Tewe's portfolio website.",
 };
 

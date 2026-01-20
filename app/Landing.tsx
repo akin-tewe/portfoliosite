@@ -29,7 +29,7 @@ export default function Landing() {
               height="15"
               className="mb-3"
             />
-            <span>UI / UX </span>
+            <span>UX Engineer </span>
             <span>Product Designer</span>
           </div>
           <span className={`md:hidden ${pixelify.className} relative text-9xl text-white text-right pb-10 pr-5 mt-auto`}>

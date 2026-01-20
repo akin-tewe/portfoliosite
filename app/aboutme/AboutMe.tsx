@@ -1,14 +1,9 @@
 import Image from "next/image";
 import { roboto } from "../ui/fonts";
-import { Metadata } from "next";
 
 type Props = {
     word: string,
 }
-export const metadata: Metadata = {
-  title: "Projects — Akin Tewe",
-  description: "A few selected works by Akin Tewe.",
-};
 
 const ListText = ({word}: Props) => { return(<div className={`${roboto.className} text-gray-400 font-light`}>{word}</div>) }
 

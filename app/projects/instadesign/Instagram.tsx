@@ -26,7 +26,7 @@ export default function Instagram() {
                     <div className="relative flex flex-col gap-10">
                         <h1 className={`${pixelify.className} max-w-3xs text-4xl md:text-5xl text-white md:max-w-2xl pl-3 md:pl-0`}>instagram web application redesign</h1>
                         <span className={`${roboto.className} hidden md:block text-white font-light text-xl md:text-2xl md:max-w-2xl leading-relaxed`}>A simple question: what are people trying to do when they access
-                             Instagram via desktop and where does the platform fail them?
+                             Instagram via desktop and where does the platform fail them? ( No AI was used at any point in this project lifespan. )
                         </span>
                     </div>
                     <div className={`${pixelify.className} text-xl flex flex-col items-center md:flex-row gap-15 text-l mt-auto justify-center ml-auto md:ml-0`}>

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description: "A few selected works by Akin Tewe.",
 };
 
-export default function About() {
+export default function Page() {
     return (
         <main>
             <AboutMe/>

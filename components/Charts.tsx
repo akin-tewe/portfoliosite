@@ -115,42 +115,59 @@ export function VerticalBarChart({
           {title}
         </motion.h3>
       )}
-      <div className="flex items-end justify-center gap-2 md:gap-4 h-40 md:h-52 lg:h-64">
-        {data.map((item, index) => (
-          <div key={index} className="flex flex-col items-center gap-2 flex-1 max-w-16 md:max-w-20">
-            <motion.span
-              className="text-white/80 text-xs md:text-sm font-medium"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ duration: 0.3, delay: index * 0.1 + 0.5 }}
-            >
-              {item.value}%
-            </motion.span>
-            <div className="relative w-full h-full bg-white/10 rounded-t-sm overflow-hidden flex items-end">
-              <motion.div
-                className="w-full rounded-t-sm"
-                style={{ backgroundColor: item.color || CHART_COLORS[index % CHART_COLORS.length] }}
-                initial={{ height: 0 }}
-                animate={isInView ? { height: `${(item.value / max) * 100}%` } : {}}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.12,
-                  ease: [0.25, 0.46, 0.45, 0.94]
-                }}
-              />
-            </div>
-            {showLabels && (
+      <div className="flex items-end justify-center gap-3 md:gap-4 lg:gap-6 px-2">
+        {data.map((item, index) => {
+          const heightPercent = (item.value / max) * 100;
+          const barHeight = Math.max(heightPercent * 1.8, 8); // Scale to max ~180px, min 8px
+
+          return (
+            <div key={index} className="flex flex-col items-center gap-2 flex-1 min-w-0 max-w-24">
+              {/* Value label above bar */}
               <motion.span
-                className="text-white/60 text-[10px] md:text-xs text-center leading-tight h-8 flex items-start"
+                className="text-white/90 text-xs md:text-sm font-medium tabular-nums"
                 initial={{ opacity: 0, y: 10 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.4, delay: index * 0.08 }}
+                transition={{ duration: 0.4, delay: index * 0.1 + 0.6 }}
               >
-                {item.label}
+                {item.value}%
               </motion.span>
-            )}
-          </div>
-        ))}
+
+              {/* Bar container with background track */}
+              <div className="relative w-full flex flex-col justify-end" style={{ height: '180px' }}>
+                {/* Background track */}
+                <div className="absolute inset-0 bg-white/5 rounded-md" />
+
+                {/* Animated bar */}
+                <motion.div
+                  className="relative w-full rounded-md shadow-lg"
+                  style={{
+                    backgroundColor: item.color || CHART_COLORS[index % CHART_COLORS.length],
+                    boxShadow: `0 0 20px ${(item.color || CHART_COLORS[index % CHART_COLORS.length])}40`
+                  }}
+                  initial={{ height: 0 }}
+                  animate={isInView ? { height: barHeight } : {}}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.1,
+                    ease: [0.25, 0.46, 0.45, 0.94]
+                  }}
+                />
+              </div>
+
+              {/* Label below bar */}
+              {showLabels && (
+                <motion.span
+                  className="text-white/60 text-[10px] md:text-xs text-center leading-tight mt-1 min-h-[2rem] flex items-start justify-center"
+                  initial={{ opacity: 0 }}
+                  animate={isInView ? { opacity: 1 } : {}}
+                  transition={{ duration: 0.4, delay: index * 0.08 + 0.3 }}
+                >
+                  {item.label}
+                </motion.span>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

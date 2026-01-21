@@ -254,16 +254,16 @@ export default function Instagram() {
                                 <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
                                     additional user insights
                                 </h3>
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    <HorizontalBarChart
+                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                                    <VerticalBarChart
                                         data={chartData.useFrequency}
                                         title="Daily Engagement"
                                     />
-                                    <HorizontalBarChart
+                                    <VerticalBarChart
                                         data={chartData.webInteraction}
                                         title="Web Interaction Level"
                                     />
-                                    <HorizontalBarChart
+                                    <VerticalBarChart
                                         data={chartData.webMessaging}
                                         title="Messaging Ease"
                                     />

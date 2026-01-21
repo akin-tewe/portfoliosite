@@ -293,7 +293,7 @@ export default function D3Project() {
                                 <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
                                     freedom vs stability preference
                                 </h3>
-                                <HorizontalBarChart
+                                <VerticalBarChart
                                     data={researchChartData.freedomStability}
                                     showLabels={true}
                                 />
@@ -340,28 +340,6 @@ export default function D3Project() {
                             <div className={`${roboto.className} text-white/40 text-center mt-2 italic text-sm md:text-base`}>
                                 {`maslow's hierarchy of needs contextualized.`}
                             </div>
-                        </motion.div>
-
-                        {/* Maslow Creative Chart */}
-                        <motion.div variants={fadeInUp}>
-                            <ChartContainer>
-                                <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
-                                    creative labor hierarchy (concern level %)
-                                </h3>
-                                <HorizontalBarChart
-                                    data={researchChartData.maslowCreative}
-                                    showLabels={true}
-                                />
-                            </ChartContainer>
-                            <div className={`${roboto.className} text-white/40 text-center mt-3 italic text-sm md:text-base`}>
-                                needs hierarchy adapted for creative labor context.
-                            </div>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                This framework helps to contextualize responses without reducing them to generalizations.
-                            </p>
                         </motion.div>
                     </AnimatedSection>
 

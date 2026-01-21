@@ -1,19 +1,25 @@
 "use client";
 import Image from "next/image"
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { pixelify, roboto } from "@/app/ui/fonts";
 import projectsdata from "@/data/ProjectThumbData"
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion";
 import Link from "next/link"
 import { useLoader } from "./LoaderContext";
 
-
-
 export default function Projects() {
-
-    const {show,hide} = useLoader();
+    const { show, hide } = useLoader();
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState(0);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Detect mobile device
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const next = () => {
         setDirection(1);
@@ -29,56 +35,82 @@ export default function Projects() {
 
     const slideVariants = {
         enter: (dir: number) => ({
-            x: dir > 0 ? 80 : -80,
+            x: dir > 0 ? 100 : -100,
             opacity: 0,
+            scale: 0.95,
         }),
         center: {
             x: 0,
             opacity: 1,
+            scale: 1,
         },
         exit: (dir: number) => ({
-            x: dir > 0 ? -80 : 80,
+            x: dir > 0 ? -100 : 100,
             opacity: 0,
+            scale: 0.95,
         }),
     }
 
-    const SWIPE_DIST = 80;
-    const SWIPE_VELOCITY = 500;
+    const SWIPE_DIST = 60;
+    const SWIPE_VELOCITY = 400;
 
     const handleDragEnd = (_: any, info: { offset: { x: number }, velocity: { x: number } }) => {
         const { x } = info.offset;
         const vx = info.velocity.x;
 
-        // swipe left => next, swipe right => prev
         if (x < -SWIPE_DIST || vx < -SWIPE_VELOCITY) next();
         else if (x > SWIPE_DIST || vx > SWIPE_VELOCITY) prev();
     };
 
+    // Pagination dots
+    const PaginationDots = () => (
+        <div className="flex justify-center gap-2 mt-6 lg:hidden">
+            {projectsdata.map((_, i) => (
+                <motion.button
+                    key={i}
+                    onClick={() => {
+                        setDirection(i > index ? 1 : -1);
+                        setIndex(i);
+                    }}
+                    className={`rounded-full transition-all duration-300 ${i === index
+                        ? 'w-8 h-2 bg-white'
+                        : 'w-2 h-2 bg-white/30 hover:bg-white/50'
+                        }`}
+                    whileTap={{ scale: 0.9 }}
+                    aria-label={`Go to project ${i + 1}`}
+                />
+            ))}
+        </div>
+    );
+
     return (
         <section className="w-full grid lg:grid-cols-[1fr_5fr_1fr] md:grid-cols-[1fr_7fr_1fr] px-5 md:px-2 z-20">
+            {/* Previous Arrow - Desktop */}
             <motion.button
                 onClick={prev}
-                className="hidden md:block mr-10 relative -scale-x-100"
+                className="hidden lg:block mr-10 relative -scale-x-100"
                 aria-label="Previous project"
                 type="button"
-                animate={{ y: [0, -8, 0]}}
+                animate={{ y: [0, -8, 0] }}
                 transition={{
                     duration: 2.5,
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                whileHover={{ y: 0}}
+                whileHover={{ y: 0, scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
             >
                 <Image
                     src="/arrow.png"
                     alt="Arrow Button"
                     width={130}
                     height={130}
-                    className="transition-all hover:scale-120"
+                    className="transition-all opacity-80 hover:opacity-100"
                 />
             </motion.button>
 
-            <div className="">
+            <div className="relative">
+
                 <AnimatePresence mode="wait" initial={false} custom={direction}>
                     <motion.div
                         key={project.id}
@@ -87,52 +119,84 @@ export default function Projects() {
                         initial="enter"
                         animate="center"
                         exit="exit"
-                        transition={{ duration: 0.3, ease: "easeOut"}}
+                        transition={{
+                            x: { type: "spring", stiffness: 300, damping: 30 },
+                            opacity: { duration: 0.2 },
+                            scale: { duration: 0.2 }
+                        }}
                         className="w-full"
                         drag="x"
                         dragConstraints={{ left: 0, right: 0 }}
-                        dragElastic={0.12}
+                        dragElastic={0.15}
                         onDragEnd={handleDragEnd}
+                        whileDrag={{ cursor: "grabbing" }}
                     >
                         <Link href={project.link}>
-                            <button
-                                onClick={() => {show(); setTimeout(hide,800)}}
-                                className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:scale-103 border-3 bg-blue-600 p-7 rounded-3xl md:rounded-full">
+                            <motion.button
+                                onClick={() => { show(); setTimeout(hide, 800) }}
+                                className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 border-3 bg-blue-600 p-7 rounded-3xl md:rounded-full cursor-pointer"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                            >
                                 <div className={`${pixelify.className} relative grid grid-cols-1 text-white justify-center uppercase`}>
-                                    <h1 className="text-4xl max-w-xs md:pl- md:text-right pointer-events-none">{project.title}</h1>
+                                    <h1 className="text-4xl max-w-xs md:text-right pointer-events-none">{project.title}</h1>
                                     <div className="md:text-right pointer-events-none font-bold opacity-60 md:hidden lg:block">{project.subtitle}</div>
                                 </div>
-                                <div className="relative w-[200px] h-[200px] pointer-events-none">
+                                <motion.div
+                                    className="relative w-[200px] h-[200px] pointer-events-none"
+                                    animate={isMobile ? {} : { y: [0, -5, 0] }}
+                                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                                >
                                     {project.image}
-                                </div>
+                                </motion.div>
                                 <div className={`text-white max-w-xs text-xl justify-self-center ${roboto.className} font-light pr-9 hidden md:block`}>
                                     <p>{project.body}</p>
                                 </div>
-                            </button>
+                            </motion.button>
                         </Link>
                     </motion.div>
                 </AnimatePresence>
+
+                {/* Pagination Dots - Mobile */}
+                <PaginationDots />
+
+                {/* Project Counter - Desktop */}
+                <div className="hidden lg:flex justify-center mt-6">
+                    <motion.div
+                        className={`${pixelify.className} text-white/60 text-lg flex items-center gap-3`}
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                    >
+                        <span className="text-white text-2xl">{String(index + 1).padStart(2, '0')}</span>
+                        <span className="w-12 h-px bg-white/30" />
+                        <span>{String(projectsdata.length).padStart(2, '0')}</span>
+                    </motion.div>
+                </div>
             </div>
 
+            {/* Next Arrow - Desktop */}
             <motion.button
                 onClick={next}
-                className="hidden md:block ml-10 relative"
-                aria-label="Previous project"
+                className="hidden lg:block ml-10 relative"
+                aria-label="Next project"
                 type="button"
-                animate={{ y: [0, -8, 0]}}
+                animate={{ y: [0, -8, 0] }}
                 transition={{
                     duration: 2.5,
                     repeat: Infinity,
                     ease: "easeInOut",
                 }}
-                whileHover={{ y: 0}}
+                whileHover={{ y: 0, scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
             >
                 <Image
                     src="/arrow.png"
                     alt="Arrow Button"
                     width={130}
                     height={130}
-                    className="transition-all hover:scale-120"
+                    className="transition-all opacity-80 hover:opacity-100"
                 />
             </motion.button>
         </section>

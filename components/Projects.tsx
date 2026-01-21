@@ -129,7 +129,7 @@ export default function Projects() {
                                     onClick={() => {show(); setTimeout(hide,800)}}
                                     className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:scale-103 border-3 bg-blue-600 p-7 rounded-3xl md:rounded-full">
                                     <div className={`${pixelify.className} relative grid grid-cols-1 text-white justify-center uppercase`}>
-                                        <h1 className="text-4xl max-w-xs md:pl- md:text-right pointer-events-none">{project.title}</h1>
+                                        <h1 className="text-4xl max-w-s md:text-right pointer-events-none">{project.title}</h1>
                                         <div className="md:text-right pointer-events-none font-bold opacity-60 md:hidden lg:block">{project.subtitle}</div>
                                     </div>
                                     <div className="relative w-[200px] h-[200px] pointer-events-none">

@@ -97,13 +97,13 @@ export default function Bluboy() {
                             className="flex justify-center items-center w-auto h-auto z-10"
                             onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
                         >
-                            <MagneticButton icon={<ChevronDown className="md:hidden text-white z-50" />} parameter="w-15 h-15 md:w-40 md:h-15 bg-blue-600/50 md:bg-blue-500/0 hover:bg-blue-600/50 z-20" text="Read More" />
+                            <MagneticButton icon={<ChevronDown className="md:hidden text-white z-50" />} parameter="w-15 h-15 md:w-40 md:h-15 bg-blue-600/50 md:bg-blue-800/0 hover:bg-blue-600/50 z-20" text="Read More" />
                         </button>
                         <button
                             className="flex justify-center items-center w-auto h-auto z-10"
                             onClick={() => setOpen(true)}
                         >
-                            <MagneticButton icon={<Video className="md:hidden text-white z-50" />} parameter="w-15 h-15 md:w-50 md:h-15 bg-blue-600/50 md:bg-blue-500/0 hover:bg-blue-600/50 z-20" text="Watch Video" />
+                            <MagneticButton icon={<Video className="md:hidden text-white z-50" />} parameter="w-15 h-15 md:w-50 md:h-15 bg-blue-600/50 md:bg-blue-800/0 hover:bg-blue-600/50 z-20" text="Watch Video" />
                         </button>
 
                         {open && (
@@ -148,9 +148,9 @@ export default function Bluboy() {
 
                         <motion.div variants={fadeInUp}>
                             <DragScroll className="flex gap-3 md:gap-[1vw] relative w-full bg-white/10 p-3 md:p-[1vw] rounded-lg">
-                                <Image src="/projects/bluboyspin/fit1.jpg" alt="Reference Print Image 1" className="rounded-md pointer-events-none h-48 md:h-64 w-auto" width={500} height={500} />
-                                <Image src="/projects/bluboyspin/fit2.jpg" alt="Reference Print Image 2" className="rounded-md pointer-events-none h-48 md:h-64 w-auto" width={500} height={500} />
-                                <Image src="/projects/bluboyspin/fit3.jpg" alt="Reference Print Image 3" className="rounded-md pointer-events-none h-48 md:h-64 w-auto" width={500} height={500} />
+                                <Image src="/projects/bluboyspin/fit1.jpg" alt="Reference Print Image 1" className="rounded-md pointer-events-none h-80 md:h-200 w-auto" width={800} height={800} />
+                                <Image src="/projects/bluboyspin/fit2.jpg" alt="Reference Print Image 2" className="rounded-md pointer-events-none h-80 md:h-200 w-auto" width={800} height={800} />
+                                <Image src="/projects/bluboyspin/fit3.jpg" alt="Reference Print Image 3" className="rounded-md pointer-events-none h-80 md:h-200 w-auto" width={800} height={800} />
                             </DragScroll>
                             <div className={`${roboto.className} text-white/40 text-center mt-2 italic text-sm md:text-base`}>
                                 {`"bluboy" art direction reference - image credit: @bluboy on instagram`}
@@ -167,9 +167,9 @@ export default function Bluboy() {
 
                         <motion.div variants={fadeInUp}>
                             <DragScroll className="flex gap-3 md:gap-[1vw] relative w-full bg-white/10 p-3 md:p-[1vw] rounded-lg">
-                                <Image src="/projects/bluboyspin/char1.jpg" alt="Example Art Direction Image 1" className="rounded-md pointer-events-none h-48 md:h-64 w-auto" width={500} height={500} />
-                                <Image src="/projects/bluboyspin/char2.jpg" alt="Example Art Direction Image 2" className="rounded-md pointer-events-none h-48 md:h-64 w-auto" width={500} height={500} />
-                                <Image src="/projects/bluboyspin/char3.jpg" alt="Example Art Direction Image 3" className="rounded-md pointer-events-none h-48 md:h-64 w-auto" width={500} height={500} />
+                                <Image src="/projects/bluboyspin/char1.jpg" alt="Example Art Direction Image 1" className="rounded-md pointer-events-none h-80 md:h-200 w-auto" width={800} height={800} />
+                                <Image src="/projects/bluboyspin/char2.jpg" alt="Example Art Direction Image 2" className="rounded-md pointer-events-none h-80 md:h-200 w-auto" width={800} height={800} />
+                                <Image src="/projects/bluboyspin/char3.jpg" alt="Example Art Direction Image 3" className="rounded-md pointer-events-none h-80 md:h-200 w-auto" width={800} height={800} />
                             </DragScroll>
                             <div className={`${roboto.className} text-white/40 text-center mt-2 italic text-sm md:text-base`}>
                                 character visual direction reference - image credit: @bluboy on instagram

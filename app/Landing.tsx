@@ -13,28 +13,6 @@ import { AboutButton } from "@/components/MagneticButton";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-// Animation variants
-const fadeInUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1
-    }
-  }
-};
-
 // Animated section wrapper
 function AnimatedSection({ children, className = "", delay = 0 }: {
   children: React.ReactNode;
@@ -68,7 +46,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-blue-500 overflow-hidden"
+        className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-blue-500"
       >
         {/* Role badge - Desktop */}
         <motion.div
@@ -117,7 +95,7 @@ export default function Landing() {
         </motion.span>
 
         {/* Splash Video - Desktop */}
-        <div key={pathname} className="absolute hidden md:block bottom-0 inset-0 z-20 translate-y-2/9">
+        <div key={pathname} className="absolute hidden md:block bottom-0 inset-0 z-50 translate-y-2/9">
           <MainVideo webmSrc="/splashvideo.webm" mp4Src="/safarisplash.mp4" />
         </div>
 

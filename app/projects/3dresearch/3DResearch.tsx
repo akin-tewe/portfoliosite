@@ -293,7 +293,7 @@ export default function D3Project() {
                                 <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
                                     freedom vs stability preference
                                 </h3>
-                                <VerticalBarChart
+                                <HorizontalBarChart
                                     data={researchChartData.freedomStability}
                                     showLabels={true}
                                 />
@@ -348,7 +348,7 @@ export default function D3Project() {
                                 <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
                                     creative labor hierarchy (concern level %)
                                 </h3>
-                                <VerticalBarChart
+                                <HorizontalBarChart
                                     data={researchChartData.maslowCreative}
                                     showLabels={true}
                                 />

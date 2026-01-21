@@ -102,7 +102,7 @@ export default function ExtraProjects() {
                 className="flex justify-center mt-8"
                 variants={itemVariants}
             >
-                <Link href="/#projects" onClick={() => { show(); setTimeout(hide, 800) }}>
+                <Link href="/#projects">
                     <motion.button
                         className={`${pixelify.className} text-white/40 hover:text-white text-sm uppercase tracking-wider flex items-center gap-2 transition-colors`}
                         whileHover={{ y: -2 }}

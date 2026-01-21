@@ -156,14 +156,14 @@ export default function AlbumCover() {
                                 <Image
                                     src="/projects/albumcover/red.jpg"
                                     alt="Red Chain Reference Image"
-                                    className="rounded-md pointer-events-none h-48 md:h-64 w-auto"
+                                    className="rounded-md pointer-events-none h-100 md:h-200 w-auto"
                                     width={300}
                                     height={700}
                                 />
                                 <Image
                                     src="/projects/albumcover/latto.webp"
                                     alt="Latto Chain Reference Image"
-                                    className="rounded-md pointer-events-none object-cover h-48 md:h-64 w-auto"
+                                    className="rounded-md pointer-events-none object-cover h-100 md:h-200 w-auto"
                                     width={600}
                                     height={400}
                                 />
@@ -198,10 +198,10 @@ export default function AlbumCover() {
 
                         <motion.div variants={fadeInUp}>
                             <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                Scale and placement were the two factors that provided the most friction.
+                                {`Scale and placement were the two factors that provided the most friction.
                                 Everything needed to be set perfectly. Nearly a dozen iterations were produced in the tight timeframe, moving pieces sometimes only pixels apart
                                 between each until harmony was established. These constant revisions helped to better understand both my vision and the client's, and eventually
-                                align them as one.
+                                align them as one.`}
                             </p>
                         </motion.div>
                     </AnimatedSection>

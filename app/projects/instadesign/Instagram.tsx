@@ -255,15 +255,15 @@ export default function Instagram() {
                                     additional user insights
                                 </h3>
                                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                                    <VerticalBarChart
+                                    <HorizontalBarChart
                                         data={chartData.useFrequency}
                                         title="Daily Engagement"
                                     />
-                                    <VerticalBarChart
+                                    <HorizontalBarChart
                                         data={chartData.webInteraction}
                                         title="Web Interaction Level"
                                     />
-                                    <VerticalBarChart
+                                    <HorizontalBarChart
                                         data={chartData.webMessaging}
                                         title="Messaging Ease"
                                     />
@@ -477,7 +477,7 @@ export default function Instagram() {
                             />
                         </motion.div>
                         {/* Link to GitHub*/}
-                        <motion.div variants={fadeInUp}>
+                        <motion.div variants={fadeInUp} className="hidden">
                             <Link
                                 target="_blank"
                                 href="https://github.com/akin-tewe/akintewe-igconcept"

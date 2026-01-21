@@ -54,7 +54,7 @@ export default function Projects() {
     const SWIPE_DIST = 60;
     const SWIPE_VELOCITY = 400;
 
-    const handleDragEnd = (_: PanInfo, info: { offset: { x: number }, velocity: { x: number } }) => {
+    const handleDragEnd = (_: any, info: { offset: { x: number }, velocity: { x: number } }) => {
         const { x } = info.offset;
         const vx = info.velocity.x;
 

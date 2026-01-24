@@ -145,7 +145,7 @@ export default function Instagram() {
                             A simple question: what are people trying to do when they access
                             Instagram via desktop and where does the platform fail them?
                             <span className="block mt-4 text-white/50 text-sm md:text-base italic">
-                                ( No AI was used at any point in this project lifespan. )
+                                ( All code for this project was written from scratch by me. )
                             </span>
                         </motion.span>
                     </div>

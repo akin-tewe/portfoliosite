@@ -37,7 +37,7 @@ export default function Projects() {
         enter: (dir: number) => ({
             x: dir > 0 ? 100 : -100,
             opacity: 0,
-            scale: 0.95,
+            scale: 1,
         }),
         center: {
             x: 0,
@@ -47,7 +47,7 @@ export default function Projects() {
         exit: (dir: number) => ({
             x: dir > 0 ? -100 : 100,
             opacity: 0,
-            scale: 0.95,
+            scale: 1,
         }),
     }
 
@@ -135,7 +135,7 @@ export default function Projects() {
                                     <div className="relative w-[200px] h-[200px] pointer-events-none">
                                         {project.image}
                                     </div>
-                                    <div className={`text-white max-w-xs text-xl justify-self-center ${roboto.className} font-light pr-9 hidden md:block`}>
+                                    <div className={`text-white max-w-xs text-xl justify-self-center pointer-events-none ${roboto.className} font-light pr-9 hidden md:block`}>
                                         <p>{project.body}</p>
                                     </div>
                                 </button>

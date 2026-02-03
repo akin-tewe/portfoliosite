@@ -12,7 +12,7 @@ const projectsdata = [
         title: siftytext,
         subtitle: siftytext2,
         body: `A lightweight project tracking tool for freelancers and small studios. Leverages Claude AI for development and back end support.`,
-        image: <Image src="/placeholder.png" alt="sifty app preview" width={300} height={300} className="w-full h-auto" />,
+        image: <TransparentVideo mp4Src="/projects/sifty/siftyspinner.mp4"/>,
         link: "/projects/sifty",
     },
     {

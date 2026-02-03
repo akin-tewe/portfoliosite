@@ -1,9 +1,20 @@
 import TransparentVideo from "@/components/SplashVideo"
+import Image from "next/image"
 
+const siftytext = <div><span>sifty </span><span className="text-green-400">APP</span></div>
 const igtext = <div><span>Instagram Web App Redesign </span><span className ="text-green-400">CONCEPT</span></div>
 const trutext = <div><div className= "text-green-500">Commercial Work</div><div>Research + Animation</div></div>
+const siftytext2 = <div><div>UI + UX DESIGN</div><div className= "text-yellow-400">Built with CLaude</div><div>PRODUCTION READY</div></div>
 
 const projectsdata = [
+    {
+        id: 0,
+        title: siftytext,
+        subtitle: siftytext2,
+        body: `A lightweight project tracking tool for freelancers and small studios. Leverages Claude AI for development and back end support.`,
+        image: <Image src="/placeholder.png" alt="sifty app preview" width={300} height={300} className="w-full h-auto" />,
+        link: "/projects/sifty",
+    },
     {
         id: 1,
         title: igtext,

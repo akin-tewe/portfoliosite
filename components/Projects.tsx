@@ -171,16 +171,23 @@ export default function Projects() {
                 {/* Project Counter - Desktop */}
             </section>
             <div className="hidden relative lg:flex justify-center w-full mt-3">
-                <motion.div
-                    className={`${pixelify.className} text-white/60 text-lg flex items-center gap-3`}
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                >
-                    <span className="text-white text-2xl">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="w-5 h-px bg-white/30" />
-                    <span>{String(projectsdata.length).padStart(2, '0')}</span>
-                </motion.div>
+                <div className={`${pixelify.className} text-lg flex items-center gap-2`}>
+                    {["Sifty", "Instagram Concept", "Research Study", "True Religion"].map((name, i) => (
+                        <div key={name} className="flex items-center gap-2">
+                            <motion.button
+                                onClick={() => {
+                                    setDirection(i > index ? 1 : -1);
+                                    setIndex(i);
+                                }}
+                                className={`transition-all duration-300 ${i === index ? 'text-white' : 'text-white/40 hover:text-white/60'}`}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                {name}
+                            </motion.button>
+                            {i < 3 && <span className="text-white/20">—</span>}
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     )

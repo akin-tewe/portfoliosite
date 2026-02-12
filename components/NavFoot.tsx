@@ -21,25 +21,33 @@ const menuVariants = {
         x: "100%",
         transition: {
             type: "spring" as const,
-            stiffness: 400,
-            damping: 40
+            stiffness: 500,
+            damping: 35
         }
     },
     open: {
         x: 0,
         transition: {
             type: "spring" as const,
-            stiffness: 400,
-            damping: 40,
-            staggerChildren: 0.07,
-            delayChildren: 0.1
+            stiffness: 500,
+            damping: 35,
+            staggerChildren: 0.05,
+            delayChildren: 0.05
         }
     }
 };
 
 const itemVariants = {
-    closed: { x: 50, opacity: 0 },
-    open: { x: 0, opacity: 1 }
+    closed: {
+        x: 30,
+        opacity: 0,
+        transition: { duration: 0.2 }
+    },
+    open: {
+        x: 0,
+        opacity: 1,
+        transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }
+    }
 };
 
 const overlayVariants = {
@@ -106,7 +114,7 @@ export default function NavBar() {
                 {open && (
                     <motion.div
                         onClick={() => setOpen(false)}
-                        className="fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm md:hidden"
+                        className="fixed inset-0 z-[90] bg-black/50 md:hidden"
                         variants={overlayVariants}
                         initial="closed"
                         animate="open"
@@ -115,60 +123,68 @@ export default function NavBar() {
                 )}
             </AnimatePresence>
 
-            {/* Mobile Menu Sidebar */}
+            {/* Mobile Menu Card */}
             <AnimatePresence>
                 {open && (
-                    <motion.aside
-                        className={`${pixelify.className} uppercase fixed top-0 right-0 z-[100] h-dvh w-[85vw] max-w-sm bg-black/95 backdrop-blur-lg shadow-2xl md:hidden text-3xl text-white`}
-                        variants={menuVariants}
-                        initial="closed"
-                        animate="open"
-                        exit="closed"
+                    <motion.div
+                        className="fixed top-24 right-4 z-[100] md:hidden"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2, ease: "easeOut" }}
                     >
-                        {/* Close Button */}
-                        <div className="flex items-center justify-between p-6 border-b border-white/10">
-                            <motion.span
-                                className="font-medium text-xl text-white/70"
-                                variants={itemVariants}
+                        {/* Card Container */}
+                        <div className="relative w-[70vw] max-w-[260px] rounded-2xl shadow-xl bg-[#1a1a1a]/95 border border-white/10">
+
+                            {/* Content */}
+                            <motion.div
+                                className="relative py-3"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.05, duration: 0.15 }}
                             >
-                                Menu
-                            </motion.span>
-                            <motion.button
-                                aria-label="Close menu"
-                                onClick={() => setOpen(false)}
-                                className="p-2 hover:bg-white/10 rounded-full transition-colors"
-                                whileTap={{ scale: 0.9 }}
-                            >
-                                <X size={24} />
-                            </motion.button>
+
+                                {/* Menu Items */}
+                                <nav className={`${pixelify.className} uppercase`}>
+                                    {menuItems.map((item, index) => (
+                                        <motion.div
+                                            key={item.href}
+                                            initial={{ opacity: 0, x: 15 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.05 + index * 0.04 }}
+                                        >
+                                            <Link
+                                                href={item.href}
+                                                onClick={handleNavClick}
+                                                className="group flex items-center justify-between px-5 py-4 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-150"
+                                            >
+                                                <span className="text-xl">{item.label}</span>
+                                                <span className="text-white/30 group-hover:text-blue-400 text-sm transition-colors duration-150">
+                                                    0{index + 1}
+                                                </span>
+                                            </Link>
+                                        </motion.div>
+                                    ))}
+                                </nav>
+
+                                {/* Divider */}
+                                <div className="mx-5 my-2 h-px bg-white/10" />
+
+                                {/* Close Button */}
+                                <motion.button
+                                    aria-label="Close menu"
+                                    onClick={() => setOpen(false)}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.2 }}
+                                    className={`${pixelify.className} w-full px-5 py-3 text-white/40 hover:text-white/70 text-sm uppercase tracking-wider text-left hover:bg-white/5 transition-all duration-150`}
+                                >
+                                    Close
+                                </motion.button>
+
+                            </motion.div>
                         </div>
-
-                        {/* Menu Items */}
-                        <nav className="p-6 flex flex-col">
-                            {menuItems.map((item, index) => (
-                                <motion.div key={item.href} variants={itemVariants}>
-                                    <Link
-                                        href={item.href}
-                                        onClick={handleNavClick}
-                                        className="block py-5 border-b border-white/10 hover:text-blue-400 hover:pl-4 transition-all duration-300"
-                                    >
-                                        <span className="text-white/40 text-sm mr-4">0{index + 1}</span>
-                                        {item.label}
-                                    </Link>
-                                </motion.div>
-                            ))}
-                        </nav>
-
-                        {/* Footer */}
-                        <motion.div
-                            className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/10"
-                            variants={itemVariants}
-                        >
-                            <p className="text-white/40 text-sm normal-case">
-                                UX Engineer / Product Designer
-                            </p>
-                        </motion.div>
-                    </motion.aside>
+                    </motion.div>
                 )}
             </AnimatePresence>
 

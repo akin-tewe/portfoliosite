@@ -8,6 +8,7 @@ import TransparentVideo from "@/components/SplashVideo";
 // Carousel items - add new items here
 const carouselItems = [
     { type: "video" as const, src: "/about-me-carousel/truvideo.mp4" },
+    { type: "video" as const, src: "/about-me-carousel/crystal-collection.mp4" },
     { type: "image" as const, src: "/about-me-carousel/finalcover.jpg" },
     { type: "video" as const, src: "/about-me-carousel/ragelowq.mp4" },
 ];

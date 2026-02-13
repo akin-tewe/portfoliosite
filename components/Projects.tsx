@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { pixelify, roboto } from "@/app/ui/fonts";
 import projectsdata from "@/data/ProjectThumbData"
-import { AnimatePresence, motion, PanInfo } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link"
 import { useLoader } from "./LoaderContext";
 
@@ -11,15 +11,6 @@ export default function Projects() {
     const { show, hide } = useLoader();
     const [index, setIndex] = useState(0);
     const [direction, setDirection] = useState(0);
-    const [isMobile, setIsMobile] = useState(false);
-
-    // Detect mobile device
-    useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
 
     const next = () => {
         setDirection(1);
@@ -54,34 +45,13 @@ export default function Projects() {
     const SWIPE_DIST = 60;
     const SWIPE_VELOCITY = 400;
 
-    const handleDragEnd = (_: any, info: { offset: { x: number }, velocity: { x: number } }) => {
+    const handleDragEnd = (_: unknown, info: { offset: { x: number }, velocity: { x: number } }) => {
         const { x } = info.offset;
         const vx = info.velocity.x;
 
         if (x < -SWIPE_DIST || vx < -SWIPE_VELOCITY) next();
         else if (x > SWIPE_DIST || vx > SWIPE_VELOCITY) prev();
     };
-
-    // Pagination dots
-    const PaginationDots = () => (
-        <div className="flex justify-center gap-2 mt-6 md:hidden">
-            {projectsdata.map((_, i) => (
-                <motion.button
-                    key={i}
-                    onClick={() => {
-                        setDirection(i > index ? 1 : -1);
-                        setIndex(i);
-                    }}
-                    className={`rounded-full transition-all duration-300 ${i === index
-                        ? 'w-8 h-2 bg-white'
-                        : 'w-2 h-2 bg-white/30 hover:bg-white/50'
-                        }`}
-                    whileTap={{ scale: 0.9 }}
-                    aria-label={`Go to project ${i + 1}`}
-                />
-            ))}
-        </div>
-    );
 
     return (
         <div className="w-full">
@@ -145,7 +115,23 @@ export default function Projects() {
                 </div>
 
                     {/* Pagination Dots - Mobile */}
-                    <PaginationDots />
+                    <div className="flex justify-center gap-2 mt-6 md:hidden">
+                        {projectsdata.map((_, i) => (
+                            <motion.button
+                                key={i}
+                                onClick={() => {
+                                    setDirection(i > index ? 1 : -1);
+                                    setIndex(i);
+                                }}
+                                className={`rounded-full transition-all duration-300 ${i === index
+                                    ? 'w-8 h-2 bg-white'
+                                    : 'w-2 h-2 bg-white/30 hover:bg-white/50'
+                                    }`}
+                                whileTap={{ scale: 0.9 }}
+                                aria-label={`Go to project ${i + 1}`}
+                            />
+                        ))}
+                    </div>
 
                 <motion.button
                     onClick={next}

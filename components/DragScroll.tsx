@@ -29,7 +29,7 @@ export default function DragScroll({ children, className = "" }: DragScrollProps
     el.scrollLeft = state.current.startLeft - dx;
   };
 
-  const end = (e: React.PointerEvent<HTMLDivElement>) => {
+  const end = () => {
     const el = ref.current;
     if (!el) return;
 

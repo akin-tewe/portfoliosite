@@ -1,5 +1,4 @@
 import TransparentVideo from "@/components/SplashVideo"
-import Image from "next/image"
 
 const siftytext = <div><span>sifty </span><span className="text-green-400">APP</span></div>
 const igtext = <div><span>Instagram Web App Redesign </span><span className ="text-green-400">CONCEPT</span></div>

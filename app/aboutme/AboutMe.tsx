@@ -1,37 +1,427 @@
+"use client";
 import Image from "next/image";
-import { roboto } from "../ui/fonts";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { pixelify, roboto } from "../ui/fonts";
 
-type Props = {
-    word: string,
+// Carousel items - add new items here
+const carouselItems = [
+    { type: "video" as const, src: "/about-me-carousel/truvideo.mp4" },
+    { type: "image" as const, src: "/about-me-carousel/finalcover.jpg" },
+    { type: "video" as const, src: "/about-me-carousel/ragelowq.mp4" },
+];
+
+const fadeInUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+    }
+};
+
+const fadeInLeft = {
+    hidden: { opacity: 0, x: -40 },
+    visible: {
+        opacity: 1,
+        x: 0,
+        transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+    }
+};
+
+const fadeInRight = {
+    hidden: { opacity: 0, x: 40 },
+    visible: {
+        opacity: 1,
+        x: 0,
+        transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] as const }
+    }
+};
+
+const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.1
+        }
+    }
+};
+
+const skillItem = {
+    hidden: { opacity: 0, y: 10 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.4 }
+    }
+};
+
+// Animated section wrapper with useInView
+function AnimatedSection({
+    children,
+    className = ""
+}: {
+    children: React.ReactNode;
+    className?: string
+}) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className={className}
+        >
+            {children}
+        </motion.div>
+    );
 }
 
-const ListText = ({word}: Props) => { return(<div className={`${roboto.className} text-gray-400 font-light`}>{word}</div>) }
+// Image placeholder component
+function ImagePlaceholder({ label }: { label: string }) {
+    return (
+        <div className="w-full aspect-square bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200">
+            <span className={`${roboto.className} text-gray-400 text-sm italic`}>{label}</span>
+        </div>
+    );
+}
+
+// Skills list component
+function SkillsList({
+    title,
+    skills
+}: {
+    title: string;
+    skills: string[]
+}) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+            className="flex flex-col gap-4"
+        >
+            <motion.h3
+                variants={skillItem}
+                className={`${pixelify.className} text-black text-base md:text-lg tracking-wider`}
+            >
+                {title}
+            </motion.h3>
+            <ul className="flex flex-col gap-2">
+                {skills.map((skill, index) => (
+                    <motion.li
+                        key={index}
+                        variants={skillItem}
+                        className={`${roboto.className} text-gray-600 font-light text-base`}
+                    >
+                        {skill}
+                    </motion.li>
+                ))}
+            </ul>
+        </motion.div>
+    );
+}
+
+// Auto-scrolling work carousel
+function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string }[] }) {
+    const carouselRef = useRef<HTMLDivElement>(null)
+    const [isHolding, setIsHolding] = useState(false)
+    const [isDragging, setIsDragging] = useState(false)
+    const [startX, setStartX] = useState(0)
+    const [scrollLeft, setScrollLeft] = useState(0)
+    const autoScrollRef = useRef<NodeJS.Timeout | null>(null)
+    const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    // Auto-scroll logic
+    useEffect(() => {
+        const carousel = carouselRef.current
+        if (!carousel) return
+
+        const scroll = () => {
+            if (!isHolding && !isDragging && carousel) {
+                carousel.scrollLeft += 1
+
+                // Loop back to start when reaching end
+                if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth) {
+                    carousel.scrollLeft = 0
+                }
+            }
+        }
+
+        autoScrollRef.current = setInterval(scroll, 30)
+
+        return () => {
+            if (autoScrollRef.current) clearInterval(autoScrollRef.current)
+        }
+    }, [isHolding, isDragging])
+
+    // Resume auto-scroll after inactivity
+    const scheduleResume = () => {
+        if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
+        resumeTimeoutRef.current = setTimeout(() => {
+            setIsHolding(false)
+            setIsDragging(false)
+        }, 2500)
+    }
+
+    // Mouse/touch handlers
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsHolding(true)
+        setIsDragging(true)
+        setStartX(e.pageX - (carouselRef.current?.offsetLeft || 0))
+        setScrollLeft(carouselRef.current?.scrollLeft || 0)
+    }
+
+    const handleMouseUp = () => {
+        setIsDragging(false)
+        scheduleResume()
+    }
+
+    const handleMouseLeave = () => {
+        setIsDragging(false)
+        scheduleResume()
+    }
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return
+        e.preventDefault()
+        const x = e.pageX - (carouselRef.current?.offsetLeft || 0)
+        const walk = (x - startX) * 2
+        if (carouselRef.current) {
+            carouselRef.current.scrollLeft = scrollLeft - walk
+        }
+    }
+
+    // Touch handlers
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setIsHolding(true)
+        setIsDragging(true)
+        setStartX(e.touches[0].pageX - (carouselRef.current?.offsetLeft || 0))
+        setScrollLeft(carouselRef.current?.scrollLeft || 0)
+    }
+
+    const handleTouchEnd = () => {
+        setIsDragging(false)
+        scheduleResume()
+    }
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (!isDragging) return
+        const x = e.touches[0].pageX - (carouselRef.current?.offsetLeft || 0)
+        const walk = (x - startX) * 2
+        if (carouselRef.current) {
+            carouselRef.current.scrollLeft = scrollLeft - walk
+        }
+    }
+
+    return (
+        <div className="relative w-full">
+            {/* Left fade */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-blue-500 to-transparent z-10 pointer-events-none" />
+
+            {/* Right fade */}
+            <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-blue-500 to-transparent z-10 pointer-events-none" />
+
+            {/* Carousel */}
+            <div
+                ref={carouselRef}
+                className="flex gap-4 overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+                onMouseMove={handleMouseMove}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onTouchMove={handleTouchMove}
+            >
+                {/* Duplicate items for seamless loop */}
+                {[...items, ...items].map((item, index) => (
+                    <div
+                        key={index}
+                        className="flex-shrink-0 w-56 md:w-92 aspect-square rounded-2xl overflow-hidden pointer-events-none select-none"
+                    >
+                        {item.type === "video" ? (
+                            <video
+                                src={item.src}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <img
+                                src={item.src}
+                                alt=""
+                                draggable={false}
+                                className="w-full h-full object-cover"
+                            />
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
 
 export default function AboutMe() {
+    const heroRef = useRef(null);
+    const isHeroInView = useInView(heroRef, { once: true });
+
     return (
-        <main>
-            <section className="bg-white md:pt-40 pt-20 pb-10 md:pb-20">
-                <h1 className={`${roboto.className} font-light text-black text-5xl md:text-6xl px-[10vw] md:max-w-9xl`}>
+        <main className="bg-white min-h-screen">
+
+            {/* Hero Headline */}
+            <section
+                ref={heroRef}
+                className="pt-28 md:pt-40 pb-16 md:pb-24 px-6 md:px-[10vw]"
+            >
+                <motion.h1
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const }}
+                    className={`${roboto.className} font-light text-black text-4xl md:text-5xl lg:text-6xl max-w-5xl leading-tight`}
+                >
                     Driven by a child-like sense of curiosity and a deep attention to detail.
-                </h1>
-                <div className="mx-auto w-[80vw] border-black/20 border-t-1 mt-20 mb-10"></div>
-                <div className="flex flex-col px-11 md:flex md:flex-row md:px-[10vw] gap-10 w-full h-auto md:justify-between md:px-[10vw]">
-                    <div className="mt-10 text-black">
-                        <p className={`${roboto.className} font text-xl mt-5 md:max-w-md`}>{`With an educational
-                            background in Product Design from Georgia Institute of Technology, and practical experience in 3D Design and Web Development, I'm able to approach problems with a
-                            wide set of flexible tools. Each project is an opportunity for me to grow, iterate, and raise the quality standard`}.
-                        </p>
-                    </div>
-                    <div className=" flex mt-10 relative overflow-hidden bg-white/20 p-[1vw] rounded-sm">
-                        <Image
-                        src="/profilephoto.png"
-                        alt="Profile picture"
-                        width={500}
-                        height={500}
-                        />
-                    </div>
-                </div>
+                </motion.h1>
             </section>
+
+            {/* Divider */}
+            <div className="mx-6 md:mx-[10vw] border-t border-black/10"></div>
+
+            {/* Section 1: Intro - Text Left, Image Right */}
+            <section className="py-16 md:py-24 px-6 md:px-[10vw]">
+                <AnimatedSection className="flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24 justify-between">
+                    <motion.div
+                        variants={fadeInLeft}
+                        className="flex-1 md:max-w-lg"
+                    >
+                        <p className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed max-w-md`}>
+                            Hey! I'm Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
+                        </p>
+                        <p className={`${roboto.className} text-black/80 mt-8 font-light text-lg md:text-xl leading-relaxed max-w-md`}>
+                            As a designer who can also write code, I think about how things look and how they're actually built. Whether I'm wireframing in Figma,
+                            conducting user research, or building responsive interfaces with React and TypeScript, I can take a project from initial concept through to functional code.
+                        </p>
+                    </motion.div>
+                    <motion.div
+                        variants={fadeInRight}
+                        className="w-full md:w-[45%] lg:w-[35%]"
+                    >
+                        <div className="relative overflow-hidden rounded-2xl shadow-xl">
+                            <Image
+                                src="/profilephoto.png"
+                                alt="Akin Tewe"
+                                width={700}
+                                height={700}
+                                className="w-full h-auto"
+                            />
+                        </div>
+                    </motion.div>
+                </AnimatedSection>
+            </section>
+
+            {/* Section 2: Experience - Carousel Left, Text Right */}
+            <section className="py-16 md:py-30 px-6 md:px-[10vw] bg-blue-500">
+                <AnimatedSection className="flex flex-col md:flex-row-reverse gap-10 md:gap-16 lg:gap-24 items-center justify-between">
+                    <motion.div
+                        variants={fadeInRight}
+                        className="flex-1 md:max-w-lg"
+                    >
+                        <p className={`${roboto.className} text-white/90 font-light text-lg md:text-xl leading-relaxed`}>
+                            Throughout my time freelancing as a Visual Designer, I've worked with large brands like True Religion and Highground, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
+                        </p>
+                    </motion.div>
+                    <motion.div
+                        variants={fadeInLeft}
+                        className="w-full md:w-[45%] md:max-w-3xl flex-shrink-0"
+                    >
+                        <WorkCarousel items={carouselItems} />
+                    </motion.div>
+                </AnimatedSection>
+            </section>
+
+            {/* Section 3: Skills - Lists Left, Image Right */}
+            <section className="py-16 md:py-24 px-6 md:px-[10vw]">
+                <AnimatedSection className="flex flex-col md:flex-row gap-12 md:gap-16 lg:gap-24 items-start">
+                    <motion.div
+                        variants={fadeInLeft}
+                        className="flex-1"
+                    >
+                        <motion.h2
+                            variants={fadeInUp}
+                            className={`${pixelify.className} text-black text-2xl md:text-3xl mb-10`}
+                        >
+                            SKILLS & TOOLS
+                        </motion.h2>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8">
+                            <SkillsList
+                                title="DESIGN"
+                                skills={[
+                                    "UI/UX Design",
+                                    "Responsive Design",
+                                    "User Research",
+                                    "Wireframing",
+                                    "Prototyping",
+                                    "Design Systems",
+                                    "Visual Hierarchy",
+                                    "Generative AI Workflows"
+                                ]}
+                            />
+                            <SkillsList
+                                title="LANGUAGES"
+                                skills={[
+                                    "JavaScript",
+                                    "TypeScript",
+                                    "HTML",
+                                    "CSS"
+                                ]}
+                            />
+                            <SkillsList
+                                title="FRAMEWORKS"
+                                skills={[
+                                    "React",
+                                    "Next.js",
+                                    "Tailwind CSS",
+                                    "Framer Motion",
+                                    "Git"
+                                ]}
+                            />
+                            <SkillsList
+                                title="SOFTWARE"
+                                skills={[
+                                    "Figma",
+                                    "Adobe Photoshop",
+                                    "Adobe Illustrator",
+                                    "AutoCAD",
+                                    "Solidworks"
+                                ]}
+                            />
+                        </div>
+                    </motion.div>
+
+                    <motion.div
+                        variants={fadeInRight}
+                        className="w-full md:w-64 lg:w-80 flex-shrink-0"
+                    >
+                        <ImagePlaceholder label="[Image 3]" />
+                    </motion.div>
+                </AnimatedSection>
+            </section>
+
+            {/* Bottom Padding */}
+            <div className="h-20 md:h-32"></div>
+
         </main>
-    )
+    );
 }

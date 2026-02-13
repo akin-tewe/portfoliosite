@@ -21,11 +21,6 @@ const fadeInUp = {
     visible: { opacity: 1, y: 0 }
 };
 
-const fadeIn = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 }
-};
-
 const staggerContainer = {
     hidden: { opacity: 0 },
     visible: {

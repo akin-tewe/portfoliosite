@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { pixelify, roboto } from "../ui/fonts";
+import TransparentVideo from "@/components/SplashVideo";
 
 // Carousel items - add new items here
 const carouselItems = [
@@ -78,15 +79,6 @@ function AnimatedSection({
         >
             {children}
         </motion.div>
-    );
-}
-
-// Image placeholder component
-function ImagePlaceholder({ label }: { label: string }) {
-    return (
-        <div className="w-full aspect-square bg-gray-100 rounded-2xl flex items-center justify-center border border-gray-200">
-            <span className={`${roboto.className} text-gray-400 text-sm italic`}>{label}</span>
-        </div>
     );
 }
 
@@ -259,9 +251,11 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
                                 className="w-full h-full object-cover"
                             />
                         ) : (
-                            <img
+                            <Image
                                 src={item.src}
                                 alt=""
+                                width={400}
+                                height={400}
                                 draggable={false}
                                 className="w-full h-full object-cover"
                             />
@@ -306,10 +300,10 @@ export default function AboutMe() {
                         className="flex-1 md:max-w-lg"
                     >
                         <p className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed max-w-md`}>
-                            Hey! I'm Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
+                            Hey! I&apos;m Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
                         </p>
                         <p className={`${roboto.className} text-black/80 mt-8 font-light text-lg md:text-xl leading-relaxed max-w-md`}>
-                            As a designer who can also write code, I think about how things look and how they're actually built. Whether I'm wireframing in Figma,
+                            As a designer who can also write code, I think about how things look and how they&apos;re actually built. Whether I&apos;m wireframing in Figma,
                             conducting user research, or building responsive interfaces with React and TypeScript, I can take a project from initial concept through to functional code.
                         </p>
                     </motion.div>
@@ -338,7 +332,7 @@ export default function AboutMe() {
                         className="flex-1 md:max-w-lg"
                     >
                         <p className={`${roboto.className} text-white/90 font-light text-lg md:text-xl leading-relaxed`}>
-                            Throughout my time freelancing as a Visual Designer, I've worked with large brands like True Religion and Highground, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
+                            Throughout my time freelancing as a Visual Designer, I&apos;ve worked with large brands like True Religion and Highground, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
                         </p>
                     </motion.div>
                     <motion.div
@@ -412,15 +406,15 @@ export default function AboutMe() {
 
                     <motion.div
                         variants={fadeInRight}
-                        className="w-full md:w-64 lg:w-80 flex-shrink-0"
+                        className="relative w-full md:w-[500px] lg:w-[600px] flex-shrink-0 aspect-square"
                     >
-                        <ImagePlaceholder label="[Image 3]" />
+                        <TransparentVideo mp4Src="/aboutme-skills.mp4" />
                     </motion.div>
                 </AnimatedSection>
             </section>
 
             {/* Bottom Padding */}
-            <div className="h-20 md:h-32"></div>
+            <div className="h-2 md:h-4"></div>
 
         </main>
     );

@@ -201,7 +201,12 @@ export function DonutChart({
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
 
-  let cumulativePercentage = 0;
+  // Pre-calculate cumulative percentages
+  const cumulativePercentages = data.reduce<number[]>((acc, item, idx) => {
+    const prev = idx === 0 ? 0 : acc[idx - 1] + data[idx - 1].value / total;
+    acc.push(prev);
+    return acc;
+  }, []);
 
   return (
     <div ref={ref} className={`flex flex-col md:flex-row items-center gap-6 md:gap-10 ${className}`}>
@@ -235,8 +240,7 @@ export function DonutChart({
           {data.map((item, index) => {
             const percentage = item.value / total;
             const strokeDasharray = `${circumference * percentage} ${circumference}`;
-            const strokeDashoffset = -circumference * cumulativePercentage;
-            cumulativePercentage += percentage;
+            const strokeDashoffset = -circumference * cumulativePercentages[index];
 
             return (
               <motion.circle

@@ -51,9 +51,7 @@ export default function NavBar() {
     const { show, hide } = useLoader();
     const navbarRef = useRef<HTMLDivElement | null>(null);
     const [navSee, setNavSee] = useState(true);
-    const pathname = usePathname();
-    const isHome = pathname === "/";
-    const aboutMe = pathname === "/aboutme"
+    usePathname();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {

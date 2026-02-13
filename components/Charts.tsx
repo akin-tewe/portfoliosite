@@ -24,6 +24,7 @@ interface ChartProps {
   showLabels?: boolean;
   className?: string;
   maxValue?: number;
+  variant?: "dark" | "light";
 }
 
 // Horizontal Bar Chart Component
@@ -32,17 +33,25 @@ export function HorizontalBarChart({
   title,
   showLabels = true,
   className = "",
-  maxValue
+  maxValue,
+  variant = "light"
 }: ChartProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const max = maxValue || Math.max(...data.map(d => d.value));
 
+  const colors = {
+    title: variant === "light" ? "text-black/60" : "text-white/60",
+    label: variant === "light" ? "text-black/70" : "text-white/70",
+    value: variant === "light" ? "text-black/80" : "text-white/80",
+    trackBg: variant === "light" ? "bg-black/10" : "bg-white/10",
+  };
+
   return (
     <div ref={ref} className={`w-full ${className}`}>
       {title && (
         <motion.h3
-          className="text-white/60 text-sm md:text-base mb-4 font-light"
+          className={`${colors.title} text-sm md:text-base mb-4 font-light`}
           initial={{ opacity: 0, y: -10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
@@ -55,7 +64,7 @@ export function HorizontalBarChart({
           <div key={index} className="flex flex-col gap-1">
             {showLabels && (
               <motion.span
-                className="text-white/70 text-xs md:text-sm"
+                className={`${colors.label} text-xs md:text-sm`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.4, delay: index * 0.08 }}
@@ -63,7 +72,7 @@ export function HorizontalBarChart({
                 {item.label}
               </motion.span>
             )}
-            <div className="relative h-6 md:h-8 bg-white/10 rounded-sm overflow-hidden">
+            <div className={`relative h-6 md:h-8 ${colors.trackBg} rounded-sm overflow-hidden`}>
               <motion.div
                 className="absolute left-0 top-0 h-full rounded-sm"
                 style={{ backgroundColor: item.color || CHART_COLORS[index % CHART_COLORS.length] }}
@@ -76,7 +85,7 @@ export function HorizontalBarChart({
                 }}
               />
               <motion.span
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-white/80 text-xs md:text-sm font-medium"
+                className={`absolute right-2 top-1/2 -translate-y-1/2 ${colors.value} text-xs md:text-sm font-medium`}
                 initial={{ opacity: 0 }}
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ duration: 0.3, delay: index * 0.1 + 0.5 }}
@@ -97,17 +106,25 @@ export function VerticalBarChart({
   title,
   showLabels = true,
   className = "",
-  maxValue
+  maxValue,
+  variant = "light"
 }: ChartProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const max = maxValue || Math.max(...data.map(d => d.value));
 
+  const colors = {
+    title: variant === "light" ? "text-black/60" : "text-white/60",
+    value: variant === "light" ? "text-black/90" : "text-white/90",
+    label: variant === "light" ? "text-black/60" : "text-white/60",
+    trackBg: variant === "light" ? "bg-black/5" : "bg-white/5",
+  };
+
   return (
     <div ref={ref} className={`w-full ${className}`}>
       {title && (
         <motion.h3
-          className="text-white/60 text-sm md:text-base mb-4 font-light text-center"
+          className={`${colors.title} text-sm md:text-base mb-4 font-light text-center`}
           initial={{ opacity: 0, y: -10 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
@@ -124,7 +141,7 @@ export function VerticalBarChart({
             <div key={index} className="flex flex-col items-center gap-2 flex-1 min-w-0 max-w-24">
               {/* Value label above bar */}
               <motion.span
-                className="text-white/90 text-xs md:text-sm font-medium tabular-nums"
+                className={`${colors.value} text-xs md:text-sm font-medium tabular-nums`}
                 initial={{ opacity: 0, y: 10 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.4, delay: index * 0.1 + 0.6 }}
@@ -135,7 +152,7 @@ export function VerticalBarChart({
               {/* Bar container with background track */}
               <div className="relative w-full flex flex-col justify-end" style={{ height: '180px' }}>
                 {/* Background track */}
-                <div className="absolute inset-0 bg-white/5 rounded-md" />
+                <div className={`absolute inset-0 ${colors.trackBg} rounded-md`} />
 
                 {/* Animated bar */}
                 <motion.div
@@ -157,7 +174,7 @@ export function VerticalBarChart({
               {/* Label below bar */}
               {showLabels && (
                 <motion.span
-                  className="text-white/60 text-[10px] md:text-xs text-center leading-tight mt-1 min-h-[2rem] flex items-start justify-center"
+                  className={`${colors.label} text-[10px] md:text-xs text-center leading-tight mt-1 min-h-[2rem] flex items-start justify-center`}
                   initial={{ opacity: 0 }}
                   animate={isInView ? { opacity: 1 } : {}}
                   transition={{ duration: 0.4, delay: index * 0.08 + 0.3 }}
@@ -185,13 +202,15 @@ interface DonutChartProps {
   title?: string;
   size?: number;
   className?: string;
+  variant?: "dark" | "light";
 }
 
 export function DonutChart({
   data,
   title,
   size = 200,
-  className = ""
+  className = "",
+  variant = "light"
 }: DonutChartProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -200,6 +219,12 @@ export function DonutChart({
   const strokeWidth = size * 0.18;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
+
+  const colors = {
+    title: variant === "light" ? "text-black/60" : "text-white/60",
+    legend: variant === "light" ? "text-black/70" : "text-white/70",
+    trackStroke: variant === "light" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.1)",
+  };
 
   // Pre-calculate cumulative percentages
   const cumulativePercentages = data.reduce<number[]>((acc, item, idx) => {
@@ -213,7 +238,7 @@ export function DonutChart({
       <div className="relative" style={{ width: size, height: size }}>
         {title && (
           <motion.h3
-            className="absolute inset-0 flex items-center justify-center text-white/60 text-xs md:text-sm font-light text-center px-4"
+            className={`absolute inset-0 flex items-center justify-center ${colors.title} text-xs md:text-sm font-light text-center px-4`}
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.5, delay: 0.3 }}
@@ -233,7 +258,7 @@ export function DonutChart({
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="rgba(255,255,255,0.1)"
+            stroke={colors.trackStroke}
             strokeWidth={strokeWidth}
           />
           {/* Data segments */}
@@ -286,7 +311,7 @@ export function DonutChart({
               className="w-3 h-3 md:w-4 md:h-4 rounded-sm flex-shrink-0"
               style={{ backgroundColor: item.color || CHART_COLORS[index % CHART_COLORS.length] }}
             />
-            <span className="text-white/70 text-xs md:text-sm whitespace-nowrap">
+            <span className={`${colors.legend} text-xs md:text-sm whitespace-nowrap`}>
               {item.label} ({Math.round((item.value / total) * 100)}%)
             </span>
           </motion.div>
@@ -439,6 +464,7 @@ interface ComparisonChartProps {
   rightTitle: string;
   type: "horizontal" | "vertical";
   className?: string;
+  variant?: "dark" | "light";
 }
 
 export function ComparisonChart({
@@ -447,14 +473,15 @@ export function ComparisonChart({
   leftTitle,
   rightTitle,
   type,
-  className = ""
+  className = "",
+  variant = "light"
 }: ComparisonChartProps) {
   const ChartComponent = type === "horizontal" ? HorizontalBarChart : VerticalBarChart;
 
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 ${className}`}>
-      <ChartComponent data={leftData} title={leftTitle} />
-      <ChartComponent data={rightData} title={rightTitle} />
+      <ChartComponent data={leftData} title={leftTitle} variant={variant} />
+      <ChartComponent data={rightData} title={rightTitle} variant={variant} />
     </div>
   );
 }

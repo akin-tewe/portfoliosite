@@ -55,10 +55,34 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
     );
 }
 
-// Chart container with glass effect
-function ChartContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+// Grid overlay for dark sections
+function GridOverlay() {
+    return (
+        <div className="absolute inset-0 flex justify-center pointer-events-none">
+            <div className="flex w-full max-w-[1400px] h-full">
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
+            </div>
+        </div>
+    );
+}
+
+// Chart container - dark version
+function ChartContainerDark({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     return (
         <div className={`bg-white/5 backdrop-blur-sm p-4 md:p-6 rounded-lg border border-white/5 ${className}`}>
+            {children}
+        </div>
+    );
+}
+
+// Chart container - light version
+function ChartContainerLight({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+    return (
+        <div className={`bg-gray-50 p-4 md:p-6 rounded-lg border border-gray-200 ${className}`}>
             {children}
         </div>
     );
@@ -70,22 +94,14 @@ export default function Instagram() {
 
     return (
         <main className="overflow-x-hidden">
-            {/* Visible Grid Overlay */}
-            <div className="fixed inset-0 flex h-full w-full justify-center pointer-events-none z-0">
-                <div className="flex w-full max-w-[1400px] h-full">
-                    <div className="flex-1 border-l border-white/[0.07]"></div>
-                    <div className="flex-1 border-l border-white/[0.07]"></div>
-                    <div className="flex-1 border-l border-white/[0.07]"></div>
-                    <div className="flex-1 border-l border-white/[0.07]"></div>
-                    <div className="flex-1 border-l border-r border-white/[0.07]"></div>
-                </div>
-            </div>
-
-            {/* Hero Section */}
+            {/* ============================================ */}
+            {/* DARK SECTION: Hero */}
+            {/* ============================================ */}
             <section
                 ref={heroRef}
-                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24"
+                className="relative bg-black pt-32 md:pt-40 pb-16 md:pb-24"
             >
+                <GridOverlay />
                 <GridContainer>
                     <div className="md:w-[60%] lg:w-[45%] md:ml-[20%]">
                         <motion.h1
@@ -122,7 +138,7 @@ export default function Instagram() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.6 }}
-                            onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
+                            onClick={() => document.getElementById('research')?.scrollIntoView({ behavior: 'smooth' })}
                             className={`${roboto.className} mt-10 px-6 py-3 border border-white/30 rounded-full text-white/80 text-base hover:bg-white/10 transition-colors`}
                         >
                             View Project
@@ -131,8 +147,9 @@ export default function Instagram() {
                 </GridContainer>
             </section>
 
-            {/* Hero Media */}
-            <section className="relative pb-16 md:pb-24">
+            {/* Hero Media - Still on dark */}
+            <section className="relative bg-black pb-16 md:pb-24">
+                <GridOverlay />
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -153,21 +170,22 @@ export default function Instagram() {
                 </GridContainer>
             </section>
 
-            {/* Main Content */}
-            <section id="body" className="relative py-12 md:py-20">
-                {/* Section 1: Research */}
+            {/* ============================================ */}
+            {/* WHITE SECTION: Research */}
+            {/* ============================================ */}
+            <section id="research" className="relative bg-white py-16 md:py-24">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
                         >
                             Research
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             Before jumping into ideating solutions and creating interfaces,
                             it was important to ground the project in real user behavior. I conducted an open-ended survey to better understand how users currently engage
@@ -176,14 +194,14 @@ export default function Instagram() {
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             The survey focused on frequency of use, friction points, and perceived usability under both environments.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
 
-                {/* Search Comparison Chart */}
+                {/* Charts on White */}
                 <GridContainer className="mt-10 md:mt-16">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -192,8 +210,8 @@ export default function Instagram() {
                         transition={{ duration: 0.6 }}
                         className="md:ml-[20%] md:w-[60%]"
                     >
-                        <ChartContainer>
-                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                        <ChartContainerLight>
+                            <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
                                 ease of search comparison
                             </h3>
                             <ComparisonChart
@@ -203,14 +221,13 @@ export default function Instagram() {
                                 rightTitle="Web Application"
                                 type="vertical"
                             />
-                        </ChartContainer>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                        </ChartContainerLight>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
                             Initial chart findings, ease of search comparison
                         </span>
                     </motion.div>
                 </GridContainer>
 
-                {/* Platform Usage Chart */}
                 <GridContainer className="mt-8 md:mt-12">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -219,8 +236,8 @@ export default function Instagram() {
                         transition={{ duration: 0.6 }}
                         className="md:ml-[20%] md:w-[60%]"
                     >
-                        <ChartContainer>
-                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                        <ChartContainerLight>
+                            <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
                                 platform usage frequency
                             </h3>
                             <ComparisonChart
@@ -230,30 +247,10 @@ export default function Instagram() {
                                 rightTitle="Web Usage"
                                 type="horizontal"
                             />
-                        </ChartContainer>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                        </ChartContainerLight>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
                             Frequency of use across platforms
                         </span>
-                    </motion.div>
-                </GridContainer>
-
-                {/* Key Takeaway - Pull Quote */}
-                <GridContainer className="py-10 md:py-16">
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="md:ml-[20%] md:w-[60%]"
-                    >
-                        <div className="border-l-2 border-blue-400 pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
-                                Desktop usage shifts towards utility, while mobile gears itself more towards passive consumption.
-                            </span>
-                            <span className={`${roboto.className} text-white/50 text-base block mt-4`}>
-                                Key insight from user research
-                            </span>
-                        </div>
                     </motion.div>
                 </GridContainer>
 
@@ -266,8 +263,8 @@ export default function Instagram() {
                         transition={{ duration: 0.6 }}
                         className="md:ml-[20%] md:w-[60%]"
                     >
-                        <ChartContainer>
-                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                        <ChartContainerLight>
+                            <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
                                 additional user insights
                             </h3>
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -284,8 +281,8 @@ export default function Instagram() {
                                     title="Messaging Ease"
                                 />
                             </div>
-                        </ChartContainer>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                        </ChartContainerLight>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
                             Additional findings from user research
                         </span>
                     </motion.div>
@@ -300,16 +297,16 @@ export default function Instagram() {
                         transition={{ duration: 0.6 }}
                         className="md:ml-[20%] md:w-[60%]"
                     >
-                        <ChartContainer>
-                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                        <ChartContainerLight>
+                            <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
                                 reported user frustrations
                             </h3>
                             <HorizontalBarChart
                                 data={chartData.frustrations}
                                 showLabels={true}
                             />
-                        </ChartContainer>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                        </ChartContainerLight>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
                             Primary pain points identified through survey responses
                         </span>
                     </motion.div>
@@ -320,7 +317,7 @@ export default function Instagram() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
                         >
                             Additionally Identified
                         </motion.span>
@@ -338,9 +335,9 @@ export default function Instagram() {
                                 <motion.li
                                     key={index}
                                     variants={fadeInUp}
-                                    className={`${roboto.className} text-white/80 text-lg md:text-xl font-light flex items-center gap-3`}
+                                    className={`${roboto.className} text-black/80 text-lg md:text-xl font-light flex items-center gap-3`}
                                 >
-                                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0"></span>
+                                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"></span>
                                     {item}
                                 </motion.li>
                             ))}
@@ -349,7 +346,7 @@ export default function Instagram() {
                 </GridContainer>
 
                 {/* Improvements Chart */}
-                <GridContainer className="mt-8 md:mt-12">
+                <GridContainer className="mt-8 md:mt-12 pb-8">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -357,34 +354,61 @@ export default function Instagram() {
                         transition={{ duration: 0.6 }}
                         className="md:ml-[20%] md:w-[60%]"
                     >
-                        <ChartContainer className="flex justify-center">
+                        <ChartContainerLight className="flex justify-center">
                             <DonutChart
                                 data={chartData.improvements}
                                 title="Desired Improvements"
                                 size={220}
                             />
-                        </ChartContainer>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                        </ChartContainerLight>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
                             Overall desired changes to infrastructure
                         </span>
                     </motion.div>
                 </GridContainer>
             </section>
 
-            {/* Section 2: Ideating Solutions */}
-            <section className="relative py-12 md:py-20">
+            {/* ============================================ */}
+            {/* DARK SECTION: Key Insight */}
+            {/* ============================================ */}
+            <section className="relative bg-black py-16 md:py-24">
+                <GridOverlay />
+                <GridContainer>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <div className="border-l-2 border-blue-400 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                                Desktop usage shifts towards utility, while mobile gears itself more towards passive consumption.
+                            </span>
+                            <span className={`${roboto.className} text-white/50 text-base block mt-4`}>
+                                Key insight from user research
+                            </span>
+                        </div>
+                    </motion.div>
+                </GridContainer>
+            </section>
+
+            {/* ============================================ */}
+            {/* WHITE SECTION: Ideation & Solution */}
+            {/* ============================================ */}
+            <section className="relative bg-white py-16 md:py-24">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
                         >
                             Ideation
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             {`No more need to jump ahead. The redesign can now be tackled with one core principle;
                             keep things clean, but make them easy. Rather than hiding key features behind mountainous clicks and burying them in a cluster of menus, let's consolidate
@@ -393,26 +417,26 @@ export default function Instagram() {
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             {`The focus wasn't on adding more, but better utilization of the space provided.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
 
-                {/* UI Concepts - Consolidated Grid */}
+                {/* UI Concepts */}
                 <GridContainer className="mt-10 md:mt-16">
                     <AnimatedSection className="md:ml-[20%] md:w-[65%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
                         >
                             UI Concepts
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             Key interface improvements: a unified search and stories component,
                             enhanced messaging visibility with unread indicators, and a new discovery
@@ -429,43 +453,38 @@ export default function Instagram() {
                         transition={{ duration: 0.6 }}
                         className="md:ml-[20%] md:w-[65%]"
                     >
-                        {/* Bento Grid - Full content, asymmetric */}
+                        {/* Bento Grid on white - subtle gray container */}
                         <div className="flex flex-col gap-2 max-w-[810px]">
-                            {/* Top Row - Search Widget */}
-                            <div className="w-full overflow-hidden rounded-lg">
+                            <div className="w-full overflow-hidden rounded-lg bg-gray-100 p-2">
                                 <video
                                     src="/projects/instadesign/old/searchwip.mp4"
                                     autoPlay loop muted playsInline
-                                    className="w-full h-auto"
+                                    className="w-full h-auto rounded-md"
                                 />
                             </div>
 
-                            {/* Bottom Row - 63/35 split, full content visible */}
                             <div className="flex gap-2 items-start">
-                                {/* Messaging - 63% width */}
-                                <div className="flex-[61.8] overflow-hidden rounded-lg min-w-0">
+                                <div className="flex-[61.8] overflow-hidden rounded-lg bg-gray-100 p-2 min-w-0">
                                     <video
                                         src="/projects/instadesign/old/messageswip.mp4"
                                         autoPlay loop muted playsInline
-                                        className="w-full h-auto"
+                                        className="w-full h-auto rounded-md"
                                     />
                                 </div>
 
-                                {/* Discovery Tab - 35% width */}
-                                <div className="flex-[38.2] overflow-hidden rounded-lg min-w-0">
+                                <div className="flex-[38.2] overflow-hidden rounded-lg bg-gray-100 p-2 min-w-0">
                                     <Image
                                         src="/projects/instadesign/discovery.gif"
                                         alt="Discovery tab"
                                         width={400}
                                         height={600}
-                                        className="w-full h-auto"
+                                        className="w-full h-auto rounded-md"
                                     />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Single caption for the grid */}
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-4 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-4 block`}>
                             Search consolidation, messaging indicators, and discovery browsing
                         </span>
                     </motion.div>
@@ -476,7 +495,7 @@ export default function Instagram() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
                         >
                             A prototype of the entire layout was built using Figma, where all of these changes come together in unison.
                         </motion.p>
@@ -491,23 +510,25 @@ export default function Instagram() {
                         transition={{ duration: 0.6 }}
                         className="md:ml-[20%] md:w-[65%]"
                     >
-                        <video
-                            src="/projects/instadesign/old/figmavidwip.mp4"
-                            autoPlay loop muted playsInline
-                            className="w-full h-auto rounded-lg"
-                        />
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                        <div className="bg-gray-100 p-3 rounded-xl">
+                            <video
+                                src="/projects/instadesign/old/figmavidwip.mp4"
+                                autoPlay loop muted playsInline
+                                className="w-full h-auto rounded-lg"
+                            />
+                        </div>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
                             Full UI overhaul demonstration (Figma)
                         </span>
                     </motion.div>
                 </GridContainer>
 
                 {/* Additional Improvements */}
-                <GridContainer className="mt-8 md:mt-12">
+                <GridContainer className="mt-8 md:mt-12 pb-8">
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
                         >
                             Supporting Improvements
                         </motion.span>
@@ -525,9 +546,9 @@ export default function Instagram() {
                                 <motion.li
                                     key={index}
                                     variants={fadeInUp}
-                                    className={`${roboto.className} text-white/80 text-lg md:text-xl font-light flex items-start gap-3`}
+                                    className={`${roboto.className} text-black/80 text-lg md:text-xl font-light flex items-start gap-3`}
                                 >
-                                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0 mt-2"></span>
+                                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0 mt-2"></span>
                                     {item}
                                 </motion.li>
                             ))}
@@ -536,8 +557,11 @@ export default function Instagram() {
                 </GridContainer>
             </section>
 
-            {/* Section 3: Code Implementation */}
-            <section className="relative py-12 md:py-20">
+            {/* ============================================ */}
+            {/* DARK SECTION: Implementation */}
+            {/* ============================================ */}
+            <section className="relative bg-black py-16 md:py-24">
+                <GridOverlay />
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -651,8 +675,11 @@ export default function Instagram() {
                 </GridContainer>
             </section>
 
-            {/* Section 4: Impact */}
-            <section className="relative py-12 md:py-20">
+            {/* ============================================ */}
+            {/* DARK SECTION: Impact (Conclusion) */}
+            {/* ============================================ */}
+            <section className="relative bg-black py-16 md:py-24">
+                <GridOverlay />
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span

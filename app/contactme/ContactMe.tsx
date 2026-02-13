@@ -1,79 +1,198 @@
 "use client";
-import TransparentVideo from "@/components/SplashVideo"
-import { pixelify } from "../ui/fonts"
-import Link from "next/link"
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
+import { pixelify, roboto } from "@/app/ui/fonts";
+import TransparentVideo from "@/components/SplashVideo";
+import Link from "next/link";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 
-export default function ContactMe() {
-    const containerRef = useRef(null)
-    const isInView = useInView(containerRef, { once: true })
+const fadeInUp = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0 }
+};
 
-    const linkStyle = "text-blue-900 hover:opacity-70 transition-opacity duration-200"
+const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.08,
+            delayChildren: 0.2
+        }
+    }
+};
 
+function GridContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     return (
-        <div className="relative min-h-[100vh] bg-blue-500 overflow-hidden">
+        <div className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+            {children}
+        </div>
+    );
+}
 
-            {/* Background Character - Desktop */}
-            <div className="hidden md:block absolute bottom-0 right-0 w-[50vw] h-[70vh] pointer-events-none">
-                <TransparentVideo mp4Src="contactvid.mp4"/>
-            </div>
-
-            {/* Content */}
-            <div
-                ref={containerRef}
-                className="relative z-10 flex flex-col min-h-[100vh] px-8 md:px-12 lg:px-20 py-12 md:py-20"
-            >
-                {/* Heading */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                    className={`${pixelify.className} text-white text-5xl md:text-7xl lg:text-8xl text-center md:text-left`}
-                >
-                    Want to talk?
-                </motion.h1>
-
-                {/* Paragraph with inline links */}
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                    className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mt-6 md:mt-10 max-w-xl leading-relaxed text-center md:text-left`}
-                >
-                    Contact me via{" "}
-                    <Link href="https://www.linkedin.com/in/akin-tewe-38523418a/" target="_blank" className={linkStyle}>
-                        LinkedIn
-                    </Link>
-                    , this{" "}
-                    <Link href="https://www.instagram.com/eightybot/" target="_blank" className={linkStyle}>
-                        Instagram
-                    </Link>
-                    , the cooler{" "}
-                    <Link href="https://www.instagram.com/n8ghbr/" target="_blank" className={linkStyle}>
-                        Instagram
-                    </Link>
-                    , or send me an{" "}
-                    <Link href="mailto:atewebiz@gmail.com" className={linkStyle}>
-                        email
-                    </Link>
-                    .
-                </motion.p>
-
-                {/* Spacer */}
-                <div className="flex-1" />
-
-                {/* Background Character - Mobile */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                    className="md:hidden relative h-[40vh] mt-8 -mx-8"
-                >
-                    <TransparentVideo mp4Src="contactvid.mp4"/>
-                </motion.div>
-
+function GridOverlay() {
+    return (
+        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
+            <div className="flex w-full max-w-[1400px] h-full">
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
             </div>
         </div>
-    )
+    );
+}
+
+function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={staggerContainer}
+            className={className}
+        >
+            {children}
+        </motion.div>
+    );
+}
+
+const contactLinks = [
+    {
+        label: "LinkedIn",
+        tag: "Professional",
+        href: "https://www.linkedin.com/in/akin-tewe-38523418a/",
+    },
+    {
+        label: "@eightybot",
+        tag: "Design",
+        href: "https://www.instagram.com/eightybot/",
+    },
+    {
+        label: "@n8ghbr",
+        tag: "Personal",
+        href: "https://www.instagram.com/n8ghbr/",
+    },
+    {
+        label: "atewebiz@gmail.com",
+        tag: "Direct",
+        href: "mailto:atewebiz@gmail.com",
+    },
+];
+
+export default function ContactMe() {
+    const heroRef = useRef(null);
+    const isHeroInView = useInView(heroRef, { once: true });
+
+    return (
+        <main className="overflow-x-hidden">
+            {/* ============================================ */}
+            {/* BLUE ACCENT STRIP */}
+            {/* ============================================ */}
+            <section className="relative bg-blue-600 pt-28 md:pt-36 pb-12 md:pb-16">
+                <GridOverlay />
+                <GridContainer>
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={isHeroInView ? { opacity: 1 } : {}}
+                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="md:ml-[20%] md:w-[50%]"
+                    >
+                        <span className={`${pixelify.className} text-white/70 text-base md:text-lg tracking-wide uppercase`}>
+                            Get in Touch
+                        </span>
+                    </motion.div>
+                </GridContainer>
+            </section>
+
+            {/* ============================================ */}
+            {/* DARK SECTION: Main Content */}
+            {/* ============================================ */}
+            <section
+                ref={heroRef}
+                className="relative bg-black pb-16 md:pb-24"
+            >
+                <GridOverlay />
+
+                {/* 3D Character — Background on Desktop */}
+                <div className="hidden md:block absolute right-0 top-0 bottom-0 w-[40%] pointer-events-none overflow-hidden">
+                    <div className="relative w-full h-full">
+                        <TransparentVideo mp4Src="contactvid.mp4" />
+                    </div>
+                    {/* Fade into dark bg */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent" />
+                </div>
+
+                <GridContainer className="relative z-10">
+                    {/* Headline */}
+                    <div className="md:ml-[20%] md:w-[50%] pt-16 md:pt-24">
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
+                        >
+                            want to
+                            <br />
+                            <span className="text-blue-400 italic">talk?</span>
+                        </motion.h1>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className={`${roboto.className} text-white/60 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                        >
+                            Always open to new opportunities, collaborations, or just talking shop.
+                        </motion.p>
+                    </div>
+
+                    {/* Contact Links — Large Interactive Blocks */}
+                    <div className="md:ml-[20%] md:w-[60%] mt-16 md:mt-20">
+                        <AnimatedSection className="flex flex-col">
+                            {contactLinks.map((link, index) => (
+                                <motion.div key={index} variants={fadeInUp}>
+                                    <Link
+                                        href={link.href}
+                                        target={link.href.startsWith("mailto") ? undefined : "_blank"}
+                                        rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                                        className="group flex items-center justify-between py-6 md:py-8 border-b border-white/10 hover:border-blue-500/50 transition-colors"
+                                    >
+                                        <div className="flex flex-col gap-1">
+                                            <span className={`${pixelify.className} text-white text-2xl md:text-3xl group-hover:text-blue-400 transition-colors`}>
+                                                {link.label}
+                                            </span>
+                                            <span className={`${roboto.className} text-white/30 text-sm font-light uppercase tracking-wider`}>
+                                                {link.tag}
+                                            </span>
+                                        </div>
+                                        <motion.span
+                                            className="text-white/20 text-2xl md:text-3xl group-hover:text-blue-400 transition-colors"
+                                            whileHover={{ x: 4, y: -4 }}
+                                        >
+                                            ↗
+                                        </motion.span>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </AnimatedSection>
+                    </div>
+
+                    {/* 3D Character — Mobile */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:hidden relative h-[40vh] mt-12"
+                    >
+                        <TransparentVideo mp4Src="contactvid.mp4" />
+                    </motion.div>
+                </GridContainer>
+            </section>
+        </main>
+    );
 }

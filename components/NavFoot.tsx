@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { pixelify } from "@/app/ui/fonts"
-import { House } from "lucide-react"
+import { TiHome } from "react-icons/ti"
 import { useLoader } from "./LoaderContext"
 import { useRef, useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
@@ -197,10 +197,10 @@ export default function NavBar() {
                 >
                     <Link
                         href="/"
-                        className="text-white/60 hover:text-white transition-all z-20 ml-auto md:ml-0 hover:scale-110 inline-block"
+                        className="text-white/60 hover:text-white transition-all z-20 ml-auto md:ml-0 scale-200 hover:scale-220 inline-block"
                         onClick={() => { show(); setTimeout(hide, 800) }}
                     >
-                        <House />
+                        <TiHome />
                     </Link>
                 </motion.div>
                 <nav
@@ -230,8 +230,8 @@ export default function NavBar() {
                 </nav>
             </header>
 
-            {/* Floating Home Button (non-home pages) */}
-            {!isHome && (
+            {/* Floating Home Button */}
+            {(
                 <motion.div
                     initial={{ scale: 0, opacity: 0 }}
                     animate={{
@@ -244,9 +244,9 @@ export default function NavBar() {
                     <Link
                         href="/"
                         onClick={() => { show(); setTimeout(hide, 800) }}
-                        className="bg-black/80 backdrop-blur-sm p-3 text-white shadow-lg rounded-full hover:bg-black hover:scale-110 transition-all block border border-white/10"
+                        className="bg-black/80 backdrop-blur-sm p-6 text-white shadow-lg rounded-full hover:bg-black hover:scale-110 transition-all block border border-white/10"
                     >
-                        <House size={20} />
+                        <TiHome size={40} />
                     </Link>
                 </motion.div>
             )}

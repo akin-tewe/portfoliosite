@@ -1,8 +1,15 @@
 "use client";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { pixelify, roboto } from "../ui/fonts";
+
+// Carousel items - add new items here
+const carouselItems = [
+    { type: "video" as const, src: "/about-me-carousel/truvideo.mp4" },
+    { type: "image" as const, src: "/about-me-carousel/finalcover.jpg" },
+    { type: "video" as const, src: "/about-me-carousel/ragelowq.mp4" },
+];
 
 const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
@@ -123,6 +130,149 @@ function SkillsList({
     );
 }
 
+// Auto-scrolling work carousel
+function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string }[] }) {
+    const carouselRef = useRef<HTMLDivElement>(null)
+    const [isHolding, setIsHolding] = useState(false)
+    const [isDragging, setIsDragging] = useState(false)
+    const [startX, setStartX] = useState(0)
+    const [scrollLeft, setScrollLeft] = useState(0)
+    const autoScrollRef = useRef<NodeJS.Timeout | null>(null)
+    const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    // Auto-scroll logic
+    useEffect(() => {
+        const carousel = carouselRef.current
+        if (!carousel) return
+
+        const scroll = () => {
+            if (!isHolding && !isDragging && carousel) {
+                carousel.scrollLeft += 1
+
+                // Loop back to start when reaching end
+                if (carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth) {
+                    carousel.scrollLeft = 0
+                }
+            }
+        }
+
+        autoScrollRef.current = setInterval(scroll, 30)
+
+        return () => {
+            if (autoScrollRef.current) clearInterval(autoScrollRef.current)
+        }
+    }, [isHolding, isDragging])
+
+    // Resume auto-scroll after inactivity
+    const scheduleResume = () => {
+        if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current)
+        resumeTimeoutRef.current = setTimeout(() => {
+            setIsHolding(false)
+            setIsDragging(false)
+        }, 2500)
+    }
+
+    // Mouse/touch handlers
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsHolding(true)
+        setIsDragging(true)
+        setStartX(e.pageX - (carouselRef.current?.offsetLeft || 0))
+        setScrollLeft(carouselRef.current?.scrollLeft || 0)
+    }
+
+    const handleMouseUp = () => {
+        setIsDragging(false)
+        scheduleResume()
+    }
+
+    const handleMouseLeave = () => {
+        setIsDragging(false)
+        scheduleResume()
+    }
+
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return
+        e.preventDefault()
+        const x = e.pageX - (carouselRef.current?.offsetLeft || 0)
+        const walk = (x - startX) * 2
+        if (carouselRef.current) {
+            carouselRef.current.scrollLeft = scrollLeft - walk
+        }
+    }
+
+    // Touch handlers
+    const handleTouchStart = (e: React.TouchEvent) => {
+        setIsHolding(true)
+        setIsDragging(true)
+        setStartX(e.touches[0].pageX - (carouselRef.current?.offsetLeft || 0))
+        setScrollLeft(carouselRef.current?.scrollLeft || 0)
+    }
+
+    const handleTouchEnd = () => {
+        setIsDragging(false)
+        scheduleResume()
+    }
+
+    const handleTouchMove = (e: React.TouchEvent) => {
+        if (!isDragging) return
+        const x = e.touches[0].pageX - (carouselRef.current?.offsetLeft || 0)
+        const walk = (x - startX) * 2
+        if (carouselRef.current) {
+            carouselRef.current.scrollLeft = scrollLeft - walk
+        }
+    }
+
+    return (
+        <div className="relative w-full">
+            {/* Left fade */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-blue-500 to-transparent z-10 pointer-events-none" />
+
+            {/* Right fade */}
+            <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-blue-500 to-transparent z-10 pointer-events-none" />
+
+            {/* Carousel */}
+            <div
+                ref={carouselRef}
+                className="flex gap-4 overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                onMouseDown={handleMouseDown}
+                onMouseUp={handleMouseUp}
+                onMouseLeave={handleMouseLeave}
+                onMouseMove={handleMouseMove}
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onTouchMove={handleTouchMove}
+            >
+                {/* Duplicate items for seamless loop */}
+                {[...items, ...items].map((item, index) => (
+                    <div
+                        key={index}
+                        className="flex-shrink-0 w-56 md:w-92 aspect-square rounded-2xl overflow-hidden pointer-events-none select-none"
+                    >
+                        {item.type === "video" ? (
+                            <video
+                                src={item.src}
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <img
+                                src={item.src}
+                                alt=""
+                                draggable={false}
+                                className="w-full h-full object-cover"
+                            />
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+
 export default function AboutMe() {
     const heroRef = useRef(null);
     const isHeroInView = useInView(heroRef, { once: true });
@@ -159,7 +309,7 @@ export default function AboutMe() {
                             Hey! I'm Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
                         </p>
                         <p className={`${roboto.className} text-black/80 mt-8 font-light text-lg md:text-xl leading-relaxed max-w-md`}>
-                            As a designer who can also write code, I think about how things look and how they're actually built. Whether I'm wireframing in Figma, 
+                            As a designer who can also write code, I think about how things look and how they're actually built. Whether I'm wireframing in Figma,
                             conducting user research, or building responsive interfaces with React and TypeScript, I can take a project from initial concept through to functional code.
                         </p>
                     </motion.div>
@@ -180,22 +330,22 @@ export default function AboutMe() {
                 </AnimatedSection>
             </section>
 
-            {/* Section 2: Experience - Image Left, Text Right */}
-            <section className="py-16 md:py-24 px-6 md:px-[10vw] bg-gray-50/50">
+            {/* Section 2: Experience - Carousel Left, Text Right */}
+            <section className="py-16 md:py-30 px-6 md:px-[10vw] bg-blue-500">
                 <AnimatedSection className="flex flex-col md:flex-row-reverse gap-10 md:gap-16 lg:gap-24 items-center justify-between">
                     <motion.div
                         variants={fadeInRight}
                         className="flex-1 md:max-w-lg"
                     >
-                        <p className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}>
+                        <p className={`${roboto.className} text-white/90 font-light text-lg md:text-xl leading-relaxed`}>
                             Throughout my time freelancing as a Visual Designer, I've worked with large brands like True Religion and Highground, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
                         </p>
                     </motion.div>
                     <motion.div
                         variants={fadeInLeft}
-                        className="flex-1 max-w-sm md:max-w-md"
+                        className="w-full md:w-[45%] md:max-w-3xl flex-shrink-0"
                     >
-                        <ImagePlaceholder label="[Image 2]" />
+                        <WorkCarousel items={carouselItems} />
                     </motion.div>
                 </AnimatedSection>
             </section>

@@ -8,6 +8,7 @@ import { useRef, useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { MagneticWrapper } from "./MagneticButton";
 
 const menuItems = [
     { label: "Home", href: "/" },
@@ -243,19 +244,21 @@ export default function NavBar() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.3 + index * 0.1 }}
                             >
-                                <Link
-                                    href={href}
-                                    className="opacity-60 hover:opacity-100 transition-all duration-300 relative group"
-                                    onClick={(e) => {
-                                        handleHashNavigation(e, href);
-                                        if (!href.includes('#') || pathname !== (href.split('#')[0] || '/')) {
-                                            show(); setTimeout(hide, 800);
-                                        }
-                                    }}
-                                >
-                                    {item}
-                                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300" />
-                                </Link>
+                                <MagneticWrapper>
+                                    <Link
+                                        href={href}
+                                        className="opacity-60 hover:opacity-100 transition-all duration-300 relative group"
+                                        onClick={(e) => {
+                                            handleHashNavigation(e, href);
+                                            if (!href.includes('#') || pathname !== (href.split('#')[0] || '/')) {
+                                                show(); setTimeout(hide, 800);
+                                            }
+                                        }}
+                                    >
+                                        {item}
+                                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300" />
+                                    </Link>
+                                </MagneticWrapper>
                             </motion.div>
                         );
                     })}
@@ -302,7 +305,7 @@ export function Footer() {
             </span>
             <Link
                 href="/contactme"
-                className={`text-white/60 text-base md:text-xl hover:text-white transition-all ${pixelify.className} group`}
+                className={`text-white/60 text-base md:text-xl hover:text-white transition-all ${pixelify.className} group md:mr-24`}
                 onClick={() => { show(); setTimeout(hide, 800) }}
             >
                 contact me

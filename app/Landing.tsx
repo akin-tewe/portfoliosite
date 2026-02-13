@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
-import { AboutButton } from "@/components/MagneticButton";
+import { AboutButton, MagneticWrapper } from "@/components/MagneticButton";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
@@ -142,25 +142,27 @@ export default function Landing() {
         </AnimatedSection>
 
         {/* Projects CTA Button */}
-        <motion.button
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="my-10 md:my-12 inline-flex relative gap-4 justify-center items-center text-xl text-black group px-6"
-          onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <div className={`text-lg md:text-xl text-blue-500 z-10 group-hover:text-white transition-colors duration-300 ${pixelify.className}`}>
-            PROJECTS
-          </div>
-          <ChevronDown className="text-blue-500 z-10 group-hover:text-white transition-colors duration-300" />
-          <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2
-          -translate-y-1/2 bg-blue-500 w-48 h-16 rounded-full -z-0 scale-0
-          group-hover:scale-100 transition-transform duration-300 ease-out">
-          </span>
-        </motion.button>
+        <MagneticWrapper>
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="my-10 md:my-12 inline-flex relative gap-4 justify-center items-center text-xl text-black group px-6"
+            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <div className={`text-lg md:text-xl text-blue-500 z-10 group-hover:text-white transition-colors duration-300 ${pixelify.className}`}>
+              PROJECTS
+            </div>
+            <ChevronDown className="text-blue-500 z-10 group-hover:text-white transition-colors duration-300" />
+            <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2
+            -translate-y-1/2 bg-blue-500 w-48 h-16 rounded-full -z-0 scale-0
+            group-hover:scale-100 transition-transform duration-300 ease-out">
+            </span>
+          </motion.button>
+        </MagneticWrapper>
       </section>
 
       {/* Projects Section */}

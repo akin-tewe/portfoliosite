@@ -4,6 +4,7 @@ import TransparentVideo from "@/components/SplashVideo";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { MagneticWrapper } from "@/components/MagneticButton";
 
 const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
@@ -68,18 +69,18 @@ const contactLinks = [
     },
     {
         label: "@eightybot",
-        tag: "Design",
+        tag: "Design Account 1",
         href: "https://www.instagram.com/eightybot/",
     },
     {
         label: "@n8ghbr",
-        tag: "Personal",
+        tag: "Design Account 2",
         href: "https://www.instagram.com/n8ghbr/",
     },
     {
-        label: "atewebiz@gmail.com",
+        label: "akintewe.work@gmail.com",
         tag: "Direct",
-        href: "mailto:atewebiz@gmail.com",
+        href: "mailto:akintewe.work@gmail.com",
     },
 ];
 
@@ -90,20 +91,22 @@ export default function ContactMe() {
     return (
         <main className="overflow-x-hidden">
             {/* ============================================ */}
-            {/* BLUE ACCENT STRIP */}
+            {/* BLUE ACCENT STRIP - Quote */}
             {/* ============================================ */}
-            <section className="relative bg-blue-600 pt-28 md:pt-36 pb-12 md:pb-16">
+            <section className="relative bg-blue-600 pt-14 md:pt-16 pb-14 md:pb-16">
                 <GridOverlay />
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={isHeroInView ? { opacity: 1 } : {}}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="md:ml-[20%] md:w-[50%]"
+                        className="md:w-[60%]"
                     >
-                        <span className={`${pixelify.className} text-white/70 text-base md:text-lg tracking-wide uppercase`}>
-                            Get in Touch
-                        </span>
+                        <div className="border-l-2 border-white/70 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-white text-xl md:text-3xl font-light leading-relaxed`}>
+                                {`Whether it's a product, a brand, or something in between, I'm always looking for the next thing to pour intention into.`}
+                            </span>
+                        </div>
                     </motion.div>
                 </GridContainer>
             </section>
@@ -128,7 +131,7 @@ export default function ContactMe() {
 
                 <GridContainer className="relative z-10">
                     {/* Headline */}
-                    <div className="md:ml-[20%] md:w-[50%] pt-16 md:pt-24">
+                    <div className="md:w-[40%] pt-16 md:pt-16">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
@@ -139,43 +142,28 @@ export default function ContactMe() {
                             <br />
                             <span className="text-blue-400 italic">talk?</span>
                         </motion.h1>
-
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/60 font-light text-lg md:text-xl mt-6 leading-relaxed`}
-                        >
-                            Always open to new opportunities, collaborations, or just talking shop.
-                        </motion.p>
                     </div>
 
                     {/* Contact Links — Large Interactive Blocks */}
-                    <div className="md:ml-[20%] md:w-[60%] mt-16 md:mt-20">
+                    <div className="md:w-[60%] mt-16 md:mt-20">
                         <AnimatedSection className="flex flex-col">
                             {contactLinks.map((link, index) => (
                                 <motion.div key={index} variants={fadeInUp}>
-                                    <Link
-                                        href={link.href}
-                                        target={link.href.startsWith("mailto") ? undefined : "_blank"}
-                                        rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                                        className="group flex items-center justify-between py-6 md:py-8 border-b border-white/10 hover:border-blue-500/50 transition-colors"
-                                    >
-                                        <div className="flex flex-col gap-1">
+                                    <MagneticWrapper>
+                                        <Link
+                                            href={link.href}
+                                            target={link.href.startsWith("mailto") ? undefined : "_blank"}
+                                            rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
+                                            className="group flex flex-col gap-1 py-6 md:py-8 border-b border-white/10 hover:border-blue-500/50 transition-colors"
+                                        >
                                             <span className={`${pixelify.className} text-white text-2xl md:text-3xl group-hover:text-blue-400 transition-colors`}>
                                                 {link.label}
                                             </span>
                                             <span className={`${roboto.className} text-white/30 text-sm font-light uppercase tracking-wider`}>
                                                 {link.tag}
                                             </span>
-                                        </div>
-                                        <motion.span
-                                            className="text-white/20 text-2xl md:text-3xl group-hover:text-blue-400 transition-colors"
-                                            whileHover={{ x: 4, y: -4 }}
-                                        >
-                                            ↗
-                                        </motion.span>
-                                    </Link>
+                                        </Link>
+                                    </MagneticWrapper>
                                 </motion.div>
                             ))}
                         </AnimatedSection>
@@ -190,6 +178,10 @@ export default function ContactMe() {
                         className="md:hidden relative h-[40vh] mt-12"
                     >
                         <TransparentVideo mp4Src="contactvid.mp4" />
+                        {/* Left fade */}
+                        <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black to-transparent pointer-events-none z-10" />
+                        {/* Right fade */}
+                        <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black to-transparent pointer-events-none z-10" />
                     </motion.div>
                 </GridContainer>
             </section>

@@ -3,6 +3,7 @@ import { pixelify, roboto } from "@/app/ui/fonts"
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
+import { MagneticWrapper } from "@/components/MagneticButton";
 import {
     HorizontalBarChart,
     VerticalBarChart,
@@ -134,15 +135,21 @@ export default function Instagram() {
                             All code for this project was written from scratch by me.
                         </motion.p>
 
-                        <motion.button
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.6 }}
-                            onClick={() => document.getElementById('research')?.scrollIntoView({ behavior: 'smooth' })}
-                            className={`${roboto.className} mt-10 px-6 py-3 border border-white/30 rounded-full text-white/80 text-base hover:bg-white/10 transition-colors`}
+                            className="flex justify-center md:justify-start mt-10"
                         >
-                            View Project
-                        </motion.button>
+                            <MagneticWrapper>
+                                <button
+                                    onClick={() => document.getElementById('research')?.scrollIntoView({ behavior: 'smooth' })}
+                                    className={`${pixelify.className} px-6 py-3 border border-white/30 rounded text-white/80 text-base tracking-wide uppercase hover:bg-white/10 transition-colors`}
+                                >
+                                    View Project
+                                </button>
+                            </MagneticWrapper>
+                        </motion.div>
                     </div>
                 </GridContainer>
             </section>
@@ -156,15 +163,15 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[65%]"
+                        className="md:w-[65%] mx-auto"
                     >
                         <video
                             src="/projects/instadesign/old/figmavidwip.mp4"
                             autoPlay loop muted playsInline
                             className="w-full h-auto rounded-lg"
                         />
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
-                            Full UI overhaul demonstration
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                            Full Figma UI Prototype
                         </span>
                     </motion.div>
                 </GridContainer>
@@ -178,7 +185,7 @@ export default function Instagram() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Research
                         </motion.span>
@@ -208,7 +215,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[60%]"
+                        className="md:w-[60%] mx-auto"
                     >
                         <ChartContainerLight>
                             <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
@@ -222,7 +229,7 @@ export default function Instagram() {
                                 type="vertical"
                             />
                         </ChartContainerLight>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
                             Initial chart findings, ease of search comparison
                         </span>
                     </motion.div>
@@ -234,7 +241,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[60%]"
+                        className="md:w-[60%] mx-auto"
                     >
                         <ChartContainerLight>
                             <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
@@ -248,7 +255,7 @@ export default function Instagram() {
                                 type="horizontal"
                             />
                         </ChartContainerLight>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
                             Frequency of use across platforms
                         </span>
                     </motion.div>
@@ -261,7 +268,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[60%]"
+                        className="md:w-[60%] mx-auto"
                     >
                         <ChartContainerLight>
                             <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
@@ -282,7 +289,7 @@ export default function Instagram() {
                                 />
                             </div>
                         </ChartContainerLight>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
                             Additional findings from user research
                         </span>
                     </motion.div>
@@ -295,7 +302,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[60%]"
+                        className="md:w-[60%] mx-auto"
                     >
                         <ChartContainerLight>
                             <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
@@ -306,7 +313,7 @@ export default function Instagram() {
                                 showLabels={true}
                             />
                         </ChartContainerLight>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
                             Primary pain points identified through survey responses
                         </span>
                     </motion.div>
@@ -314,35 +321,30 @@ export default function Instagram() {
 
                 {/* Identified Issues */}
                 <GridContainer className="mt-10 md:mt-16">
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
-                        <motion.span
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
-                        >
+                    <div className="md:w-[60%] mx-auto flex flex-col gap-4">
+                        <span className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase mb-2`}>
                             Additionally Identified
-                        </motion.span>
-
-                        <motion.ul
-                            variants={staggerContainer}
-                            className="flex flex-col gap-3 md:gap-4 mt-6"
-                        >
-                            {[
-                                "Messy navigation",
-                                "Poor access to messaging",
-                                "Poor visual hierarchy",
-                                "Difficulty scanning content"
-                            ].map((item, index) => (
-                                <motion.li
-                                    key={index}
-                                    variants={fadeInUp}
-                                    className={`${roboto.className} text-black/80 text-lg md:text-xl font-light flex items-center gap-3`}
-                                >
-                                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"></span>
+                        </span>
+                        {[
+                            "Messy navigation",
+                            "Poor access to messaging",
+                            "Poor visual hierarchy",
+                            "Difficulty scanning content"
+                        ].map((item, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                className="border-l-2 border-blue-500 pl-6"
+                            >
+                                <span className={`${roboto.className} text-black/80 text-lg md:text-xl font-light`}>
                                     {item}
-                                </motion.li>
-                            ))}
-                        </motion.ul>
-                    </AnimatedSection>
+                                </span>
+                            </motion.div>
+                        ))}
+                    </div>
                 </GridContainer>
 
                 {/* Improvements Chart */}
@@ -352,7 +354,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[60%]"
+                        className="md:w-[60%] mx-auto"
                     >
                         <ChartContainerLight className="flex justify-center">
                             <DonutChart
@@ -361,7 +363,7 @@ export default function Instagram() {
                                 size={220}
                             />
                         </ChartContainerLight>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
                             Overall desired changes to infrastructure
                         </span>
                     </motion.div>
@@ -379,7 +381,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="md:ml-[20%] md:w-[60%]"
+                        className="md:w-[60%] mx-auto"
                     >
                         <div className="border-l-2 border-white pl-6 md:pl-8">
                             <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
@@ -401,7 +403,7 @@ export default function Instagram() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Ideation
                         </motion.span>
@@ -426,10 +428,10 @@ export default function Instagram() {
 
                 {/* UI Concepts */}
                 <GridContainer className="mt-10 md:mt-16">
-                    <AnimatedSection className="md:ml-[20%] md:w-[65%]">
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             UI Concepts
                         </motion.span>
@@ -451,7 +453,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[65%]"
+                        className="md:w-[65%] mx-auto"
                     >
                         {/* Bento Grid on white - subtle gray container */}
                         <div className="flex flex-col gap-2 max-w-[810px]">
@@ -484,7 +486,7 @@ export default function Instagram() {
                             </div>
                         </div>
 
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-4 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-6 block text-center italic`}>
                             Search consolidation, messaging indicators, and discovery browsing
                         </span>
                     </motion.div>
@@ -508,7 +510,7 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[65%]"
+                        className="md:w-[65%] mx-auto"
                     >
                         <div className="bg-gray-100 p-3 rounded-xl">
                             <video
@@ -517,7 +519,7 @@ export default function Instagram() {
                                 className="w-full h-auto rounded-lg"
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-3 block`}>
+                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
                             Full UI overhaul demonstration (Figma)
                         </span>
                     </motion.div>
@@ -525,35 +527,30 @@ export default function Instagram() {
 
                 {/* Additional Improvements */}
                 <GridContainer className="mt-8 md:mt-12 pb-8">
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
-                        <motion.span
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-blue-500 text-base md:text-lg tracking-wide`}
-                        >
+                    <div className="md:w-[60%] mx-auto flex flex-col gap-4">
+                        <span className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase mb-2`}>
                             Supporting Improvements
-                        </motion.span>
-
-                        <motion.ul
-                            variants={staggerContainer}
-                            className="flex flex-col gap-3 md:gap-4 mt-6"
-                        >
-                            {[
-                                'New "pull-out" comment browser to keep scrolling as seamless as possible',
-                                "Separated reels tab",
-                                "Changes to readability of navigation bar",
-                                "Cleaner organization of information"
-                            ].map((item, index) => (
-                                <motion.li
-                                    key={index}
-                                    variants={fadeInUp}
-                                    className={`${roboto.className} text-black/80 text-lg md:text-xl font-light flex items-start gap-3`}
-                                >
-                                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0 mt-2"></span>
+                        </span>
+                        {[
+                            'New "pull-out" comment browser to keep scrolling as seamless as possible',
+                            "Separated reels tab",
+                            "Changes to readability of navigation bar",
+                            "Cleaner organization of information"
+                        ].map((item, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: index * 0.1 }}
+                                className="border-l-2 border-blue-500 pl-6"
+                            >
+                                <span className={`${roboto.className} text-black/80 text-lg md:text-xl font-light`}>
                                     {item}
-                                </motion.li>
-                            ))}
-                        </motion.ul>
-                    </AnimatedSection>
+                                </span>
+                            </motion.div>
+                        ))}
+                    </div>
                 </GridContainer>
             </section>
 
@@ -566,7 +563,7 @@ export default function Instagram() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                            className={`${pixelify.className} text-blue-400 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Implementation
                         </motion.span>
@@ -584,7 +581,7 @@ export default function Instagram() {
 
                 {/* Code Overview */}
                 <GridContainer className="mt-8 md:mt-12">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:ml-[20%] md:w-[65%]">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:w-[65%] mx-auto">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -599,7 +596,7 @@ export default function Instagram() {
                                 height={280}
                                 className="w-full h-auto rounded"
                             />
-                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-2 block`}>
+                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-4 block text-center italic`}>
                                 Component structure
                             </span>
                         </motion.div>
@@ -617,7 +614,7 @@ export default function Instagram() {
                                 height={280}
                                 className="w-full h-auto rounded"
                             />
-                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-2 block`}>
+                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-4 block text-center italic`}>
                                 Data management
                             </span>
                         </motion.div>
@@ -635,7 +632,7 @@ export default function Instagram() {
                                 height={280}
                                 className="w-full h-auto rounded"
                             />
-                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-2 block`}>
+                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-4 block text-center italic`}>
                                 Layout system
                             </span>
                         </motion.div>
@@ -661,14 +658,14 @@ export default function Instagram() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.6 }}
-                        className="md:ml-[20%] md:w-[65%]"
+                        className="md:w-[65%] mx-auto"
                     >
                         <video
                             src="/projects/instadesign/old/codedvidwip.mp4"
                             autoPlay loop muted playsInline
                             className="w-full h-auto rounded-lg"
                         />
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
                             Full overhaul implementation
                         </span>
                     </motion.div>
@@ -684,7 +681,7 @@ export default function Instagram() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                            className={`${pixelify.className} text-blue-400 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Impact
                         </motion.span>

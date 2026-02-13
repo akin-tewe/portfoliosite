@@ -5,7 +5,7 @@ import { pixelify } from "@/app/ui/fonts"
 import { TiHome } from "react-icons/ti"
 import { useLoader } from "./LoaderContext"
 import { useRef, useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -59,7 +59,8 @@ export default function NavBar() {
     const { show, hide } = useLoader();
     const navbarRef = useRef<HTMLDivElement | null>(null);
     const [navSee, setNavSee] = useState(true);
-    usePathname();
+    const pathname = usePathname();
+    const router = useRouter();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -88,6 +89,27 @@ export default function NavBar() {
         setOpen(false);
         show();
         setTimeout(hide, 800);
+    };
+
+    const handleHashNavigation = (e: React.MouseEvent, href: string) => {
+        // Only intercept hash links (e.g. /#projects)
+        if (!href.includes('#')) return;
+
+        const [path, hash] = href.split('#');
+        const targetPath = path || '/';
+
+        // If we're already on the target page, scroll manually
+        if (pathname === targetPath) {
+            e.preventDefault();
+            const element = document.getElementById(hash);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+            // Close mobile menu if open
+            setOpen(false);
+        }
+        // If on a different page, let normal navigation happen
+        // (the browser will navigate to /#projects and scroll on load)
     };
 
     return (
@@ -153,7 +175,14 @@ export default function NavBar() {
                                         >
                                             <Link
                                                 href={item.href}
-                                                onClick={handleNavClick}
+                                                onClick={(e) => {
+                                                    handleHashNavigation(e, item.href);
+                                                    if (!item.href.includes('#') || pathname !== (item.href.split('#')[0] || '/')) {
+                                                        handleNavClick();
+                                                    } else {
+                                                        setOpen(false);
+                                                    }
+                                                }}
                                                 className="group flex items-center justify-between px-5 py-4 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-150"
                                             >
                                                 <span className="text-xl">{item.label}</span>
@@ -217,7 +246,12 @@ export default function NavBar() {
                                 <Link
                                     href={href}
                                     className="opacity-60 hover:opacity-100 transition-all duration-300 relative group"
-                                    onClick={() => { show(); setTimeout(hide, 800) }}
+                                    onClick={(e) => {
+                                        handleHashNavigation(e, href);
+                                        if (!href.includes('#') || pathname !== (href.split('#')[0] || '/')) {
+                                            show(); setTimeout(hide, 800);
+                                        }
+                                    }}
                                 >
                                     {item}
                                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300" />

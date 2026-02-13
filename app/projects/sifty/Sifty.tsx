@@ -24,6 +24,36 @@ const staggerContainer = {
     }
 };
 
+// Grid overlay component for dark sections
+function GridOverlay() {
+    return (
+        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
+            <div className="flex w-full max-w-[1400px] h-full">
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
+            </div>
+        </div>
+    );
+}
+
+// Grid overlay for light sections
+function GridOverlayLight() {
+    return (
+        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
+            <div className="flex w-full max-w-[1400px] h-full">
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-r border-black/[0.07]"></div>
+            </div>
+        </div>
+    );
+}
+
 // Section wrapper component for consistent animations
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     const ref = useRef(null);
@@ -42,7 +72,7 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
     );
 }
 
-// Feature card component
+// Feature card component - dark version
 function FeatureCard({ icon: Icon, title, description }: { icon: React.ElementType; title: string; description: string }) {
     return (
         <motion.div
@@ -58,6 +88,22 @@ function FeatureCard({ icon: Icon, title, description }: { icon: React.ElementTy
     );
 }
 
+// Feature card for light sections
+function FeatureCardLight({ icon: Icon, title, description }: { icon: React.ElementType; title: string; description: string }) {
+    return (
+        <motion.div
+            variants={fadeInUp}
+            className="bg-black/5 backdrop-blur-sm border border-black/10 rounded-2xl p-6 hover:bg-black/10 transition-colors duration-300"
+        >
+            <div className="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
+                <Icon className="w-6 h-6 text-green-600" />
+            </div>
+            <h3 className={`${pixelify.className} text-black text-lg mb-2`}>{title}</h3>
+            <p className={`${roboto.className} text-black/60 font-light text-sm leading-relaxed`}>{description}</p>
+        </motion.div>
+    );
+}
+
 // Tech stack pill component
 function TechPill({ name }: { name: string }) {
     return (
@@ -67,7 +113,7 @@ function TechPill({ name }: { name: string }) {
     );
 }
 
-// Video container with hover effects
+// Video container with hover effects - dark version
 function VideoContainer({ src, caption }: { src: string; caption: string }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -95,6 +141,41 @@ function VideoContainer({ src, caption }: { src: string; caption: string }) {
                 animate={isInView ? { opacity: 1 } : {}}
                 transition={{ delay: 0.3 }}
                 className={`${roboto.className} text-white/40 text-center mt-3 italic text-sm md:text-base`}
+            >
+                {caption}
+            </motion.div>
+        </motion.div>
+    );
+}
+
+// Video container for light sections
+function VideoContainerLight({ src, caption }: { src: string; caption: string }) {
+    const ref = useRef(null);
+    const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="group"
+        >
+            <div className="relative overflow-hidden bg-black/10 p-2 md:p-3 rounded-xl transition-all duration-300 group-hover:bg-black/15">
+                <video
+                    className="w-full h-auto rounded-lg"
+                    src={src}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                />
+            </div>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={isInView ? { opacity: 1 } : {}}
+                transition={{ delay: 0.3 }}
+                className={`${roboto.className} text-black/40 text-center mt-3 italic text-sm md:text-base`}
             >
                 {caption}
             </motion.div>
@@ -141,26 +222,17 @@ export default function Sifty() {
 
     return (
         <main className="overflow-x-hidden">
-            {/* Subtle Grid Overlay */}
-            <div className="fixed inset-0 flex h-full w-full gap-[1vw] text-white/5 justify-center pointer-events-none z-0">
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-            </div>
-
-            {/* 1. Hero Section */}
+            {/* 1. Hero Section - Dark */}
             <section
                 ref={heroRef}
-                className="relative w-full min-h-[100vh] md:min-h-[70vh] flex items-center justify-center px-5 md:px-[5vw] py-20"
+                className="relative w-full min-h-[100vh] md:min-h-[70vh] flex items-center justify-center px-5 md:px-[5vw] py-20 bg-black"
             >
+                <GridOverlay />
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
                     animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="flex flex-col items-center text-center max-w-4xl"
+                    className="flex flex-col items-center text-center max-w-4xl relative z-10"
                 >
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -238,9 +310,10 @@ export default function Sifty() {
                 </motion.div>
             </section>
 
-            {/* 2. App Preview Section */}
-            <section id="preview" className="relative py-20 md:py-24 px-5 md:px-[5vw] z-10">
-                <AnimatedSection className="flex flex-col items-center max-w-6xl mx-auto">
+            {/* 2. App Preview Section - Dark */}
+            <section id="preview" className="relative py-20 md:py-24 px-5 md:px-[5vw] bg-black">
+                <GridOverlay />
+                <AnimatedSection className="flex flex-col items-center max-w-6xl mx-auto relative z-10">
                     <VideoContainer
                         src="/projects/sifty/main_thumbnail_video.mp4"
                         caption="Visual timeline interface for tracking project scope"
@@ -248,45 +321,47 @@ export default function Sifty() {
                 </AnimatedSection>
             </section>
 
-            {/* Development Approach Section */}
-            <section className="relative py-16 md:py-20 px-5 md:px-[8vw] lg:px-[11vw] z-10">
-                <AnimatedSection className="flex flex-col items-center max-w-3xl mx-auto">
+            {/* Development Approach Section - White */}
+            <section className="relative py-16 md:py-20 px-5 md:px-[8vw] lg:px-[11vw] bg-white">
+                <GridOverlayLight />
+                <AnimatedSection className="flex flex-col items-center max-w-3xl mx-auto relative z-10">
                     <motion.p
                         variants={fadeInUp}
-                        className={`${roboto.className} text-white/70 font-light text-base md:text-xl text-center leading-relaxed`}
+                        className={`${roboto.className} text-black/70 font-light text-base md:text-xl text-center leading-relaxed`}
                     >
-                        Built by leveraging <span className="text-white">Claude Code</span> to rapidly implement features, iterate on UI interactions, and test functionality throughout development. The backend uses <span className="text-white">Supabase</span> with PostgreSQL for secure data storage and real-time updates.
+                        Built by leveraging <span className="text-black">Claude Code</span> to rapidly implement features, iterate on UI interactions, and test functionality throughout development. The backend uses <span className="text-black">Supabase</span> with PostgreSQL for secure data storage and real-time updates.
                     </motion.p>
                 </AnimatedSection>
             </section>
 
-            {/* 3. Core Features Section */}
-            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] z-10">
-                <AnimatedSection className="flex flex-col gap-12 max-w-5xl mx-auto">
+            {/* 3. Core Features Section - White */}
+            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] bg-white">
+                <GridOverlayLight />
+                <AnimatedSection className="flex flex-col gap-12 max-w-5xl mx-auto relative z-10">
                     <motion.h2
                         variants={fadeInUp}
-                        className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl text-center`}
+                        className={`${pixelify.className} text-black text-2xl md:text-3xl lg:text-4xl text-center`}
                     >
                         BUILT FOR CLARITY
                     </motion.h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <FeatureCard
+                        <FeatureCardLight
                             icon={Layers}
                             title="Visual Timeline"
                             description="See your entire project scope at a glance. Tasks and milestones arranged chronologically."
                         />
-                        <FeatureCard
+                        <FeatureCardLight
                             icon={Calendar}
                             title="Smart Scheduling"
                             description="Expected dates with auto-positioning. Movement restrictions keep your timeline accurate."
                         />
-                        <FeatureCard
+                        <FeatureCardLight
                             icon={Check}
                             title="Task Management"
                             description="Expandable task pills with notes. Track progress from pending to complete."
                         />
-                        <FeatureCard
+                        <FeatureCardLight
                             icon={Sun}
                             title="Light & Dark Themes"
                             description="Full theme support with carefully crafted color palettes for any environment."
@@ -295,9 +370,33 @@ export default function Sifty() {
                 </AnimatedSection>
             </section>
 
-            {/* 4. Project Creation Section */}
-            <section className="relative py-20 md:py-24 px-5 md:px-[3vw] z-10">
-                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-9xl mx-auto">
+            {/* Pull Quote - Green Section */}
+            <section className="relative py-16 md:py-24 bg-green-600">
+                <GridOverlay />
+                <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8 relative z-10">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="md:w-[60%] mx-auto"
+                    >
+                        <div className="border-l-2 border-white pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                                {`Simple onboarding flow. Create a project in seconds and visualize your scope immediately.`}
+                            </span>
+                            <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
+                                Built with freelancers in mind.
+                            </span>
+                        </div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* 4. Project Creation Section - Dark */}
+            <section className="relative py-20 md:py-24 px-5 md:px-[3vw] bg-black">
+                <GridOverlay />
+                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-9xl mx-auto relative z-10">
                     <motion.h2
                         variants={fadeInUp}
                         className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl text-center`}
@@ -325,22 +424,23 @@ export default function Sifty() {
                 </AnimatedSection>
             </section>
 
-            {/* 5. UI Components Section */}
-            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] z-10">
-                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-5xl mx-auto">
+            {/* 5. UI Components Section - White */}
+            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] bg-white">
+                <GridOverlayLight />
+                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-5xl mx-auto relative z-10">
                     <motion.h2
                         variants={fadeInUp}
-                        className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl text-center`}
+                        className={`${pixelify.className} text-black text-2xl md:text-3xl lg:text-4xl text-center`}
                     >
                         THE COMPONENTS
                     </motion.h2>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                        <VideoContainer
+                        <VideoContainerLight
                             src="/projects/sifty/task_card.mp4"
                             caption="Task cards with expandable details"
                         />
-                        <VideoContainer
+                        <VideoContainerLight
                             src="/projects/sifty/milestone_card.mp4"
                             caption="Milestone tracking and completion"
                         />
@@ -348,9 +448,10 @@ export default function Sifty() {
                 </AnimatedSection>
             </section>
 
-            {/* 6. Mobile Implementation Section */}
-            <section className="relative py-20 md:py-24 px-5 md:px-[5vw] z-10">
-                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-4xl mx-auto">
+            {/* 6. Mobile Implementation Section - Dark */}
+            <section className="relative py-20 md:py-24 px-5 md:px-[5vw] bg-black">
+                <GridOverlay />
+                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-4xl mx-auto relative z-10">
                     <motion.h2
                         variants={fadeInUp}
                         className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl text-center`}
@@ -376,33 +477,35 @@ export default function Sifty() {
                 </AnimatedSection>
             </section>
 
-            {/* 7. Client View Section */}
-            <section className="relative py-20 md:py-24 px-5 md:px-[5vw] z-10">
-                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-5xl mx-auto">
+            {/* 7. Client View Section - White */}
+            <section className="relative py-20 md:py-24 px-5 md:px-[5vw] bg-white">
+                <GridOverlayLight />
+                <AnimatedSection className="flex flex-col gap-8 md:gap-12 max-w-5xl mx-auto relative z-10">
                     <motion.h2
                         variants={fadeInUp}
-                        className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl text-center`}
+                        className={`${pixelify.className} text-black text-2xl md:text-3xl lg:text-4xl text-center`}
                     >
                         CLIENT VIEW
                     </motion.h2>
 
                     <motion.p
                         variants={fadeInUp}
-                        className={`${roboto.className} text-white/80 font-light text-base md:text-xl text-center max-w-2xl mx-auto leading-relaxed`}
+                        className={`${roboto.className} text-black/80 font-light text-base md:text-xl text-center max-w-2xl mx-auto leading-relaxed`}
                     >
                         Share a dedicated read-only view with clients. They see progress without the complexity of the full interface.
                     </motion.p>
 
-                    <VideoContainer
+                    <VideoContainerLight
                         src="/projects/sifty/client_side_view.mp4"
                         caption="Client-facing project view"
                     />
                 </AnimatedSection>
             </section>
 
-            {/* 8. Tech Stack Section */}
-            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] z-10">
-                <AnimatedSection className="flex flex-col gap-12 max-w-5xl mx-auto">
+            {/* 8. Tech Stack Section - Dark */}
+            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] bg-black">
+                <GridOverlay />
+                <AnimatedSection className="flex flex-col gap-12 max-w-5xl mx-auto relative z-10">
                     <motion.h2
                         variants={fadeInUp}
                         className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl text-center`}
@@ -436,9 +539,10 @@ export default function Sifty() {
                 </AnimatedSection>
             </section>
 
-            {/* 9. Footer Section */}
-            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] z-10">
-                <AnimatedSection className="flex flex-col items-center gap-8 max-w-5xl mx-auto">
+            {/* 9. Footer Section - Dark */}
+            <section className="relative py-20 md:py-24 px-5 md:px-[8vw] lg:px-[11vw] bg-black">
+                <GridOverlay />
+                <AnimatedSection className="flex flex-col items-center gap-8 max-w-5xl mx-auto relative z-10">
                     <motion.div
                         variants={fadeInUp}
                         className="h-px w-full max-w-md bg-gradient-to-r from-transparent via-white/20 to-transparent"

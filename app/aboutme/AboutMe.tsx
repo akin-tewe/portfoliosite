@@ -5,6 +5,45 @@ import { motion, useInView } from "framer-motion";
 import { pixelify, roboto } from "../ui/fonts";
 import TransparentVideo from "@/components/SplashVideo";
 
+// Grid container for content alignment
+function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
+    return (
+        <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+            {children}
+        </div>
+    );
+}
+
+// Grid overlay for light sections
+function GridOverlayLight() {
+    return (
+        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
+            <div className="flex w-full max-w-[1400px] h-full">
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-black/[0.07]"></div>
+                <div className="flex-1 border-l border-r border-black/[0.07]"></div>
+            </div>
+        </div>
+    );
+}
+
+// Grid overlay for dark/colored sections
+function GridOverlay() {
+    return (
+        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
+            <div className="flex w-full max-w-[1400px] h-full">
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-white/[0.07]"></div>
+                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
+            </div>
+        </div>
+    );
+}
+
 // Carousel items - add new items here
 const carouselItems = [
     { type: "video" as const, src: "/about-me-carousel/truvideo.mp4" },
@@ -278,140 +317,156 @@ export default function AboutMe() {
             {/* Hero Headline */}
             <section
                 ref={heroRef}
-                className="pt-28 md:pt-40 pb-16 md:pb-24 px-6 md:px-[10vw]"
+                className="relative pt-28 md:pt-40 pb-16 md:pb-24"
             >
-                <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const }}
-                    className={`${roboto.className} font-light text-black text-4xl md:text-5xl lg:text-6xl max-w-5xl leading-tight`}
-                >
-                    Driven by a child-like sense of curiosity and a deep attention to detail.
-                </motion.h1>
+                <GridOverlayLight />
+                <GridContainer>
+                    <div className="md:grid md:grid-cols-5">
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const }}
+                            className={`${roboto.className} font-light text-black text-4xl md:text-5xl lg:text-6xl leading-tight md:col-span-4`}
+                        >
+                            Driven by a child-like sense of curiosity and a deep attention to detail.
+                        </motion.h1>
+                    </div>
+                </GridContainer>
             </section>
 
             {/* Divider */}
-            <div className="mx-6 md:mx-[10vw] border-t border-black/10"></div>
+            <GridContainer>
+                <div className="border-t border-black/10"></div>
+            </GridContainer>
 
             {/* Section 1: Intro - Text Left, Image Right */}
-            <section className="py-16 md:py-24 px-6 md:px-[10vw]">
-                <AnimatedSection className="flex flex-col md:flex-row gap-10 md:gap-16 lg:gap-24 justify-between">
-                    <motion.div
-                        variants={fadeInLeft}
-                        className="flex-1 md:max-w-lg"
-                    >
-                        <p className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed max-w-md`}>
-                            Hey! I&apos;m Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
-                        </p>
-                        <p className={`${roboto.className} text-black/80 mt-8 font-light text-lg md:text-xl leading-relaxed max-w-md`}>
-                            As a designer who can also write code, I think about how things look and how they&apos;re actually built. Whether I&apos;m wireframing in Figma,
-                            conducting user research, or building responsive interfaces with React and TypeScript, I can take a project from initial concept through to functional code.
-                        </p>
-                    </motion.div>
-                    <motion.div
-                        variants={fadeInRight}
-                        className="w-full md:w-[45%] lg:w-[35%]"
-                    >
-                        <div className="relative overflow-hidden rounded-2xl shadow-xl">
-                            <Image
-                                src="/profilephoto.png"
-                                alt="Akin Tewe"
-                                width={700}
-                                height={700}
-                                className="w-full h-auto"
-                            />
-                        </div>
-                    </motion.div>
-                </AnimatedSection>
+            <section className="relative py-16 md:py-24">
+                <GridOverlayLight />
+                <GridContainer>
+                    <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10">
+                        <motion.div
+                            variants={fadeInLeft}
+                            className="md:col-span-2"
+                        >
+                            <p className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}>
+                                Hey! I&apos;m Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
+                            </p>
+                            <p className={`${roboto.className} text-black/80 mt-8 font-light text-lg md:text-xl leading-relaxed`}>
+                                As a designer who can also write code, I think about how things look and how they&apos;re actually built. Whether I&apos;m wireframing in Figma,
+                                conducting user research, or building responsive interfaces with React and TypeScript, I can take a project from initial concept through to functional code.
+                            </p>
+                        </motion.div>
+                        <motion.div
+                            variants={fadeInRight}
+                            className="md:col-span-2 md:col-start-4"
+                        >
+                            <div className="relative overflow-hidden rounded-2xl shadow-xl">
+                                <Image
+                                    src="/profilephoto.png"
+                                    alt="Akin Tewe"
+                                    width={700}
+                                    height={700}
+                                    className="w-full h-auto"
+                                />
+                            </div>
+                        </motion.div>
+                    </AnimatedSection>
+                </GridContainer>
             </section>
 
             {/* Section 2: Experience - Carousel Left, Text Right */}
-            <section className="py-16 md:py-30 px-6 md:px-[10vw] bg-blue-500">
-                <AnimatedSection className="flex flex-col md:flex-row-reverse gap-10 md:gap-16 lg:gap-24 items-center justify-between">
-                    <motion.div
-                        variants={fadeInRight}
-                        className="flex-1 md:max-w-lg"
-                    >
-                        <p className={`${roboto.className} text-white/90 font-light text-lg md:text-xl leading-relaxed`}>
-                            Throughout my time freelancing as a Visual Designer, I&apos;ve worked with large brands like True Religion and Highground, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
-                        </p>
-                    </motion.div>
-                    <motion.div
-                        variants={fadeInLeft}
-                        className="w-full md:w-[45%] md:max-w-3xl flex-shrink-0"
-                    >
-                        <WorkCarousel items={carouselItems} />
-                    </motion.div>
-                </AnimatedSection>
+            <section className="relative py-16 md:py-30 bg-blue-500">
+                <GridOverlay />
+                <GridContainer>
+                    <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10 items-center">
+                        <motion.div
+                            variants={fadeInLeft}
+                            className="md:col-span-2 w-full"
+                        >
+                            <WorkCarousel items={carouselItems} />
+                        </motion.div>
+                        <motion.div
+                            variants={fadeInRight}
+                            className="md:col-span-2 md:col-start-4"
+                        >
+                            <p className={`${roboto.className} text-white/90 font-light text-lg md:text-xl leading-relaxed`}>
+                                Throughout my time freelancing as a Visual Designer, I&apos;ve worked with large brands like True Religion and Highground, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
+                            </p>
+                        </motion.div>
+                    </AnimatedSection>
+                </GridContainer>
             </section>
 
-            {/* Section 3: Skills - Lists Left, Image Right */}
-            <section className="py-16 md:py-24 px-6 md:px-[10vw]">
-                <AnimatedSection className="flex flex-col md:flex-row gap-12 md:gap-16 lg:gap-24 items-start">
-                    <motion.div
-                        variants={fadeInLeft}
-                        className="flex-1"
-                    >
-                        <motion.h2
-                            variants={fadeInUp}
-                            className={`${pixelify.className} text-black text-2xl md:text-3xl mb-10`}
+            {/* Section 3: Skills - Lists Left, Video Right */}
+            <section className="relative py-16 md:py-24">
+                <GridOverlayLight />
+                <GridContainer>
+                    <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-12 items-start">
+                        <motion.div
+                            variants={fadeInLeft}
+                            className="md:col-span-2"
                         >
-                            SKILLS & TOOLS
-                        </motion.h2>
+                            <motion.h2
+                                variants={fadeInUp}
+                                className={`${pixelify.className} text-black text-2xl md:text-3xl mb-10`}
+                            >
+                                SKILLS & TOOLS
+                            </motion.h2>
 
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-8">
-                            <SkillsList
-                                title="DESIGN"
-                                skills={[
-                                    "UI/UX Design",
-                                    "Responsive Design",
-                                    "User Research",
-                                    "Wireframing",
-                                    "Prototyping",
-                                    "Design Systems",
-                                    "Visual Hierarchy",
-                                    "Generative AI Workflows"
-                                ]}
-                            />
-                            <SkillsList
-                                title="LANGUAGES"
-                                skills={[
-                                    "JavaScript",
-                                    "TypeScript",
-                                    "HTML",
-                                    "CSS"
-                                ]}
-                            />
-                            <SkillsList
-                                title="FRAMEWORKS"
-                                skills={[
-                                    "React",
-                                    "Next.js",
-                                    "Tailwind CSS",
-                                    "Framer Motion",
-                                    "Git"
-                                ]}
-                            />
-                            <SkillsList
-                                title="SOFTWARE"
-                                skills={[
-                                    "Figma",
-                                    "Adobe Photoshop",
-                                    "Adobe Illustrator",
-                                    "AutoCAD",
-                                    "Solidworks"
-                                ]}
-                            />
-                        </div>
-                    </motion.div>
+                            <div className="grid grid-cols-2 gap-10 md:gap-8">
+                                <SkillsList
+                                    title="DESIGN"
+                                    skills={[
+                                        "UI/UX Design",
+                                        "Responsive Design",
+                                        "User Research",
+                                        "Wireframing",
+                                        "Prototyping",
+                                        "Design Systems",
+                                        "Visual Hierarchy",
+                                        "Generative AI Workflows"
+                                    ]}
+                                />
+                                <SkillsList
+                                    title="LANGUAGES"
+                                    skills={[
+                                        "JavaScript",
+                                        "TypeScript",
+                                        "HTML",
+                                        "CSS"
+                                    ]}
+                                />
+                                <SkillsList
+                                    title="FRAMEWORKS"
+                                    skills={[
+                                        "React",
+                                        "Next.js",
+                                        "Tailwind CSS",
+                                        "Framer Motion",
+                                        "Git"
+                                    ]}
+                                />
+                                <SkillsList
+                                    title="SOFTWARE"
+                                    skills={[
+                                        "Figma",
+                                        "Adobe Photoshop",
+                                        "Adobe Illustrator",
+                                        "AutoCAD",
+                                        "Solidworks"
+                                    ]}
+                                />
+                            </div>
+                        </motion.div>
 
-                    <motion.div
-                        variants={fadeInRight}
-                        className="relative w-full md:w-[500px] lg:w-[600px] flex-shrink-0 aspect-square"
-                    >
-                        <TransparentVideo mp4Src="/aboutme-skills.mp4" />
-                    </motion.div>
-                </AnimatedSection>
+                        <motion.div
+                            variants={fadeInRight}
+                            className="relative w-full md:col-span-2 md:col-start-4 aspect-square"
+                        >
+                            <TransparentVideo mp4Src="/aboutme-skills.mp4" />
+                        </motion.div>
+                    </AnimatedSection>
+                </GridContainer>
             </section>
 
             {/* Bottom Padding */}

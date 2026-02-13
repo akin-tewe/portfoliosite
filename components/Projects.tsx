@@ -165,7 +165,7 @@ export default function Projects() {
                                     setDirection(i > index ? 1 : -1);
                                     setIndex(i);
                                 }}
-                                className={`transition-all duration-300 ${i === index ? 'text-white' : 'text-white/40 hover:text-white/60'}`}
+                                className={`transition-all duration-300 uppercase ${i === index ? 'text-white' : 'text-white/40 hover:text-white/60'}`}
                                 whileTap={{ scale: 0.95 }}
                             >
                                 {name}

@@ -97,26 +97,6 @@ export default function ExtraProjects() {
                 </motion.div>
             ))}
 
-            {/* View all projects indicator */}
-            <motion.div
-                className="flex justify-center mt-8"
-                variants={itemVariants}
-            >
-                <Link href="/#projects">
-                    <motion.button
-                        className={`${pixelify.className} text-white/40 hover:text-white text-sm uppercase tracking-wider flex items-center gap-2 transition-colors`}
-                        whileHover={{ y: -2 }}
-                    >
-                        view featured projects
-                        <motion.span
-                            animate={{ y: [0, -3, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                        >
-                            ↑
-                        </motion.span>
-                    </motion.button>
-                </Link>
-            </motion.div>
         </motion.div>
     )
 }

@@ -369,9 +369,9 @@ export default function Instagram() {
             </section>
 
             {/* ============================================ */}
-            {/* DARK SECTION: Key Insight */}
+            {/* BLUE SECTION: Key Insight */}
             {/* ============================================ */}
-            <section className="relative bg-black py-16 md:py-24">
+            <section className="relative bg-blue-600 py-16 md:py-24">
                 <GridOverlay />
                 <GridContainer>
                     <motion.div
@@ -381,11 +381,11 @@ export default function Instagram() {
                         transition={{ duration: 0.8 }}
                         className="md:ml-[20%] md:w-[60%]"
                     >
-                        <div className="border-l-2 border-blue-400 pl-6 md:pl-8">
+                        <div className="border-l-2 border-white pl-6 md:pl-8">
                             <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
                                 Desktop usage shifts towards utility, while mobile gears itself more towards passive consumption.
                             </span>
-                            <span className={`${roboto.className} text-white/50 text-base block mt-4`}>
+                            <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
                                 Key insight from user research
                             </span>
                         </div>

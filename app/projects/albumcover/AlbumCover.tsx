@@ -1,13 +1,10 @@
 "use client";
 import { pixelify, roboto } from "@/app/ui/fonts"
-import MagneticButton from "@/components/MagneticButton";
 import { useRef } from "react";
-import { ChevronDown } from "lucide-react";
 import Image from "next/image";
-import DragScroll from "@/components/DragScroll";
 import { motion, useInView } from "framer-motion";
-import ProjectSummary from "@/components/ProjectSummary";
 
+// Animation variants
 const fadeInUp = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0 }
@@ -24,6 +21,16 @@ const staggerContainer = {
     }
 };
 
+// Grid container for content alignment
+function GridContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+    return (
+        <div className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+            {children}
+        </div>
+    );
+}
+
+// Section wrapper for animations
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -47,201 +54,301 @@ export default function AlbumCover() {
 
     return (
         <main className="overflow-x-hidden">
-            <div className="fixed inset-0 flex h-full w-full gap-[1vw] text-white/5 justify-center pointer-events-none z-0">
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
+            {/* Visible Grid Overlay */}
+            <div className="fixed inset-0 flex h-full w-full justify-center pointer-events-none z-0">
+                <div className="flex w-full max-w-[1400px] h-full">
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-r border-white/[0.07]"></div>
+                </div>
             </div>
 
+            {/* Hero Section */}
             <section
                 ref={heroRef}
-                id="splash"
-                className="relative w-full min-h-[100vh] md:min-h-[60vh] flex items-center justify-center md:justify-start px-5 md:px-[5vw] py-20"
+                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24"
             >
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="flex flex-col md:flex-row md:gap-20 w-full max-w-7xl"
-                >
-                    <div className="relative flex flex-col gap-6 md:gap-10">
+                <GridContainer>
+                    <div className="md:w-[60%] lg:w-[50%] md:ml-[20%]">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-4xl md:text-5xl lg:text-6xl text-white max-w-xs md:max-w-2xl leading-tight`}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
                         >
-                            {`"peaches and eggplants (remix)" cover art design`}
+                            peaches and eggplants
+                            <br />
+                            <span className="text-blue-400 italic">cover art design</span>
                         </motion.h1>
+
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl lg:text-2xl md:max-w-2xl leading-relaxed`}
+                            className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             {`As star artists "Latto" and "Sexyy Red" were brought on to the remix of Young Nudy's
-                            hit song "Peaches and Eggplants", I was commissioned by Nudy's team to reinterpret the original cover to represent the new artists.`}
+                            hit song, I was commissioned by Nudy's team to reinterpret the original cover.`}
                         </motion.p>
-                    </div>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                        className={`${pixelify.className} text-xl flex flex-col items-center md:flex-row gap-6 mt-10 md:mt-auto justify-center md:ml-auto`}
-                    >
-                        <button
-                            className="flex justify-center items-center w-auto h-auto z-10"
+
+                        <motion.button
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.6 }}
                             onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
+                            className={`${roboto.className} mt-10 px-6 py-3 border border-white/30 rounded-full text-white/80 text-base hover:bg-white/10 transition-colors`}
                         >
-                            <MagneticButton icon={<ChevronDown className="md:hidden text-white z-50" />} parameter="w-15 h-15 md:w-50 md:h-15 bg-blue-600/50 md:bg-blue-500/0 hover:bg-blue-600/50 z-20" text="Read More" />
-                        </button>
-                    </motion.div>
-                </motion.div>
+                            View Project
+                        </motion.button>
+                    </div>
+                </GridContainer>
             </section>
 
-            <section className="h-[50px] md:h-0"></section>
+            {/* Hero Image - Original Cover */}
+            <section className="relative w-full pb-16 md:pb-24">
+                <GridContainer>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <div className="overflow-hidden">
+                            <Image
+                                src="/projects/albumcover/originalcover.jpg"
+                                alt="Original Album Cover"
+                                width={600}
+                                height={600}
+                                className="w-full h-auto"
+                            />
+                        </div>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            {`"Peaches and Eggplants" by Young Nudy - original cover art`}
+                        </span>
+                    </motion.div>
+                </GridContainer>
+            </section>
 
-            <section id="body" className="relative pb-20 md:pb-40 px-5 md:px-[8vw] lg:px-[11vw] z-10">
-                <div className="flex flex-col gap-16 md:gap-24 max-w-4xl">
+            {/* Main Content */}
+            <section id="body" className="relative py-12 md:py-20">
+                {/* Section 1: Context */}
+                <GridContainer>
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            Context
+                        </motion.span>
 
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-12">
-                        <motion.div variants={fadeInUp}>
-                            <h2 className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mb-6`}>
-                                context.
-                            </h2>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                6 short hours.
-                                This was all the time provided to make this happen, something not unusual to the music industry but entirely unusual
-                                to my regular process. I had to rethink how I design entirely. Instead of broad stylistic changes and innovation, the
-                                focus was on precise, high impact additions that respectfully leave their mark.
-                            </p>
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            6 short hours. This was all the time provided to make this happen.
+                        </motion.p>
 
-                        <motion.div variants={fadeInUp}>
-                            <div className="flex relative overflow-hidden bg-white/10 p-2 md:p-[1vw] rounded-lg">
-                                <Image
-                                    src="/projects/albumcover/originalcover.jpg"
-                                    alt="Original Album Cover Art"
-                                    className="rounded-md pointer-events-none w-full h-auto"
-                                    width={700}
-                                    height={700}
-                                />
-                            </div>
-                            <div className={`${roboto.className} text-white/40 text-center mt-2 italic text-sm md:text-base`}>
-                                {`"Peaches and Eggplants" by Young Nudy original cover art.`}
-                            </div>
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            Something not unusual to the music industry but entirely unusual
+                            to my regular process. I had to rethink how I design entirely.
+                        </motion.p>
 
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                {`The original cover was a still-life composition built
-                                around indulgence: food, money, guns, and overt luxury engaged around a central snake serving as Nudy's motif. Safe to say
-                                it would not be a light challenge introducing new elements onto an already cluttered scene.`}
-                            </p>
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            Instead of broad stylistic changes and innovation, the
+                            focus was on precise, high impact additions that respectfully leave their mark.
+                        </motion.p>
                     </AnimatedSection>
+                </GridContainer>
 
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-12">
-                        <motion.div variants={fadeInUp}>
-                            <h2 className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mb-6`}>
-                                iteration and integration.
-                            </h2>
-                        </motion.div>
+                {/* Pull Quote */}
+                <GridContainer className="py-10 md:py-16">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <div className="border-l-2 border-blue-400 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                                {`The original cover was a still-life composition built around indulgence: food, money, guns, and overt luxury.`}
+                            </span>
+                            <span className={`${roboto.className} text-white/50 text-base block mt-4`}>
+                                Safe to say it would not be a light challenge introducing new elements onto an already cluttered scene.
+                            </span>
+                        </div>
+                    </motion.div>
+                </GridContainer>
+            </section>
 
-                        <motion.div variants={fadeInUp}>
-                            <DragScroll className="flex gap-3 md:gap-[1vw] relative w-full bg-white/10 p-3 md:p-[1vw] rounded-lg">
-                                <Image
-                                    src="/projects/albumcover/red.jpg"
-                                    alt="Red Chain Reference Image"
-                                    className="rounded-md pointer-events-none h-100 md:h-200 w-auto"
-                                    width={300}
-                                    height={700}
-                                />
-                                <Image
-                                    src="/projects/albumcover/latto.webp"
-                                    alt="Latto Chain Reference Image"
-                                    className="rounded-md pointer-events-none object-cover h-100 md:h-200 w-auto"
-                                    width={600}
-                                    height={400}
-                                />
-                            </DragScroll>
-                            <div className={`${roboto.className} text-white/40 text-center mt-2 italic text-sm md:text-base`}>
-                                {`chain references for artists "Sexyy Redd" and "Latto."`}
-                            </div>
-                        </motion.div>
+            {/* Section 2: Iteration */}
+            <section className="relative py-12 md:py-20">
+                <GridContainer>
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            Iteration
+                        </motion.span>
 
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                After deciding what made sense to remove, we had to figure out what made sense to include.
-                                To signify the presence of the two new artists, their chains were recreated to serve as the central motif of the new piece. Additional signifiers such as
-                                cherries were also added to shift the tone of the image.
-                            </p>
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            After deciding what made sense to remove, we had to figure out what made sense to include.
+                        </motion.p>
 
-                        <motion.div variants={fadeInUp}>
-                            <div className="flex relative overflow-hidden bg-white/10 p-2 md:p-[1vw] rounded-lg">
-                                <Image
-                                    src="/projects/albumcover/wip2.png"
-                                    alt="Work in Progress Render"
-                                    className="rounded-md pointer-events-none w-full h-auto"
-                                    width={700}
-                                    height={700}
-                                />
-                            </div>
-                            <div className={`${roboto.className} text-white/40 text-center mt-2 italic text-sm md:text-base`}>
-                                initial work in progress scene.
-                            </div>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                {`Scale and placement were the two factors that provided the most friction.
-                                Everything needed to be set perfectly. Nearly a dozen iterations were produced in the tight timeframe, moving pieces sometimes only pixels apart
-                                between each until harmony was established. These constant revisions helped to better understand both my vision and the client's, and eventually
-                                align them as one.`}
-                            </p>
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            To signify the presence of the two new artists, their chains were recreated to serve as the central motif of the new piece.
+                        </motion.p>
                     </AnimatedSection>
+                </GridContainer>
 
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-12">
-                        <motion.div variants={fadeInUp}>
-                            <div className="flex relative overflow-hidden bg-white/10 p-2 md:p-[1vw] rounded-lg">
-                                <Image
-                                    src="/projects/albumcover/finalcover.jpg"
-                                    alt="Final Album Cover Art"
-                                    className="rounded-md pointer-events-none w-full h-auto"
-                                    width={700}
-                                    height={700}
-                                />
-                            </div>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <h2 className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mb-6`}>
-                                concluding.
-                            </h2>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                {`The final cover preserved the identity of the original release while also
-                                differentiating itself in a clear and notable manner. While "short-lived" is an understatement for this experience, it was an important lesson in
-                                quick thinking, rapid adaptation, and distilling decisions down to their essentials.`}
-                            </p>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp} className="mt-8">
-                            <ProjectSummary
-                                items={[
-                                    { label: "Client", value: "Young Nudy" },
-                                    { label: "Deliverable", value: "Album Cover" },
-                                    { label: "Timeline", value: "6 Hours" },
-                                    { label: "Focus", value: "Visual Identity" }
-                                ]}
+                {/* Chain References */}
+                <GridContainer className="mt-12 md:mt-16">
+                    <div className="grid grid-cols-2 gap-3 md:gap-4 md:ml-[20%] md:w-[60%]">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="overflow-hidden"
+                        >
+                            <Image
+                                src="/projects/albumcover/red.jpg"
+                                alt="Sexyy Red Chain Reference"
+                                width={400}
+                                height={600}
+                                className="w-full h-auto"
                             />
                         </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="overflow-hidden"
+                        >
+                            <Image
+                                src="/projects/albumcover/latto.webp"
+                                alt="Latto Chain Reference"
+                                width={400}
+                                height={400}
+                                className="w-full h-auto"
+                            />
+                        </motion.div>
+                    </div>
+                    <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block md:ml-[30%]`}>
+                        {`Chain references for artists "Sexyy Red" and "Latto"`}
+                    </span>
+                </GridContainer>
+
+                {/* WIP Image */}
+                <GridContainer className="mt-12 md:mt-16">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <div className="overflow-hidden">
+                            <Image
+                                src="/projects/albumcover/wip2.png"
+                                alt="Work in Progress"
+                                width={600}
+                                height={600}
+                                className="w-full h-auto"
+                            />
+                        </div>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Initial work in progress scene
+                        </span>
+                    </motion.div>
+                </GridContainer>
+
+                <GridContainer className="mt-12 md:mt-16">
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
+                        >
+                            Scale and placement were the two factors that provided the most friction.
+                            Everything needed to be set perfectly.
+                        </motion.p>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            {`Nearly a dozen iterations were produced in the tight timeframe, moving pieces sometimes only pixels apart
+                            until harmony was established.`}
+                        </motion.p>
                     </AnimatedSection>
-                </div>
+                </GridContainer>
+            </section>
+
+            {/* Final Result */}
+            <section className="relative py-12 md:py-20">
+                <GridContainer>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <div className="overflow-hidden">
+                            <Image
+                                src="/projects/albumcover/finalcover.jpg"
+                                alt="Final Album Cover"
+                                width={800}
+                                height={800}
+                                className="w-full h-auto"
+                            />
+                        </div>
+                    </motion.div>
+                </GridContainer>
+
+                <GridContainer className="mt-12 md:mt-16">
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            Conclusion
+                        </motion.span>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            The final cover preserved the identity of the original release while also
+                            differentiating itself in a clear and notable manner.
+                        </motion.p>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            {`While "short-lived" is an understatement for this experience, it was an important lesson in
+                            quick thinking, rapid adaptation, and distilling decisions down to their essentials.`}
+                        </motion.p>
+                    </AnimatedSection>
+                </GridContainer>
             </section>
         </main>
     )

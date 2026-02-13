@@ -1,12 +1,8 @@
 "use client";
 import { pixelify, roboto } from "@/app/ui/fonts"
-import MagneticButton from "@/components/MagneticButton";
 import { useRef } from "react";
-import { ChevronDown, ExternalLink } from "lucide-react";
 import Image from "next/image";
-import DragScroll from "@/components/DragScroll";
-import Link from "next/link"
-import { motion, useInView, } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import {
     HorizontalBarChart,
     VerticalBarChart,
@@ -32,7 +28,16 @@ const staggerContainer = {
     }
 };
 
-// Section wrapper component for consistent animations
+// Grid container for content alignment
+function GridContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+    return (
+        <div className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+            {children}
+        </div>
+    );
+}
+
+// Section wrapper for animations
 function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, margin: "-50px" });
@@ -50,45 +55,10 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
     );
 }
 
-// Video container with hover effects
-function VideoContainer({ src, caption }: { src: string; caption: string }) {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-    return (
-        <motion.div
-            ref={ref}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="group"
-        >
-            <div className="flex relative overflow-hidden bg-white/10 p-2 md:p-[1vw] rounded-lg transition-all duration-300 group-hover:bg-white/15">
-                <video
-                    className="h-full w-auto z-50 rounded-md"
-                    src={src}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                />
-            </div>
-            <motion.div
-                initial={{ opacity: 0 }}
-                animate={isInView ? { opacity: 1 } : {}}
-                transition={{ delay: 0.3 }}
-                className={`${roboto.className} text-white/40 justify-self-center text-center mt-2 md:mt-[0.5vw] italic text-sm md:text-base`}
-            >
-                {caption}
-            </motion.div>
-        </motion.div>
-    );
-}
-
 // Chart container with glass effect
 function ChartContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     return (
-        <div className={`bg-white/10 backdrop-blur-sm p-4 md:p-6 rounded-xl border border-white/5 ${className}`}>
+        <div className={`bg-white/5 backdrop-blur-sm p-4 md:p-6 rounded-lg border border-white/5 ${className}`}>
             {children}
         </div>
     );
@@ -100,302 +70,451 @@ export default function Instagram() {
 
     return (
         <main className="overflow-x-hidden">
-            {/* Subtle Grid Overlay */}
-            <div className="fixed inset-0 flex h-full w-full gap-[1vw] text-white/5 justify-center pointer-events-none z-0">
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
-                <div className="border w-[15vw] md:w-[12.1vw] border-white/5"></div>
+            {/* Visible Grid Overlay */}
+            <div className="fixed inset-0 flex h-full w-full justify-center pointer-events-none z-0">
+                <div className="flex w-full max-w-[1400px] h-full">
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-white/[0.07]"></div>
+                    <div className="flex-1 border-l border-r border-white/[0.07]"></div>
+                </div>
             </div>
 
             {/* Hero Section */}
             <section
                 ref={heroRef}
-                id="splash"
-                className="relative w-full min-h-[100vh] md:min-h-[60vh] flex items-center justify-center md:justify-start px-5 md:px-[5vw] py-20"
+                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24"
             >
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                    className="flex flex-col md:flex-row md:gap-20 w-full max-w-7xl"
-                >
-                    <div className="relative flex flex-col gap-6 md:gap-10">
+                <GridContainer>
+                    <div className="md:w-[60%] lg:w-[45%] md:ml-[20%]">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-4xl md:text-5xl lg:text-6xl text-white max-w-xs md:max-w-2xl leading-tight`}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
                         >
-                            instagram web application redesign
+                            instagram web
+                            <br />
+                            <span className="text-blue-400 italic">application redesign</span>
                         </motion.h1>
-                        <motion.span
+
+                        <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl lg:text-2xl md:max-w-2xl leading-relaxed`}
+                            className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             A simple question: what are people trying to do when they access
                             Instagram via desktop and where does the platform fail them?
-                            <span className="block mt-4 text-white/50 text-sm md:text-base italic">
-                                ( All code for this project was written from scratch by me. )
-                            </span>
-                        </motion.span>
-                    </div>
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
-                        transition={{ duration: 0.6, delay: 0.6 }}
-                        className={`${pixelify.className} text-xl flex flex-col items-center md:flex-row gap-6 mt-10 md:mt-auto justify-center md:ml-auto`}
-                    >
-                        <button
-                            className="flex justify-center items-center w-auto h-auto z-10"
-                            onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
+                        </motion.p>
+
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.5 }}
+                            className={`${roboto.className} text-white/40 font-light text-base mt-4 italic`}
                         >
-                            <MagneticButton
-                                icon={<ChevronDown className="md:hidden text-white z-50" />}
-                                parameter="w-15 h-15 md:w-50 md:h-15 bg-blue-600/50 md:bg-blue-500/0 hover:bg-blue-600/50 z-20"
-                                text="Read More"
-                            />
-                        </button>
-                    </motion.div>
-                </motion.div>
+                            All code for this project was written from scratch by me.
+                        </motion.p>
+
+                        <motion.button
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.6 }}
+                            onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
+                            className={`${roboto.className} mt-10 px-6 py-3 border border-white/30 rounded-full text-white/80 text-base hover:bg-white/10 transition-colors`}
+                        >
+                            View Project
+                        </motion.button>
+                    </div>
+                </GridContainer>
             </section>
 
-            {/* Spacer for mobile */}
-            <section className="h-[50px] md:h-0"></section>
+            {/* Hero Media */}
+            <section className="relative pb-16 md:pb-24">
+                <GridContainer>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[65%]"
+                    >
+                        <video
+                            src="/projects/instadesign/old/figmavidwip.mp4"
+                            autoPlay loop muted playsInline
+                            className="w-full h-auto rounded-lg"
+                        />
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Full UI overhaul demonstration
+                        </span>
+                    </motion.div>
+                </GridContainer>
+            </section>
 
             {/* Main Content */}
-            <section id="body" className="relative pb-20 md:pb-40 px-5 md:px-[8vw] lg:px-[11vw] z-10">
-                <div className="flex flex-col gap-16 md:gap-24 max-w-4xl">
-
-                    {/* Section 1: Learning from Users */}
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-12">
-                        <VideoContainer
-                            src="/projects/instadesign/old/figmavidwip.mp4"
-                            caption="figma overhaul implementation."
-                        />
-
-                        <motion.div variants={fadeInUp}>
-                            <h2 className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mb-6`}>
-                                learning from their users
-                            </h2>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                Before jumping into ideating solutions and creating interfaces,
-                                it was important to ground the project in real user behavior. I conducted an open-ended survey to better understand how users currently engage
-                                with the platform, and learn directly from them where misalignment stemmed. I chose an open-ended approach to avoid bias and capture patterns
-                                beyond my personal social circle. The survey focused on frequency of use, friction points, and perceived usability under both environments.
-                            </p>
-                        </motion.div>
-
-                        {/* Search Comparison Charts */}
-                        <motion.div variants={fadeInUp}>
-                            <ChartContainer>
-                                <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
-                                    ease of search comparison
-                                </h3>
-                                <ComparisonChart
-                                    leftData={chartData.mobileSearch}
-                                    rightData={chartData.webSearch}
-                                    leftTitle="Mobile App"
-                                    rightTitle="Web Application"
-                                    type="vertical"
-                                />
-                            </ChartContainer>
-                            <div className={`${roboto.className} text-white/40 text-center mt-3 italic text-sm md:text-base`}>
-                                initial chart findings, ease of search comparison.
-                            </div>
-                        </motion.div>
-
-                        {/* Use Frequency Comparison Charts */}
-                        <motion.div variants={fadeInUp}>
-                            <ChartContainer>
-                                <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
-                                    platform usage frequency
-                                </h3>
-                                <ComparisonChart
-                                    leftData={chartData.mobileUse}
-                                    rightData={chartData.webUse}
-                                    leftTitle="Mobile Usage"
-                                    rightTitle="Web Usage"
-                                    type="horizontal"
-                                />
-                            </ChartContainer>
-                            <div className={`${roboto.className} text-white/40 text-center mt-3 italic text-sm md:text-base`}>
-                                frequency of use across platforms.
-                            </div>
-                        </motion.div>
-
-                        {/* Key Takeaway */}
-                        <motion.div
+            <section id="body" className="relative py-12 md:py-20">
+                {/* Section 1: Research */}
+                <GridContainer>
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
                             variants={fadeInUp}
-                            className="bg-gradient-to-r from-blue-500/20 to-transparent p-6 md:p-8 rounded-xl border-l-4 border-blue-500"
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
                         >
-                            <span className={`${roboto.className} text-white text-lg md:text-xl lg:text-2xl font-medium`}>key takeaway - </span>
-                            <span className={`${roboto.className} text-white/80 text-lg md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                desktop usage shifts towards utility (posting and managing content,
-                                messaging friends, deliberate browsing), while mobile gears itself more towards passive consumption (scrolling, watching reels, etc.).
-                            </span>
-                            <span className={`${roboto.className} text-white text-lg md:text-xl lg:text-2xl leading-relaxed block mt-2`}>
-                                This shift in behavior became the foundation for the redesign.
-                            </span>
-                        </motion.div>
+                            Research
+                        </motion.span>
 
-                        {/* Additional Findings */}
-                        <motion.div variants={fadeInUp}>
-                            <ChartContainer>
-                                <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
-                                    additional user insights
-                                </h3>
-                                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                                    <VerticalBarChart
-                                        data={chartData.useFrequency}
-                                        title="Daily Engagement"
-                                    />
-                                    <VerticalBarChart
-                                        data={chartData.webInteraction}
-                                        title="Web Interaction Level"
-                                    />
-                                    <VerticalBarChart
-                                        data={chartData.webMessaging}
-                                        title="Messaging Ease"
-                                    />
-                                </div>
-                            </ChartContainer>
-                            <div className={`${roboto.className} text-white/40 text-center mt-3 italic text-sm md:text-base`}>
-                                additional findings from user research.
-                            </div>
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            Before jumping into ideating solutions and creating interfaces,
+                            it was important to ground the project in real user behavior. I conducted an open-ended survey to better understand how users currently engage
+                            with the platform, and learn directly from them where misalignment stemmed.
+                        </motion.p>
 
-                        {/* User Frustrations Chart */}
-                        <motion.div variants={fadeInUp}>
-                            <ChartContainer>
-                                <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6 text-center`}>
-                                    reported user frustrations
-                                </h3>
-                                <HorizontalBarChart
-                                    data={chartData.frustrations}
-                                    showLabels={true}
-                                />
-                            </ChartContainer>
-                            <div className={`${roboto.className} text-white/40 text-center mt-3 italic text-sm md:text-base`}>
-                                primary pain points identified through survey responses.
-                            </div>
-                        </motion.div>
-
-                        {/* Identified Issues */}
-                        <motion.div variants={fadeInUp} className="flex flex-col gap-4">
-                            <p className={`${roboto.className} text-white text-lg md:text-xl lg:text-2xl font-light`}>
-                                additionally identified:
-                            </p>
-                            <motion.ul
-                                variants={staggerContainer}
-                                className="flex flex-col gap-3 md:gap-4 pl-4 md:pl-8"
-                            >
-                                {[
-                                    "Messy navigation",
-                                    "Poor access to messaging",
-                                    "Poor visual hierarchy",
-                                    "Difficulty scanning content"
-                                ].map((item, index) => (
-                                    <motion.li
-                                        key={index}
-                                        variants={fadeInUp}
-                                        className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light flex items-center gap-3`}
-                                    >
-                                        <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></span>
-                                        {item}
-                                    </motion.li>
-                                ))}
-                            </motion.ul>
-                        </motion.div>
-
-                        {/* Improvements Chart */}
-                        <motion.div variants={fadeInUp}>
-                            <ChartContainer className="flex justify-center">
-                                <DonutChart
-                                    data={chartData.improvements}
-                                    title="Desired Improvements"
-                                    size={220}
-                                />
-                            </ChartContainer>
-                            <div className={`${roboto.className} text-white/40 text-center mt-3 italic text-sm md:text-base`}>
-                                overall desired changes to infrastructure.
-                            </div>
-                        </motion.div>
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            The survey focused on frequency of use, friction points, and perceived usability under both environments.
+                        </motion.p>
                     </AnimatedSection>
+                </GridContainer>
 
-                    {/* Section 2: Ideating Solutions */}
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-12">
-                        <motion.div variants={fadeInUp}>
-                            <h2 className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mb-6`}>
-                                ideating solutions and creating interfaces.
-                            </h2>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                {`No more need to jump ahead. The redesign can now be tackled with one core principle;
-                                keep things clean, but make them easy. Rather than hiding key features behind mountainous clicks and burying them in a cluster of menus, let's consolidate
-                                the experience so users can instantly see what's available without feeling overwhelmed.`}
-                            </p>
-                            <p className={`${roboto.className} mt-6 text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                {`The focus wasn't on adding more, but better utilization of the space provided`}.
-                            </p>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} mb-6 text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                Search bar and stories merge into one co-existing component. Lives together while
-                                maintaining separate identities, and creates a central place for the user to access two monumental features in an intelligent fashion.
-                            </p>
-                            <VideoContainer
-                                src="/projects/instadesign/old/searchwip.mp4"
-                                caption="conceptual new search widget."
+                {/* Search Comparison Chart */}
+                <GridContainer className="mt-10 md:mt-16">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <ChartContainer>
+                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                                ease of search comparison
+                            </h3>
+                            <ComparisonChart
+                                leftData={chartData.mobileSearch}
+                                rightData={chartData.webSearch}
+                                leftTitle="Mobile App"
+                                rightTitle="Web Application"
+                                type="vertical"
                             />
-                        </motion.div>
+                        </ChartContainer>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Initial chart findings, ease of search comparison
+                        </span>
+                    </motion.div>
+                </GridContainer>
 
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} mb-6 text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                Implement solid color when unread messages exist. Creates stronger profile and pulls user attention to new information.
-                            </p>
-                            <VideoContainer
-                                src="/projects/instadesign/old/messageswip.mp4"
-                                caption="conceptual messaging changes."
+                {/* Platform Usage Chart */}
+                <GridContainer className="mt-8 md:mt-12">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <ChartContainer>
+                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                                platform usage frequency
+                            </h3>
+                            <ComparisonChart
+                                leftData={chartData.mobileUse}
+                                rightData={chartData.webUse}
+                                leftTitle="Mobile Usage"
+                                rightTitle="Web Usage"
+                                type="horizontal"
                             />
-                        </motion.div>
+                        </ChartContainer>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Frequency of use across platforms
+                        </span>
+                    </motion.div>
+                </GridContainer>
 
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} mb-6 text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                New discovery tab implementation. Aids deliberate browsing and helps the user find new topics of interest to them.
-                            </p>
-                            <div className="flex relative overflow-hidden bg-white/10 p-2 md:p-[1vw] rounded-lg justify-center">
-                                <Image
-                                    src="/projects/instadesign/discovery.gif"
-                                    alt="Discovery Implementation"
-                                    className="rounded-md pointer-events-none"
-                                    width={400}
-                                    height={400}
+                {/* Key Takeaway - Pull Quote */}
+                <GridContainer className="py-10 md:py-16">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <div className="border-l-2 border-blue-400 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                                Desktop usage shifts towards utility, while mobile gears itself more towards passive consumption.
+                            </span>
+                            <span className={`${roboto.className} text-white/50 text-base block mt-4`}>
+                                Key insight from user research
+                            </span>
+                        </div>
+                    </motion.div>
+                </GridContainer>
+
+                {/* Additional Charts */}
+                <GridContainer className="mt-8 md:mt-12">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <ChartContainer>
+                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                                additional user insights
+                            </h3>
+                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                                <VerticalBarChart
+                                    data={chartData.useFrequency}
+                                    title="Daily Engagement"
+                                />
+                                <VerticalBarChart
+                                    data={chartData.webInteraction}
+                                    title="Web Interaction Level"
+                                />
+                                <VerticalBarChart
+                                    data={chartData.webMessaging}
+                                    title="Messaging Ease"
                                 />
                             </div>
-                            <div className={`${roboto.className} text-white/40 text-center mt-2 md:mt-[0.5vw] italic text-sm md:text-base`}>
-                                New tab additions aid discovery of user-directed content.
-                            </div>
-                        </motion.div>
+                        </ChartContainer>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Additional findings from user research
+                        </span>
+                    </motion.div>
+                </GridContainer>
 
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} mb-6 text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                A prototype of the entire layout was built using Figma, where all of these changes come together in unison.
-                                Additional supporting improvements included:
-                            </p>
-                            <VideoContainer
-                                src="/projects/instadesign/old/figmavidwip.mp4"
-                                caption="full UI overhaul demonstration (figma)."
+                {/* User Frustrations */}
+                <GridContainer className="mt-8 md:mt-12">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <ChartContainer>
+                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                                reported user frustrations
+                            </h3>
+                            <HorizontalBarChart
+                                data={chartData.frustrations}
+                                showLabels={true}
                             />
-                        </motion.div>
+                        </ChartContainer>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Primary pain points identified through survey responses
+                        </span>
+                    </motion.div>
+                </GridContainer>
+
+                {/* Identified Issues */}
+                <GridContainer className="mt-10 md:mt-16">
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            Additionally Identified
+                        </motion.span>
 
                         <motion.ul
                             variants={staggerContainer}
-                            className="flex flex-col gap-3 md:gap-4 pl-4 md:pl-8"
+                            className="flex flex-col gap-3 md:gap-4 mt-6"
+                        >
+                            {[
+                                "Messy navigation",
+                                "Poor access to messaging",
+                                "Poor visual hierarchy",
+                                "Difficulty scanning content"
+                            ].map((item, index) => (
+                                <motion.li
+                                    key={index}
+                                    variants={fadeInUp}
+                                    className={`${roboto.className} text-white/80 text-lg md:text-xl font-light flex items-center gap-3`}
+                                >
+                                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0"></span>
+                                    {item}
+                                </motion.li>
+                            ))}
+                        </motion.ul>
+                    </AnimatedSection>
+                </GridContainer>
+
+                {/* Improvements Chart */}
+                <GridContainer className="mt-8 md:mt-12">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[60%]"
+                    >
+                        <ChartContainer className="flex justify-center">
+                            <DonutChart
+                                data={chartData.improvements}
+                                title="Desired Improvements"
+                                size={220}
+                            />
+                        </ChartContainer>
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Overall desired changes to infrastructure
+                        </span>
+                    </motion.div>
+                </GridContainer>
+            </section>
+
+            {/* Section 2: Ideating Solutions */}
+            <section className="relative py-12 md:py-20">
+                <GridContainer>
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            Ideation
+                        </motion.span>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            {`No more need to jump ahead. The redesign can now be tackled with one core principle;
+                            keep things clean, but make them easy. Rather than hiding key features behind mountainous clicks and burying them in a cluster of menus, let's consolidate
+                            the experience so users can instantly see what's available without feeling overwhelmed.`}
+                        </motion.p>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            {`The focus wasn't on adding more, but better utilization of the space provided.`}
+                        </motion.p>
+                    </AnimatedSection>
+                </GridContainer>
+
+                {/* UI Concepts - Consolidated Grid */}
+                <GridContainer className="mt-10 md:mt-16">
+                    <AnimatedSection className="md:ml-[20%] md:w-[65%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            UI Concepts
+                        </motion.span>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            Key interface improvements: a unified search and stories component,
+                            enhanced messaging visibility with unread indicators, and a new discovery
+                            tab for deliberate content browsing.
+                        </motion.p>
+                    </AnimatedSection>
+                </GridContainer>
+
+                <GridContainer className="mt-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[65%]"
+                    >
+                        {/* Bento Grid - Full content, asymmetric */}
+                        <div className="flex flex-col gap-2 max-w-[810px]">
+                            {/* Top Row - Search Widget */}
+                            <div className="w-full overflow-hidden rounded-lg">
+                                <video
+                                    src="/projects/instadesign/old/searchwip.mp4"
+                                    autoPlay loop muted playsInline
+                                    className="w-full h-auto"
+                                />
+                            </div>
+
+                            {/* Bottom Row - 63/35 split, full content visible */}
+                            <div className="flex gap-2 items-start">
+                                {/* Messaging - 63% width */}
+                                <div className="flex-[61.8] overflow-hidden rounded-lg min-w-0">
+                                    <video
+                                        src="/projects/instadesign/old/messageswip.mp4"
+                                        autoPlay loop muted playsInline
+                                        className="w-full h-auto"
+                                    />
+                                </div>
+
+                                {/* Discovery Tab - 35% width */}
+                                <div className="flex-[38.2] overflow-hidden rounded-lg min-w-0">
+                                    <Image
+                                        src="/projects/instadesign/discovery.gif"
+                                        alt="Discovery tab"
+                                        width={400}
+                                        height={600}
+                                        className="w-full h-auto"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Single caption for the grid */}
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-4 block`}>
+                            Search consolidation, messaging indicators, and discovery browsing
+                        </span>
+                    </motion.div>
+                </GridContainer>
+
+                {/* Full Figma Prototype */}
+                <GridContainer className="mt-10 md:mt-16">
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
+                        >
+                            A prototype of the entire layout was built using Figma, where all of these changes come together in unison.
+                        </motion.p>
+                    </AnimatedSection>
+                </GridContainer>
+
+                <GridContainer className="mt-6">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[65%]"
+                    >
+                        <video
+                            src="/projects/instadesign/old/figmavidwip.mp4"
+                            autoPlay loop muted playsInline
+                            className="w-full h-auto rounded-lg"
+                        />
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Full UI overhaul demonstration (Figma)
+                        </span>
+                    </motion.div>
+                </GridContainer>
+
+                {/* Additional Improvements */}
+                <GridContainer className="mt-8 md:mt-12">
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            Supporting Improvements
+                        </motion.span>
+
+                        <motion.ul
+                            variants={staggerContainer}
+                            className="flex flex-col gap-3 md:gap-4 mt-6"
                         >
                             {[
                                 'New "pull-out" comment browser to keep scrolling as seamless as possible',
@@ -406,122 +525,153 @@ export default function Instagram() {
                                 <motion.li
                                     key={index}
                                     variants={fadeInUp}
-                                    className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light flex items-start gap-3`}
+                                    className={`${roboto.className} text-white/80 text-lg md:text-xl font-light flex items-start gap-3`}
                                 >
-                                    <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0 mt-2 md:mt-3"></span>
+                                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0 mt-2"></span>
                                     {item}
                                 </motion.li>
                             ))}
                         </motion.ul>
                     </AnimatedSection>
+                </GridContainer>
+            </section>
 
-                    {/* Section 3: Code Implementation */}
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-12">
-                        <motion.div variants={fadeInUp}>
-                            <h2 className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mb-6`}>
-                                translating into code.
-                            </h2>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                This marks the most critical phase of this project; realization.
-                                Good UX does not end simply at just mockups. Not only did I want to create this visual redesign, but also to polish it into a functional
-                                front-end application. Not only to strengthen my ability, but to validate whether the proposed improvements were practical and viable.
-                            </p>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <DragScroll className="flex gap-3 md:gap-[1vw] relative w-full bg-white/10 p-3 md:p-[1vw] rounded-lg">
-                                <Image
-                                    src="/projects/instadesign/components.gif"
-                                    alt="Layout Structure"
-                                    className="rounded-md pointer-events-none h-48 md:h-64 lg:h-80 w-auto"
-                                    width={600}
-                                    height={600}
-                                />
-                                <Image
-                                    src="/projects/instadesign/data.gif"
-                                    alt="Data Files"
-                                    className="rounded-md pointer-events-none h-48 md:h-64 lg:h-80 w-auto"
-                                    width={600}
-                                    height={600}
-                                />
-                                <Image
-                                    src="/projects/instadesign/layout.gif"
-                                    alt="Layout Implementation"
-                                    className="rounded-md pointer-events-none h-48 md:h-64 lg:h-80 w-auto"
-                                    width={600}
-                                    height={600}
-                                />
-                            </DragScroll>
-                            <div className={`${roboto.className} text-white/40 text-center mt-2 md:mt-[0.5vw] italic text-sm md:text-base`}>
-                                overview of code implementation.
-                            </div>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                I focused on building a component-based architecture that mirrored the figma
-                                system as closely as possible, and implementing responsive behavior that would scale cleanly between desktop breakpoints. Preserving behavior was
-                                equally important as simply recreating visuals. Adjustments were made to conceptual designs during process.
-                            </p>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <VideoContainer
-                                src="/projects/instadesign/old/codedvidwip.mp4"
-                                caption="full overhaul implementation."
-                            />
-                        </motion.div>
-                        {/* Link to GitHub*/}
-                        <motion.div variants={fadeInUp} className="hidden">
-                            <Link
-                                target="_blank"
-                                href="https://github.com/akin-tewe/akintewe-igconcept"
-                                className={`${roboto.className} hidden inline-flex items-center gap-2 text-white text-base md:text-xl font-medium leading-relaxed transition-all hover:text-blue-400 hover:gap-3 group`}
-                            >
-                                View the full project on GitHub
-                                <ExternalLink className="w-4 h-4 md:w-5 md:h-5 transition-transform group-hover:translate-x-1" />
-                            </Link>
-                        </motion.div>
-                    </AnimatedSection>
-
-                    {/* Section 4: Impact */}
-                    <AnimatedSection className="flex flex-col gap-6 md:gap-8">
-                        <motion.div variants={fadeInUp}>
-                            <h2 className={`${pixelify.className} text-white text-2xl md:text-3xl lg:text-4xl mb-6`}>
-                                why did this matter?
-                            </h2>
-                            <p className={`${roboto.className} text-white/80 text-base md:text-xl lg:text-2xl font-light leading-relaxed`}>
-                                {`This project doesn't just serve as a fun redesign,
-                                but a demonstration of end-to-end product thinking. The final outcome is less important than the capability it demonstrates;
-                                the ability to move from user feedback to a functional interface without losing clarity, intent, or usability along the way.`}
-                            </p>
-                        </motion.div>
-
-                        {/* Project Summary Card */}
-                        <motion.div
+            {/* Section 3: Code Implementation */}
+            <section className="relative py-12 md:py-20">
+                <GridContainer>
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
                             variants={fadeInUp}
-                            className="bg-gradient-to-br from-white/10 to-white/5 p-6 md:p-10 rounded-2xl border border-white/10 mt-8"
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
                         >
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-                                {[
-                                    { label: "Research", value: "User Survey" },
-                                    { label: "Design", value: "Figma" },
-                                    { label: "Development", value: "React/Next.js" },
-                                    { label: "Focus", value: "UX Improvement" }
-                                ].map((item, index) => (
-                                    <div key={index} className="text-center md:text-left">
-                                        <div className={`${pixelify.className} text-white/50 text-xs md:text-sm uppercase tracking-wider mb-1`}>
-                                            {item.label}
-                                        </div>
-                                        <div className={`${roboto.className} text-white text-sm md:text-lg font-light`}>
-                                            {item.value}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
+                            Implementation
+                        </motion.span>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            This marks the most critical phase of this project; realization.
+                            Good UX does not end simply at just mockups. Not only did I want to create this visual redesign, but also to polish it into a functional
+                            front-end application.
+                        </motion.p>
                     </AnimatedSection>
-                </div>
+                </GridContainer>
+
+                {/* Code Overview */}
+                <GridContainer className="mt-8 md:mt-12">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:ml-[20%] md:w-[65%]">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6 }}
+                            className="overflow-hidden"
+                        >
+                            <Image
+                                src="/projects/instadesign/components.gif"
+                                alt="Layout Structure"
+                                width={280}
+                                height={280}
+                                className="w-full h-auto rounded"
+                            />
+                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-2 block`}>
+                                Component structure
+                            </span>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="overflow-hidden"
+                        >
+                            <Image
+                                src="/projects/instadesign/data.gif"
+                                alt="Data Files"
+                                width={280}
+                                height={280}
+                                className="w-full h-auto rounded"
+                            />
+                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-2 block`}>
+                                Data management
+                            </span>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className="overflow-hidden"
+                        >
+                            <Image
+                                src="/projects/instadesign/layout.gif"
+                                alt="Layout Implementation"
+                                width={280}
+                                height={280}
+                                className="w-full h-auto rounded"
+                            />
+                            <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-2 block`}>
+                                Layout system
+                            </span>
+                        </motion.div>
+                    </div>
+                </GridContainer>
+
+                <GridContainer className="mt-8 md:mt-12">
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
+                        >
+                            I focused on building a component-based architecture that mirrored the figma
+                            system as closely as possible, and implementing responsive behavior that would scale cleanly between desktop breakpoints.
+                        </motion.p>
+                    </AnimatedSection>
+                </GridContainer>
+
+                {/* Final Implementation Video */}
+                <GridContainer className="mt-8 md:mt-12">
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6 }}
+                        className="md:ml-[20%] md:w-[65%]"
+                    >
+                        <video
+                            src="/projects/instadesign/old/codedvidwip.mp4"
+                            autoPlay loop muted playsInline
+                            className="w-full h-auto rounded-lg"
+                        />
+                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-3 block`}>
+                            Full overhaul implementation
+                        </span>
+                    </motion.div>
+                </GridContainer>
+            </section>
+
+            {/* Section 4: Impact */}
+            <section className="relative py-12 md:py-20">
+                <GridContainer>
+                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                        <motion.span
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-blue-400 text-base md:text-lg tracking-wide`}
+                        >
+                            Impact
+                        </motion.span>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                        >
+                            {`This project doesn't just serve as a fun redesign,
+                            but a demonstration of end-to-end product thinking. The final outcome is less important than the capability it demonstrates;
+                            the ability to move from user feedback to a functional interface without losing clarity, intent, or usability along the way.`}
+                        </motion.p>
+                    </AnimatedSection>
+                </GridContainer>
             </section>
         </main>
     )

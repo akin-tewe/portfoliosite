@@ -521,28 +521,6 @@ export default function Sifty() {
                 </GridContainer>
             </section>
 
-            {/* 9. Footer Section - Dark */}
-            <section className="relative py-20 md:py-24 bg-black">
-                <GridOverlay />
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col items-center gap-8 relative z-10">
-                    <motion.div
-                        variants={fadeInUp}
-                        className="h-px w-full max-w-md bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                    />
-
-                    <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4">
-                        <Link
-                            href="/"
-                            onClick={() => { show(); setTimeout(hide, 800) }}
-                            className={`${roboto.className} text-white/40 hover:text-white text-sm transition-colors duration-300`}
-                        >
-                            Back to Home
-                        </Link>
-                        </motion.div>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
         </main>
     );
 }

@@ -71,29 +71,36 @@ function ImageCarousel() {
     ];
 
     return (
-        <div
-            ref={containerRef}
-            className="flex gap-2 md:gap-3 overflow-x-auto scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-        >
-            {images.map((img, index) => (
-                <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="flex-shrink-0 w-[240px] md:w-[360px] lg:w-[440px] aspect-[3/4] overflow-hidden"
-                >
-                    <Image
-                        src={img.src}
-                        alt={img.alt}
-                        width={560}
-                        height={560}
-                        className="w-full h-full object-cover"
-                    />
-                </motion.div>
-            ))}
+        <div className="relative w-full">
+            {/* Left fade */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+            {/* Right fade */}
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+
+            <div
+                ref={containerRef}
+                className="flex gap-2 md:gap-3 overflow-x-auto scrollbar-hide"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+                {images.map((img, index) => (
+                    <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: index * 0.1 }}
+                        className="flex-shrink-0 w-[240px] md:w-[360px] lg:w-[440px] aspect-[3/4] overflow-hidden"
+                    >
+                        <Image
+                            src={img.src}
+                            alt={img.alt}
+                            width={560}
+                            height={560}
+                            className="w-full h-full object-cover"
+                        />
+                    </motion.div>
+                ))}
+            </div>
         </div>
     );
 }
@@ -241,13 +248,13 @@ export default function Bluboy() {
 
                 {/* Character Reference Images */}
                 <GridContainer className="mt-12 md:mt-16">
-                    <div className="grid grid-cols-3 gap-3 md:gap-4 md:w-[60%] mx-auto">
+                    <div className="flex gap-3 md:gap-4 overflow-x-auto md:overflow-visible md:grid md:grid-cols-3 w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
                         >
                             <Image
                                 src="/projects/bluboyspin/char1.jpg"
@@ -262,7 +269,7 @@ export default function Bluboy() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
                         >
                             <Image
                                 src="/projects/bluboyspin/char2.jpg"
@@ -277,7 +284,7 @@ export default function Bluboy() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
                         >
                             <Image
                                 src="/projects/bluboyspin/char3.jpg"

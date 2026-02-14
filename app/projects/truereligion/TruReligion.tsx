@@ -106,7 +106,7 @@ function ProductCarousel() {
         let animationId: number;
         let accumulator = 0;
         const scrollAmount = 1;
-        const frameDelay = 4; // Only scroll every N frames (higher = slower)
+        const frameDelay = 2; // scroll every N frames (lower = faster)
 
         const scroll = () => {
             accumulator++;
@@ -304,13 +304,13 @@ export default function TruReligion() {
 
                 {/* Reference Images */}
                 <GridContainer className="mt-12 md:mt-16">
-                    <div className="grid grid-cols-3 gap-3 md:gap-4 w-full">
+                    <div className="flex gap-3 md:gap-4 overflow-x-auto md:overflow-visible md:grid md:grid-cols-3 w-full" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
                         >
                             <Image
                                 src="/projects/truereligion/ex1.jpg"
@@ -325,7 +325,7 @@ export default function TruReligion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
                         >
                             <Image
                                 src="/projects/truereligion/ex2.jpg"
@@ -340,7 +340,7 @@ export default function TruReligion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
                         >
                             <Image
                                 src="/projects/truereligion/ex3.jpg"
@@ -370,7 +370,7 @@ export default function TruReligion() {
                     >
                         <div className="border-l-2 border-white pl-6 md:pl-8">
                             <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
-                                {`The video's pacing lives comfortably between those two ideas.`}
+                                {`The video's pacing lives comfortably between these two ideas; combining whimsical character moments with a clear product showcase.`}
                             </span>
                             <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
                                 Clear branding is established early, then the focus softly transitions to the garments.
@@ -410,7 +410,7 @@ export default function TruReligion() {
                 </GridContainer>
 
                 {/* Character Renders */}
-                <div className="mt-12 md:mt-16 grid grid-cols-3 gap-2 md:gap-3 w-[85%] md:w-[70%] mx-auto">
+                <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 w-[85%] md:w-[90%] mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}

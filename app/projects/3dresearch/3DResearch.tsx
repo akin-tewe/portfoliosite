@@ -465,7 +465,7 @@ export default function D3Project() {
                     >
                         <div className="overflow-hidden bg-black/5 p-4 md:p-6 rounded-lg">
                             <Image
-                                src="/projects/3dresearch/maslows.png"
+                                src="/projects/3dresearch/maslows3.png"
                                 alt="Maslow's Hierarchy Contextualized"
                                 className="rounded-md w-full h-auto"
                                 width={490}

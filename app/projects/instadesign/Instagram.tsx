@@ -581,7 +581,7 @@ export default function Instagram() {
 
                 {/* Code Overview */}
                 <GridContainer className="mt-8 md:mt-12">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:w-[65%] mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 md:w-[130%] md:left-1/2 md:relative md:-translate-x-1/2">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -646,7 +646,7 @@ export default function Instagram() {
                             className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
                         >
                             I focused on building a component-based architecture that mirrored the figma
-                            system as closely as possible, and implementing responsive behavior that would scale cleanly between desktop breakpoints.
+                            prototype as closely as possible, and implementing responsive behavior that would scale cleanly between desktop breakpoints.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>

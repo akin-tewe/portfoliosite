@@ -148,7 +148,7 @@ export default function Landing() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="my-10 md:my-12 inline-flex relative gap-4 justify-center items-center text-xl text-black group px-6"
+            className="my-10 md:my-12 inline-flex relative gap-4 justify-center items-center text-xl text-black group px-6 py-4"
             onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

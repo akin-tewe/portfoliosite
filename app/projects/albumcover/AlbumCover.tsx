@@ -238,7 +238,7 @@ export default function AlbumCover() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
-                            After deciding what made sense to remove, we had to figure out what new elements to introduce that would both fit the existing aesthetic and signify the presence of the new artists.
+                            After deciding what made sense to remove, we had to figure out what new elements to introduce that would both fit the existing aesthetic, and signify the presence of the new artists.
                         </motion.p>
 
                         <motion.p

@@ -78,7 +78,7 @@ const contactLinks = [
         href: "https://www.instagram.com/n8ghbr/",
     },
     {
-        label: "akintewe.work@gmail.com",
+        label: "Email",
         tag: "Direct",
         href: "mailto:akintewe.work@gmail.com",
     },

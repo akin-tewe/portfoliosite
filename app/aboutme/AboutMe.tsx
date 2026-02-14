@@ -390,7 +390,7 @@ export default function AboutMe() {
                             className="md:col-span-2 md:col-start-4"
                         >
                             <p className={`${roboto.className} text-white/90 font-light text-lg md:text-xl leading-relaxed`}>
-                                Throughout my time freelancing as a Visual Designer, I&apos;ve worked with large brands like True Religion and Highground, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
+                                Throughout my time freelancing as a Visual Designer, I&apos;ve worked with large brands like True Religion and Higround, designed for musical artists with millions of listeners, and directed brand campaigns reaching 100K+ impressions. Each project taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
                             </p>
                         </motion.div>
                     </AnimatedSection>

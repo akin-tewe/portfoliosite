@@ -195,7 +195,7 @@ export default function Rage() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
-                            Not only did I need to do an amazing job, I needed to prove value—to him and his community.
+                            Not only did I need to do an amazing job, I needed to prove value to both him and his community.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -214,7 +214,7 @@ export default function Rage() {
                     >
                         <div className="border-l-2 border-white pl-6 md:pl-8">
                             <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
-                                {`His chat is fast and hyper-aware. They exist through pivotal moments and inside-jokes.`}
+                                {`His chat is fast and hyper aware. They exist through pivotal moments and inside jokes.`}
                             </span>
                             <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
                                 As someone on the inside, I was able to leverage this to set the theme for the piece.
@@ -233,7 +233,7 @@ export default function Rage() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
                         >
-                            {`A robotic scene and mechanical legs reference a background in knee surgery he constantly jokes about on his stream.`}
+                            {`For his character, mechanical legs reference a background in knee surgery he constantly jokes about on his stream. Setting the scene in an industrial space adds immersion to this effect.`}
                         </motion.p>
 
                         <motion.p

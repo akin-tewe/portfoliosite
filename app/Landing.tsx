@@ -81,11 +81,11 @@ export default function Landing() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="absolute top-1/3 md:top-1/2 left-1/2 -translate-x-1/2 md:-translate-y-1/2 text-center z-10 pointer-events-none"
         >
-          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white uppercase`}>
+          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white/80 uppercase`}>
             <ScrambleText text="UX ENGINEER" delay={500} />
           </h2>
-          <div className="w-12 h-px bg-white/30 mx-auto my-3" />
-          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white uppercase`}>
+          <div className="w-12 h-px bg-white/20 mx-auto my-3" />
+          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white/80 uppercase`}>
             <ScrambleText text="PRODUCT DESIGNER" delay={800} />
           </h2>
         </motion.div>

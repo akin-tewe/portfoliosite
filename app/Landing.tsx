@@ -48,40 +48,35 @@ export default function Landing() {
         ref={heroRef}
         className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-blue-500"
       >
-        {/* Role badge - Desktop */}
+        {/* Role Declaration - Marquee Ticker */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className={`flex flex-col text-xl pl-5 mt-20 md:mt-0 mr-auto md:mr-60 md:ml-auto text-white z-10 ${pixelify.className}`}
+          initial={{ opacity: 0 }}
+          animate={isHeroInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="absolute top-1/3 md:top-1/2 md:-translate-y-1/2 w-full overflow-hidden -rotate-1 z-10"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.3, delay: 0.5 }}
+          {/* Primary strip */}
+          <div
+            className={`${pixelify.className} flex whitespace-nowrap text-3xl md:text-4xl lg:text-6xl text-white uppercase`}
+            style={{ animation: 'marquee 20s linear infinite', willChange: 'transform' }}
           >
-            <Image
-              src="/Pointer.png"
-              alt="Pointer Image"
-              width="15"
-              height="15"
-              className="mb-3"
-            />
-          </motion.div>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.6 }}
+            {[...Array(4)].map((_, i) => (
+              <span key={i} className="flex-shrink-0">
+                UX ENGINEER <span className="text-white/30">•</span> PRODUCT DESIGNER <span className="text-white/30">•</span>{' '}
+              </span>
+            ))}
+          </div>
+          {/* Secondary strip */}
+          <div
+            className={`${pixelify.className} flex whitespace-nowrap text-xl md:text-2xl lg:text-4xl text-white/20 uppercase mt-2`}
+            style={{ animation: 'marquee 25s linear infinite reverse', willChange: 'transform' }}
           >
-            UX Engineer
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.7 }}
-          >
-            Product Designer
-          </motion.span>
+            {[...Array(4)].map((_, i) => (
+              <span key={i} className="flex-shrink-0">
+                UX ENGINEER <span className="text-white/10">•</span> PRODUCT DESIGNER <span className="text-white/10">•</span>{' '}
+              </span>
+            ))}
+          </div>
         </motion.div>
 
         {/* Hero Name - Mobile */}

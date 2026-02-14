@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { pixelify, roboto } from "@/app/ui/fonts";
 import { ChevronDown } from "lucide-react";
 import Projects from "@/components/Projects";
@@ -48,40 +47,32 @@ export default function Landing() {
         ref={heroRef}
         className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-blue-500"
       >
-        {/* Role badge - Desktop */}
+        {/* Oversized Frame Type - Top */}
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
+          initial={{ opacity: 0, x: -60 }}
           animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className={`flex flex-col text-xl pl-5 mt-20 md:mt-0 mr-auto md:mr-60 md:ml-auto text-white z-10 ${pixelify.className}`}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="absolute top-24 md:top-16 left-0 w-full z-10"
         >
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.3, delay: 0.5 }}
-          >
-            <Image
-              src="/Pointer.png"
-              alt="Pointer Image"
-              width="15"
-              height="15"
-              className="mb-3"
-            />
-          </motion.div>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.6 }}
-          >
-            UX Engineer
-          </motion.span>
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.4, delay: 0.7 }}
-          >
-            Product Designer
-          </motion.span>
+          <div className="px-5 md:px-8 max-w-[1400px] mx-auto">
+            <span className={`text-5xl md:text-[120px] leading-none uppercase text-white/15 hover:text-white/40 transition-colors duration-700 ${pixelify.className}`}>
+              UX ENGINEER
+            </span>
+          </div>
+        </motion.div>
+
+        {/* Oversized Frame Type - Bottom */}
+        <motion.div
+          initial={{ opacity: 0, x: 60 }}
+          animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="absolute bottom-20 md:bottom-8 right-0 w-full text-right z-10"
+        >
+          <div className="px-5 md:px-8 max-w-[1400px] mx-auto">
+            <span className={`text-5xl md:text-[120px] leading-none uppercase text-white/15 hover:text-white/40 transition-colors duration-700 ${pixelify.className}`}>
+              PRODUCT DESIGNER
+            </span>
+          </div>
         </motion.div>
 
         {/* Hero Name - Mobile */}

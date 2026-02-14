@@ -201,7 +201,7 @@ export default function TruReligion() {
                             className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             {`A 3D animated commercial developed entirely by me made to promote the collaborative
-                            clothing drop between True Religion Brand Jeans and clothing designer "Bluboy."`}
+                            clothing drop between True Religion Brand Jeans and clothing designer "Bluboy" (@bluboy, 110K followers on Instagram).`}
                         </motion.p>
 
                         <motion.div
@@ -533,8 +533,8 @@ export default function TruReligion() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
                         >
-                            The video was very well received, generating thousands
-                            of likes across all accounts and notably positive viewer feedback.
+                            The video was very well received, generating over 10,000 likes
+                            and 300K+ impressions across all accounts.
                         </motion.p>
 
                         <motion.p

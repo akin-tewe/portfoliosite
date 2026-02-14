@@ -440,7 +440,7 @@ export default function Sifty() {
                         variants={fadeInUp}
                         className={`${roboto.className} text-white/80 font-light text-base md:text-xl text-center max-w-2xl mx-auto leading-relaxed`}
                     >
-                        Fully responsive design ensures a seamless experience on any device. The timeline adapts fluidly to smaller screens.
+                        Supporting 5 distinct viewport sizes with touch-optimized components, the fully responsive design ensures a seamless experience on any device.
                     </motion.p>
 
                     <div className="flex justify-center">

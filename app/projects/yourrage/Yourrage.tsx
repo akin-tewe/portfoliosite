@@ -111,7 +111,7 @@ export default function Rage() {
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
-                            {`Streamer animation created for "YourRage", a well known streamer on twitch.tv.`}
+                            {`Streamer animation created for "YourRage", a Twitch streamer with over 3M followers.`}
                         </motion.p>
 
                         <motion.div
@@ -188,7 +188,7 @@ export default function Rage() {
                             className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             I had actually reached out to YourRage personally for this opportunity,
-                            being a fan of his content and wanting to make something I felt could leave my mark with his community.
+                            being a fan of his content and wanting to make something I felt could leave my mark with his community of over 3 million.
                         </motion.p>
 
                         <motion.p
@@ -294,7 +294,7 @@ export default function Rage() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
-                            {`During this animation's lifetime, it was incredible seeing the community (and Rage's) initial reaction, and constantly getting to live in that moment with them.`}
+                            {`Seen by over 20K live viewers on launch, it was incredible seeing the community (and Rage's) initial reaction, and constantly getting to live in that moment with them.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>

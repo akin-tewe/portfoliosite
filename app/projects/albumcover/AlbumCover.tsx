@@ -110,7 +110,7 @@ export default function AlbumCover() {
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
-                            {`As star artists "Latto" and "Sexyy Red" were brought on to the remix of Young Nudy's
+                            {`As star artists "Latto" (17M monthly Spotify listeners) and "Sexyy Red" (18M monthly listeners) were brought on to the remix of Young Nudy's
                             hit song, I was commissioned by Nudy's team to reinterpret the original cover.`}
                         </motion.p>
 
@@ -381,7 +381,7 @@ export default function AlbumCover() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
-                            {`While "short-lived" is an understatement for this experience, it was an important lesson in
+                            {`The remix has since accumulated over 33M streams on Spotify. While "short-lived" is an understatement for this experience, it was an important lesson in
                             quick thinking, rapid adaptation, and distilling decisions down to their essentials.`}
                         </motion.p>
                     </AnimatedSection>

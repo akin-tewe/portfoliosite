@@ -264,7 +264,7 @@ export default function D3Project() {
                         >
                             <span className={`${pixelify.className} text-black text-lg md:text-xl`}>focused, in-person interview</span>
                             <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
-                                {`An extensive observational interview with visual artist "Oseanworld."
+                                {`An extensive observational interview with visual artist "Oseanworld" (113K followers).
                                 Focuses on his journey into 3D art, motivations, and daily routine.`}
                             </p>
                         </motion.div>
@@ -277,7 +277,7 @@ export default function D3Project() {
                         >
                             <span className={`${pixelify.className} text-black text-lg md:text-xl`}>remote interview panel</span>
                             <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
-                                A series of video calls with independent artists encompassing a broad range of
+                                A series of 4 video calls with independent artists encompassing a broad range of
                                 backgrounds and niches. Financial stability, expectations, platform usability.
                             </p>
                         </motion.div>
@@ -323,7 +323,7 @@ export default function D3Project() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
-                            Across both formats, several consistent themes emerged:
+                            Across 8+ hours of interviews, several consistent themes emerged:
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>

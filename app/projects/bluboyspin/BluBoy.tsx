@@ -172,7 +172,7 @@ export default function Bluboy() {
                             className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             {`A short-form commercial created to introduce
-                            the release of fashion designer "Bluboy's" art prints.`}
+                            the release of fashion designer "Bluboy's" (@bluboy, 110K followers on Instagram) art prints.`}
                         </motion.p>
 
                         <motion.div
@@ -232,7 +232,7 @@ export default function Bluboy() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
-                            {`Bluboy is an individual I've done a number of works for in the past.
+                            {`Bluboy is an individual I've collaborated with across 5 large projects over 3 years.
                             As it had been a notable amount of time since our last project, this required re-engaging with his current audience and demographic.`}
                         </motion.p>
 
@@ -420,6 +420,13 @@ export default function Bluboy() {
                         >
                             {`Without an ironed-out brief to work from, this entire project was produced through responsiveness and paying close attention to the client's needs.
                             The result was a piece that supports their message without diluting their voice.`}
+                        </motion.p>
+
+                        <motion.p
+                            variants={fadeInUp}
+                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                        >
+                            {`The video generated 50K views within the first week of launch.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>

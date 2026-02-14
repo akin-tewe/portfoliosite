@@ -10,7 +10,7 @@ import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
 import { AboutButton, MagneticWrapper } from "@/components/MagneticButton";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 // Animated section wrapper
 function AnimatedSection({ children, className = "", delay = 0 }: {
@@ -34,6 +34,33 @@ function AnimatedSection({ children, className = "", delay = 0 }: {
   );
 }
 
+
+function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
+  const [display, setDisplay] = useState(text.replace(/[^ ]/g, '#'));
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      let iteration = 0;
+      const interval = setInterval(() => {
+        setDisplay(
+          text.split('').map((char, i) => {
+            if (char === ' ') return ' ';
+            if (i < iteration) return text[i];
+            return chars[Math.floor(Math.random() * chars.length)];
+          }).join('')
+        );
+        iteration += 1/3;
+        if (iteration >= text.length) clearInterval(interval);
+      }, 40);
+      return () => clearInterval(interval);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  return <span>{display}</span>;
+}
+
 export default function Landing() {
   const { show, hide } = useLoader();
   const pathname = usePathname();
@@ -47,32 +74,20 @@ export default function Landing() {
         ref={heroRef}
         className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-blue-500"
       >
-        {/* Oversized Frame Type - Top */}
+        {/* Role Declaration - Scramble Decode */}
         <motion.div
-          initial={{ opacity: 0, x: -60 }}
-          animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="absolute top-24 md:top-16 left-0 w-full z-10"
+          initial={{ opacity: 0 }}
+          animate={isHeroInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="absolute top-1/3 md:top-1/2 left-1/2 -translate-x-1/2 md:-translate-y-1/2 text-center z-10 pointer-events-none"
         >
-          <div className="px-5 md:px-8 max-w-[1400px] mx-auto">
-            <span className={`text-5xl md:text-[120px] leading-none uppercase text-white/15 hover:text-white/40 transition-colors duration-700 ${pixelify.className}`}>
-              UX ENGINEER
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Oversized Frame Type - Bottom */}
-        <motion.div
-          initial={{ opacity: 0, x: 60 }}
-          animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="absolute bottom-20 md:bottom-8 right-0 w-full text-right z-10"
-        >
-          <div className="px-5 md:px-8 max-w-[1400px] mx-auto">
-            <span className={`text-5xl md:text-[120px] leading-none uppercase text-white/15 hover:text-white/40 transition-colors duration-700 ${pixelify.className}`}>
-              PRODUCT DESIGNER
-            </span>
-          </div>
+          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white uppercase`}>
+            <ScrambleText text="UX ENGINEER" delay={500} />
+          </h2>
+          <div className="w-12 h-px bg-white/30 mx-auto my-3" />
+          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white uppercase`}>
+            <ScrambleText text="PRODUCT DESIGNER" delay={800} />
+          </h2>
         </motion.div>
 
         {/* Hero Name - Mobile */}

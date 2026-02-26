@@ -109,7 +109,7 @@ export default function Landing() {
         </motion.span>
 
         {/* Splash Video - Desktop */}
-        <div key={pathname} className="absolute hidden md:block bottom-0 inset-0 z-50 translate-y-2/9 pointer-events-none">
+        <div key={pathname} className="absolute hidden md:block bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[22%] z-50 pointer-events-none overflow-visible">
           <MainVideo webmSrc="/splashvideo.webm" mp4Src="/safarisplash.mp4" />
         </div>
 

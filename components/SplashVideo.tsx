@@ -48,7 +48,7 @@ export function MainVideo ({ webmSrc, mp4Src }: Prop2) {
 
     return (
         <video
-            className="absolute w-[1600px] h-full object-cover object-[26%_50%] pointer-events-none left-1/2 -translate-x-1/2"
+            className="w-full h-full pointer-events-none"
             autoPlay
             loop
             muted

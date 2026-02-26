@@ -2,13 +2,11 @@
 
 import Link from "next/link"
 import { pixelify } from "@/app/ui/fonts"
-import { TiHome } from "react-icons/ti"
 import { useLoader } from "./LoaderContext"
-import { useRef, useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MagneticWrapper } from "./MagneticButton";
 
 const menuItems = [
     { label: "Home", href: "/" },
@@ -17,40 +15,6 @@ const menuItems = [
     { label: "Contact", href: "/contactme" },
 ];
 
-const menuVariants = {
-    closed: {
-        x: "100%",
-        transition: {
-            type: "spring" as const,
-            stiffness: 500,
-            damping: 35
-        }
-    },
-    open: {
-        x: 0,
-        transition: {
-            type: "spring" as const,
-            stiffness: 500,
-            damping: 35,
-            staggerChildren: 0.05,
-            delayChildren: 0.05
-        }
-    }
-};
-
-const itemVariants = {
-    closed: {
-        x: 30,
-        opacity: 0,
-        transition: { duration: 0.2 }
-    },
-    open: {
-        x: 0,
-        opacity: 1,
-        transition: { duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] as const }
-    }
-};
-
 const overlayVariants = {
     closed: { opacity: 0 },
     open: { opacity: 1 }
@@ -58,10 +22,7 @@ const overlayVariants = {
 
 export default function NavBar() {
     const { show, hide } = useLoader();
-    const navbarRef = useRef<HTMLDivElement | null>(null);
-    const [navSee, setNavSee] = useState(true);
     const pathname = usePathname();
-    const router = useRouter();
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -71,21 +32,6 @@ export default function NavBar() {
         }
     }, [open]);
 
-    useEffect(() => {
-        if (!navbarRef.current) return;
-
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                setNavSee(entry.isIntersecting);
-            },
-            { threshold: 0 }
-        )
-
-        observer.observe(navbarRef.current);
-
-        return () => observer.disconnect();
-    }, [])
-
     const handleNavClick = () => {
         setOpen(false);
         show();
@@ -93,24 +39,19 @@ export default function NavBar() {
     };
 
     const handleHashNavigation = (e: React.MouseEvent, href: string) => {
-        // Only intercept hash links (e.g. /#projects)
         if (!href.includes('#')) return;
 
         const [path, hash] = href.split('#');
         const targetPath = path || '/';
 
-        // If we're already on the target page, scroll manually
         if (pathname === targetPath) {
             e.preventDefault();
             const element = document.getElementById(hash);
             if (element) {
                 element.scrollIntoView({ behavior: 'smooth' });
             }
-            // Close mobile menu if open
             setOpen(false);
         }
-        // If on a different page, let normal navigation happen
-        // (the browser will navigate to /#projects and scroll on load)
     };
 
     return (
@@ -216,75 +157,43 @@ export default function NavBar() {
                 )}
             </AnimatePresence>
 
-            {/* Desktop Header */}
-            <header className="hidden md:flex bg-black px-3 md:px-3 py-[1vh] flex-col md:flex-row justify-between w-full px-2 md:px-12 py-[3vh] gap-[2vh]">
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                >
-                    <Link
-                        href="/"
-                        className="text-white/60 hover:text-white transition-all z-20 ml-auto md:ml-0 scale-200 hover:scale-220 inline-block"
-                        onClick={() => { show(); setTimeout(hide, 800) }}
-                    >
-                        <TiHome />
-                    </Link>
-                </motion.div>
-                <nav
-                    ref={navbarRef}
-                    className={`flex md:flex-row flex-col text-xl gap-[2vw] z-10 text-right uppercase ${pixelify.className} text-white`}
-                >
-                    {["projects", "about me", "get in touch"].map((item, index) => {
-                        const href = item === "projects" ? "/#projects" : item === "about me" ? "/aboutme" : "/contactme";
-                        return (
-                            <motion.div
-                                key={item}
-                                initial={{ opacity: 0, y: -20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 + index * 0.1 }}
-                            >
-                                <MagneticWrapper>
-                                    <Link
-                                        href={href}
-                                        className="opacity-60 hover:opacity-100 transition-all duration-300 relative group"
-                                        onClick={(e) => {
-                                            handleHashNavigation(e, href);
-                                            if (!href.includes('#') || pathname !== (href.split('#')[0] || '/')) {
-                                                show(); setTimeout(hide, 800);
-                                            }
-                                        }}
-                                    >
-                                        {item}
-                                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white group-hover:w-full transition-all duration-300" />
-                                    </Link>
-                                </MagneticWrapper>
-                            </motion.div>
-                        );
-                    })}
-                </nav>
-            </header>
+            {/* Desktop Floating Pill Nav */}
+            <div className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-[60]
+                 bg-black/60 backdrop-blur-md rounded-full px-6 py-3
+                 items-center gap-6 border border-white/10 shadow-lg">
 
-            {/* Floating Home Button */}
-            {(
-                <motion.div
-                    initial={{ scale: 0, opacity: 0 }}
-                    animate={{
-                        scale: !navSee ? 1 : 0,
-                        opacity: !navSee ? 1 : 0
-                    }}
-                    transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                    className="fixed bottom-8 right-8 z-[100] hidden md:block"
+                <Link
+                    href="/"
+                    className={`${pixelify.className} text-white text-sm tracking-wider hover:opacity-70 transition-opacity`}
+                    onClick={() => { show(); setTimeout(hide, 800) }}
                 >
-                    <Link
-                        href="/"
-                        onClick={() => { show(); setTimeout(hide, 800) }}
-                        className="bg-black/80 backdrop-blur-sm p-6 text-white shadow-lg rounded-full hover:bg-black hover:scale-110 transition-all block border border-white/10"
-                    >
-                        <TiHome size={40} />
-                    </Link>
-                </motion.div>
-            )}
+                    AKIN TEWE
+                </Link>
+
+                <div className="w-px h-4 bg-white/15" />
+
+                <nav className={`${pixelify.className} flex items-center gap-5 text-xs tracking-wider uppercase`}>
+                    {[
+                        { label: "Projects", href: "/#projects" },
+                        { label: "About", href: "/aboutme" },
+                        { label: "Contact", href: "/contactme" },
+                    ].map((item) => (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            className="text-white/50 hover:text-white transition-colors duration-200"
+                            onClick={(e) => {
+                                handleHashNavigation(e, item.href);
+                                if (!item.href.includes('#') || pathname !== (item.href.split('#')[0] || '/')) {
+                                    show(); setTimeout(hide, 800);
+                                }
+                            }}
+                        >
+                            {item.label}
+                        </Link>
+                    ))}
+                </nav>
+            </div>
         </div>
     )
 }

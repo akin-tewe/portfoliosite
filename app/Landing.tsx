@@ -88,6 +88,14 @@ export default function Landing() {
           <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white/80 uppercase`}>
             <ScrambleText text="PRODUCT DESIGNER" delay={800} />
           </h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={isHeroInView ? { opacity: 1 } : {}}
+            transition={{ duration: 1, delay: 2 }}
+            className={`${roboto.className} text-white/40 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-6`}
+          >
+            Commissioned by Sprite · True Religion · Higround + more
+          </motion.p>
         </motion.div>
 
         {/* Hero Name - Mobile */}

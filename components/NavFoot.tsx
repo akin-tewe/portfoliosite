@@ -159,8 +159,8 @@ export default function NavBar() {
 
             {/* Desktop Floating Pill Nav */}
             <div className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-[60]
-                 bg-black/60 backdrop-blur-md rounded-full px-6 py-3
-                 items-center gap-6 border border-white/10 shadow-lg">
+                 bg-black/80 backdrop-blur-lg rounded-full px-8 py-3.5
+                 items-center gap-7 border border-white/15 shadow-lg shadow-black/20">
 
                 <Link
                     href="/"

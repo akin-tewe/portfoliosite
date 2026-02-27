@@ -116,15 +116,15 @@ export default function Projects() {
                             }}
                         >
                             <div
-                                className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:scale-103 border-3 bg-blue-600 p-7 rounded-3xl md:rounded-full pointer-events-none text-center md:text-left">
-                                <div className={`${pixelify.className} relative grid grid-cols-1 text-white justify-center uppercase`}>
+                                className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:scale-103 border-3 bg-gray-200 p-7 rounded-3xl md:rounded-full pointer-events-none text-center md:text-left">
+                                <div className={`${pixelify.className} relative grid grid-cols-1 text-gray-900 justify-center uppercase`}>
                                     <h1 className="text-4xl max-w-s md:text-right">{project.title}</h1>
                                     <div className="md:text-right font-bold opacity-60 md:hidden lg:block">{project.subtitle}</div>
                                 </div>
                                 <div className="relative w-[200px] h-[200px]">
                                     {project.image}
                                 </div>
-                                <div className={`text-white max-w-xs text-xl justify-self-center ${roboto.className} font-light pr-9 hidden md:block`}>
+                                <div className={`text-gray-600 max-w-xs text-xl justify-self-center ${roboto.className} font-light pr-9 hidden md:block`}>
                                     <p>{project.body}</p>
                                 </div>
                             </div>
@@ -145,8 +145,8 @@ export default function Projects() {
                                 aria-label={`Go to project ${i + 1}`}
                             >
                                 <span className={`block rounded-full transition-all duration-300 ${i === index
-                                    ? 'w-8 h-2 bg-white'
-                                    : 'w-2 h-2 bg-white/30'
+                                    ? 'w-8 h-2 bg-gray-900'
+                                    : 'w-2 h-2 bg-gray-900/30'
                                     }`}
                                 />
                             </motion.button>
@@ -186,12 +186,12 @@ export default function Projects() {
                                     setDirection(i > index ? 1 : -1);
                                     setIndex(i);
                                 }}
-                                className={`transition-all duration-300 uppercase ${i === index ? 'text-white' : 'text-white/40 hover:text-white/60'}`}
+                                className={`transition-all duration-300 uppercase ${i === index ? 'text-gray-900' : 'text-gray-400 hover:text-gray-600'}`}
                                 whileTap={{ scale: 0.95 }}
                             >
                                 {name}
                             </motion.button>
-                            {i < 3 && <span className="text-white/20">—</span>}
+                            {i < 3 && <span className="text-gray-300">—</span>}
                         </div>
                     ))}
                 </div>

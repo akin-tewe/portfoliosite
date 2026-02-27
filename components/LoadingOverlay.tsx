@@ -8,7 +8,7 @@ export default function PageLoader({ loading }: { loading: boolean }) {
         <AnimatePresence>
             {loading && (
                 <motion.div
-                    className="fixed inset-0 z-[500] flex items-center justify-center bg-blue-500"
+                    className="fixed inset-0 z-[500] flex items-center justify-center bg-gray-100"
                     initial={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
@@ -53,7 +53,7 @@ export function BootOverlay() {
         <AnimatePresence>
             {show && (
                 <motion.div
-                    className="fixed inset-0 z-[500] flex items-center justify-center pointer-events-none bg-blue-500"
+                    className="fixed inset-0 z-[500] flex items-center justify-center pointer-events-none bg-gray-100"
                     initial={{ opacity: 1 }}
                     animate={{ opacity: fadeOut ? 0 : 1 }}
                     exit={{ opacity: 0 }}
@@ -73,12 +73,12 @@ export function BootOverlay() {
 
                     {/* Loading bar */}
                     <motion.div
-                        className="absolute bottom-20 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full overflow-hidden"
+                        className="absolute bottom-20 left-1/2 -translate-x-1/2 w-32 h-1 bg-black/10 rounded-full overflow-hidden"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: fadeOut ? 0 : 1 }}
                     >
                         <motion.div
-                            className="h-full bg-white rounded-full"
+                            className="h-full bg-gray-900 rounded-full"
                             initial={{ width: "0%" }}
                             animate={{ width: "100%" }}
                             transition={{ duration: 0.8, ease: "easeInOut" }}

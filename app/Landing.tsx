@@ -72,7 +72,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-blue-500"
+        className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-gray-100"
       >
         {/* Role Declaration - Scramble Decode */}
         <motion.div
@@ -81,18 +81,18 @@ export default function Landing() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="absolute top-1/3 md:top-1/2 left-1/2 -translate-x-1/2 md:-translate-y-1/2 text-center z-10 pointer-events-none"
         >
-          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white/80 uppercase`}>
+          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase`}>
             <ScrambleText text="UX ENGINEER" delay={500} />
           </h2>
-          <div className="w-12 h-px bg-white/20 mx-auto my-3" />
-          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-white/80 uppercase`}>
+          <div className="w-12 h-px bg-black/15 mx-auto my-3" />
+          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase`}>
             <ScrambleText text="PRODUCT DESIGNER" delay={800} />
           </h2>
           <motion.p
             initial={{ opacity: 0 }}
             animate={isHeroInView ? { opacity: 1 } : {}}
             transition={{ duration: 1, delay: 2 }}
-            className={`${roboto.className} text-white/40 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-6`}
+            className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-6`}
           >
             Commissioned by Sprite · True Religion · Higround + more
           </motion.p>
@@ -103,7 +103,7 @@ export default function Landing() {
           initial={{ opacity: 0, y: 50 }}
           animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className={`md:hidden ${pixelify.className} relative text-8xl sm:text-9xl text-white text-right pb-28 pr-5 mt-auto leading-none`}
+          className={`md:hidden ${pixelify.className} relative text-8xl sm:text-9xl text-gray-900 text-right pb-28 pr-5 mt-auto leading-none`}
         >
           akin tewe
         </motion.span>
@@ -125,7 +125,7 @@ export default function Landing() {
             transition={{ duration: 1.5, repeat: Infinity }}
             className="flex flex-col items-center gap-1"
           >
-            <ChevronDown className="text-white/50 w-6 h-6" />
+            <ChevronDown className="text-black/30 w-6 h-6" />
           </motion.div>
         </motion.div>
       </section>
@@ -150,7 +150,7 @@ export default function Landing() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Link className="text-center block" href="/aboutme" onClick={() => { show(); setTimeout(hide, 800) }}>
-              <AboutButton parameter="w-36 h-36 md:w-40 md:h-40 bg-blue-500 z-40" text="About Me" />
+              <AboutButton parameter="w-36 h-36 md:w-40 md:h-40 bg-gray-900 z-40" text="About Me" />
             </Link>
           </motion.div>
         </AnimatedSection>
@@ -167,12 +167,12 @@ export default function Landing() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <div className={`text-lg md:text-xl text-blue-500 z-10 group-hover:text-white transition-colors duration-300 ${pixelify.className}`}>
+            <div className={`text-lg md:text-xl text-gray-700 z-10 group-hover:text-white transition-colors duration-300 ${pixelify.className}`}>
               PROJECTS
             </div>
-            <ChevronDown className="text-blue-500 z-10 group-hover:text-white transition-colors duration-300" />
+            <ChevronDown className="text-gray-700 z-10 group-hover:text-white transition-colors duration-300" />
             <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2
-            -translate-y-1/2 bg-blue-500 w-48 h-16 rounded-full -z-0 scale-0
+            -translate-y-1/2 bg-gray-900 w-48 h-16 rounded-full -z-0 scale-0
             group-hover:scale-100 transition-transform duration-300 ease-out">
             </span>
           </motion.button>
@@ -194,15 +194,15 @@ export default function Landing() {
             viewport={{ once: true }}
             className="md:hidden flex flex-row opacity-70 justify-self-center mt-8 justify-between w-full px-8"
           >
-            <p className={`${pixelify.className} uppercase text-white flex items-center gap-2`}>
-              <span className="w-6 h-px bg-white/50" />
+            <p className={`${pixelify.className} uppercase text-black/50 flex items-center gap-2`}>
+              <span className="w-6 h-px bg-black/30" />
               mini projects below
             </p>
             <motion.div
               animate={{ y: [0, 5, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
-              <ChevronDown className="text-white" />
+              <ChevronDown className="text-black/40" />
             </motion.div>
           </motion.div>
         </div>
@@ -217,11 +217,11 @@ export default function Landing() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 0.7 }}
           viewport={{ once: true }}
-          className={`${pixelify.className} hidden md:flex items-center gap-4 text-white uppercase py-10`}
+          className={`${pixelify.className} hidden md:flex items-center gap-4 text-black/50 uppercase py-10`}
         >
-          <span className="w-12 h-px bg-white/30" />
+          <span className="w-12 h-px bg-black/20" />
           mini projects below
-          <span className="w-12 h-px bg-white/30" />
+          <span className="w-12 h-px bg-black/20" />
         </motion.p>
 
         {/* Extra Projects */}

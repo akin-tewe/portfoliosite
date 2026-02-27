@@ -257,10 +257,10 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
     return (
         <div className="relative w-full">
             {/* Left fade */}
-            <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-blue-500 to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
 
             {/* Right fade */}
-            <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-blue-500 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
 
             {/* Carousel */}
             <div
@@ -375,7 +375,7 @@ export default function AboutMe() {
             </section>
 
             {/* Section 2: Experience - Carousel Left, Text Right */}
-            <section className="relative py-16 md:py-30 bg-blue-500">
+            <section className="relative py-16 md:py-30 bg-black">
                 <GridOverlay />
                 <GridContainer>
                     <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10 items-center">

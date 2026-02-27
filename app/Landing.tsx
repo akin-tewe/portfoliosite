@@ -72,7 +72,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-gray-100"
+        className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-gray-200"
       >
         {/* Role Declaration - Scramble Decode */}
         <motion.div
@@ -110,7 +110,7 @@ export default function Landing() {
 
         {/* Splash Video - Desktop */}
         <div key={pathname} className="absolute hidden md:block bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[22%] z-50 pointer-events-none overflow-visible">
-          <MainVideo webmSrc="/splashvideo.webm" mp4Src="/safarisplash.mp4" />
+          <MainVideo webmSrc="/blacksplashW.webm" mp4Src="/blacksplashM.mp4" />
         </div>
 
         {/* Scroll indicator - Mobile */}

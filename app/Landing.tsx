@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
-import { AboutButton, MagneticWrapper } from "@/components/MagneticButton";
+import { AboutButton } from "@/components/MagneticButton";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
@@ -72,30 +72,44 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative flex flex-col md:flex-row h-[100vh] items-center md:h-[50vh] bg-gray-200"
+        className="relative h-auto min-h-[70vh] md:h-[35vh] bg-gray-200"
       >
-        {/* Role Declaration - Scramble Decode */}
+        {/* Two-column content */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={isHeroInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="absolute top-1/3 md:top-1/2 left-1/2 -translate-x-1/2 md:-translate-y-1/2 text-center z-10 pointer-events-none"
+          className="flex flex-col md:flex-row items-center md:items-center justify-center gap-8 md:gap-16 max-w-5xl mx-auto px-6 md:px-10 pt-20 md:pt-0 md:h-full relative z-10"
         >
-          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase`}>
-            <ScrambleText text="UX ENGINEER" delay={500} />
-          </h2>
-          <div className="w-12 h-px bg-black/15 mx-auto my-3" />
-          <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase`}>
-            <ScrambleText text="PRODUCT DESIGNER" delay={800} />
-          </h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={isHeroInView ? { opacity: 1 } : {}}
-            transition={{ duration: 1, delay: 2 }}
-            className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-6`}
-          >
-            Commissioned by Sprite · True Religion · Higround + more
-          </motion.p>
+          {/* LEFT: scramble text + credits */}
+          <div className="text-center md:text-left">
+            <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase`}>
+              <ScrambleText text="UX ENGINEER" delay={500} />
+            </h2>
+            <div className="w-12 h-px bg-black/15 mx-auto md:mx-0 my-3" />
+            <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase`}>
+              <ScrambleText text="PRODUCT DESIGNER" delay={800} />
+            </h2>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={isHeroInView ? { opacity: 1 } : {}}
+              transition={{ duration: 1, delay: 2 }}
+              className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-4`}
+            >
+              Commissioned by Sprite · True Religion · Higround + more
+            </motion.p>
+          </div>
+
+          {/* RIGHT: bio + About Me button */}
+          <div className="flex flex-col items-center md:items-start gap-6 max-w-md">
+            <p className={`${roboto.className} text-black text-base md:text-lg font-light leading-relaxed text-center md:text-left`}>
+              Product Designer positioned in UI/UX development creating interfaces that emphasize
+              the user and add a touch of childhood wonder. I build experiences that bring people back to the joy they grew up with.
+            </p>
+            <Link href="/aboutme" onClick={() => { show(); setTimeout(hide, 800) }}>
+              <AboutButton parameter="w-28 h-28 md:w-32 md:h-32 bg-gray-900 z-40" text="About Me" />
+            </Link>
+          </div>
         </motion.div>
 
         {/* Hero Name - Mobile */}
@@ -103,13 +117,13 @@ export default function Landing() {
           initial={{ opacity: 0, y: 50 }}
           animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className={`md:hidden ${pixelify.className} relative text-8xl sm:text-9xl text-gray-900 text-right pb-28 pr-5 mt-auto leading-none`}
+          className={`md:hidden ${pixelify.className} relative text-8xl sm:text-9xl text-gray-900 text-right pb-28 pr-5 mt-auto leading-none block`}
         >
           akin tewe
         </motion.span>
 
         {/* Splash Video - Desktop */}
-        <div key={pathname} className="absolute hidden md:block bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[22%] z-50 pointer-events-none overflow-visible">
+        <div key={pathname} className="absolute hidden md:block bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[28%] z-50 pointer-events-none overflow-visible">
           <MainVideo webmSrc="/blacksplashW.webm" mp4Src="/blacksplashM.mp4" />
         </div>
 
@@ -128,55 +142,6 @@ export default function Landing() {
             <ChevronDown className="text-black/30 w-6 h-6" />
           </motion.div>
         </motion.div>
-      </section>
-
-      {/* About Section */}
-      <section className="flex flex-col md:h-[45vh] items-center bg-white md:px-20">
-        <AnimatedSection className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-30 py-16 md:py-24 md:border-b-gray-200 md:border-b w-full max-w-6xl mx-auto px-6">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className={`relative text-black text-lg md:text-xl md:max-w-xl mb-15 md:mb-0 ${roboto.className} font-light leading-relaxed`}
-          >
-            Product Designer positioned in UI/UX development creating interfaces that emphasize
-            the user and add a touch of childhood wonder. I build experiences that bring people back to the joy they grew up with.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Link className="text-center block" href="/aboutme" onClick={() => { show(); setTimeout(hide, 800) }}>
-              <AboutButton parameter="w-36 h-36 md:w-40 md:h-40 bg-gray-900 z-40" text="About Me" />
-            </Link>
-          </motion.div>
-        </AnimatedSection>
-
-        {/* Projects CTA Button */}
-        <MagneticWrapper>
-          <motion.button
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="my-10 md:my-12 inline-flex relative gap-4 justify-center items-center text-xl text-black group px-6 py-4"
-            onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <div className={`text-lg md:text-xl text-gray-700 z-10 group-hover:text-white transition-colors duration-300 ${pixelify.className}`}>
-              PROJECTS
-            </div>
-            <ChevronDown className="text-gray-700 z-10 group-hover:text-white transition-colors duration-300" />
-            <span className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2
-            -translate-y-1/2 bg-gray-900 w-48 h-16 rounded-full -z-0 scale-0
-            group-hover:scale-100 transition-transform duration-300 ease-out">
-            </span>
-          </motion.button>
-        </MagneticWrapper>
       </section>
 
       {/* Projects Section */}

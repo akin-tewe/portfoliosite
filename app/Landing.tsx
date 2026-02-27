@@ -77,7 +77,7 @@ export default function Landing() {
           initial={{ opacity: 0 }}
           animate={isHeroInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col md:flex-row items-center md:items-center justify-center gap-8 md:gap-[16rem] max-w-6xl mx-auto px-6 md:px-10 pt-12 md:pt-0 md:h-full relative z-10"
+          className="flex flex-col md:flex-row items-center md:items-center justify-center gap-8 md:gap-[16rem] px-6 md:px-10 pt-12 md:pt-0 md:h-full relative z-10"
         >
           {/* LEFT: scramble text + credits */}
           <div className="text-center md:text-left md:w-[22rem] md:flex-shrink-0">
@@ -138,9 +138,9 @@ export default function Landing() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="relative px-6 md:px-[8rem] pt-16 md:pt-24 -mt-12 md:-mt-20 pb-16">
+      <section id="projects" className="relative px-6 md:px-[11rem] pt-16 md:pt-24 -mt-12 md:-mt-20 pb-16">
         {/* Main Projects — 2 column grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {projectsdata.map((project, i) => (
             <AnimatedSection key={project.id} delay={i * 0.1}>
               <Link
@@ -148,28 +148,28 @@ export default function Landing() {
                 onClick={() => { show(); setTimeout(hide, 800); }}
                 className="group block"
               >
-                <div className="relative bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 ease-out
-                                group-hover:-translate-y-2 group-hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)]">
+                <div className={`relative ${project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
+                                group-hover:-translate-y-2 group-hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]`}>
                   {/* Image placeholder */}
-                  <div className="w-full aspect-[16/10] bg-gray-800 group-hover:bg-gray-700 transition-colors duration-300" />
+                  <div className="w-full aspect-[5/3]" />
 
                   {/* Card info */}
                   <div className="p-4">
                     <div className="flex items-center justify-between">
-                      <h3 className={`${pixelify.className} text-white text-xl md:text-2xl uppercase`}>
+                      <h3 className={`${pixelify.className} text-gray-900 text-2xl md:text-3xl uppercase`}>
                         {project.title}
                       </h3>
-                      <span className={`${pixelify.className} text-green-400 text-[10px] tracking-wider uppercase`}>
+                      <span className={`${pixelify.className} text-gray-900/50 text-xs tracking-wider uppercase`}>
                         {project.tag}
                       </span>
                     </div>
-                    <p className={`${roboto.className} text-white/40 text-xs mt-1.5 font-light`}>
+                    <p className={`${roboto.className} text-gray-900/40 text-sm mt-2 font-light`}>
                       {project.body}
                     </p>
                   </div>
 
                   {/* Hover accent line — slides in from left */}
-                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-green-400 group-hover:w-full transition-all duration-500 ease-out" />
+                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gray-900/30 group-hover:w-full transition-all duration-500 ease-out" />
                 </div>
               </Link>
             </AnimatedSection>
@@ -177,7 +177,7 @@ export default function Landing() {
         </div>
 
         {/* Mini Projects — 3 column row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
           {projectminis.map((mini, i) => (
             <AnimatedSection key={mini.id} delay={0.4 + i * 0.1}>
               <Link
@@ -185,28 +185,28 @@ export default function Landing() {
                 onClick={() => { show(); setTimeout(hide, 800); }}
                 className="group block"
               >
-                <div className="relative bg-gray-900 rounded-xl overflow-hidden transition-all duration-300 ease-out
-                                group-hover:-translate-y-2 group-hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)]">
+                <div className={`relative ${mini.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
+                                group-hover:-translate-y-2 group-hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.15)]`}>
                   {/* Smaller image placeholder */}
-                  <div className="w-full aspect-[3/1] bg-gray-800 group-hover:bg-gray-700 transition-colors duration-300" />
+                  <div className="w-full aspect-[3/1]" />
 
                   {/* Card info */}
                   <div className="p-3.5">
                     <div className="flex items-center justify-between">
-                      <h3 className={`${pixelify.className} text-white text-base md:text-lg uppercase`}>
+                      <h3 className={`${pixelify.className} text-gray-900 text-base md:text-lg uppercase`}>
                         {mini.title}
                       </h3>
-                      <span className={`${pixelify.className} text-green-400 text-[9px] tracking-wider uppercase`}>
+                      <span className={`${pixelify.className} text-gray-900/50 text-[9px] tracking-wider uppercase`}>
                         {mini.tag}
                       </span>
                     </div>
-                    <p className={`${roboto.className} text-white/40 text-[11px] mt-1 font-light`}>
+                    <p className={`${roboto.className} text-gray-900/40 text-[11px] mt-1 font-light`}>
                       {mini.desc}
                     </p>
                   </div>
 
                   {/* Hover accent line */}
-                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-green-400 group-hover:w-full transition-all duration-500 ease-out" />
+                  <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-gray-900/30 group-hover:w-full transition-all duration-500 ease-out" />
                 </div>
               </Link>
             </AnimatedSection>

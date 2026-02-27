@@ -109,7 +109,7 @@ export function MagneticWrapper({ children }: { children: ReactNode }) {
   )
 }
 
-export function AboutButton({text, parameter}: Prop2) {
+export function AboutButton({ text, parameter }: Prop2) {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const springX = useSpring(x, springConfig);
@@ -140,12 +140,12 @@ export function AboutButton({text, parameter}: Prop2) {
 
   return (
     <div
-        className="relative group inset-0"
+        className="relative group inset-0 flex items-center justify-center"
         onMouseMove={handleMovement}
         onMouseLeave={handleMovementExit}
     >
         <motion.span
-            className={`relative md:inline-block pointer-events-none text-white text-2xl uppercase z-50 ${pixelify.className}`}
+            className={`relative md:inline-block pointer-events-none text-white text-2xl uppercase z-50 text-center ${pixelify.className}`}
             style={{ x: springX, y: springY }}
         >
             {text}

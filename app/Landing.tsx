@@ -10,6 +10,7 @@ import { AboutButton } from "@/components/MagneticButton";
 import { motion, useInView } from "framer-motion";
 import { useRef, useState, useEffect, useCallback } from "react";
 import { calcModalPosition } from "@/lib/calcModalPosition";
+import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
 
 // Animated section wrapper
 function AnimatedSection({ children, className = "", delay = 0 }: {
@@ -228,7 +229,7 @@ export default function Landing() {
               >
                 {/* Card */}
                 <div
-                  className={`relative ${project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
+                  className={`relative ${project.gradient ? '' : project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
                               group-hover:-translate-y-2 aspect-[9/5]`}
                   style={{ boxShadow: 'none' }}
                   onMouseEnter={(e) => {
@@ -238,6 +239,37 @@ export default function Landing() {
                     e.currentTarget.style.boxShadow = 'none';
                   }}
                 >
+                  {/* Shader gradient background — pixelated */}
+                  {project.gradient && (
+                    <div className="absolute inset-0 overflow-hidden">
+                      <ShaderGradientCanvas
+                        style={{
+                          position: 'absolute',
+                          top: '-10%',
+                          left: '-10%',
+                          width: '120%',
+                          height: '120%',
+                          pointerEvents: 'none',
+                          imageRendering: 'pixelated',
+                          transform: 'scale(5)',
+                          transformOrigin: 'center',
+                        }}
+                        pixelDensity={0.25}
+                      >
+                        <ShaderGradient {...project.gradient as any} />
+                      </ShaderGradientCanvas>
+                    </div>
+                  )}
+
+                  {/* Project image overlay — centered */}
+                  {project.image && (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 m-auto max-w-[60%] max-h-[60%] object-contain z-10 pointer-events-none"
+                    />
+                  )}
+
                   {/* Unified pill label — bottom left */}
                   <div className="absolute bottom-4 left-4 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
                     <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>

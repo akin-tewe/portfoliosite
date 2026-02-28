@@ -21,41 +21,20 @@ const staggerContainer = {
     }
 };
 
-// Grid overlay component for dark sections
-function GridOverlay() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
-// Grid overlay for light sections
-function GridOverlayLight() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-black/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
         <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
             {children}
+        </div>
+    );
+}
+
+// Gradient divider between sections
+function SectionDivider() {
+    return (
+        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
 }
@@ -84,19 +63,18 @@ export default function Sprite() {
 
     return (
         <main className="overflow-x-hidden">
-            {/* Hero Section - Dark */}
+            {/* Hero Section */}
             <section
                 ref={heroRef}
-                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-black"
+                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
             >
-                <GridOverlay />
                 <GridContainer>
                     <div className="md:w-[60%] lg:w-[50%] md:ml-[20%]">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
                         >
                             sprite
                         </motion.h1>
@@ -105,7 +83,7 @@ export default function Sprite() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.3 }}
-                            className={`${pixelify.className} text-blue-400 text-xl md:text-2xl tracking-wide uppercase mt-2`}
+                            className={`${pixelify.className} text-blue-500 text-xl md:text-2xl tracking-wide uppercase mt-2`}
                         >
                             [Placeholder: tagline]
                         </motion.p>
@@ -114,7 +92,7 @@ export default function Sprite() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             [Placeholder: description of the Sprite commission — what was made, the scope, and the deliverable.]
                         </motion.p>
@@ -128,7 +106,7 @@ export default function Sprite() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-white/30 rounded text-white/80 text-base tracking-wide uppercase hover:bg-white/10 transition-colors`}
+                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
                                 >
                                     View Project
                                 </button>
@@ -136,7 +114,7 @@ export default function Sprite() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('video')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 bg-blue-600 rounded text-white text-base tracking-wide uppercase hover:bg-blue-700 transition-colors`}
+                                    className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors`}
                                 >
                                     Watch Video
                                 </button>
@@ -146,9 +124,8 @@ export default function Sprite() {
                 </GridContainer>
             </section>
 
-            {/* Preview Section - Dark */}
-            <section className="relative w-full pb-6 md:pb-8 bg-black">
-                <GridOverlay />
+            {/* Preview Section */}
+            <section className="relative w-full pb-6 md:pb-8">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -156,21 +133,22 @@ export default function Sprite() {
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
                     >
-                        <div className="aspect-video w-full bg-white/5 rounded-lg flex items-center justify-center">
-                            <span className={`${roboto.className} text-white/30 italic`}>
+                        <div className="aspect-video w-full bg-white rounded-2xl flex items-center justify-center">
+                            <span className={`${roboto.className} text-black/30 italic`}>
                                 [Placeholder: hero image or video]
                             </span>
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             [Placeholder: caption]
                         </span>
                     </motion.div>
                 </GridContainer>
             </section>
 
-            {/* Premise - White */}
-            <section id="body" className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Premise */}
+            <section id="body" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -197,9 +175,10 @@ export default function Sprite() {
                 </GridContainer>
             </section>
 
-            {/* Pull Quote - Green Section */}
-            <section className="relative py-16 md:py-24 bg-green-600">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Pull Quote */}
+            <section className="relative py-16 md:py-24 bg-gray-200">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -208,11 +187,11 @@ export default function Sprite() {
                         transition={{ duration: 0.8 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="border-l-2 border-white pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                        <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
                                 [Placeholder: pull quote — a key insight or creative philosophy from the project.]
                             </span>
-                            <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
+                            <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
                                 [Placeholder: attribution or supporting context.]
                             </span>
                         </div>
@@ -220,9 +199,10 @@ export default function Sprite() {
                 </GridContainer>
             </section>
 
-            {/* Process - White */}
-            <section className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Process */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -249,21 +229,22 @@ export default function Sprite() {
                 </GridContainer>
             </section>
 
-            {/* Deliverables - Dark */}
-            <section className="relative py-12 md:py-20 bg-black">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Deliverables */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-400 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Deliverables
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             [Placeholder: description of final deliverables — what was handed off, reception, impact.]
                         </motion.p>
@@ -279,12 +260,12 @@ export default function Sprite() {
                         transition={{ duration: 0.6 }}
                         className="w-full"
                     >
-                        <div className="aspect-video w-full bg-white/5 rounded-lg flex items-center justify-center">
-                            <span className={`${roboto.className} text-white/30 italic`}>
+                        <div className="aspect-video w-full bg-white rounded-2xl flex items-center justify-center">
+                            <span className={`${roboto.className} text-black/30 italic`}>
                                 [Placeholder: final video]
                             </span>
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             [Placeholder: caption]
                         </span>
                     </motion.div>
@@ -295,14 +276,14 @@ export default function Sprite() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
                         >
                             [Placeholder: reception and impact — views, engagement, client feedback.]
                         </motion.p>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             [Placeholder: personal reflection on the project — what was learned, what would be done differently.]
                         </motion.p>

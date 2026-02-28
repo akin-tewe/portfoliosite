@@ -23,41 +23,20 @@ const staggerContainer = {
     }
 };
 
-// Grid overlay component for dark sections
-function GridOverlay() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
-// Grid overlay for light sections
-function GridOverlayLight() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-black/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
         <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
             {children}
+        </div>
+    );
+}
+
+// Gradient divider between sections
+function SectionDivider() {
+    return (
+        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
 }
@@ -106,7 +85,7 @@ function ProductCarousel() {
         let animationId: number;
         let accumulator = 0;
         const scrollAmount = 1;
-        const frameDelay = 2; // scroll every N frames (lower = faster)
+        const frameDelay = 2;
 
         const scroll = () => {
             accumulator++;
@@ -134,9 +113,9 @@ function ProductCarousel() {
             className="relative w-full"
         >
             {/* Left fade */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none" />
             {/* Right fade */}
-            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none" />
 
             <div
                 ref={containerRef}
@@ -175,30 +154,29 @@ export default function TruReligion() {
 
     return (
         <main className="overflow-x-hidden">
-            {/* Hero Section - Dark */}
+            {/* Hero Section */}
             <section
                 ref={heroRef}
-                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-black"
+                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
             >
-                <GridOverlay />
                 <GridContainer>
                     <div className="md:w-[60%] lg:w-[50%] md:ml-[20%]">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
                         >
                             true religion x
                             <br />
-                            <span className="text-blue-400 italic">{`"bluboy"`}</span>
+                            <span className="text-blue-500 italic">{`"bluboy"`}</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             {`A 3D animated commercial developed entirely by me made to promote the collaborative
                             clothing drop between True Religion Brand Jeans and clothing designer "Bluboy" (@bluboy, 110K followers on Instagram).`}
@@ -213,7 +191,7 @@ export default function TruReligion() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-white/30 rounded text-white/80 text-base tracking-wide uppercase hover:bg-white/10 transition-colors`}
+                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
                                 >
                                     View Project
                                 </button>
@@ -221,7 +199,7 @@ export default function TruReligion() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('video')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 bg-blue-600 rounded text-white text-base tracking-wide uppercase hover:bg-blue-700 transition-colors flex items-center gap-2`}
+                                    className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}
                                 >
                                     <Video className="w-4 h-4" />
                                     Watch Video
@@ -232,19 +210,18 @@ export default function TruReligion() {
                 </GridContainer>
             </section>
 
-            {/* Product Carousel - Dark */}
-            <section className="relative w-full pb-6 md:pb-8 bg-black">
-                <GridOverlay />
+            {/* Product Carousel */}
+            <section className="relative w-full pb-6 md:pb-8">
                 <ProductCarousel />
-                <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-4 block text-center italic`}>
+                <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-4 block text-center italic`}>
                     In-scene product shot direction
                 </span>
             </section>
 
-            {/* Main Content - White Section */}
-            <section id="body" className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
-                {/* Section 1: Premise */}
+            <SectionDivider />
+
+            {/* Section 1: Premise */}
+            <section id="body" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -272,9 +249,10 @@ export default function TruReligion() {
                 </GridContainer>
             </section>
 
-            {/* Section 2: Audience - White */}
-            <section className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Section 2: Audience */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -310,7 +288,7 @@ export default function TruReligion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden rounded-2xl"
                         >
                             <Image
                                 src="/projects/truereligion/ex1.jpg"
@@ -325,7 +303,7 @@ export default function TruReligion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden rounded-2xl"
                         >
                             <Image
                                 src="/projects/truereligion/ex2.jpg"
@@ -340,7 +318,7 @@ export default function TruReligion() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden rounded-2xl"
                         >
                             <Image
                                 src="/projects/truereligion/ex3.jpg"
@@ -351,15 +329,16 @@ export default function TruReligion() {
                             />
                         </motion.div>
                     </div>
-                    <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                    <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                         Branding aesthetic reference - image credit: @bluboy on Instagram
                     </span>
                 </GridContainer>
             </section>
 
-            {/* Pull Quote - Blue Section */}
-            <section className="relative py-16 md:py-24 bg-blue-600">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Pull Quote */}
+            <section className="relative py-16 md:py-24 bg-gray-200">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -368,11 +347,11 @@ export default function TruReligion() {
                         transition={{ duration: 0.8 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="border-l-2 border-white pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                        <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
                                 {`The video's pacing lives comfortably between these two ideas; combining whimsical character moments with a clear product showcase.`}
                             </span>
-                            <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
+                            <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
                                 Clear branding is established early, then the focus softly transitions to the garments.
                             </span>
                         </div>
@@ -380,9 +359,10 @@ export default function TruReligion() {
                 </GridContainer>
             </section>
 
-            {/* Section 3: Hero Character - White */}
-            <section className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Section 3: Hero Character */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -416,7 +396,7 @@ export default function TruReligion() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="overflow-hidden"
+                        className="overflow-hidden rounded-2xl"
                     >
                         <Image
                             src="/projects/truereligion/M1.png"
@@ -431,7 +411,7 @@ export default function TruReligion() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="overflow-hidden"
+                        className="overflow-hidden rounded-2xl"
                     >
                         <Image
                             src="/projects/truereligion/M2.png"
@@ -446,7 +426,7 @@ export default function TruReligion() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="overflow-hidden"
+                        className="overflow-hidden rounded-2xl"
                     >
                         <Image
                             src="/projects/truereligion/M3.png"
@@ -457,7 +437,7 @@ export default function TruReligion() {
                         />
                     </motion.div>
                 </div>
-                <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                     {`Original "bluboy" character render shots`}
                 </span>
 
@@ -474,21 +454,22 @@ export default function TruReligion() {
                 </GridContainer>
             </section>
 
-            {/* Section 4: Refinement - Dark */}
-            <section className="relative py-12 md:py-20 bg-black">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Section 4: Refinement */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-400 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Refinement
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             This project was completed on a very tight one-month turnaround with constant
                             direct feedback from Bluboy and the True Religion team.
@@ -496,7 +477,7 @@ export default function TruReligion() {
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             Juggling an abstract vision alongside a tight deadline proved
                             to be a daunting challenge, but keeping two goals at the forefront guided the process: clarity and engagement.
@@ -513,14 +494,14 @@ export default function TruReligion() {
                         transition={{ duration: 0.6 }}
                         className="w-full"
                     >
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl">
                             <video
-                                className="aspect-video w-full rounded-lg"
+                                className="aspect-video w-full"
                                 src="/projects/truereligion/truvideo.mp4"
                                 controls
                             />
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Final rendered animation
                         </span>
                     </motion.div>
@@ -531,7 +512,7 @@ export default function TruReligion() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
                         >
                             The video was very well received, generating over 10,000 likes
                             and 300K+ impressions across all accounts.
@@ -539,7 +520,7 @@ export default function TruReligion() {
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             {`For me, this project was a learning process in how to carry a
                             client's vision alongside my own, and present it in a way that felt natural rather than manufactured.`}

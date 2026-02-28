@@ -36,6 +36,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+# claude task queue
+.claude/tasks/
+.claude/watch-tasks.ps1
+.claude/helpers.ps1
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

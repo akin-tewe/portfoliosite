@@ -32,6 +32,15 @@ function GridContainer({ children, className = "", id }: { children: React.React
     );
 }
 
+// Gradient divider between sections
+function SectionDivider() {
+    return (
+        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
+        </div>
+    );
+}
+
 // Auto-scrolling carousel component
 function ImageCarousel() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -73,9 +82,9 @@ function ImageCarousel() {
     return (
         <div className="relative w-full">
             {/* Left fade */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none" />
             {/* Right fade */}
-            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none" />
 
             <div
                 ref={containerRef}
@@ -89,7 +98,7 @@ function ImageCarousel() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6, delay: index * 0.1 }}
-                        className="flex-shrink-0 w-[240px] md:w-[360px] lg:w-[440px] aspect-[3/4] overflow-hidden"
+                        className="flex-shrink-0 w-[240px] md:w-[360px] lg:w-[440px] aspect-[3/4] rounded-2xl overflow-hidden"
                     >
                         <Image
                             src={img.src}
@@ -123,21 +132,6 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
     );
 }
 
-// Grid overlay for dark sections
-function GridOverlay() {
-    return (
-        <div className="absolute inset-0 flex justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
 export default function Bluboy() {
     const heroRef = useRef(null);
     const isHeroInView = useInView(heroRef, { once: true });
@@ -145,31 +139,30 @@ export default function Bluboy() {
     return (
         <main className="overflow-x-hidden">
             {/* ============================================ */}
-            {/* DARK SECTION: Hero */}
+            {/* Hero */}
             {/* ============================================ */}
             <section
                 ref={heroRef}
-                className="relative bg-black pt-32 md:pt-40 pb-16 md:pb-24"
+                className="relative bg-gray-200 pt-32 md:pt-40 pb-16 md:pb-24"
             >
-                <GridOverlay />
                 <GridContainer>
                     <div className="md:w-[60%] lg:w-[50%] md:ml-[20%]">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
                         >
                             print launch video
                             <br />
-                            <span className="text-blue-400 italic">{`for "bluboy"`}</span>
+                            <span className="text-blue-500 italic">{`for "bluboy"`}</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             {`A short-form commercial created to introduce
                             the release of fashion designer "Bluboy's" (@bluboy, 110K followers on Instagram) art prints.`}
@@ -184,7 +177,7 @@ export default function Bluboy() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-white/30 rounded text-white/80 text-base tracking-wide uppercase hover:bg-white/10 transition-colors`}
+                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
                                 >
                                     View Project
                                 </button>
@@ -192,7 +185,7 @@ export default function Bluboy() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('video')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 bg-blue-600 rounded text-white text-base tracking-wide uppercase hover:bg-blue-700 transition-colors flex items-center gap-2`}
+                                    className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}
                                 >
                                     <Video className="w-4 h-4" />
                                     Watch Video
@@ -201,24 +194,24 @@ export default function Bluboy() {
                         </motion.div>
                     </div>
                 </GridContainer>
-
             </section>
 
-            {/* Hero Image Carousel - Still on dark */}
-            <section className="relative bg-black pb-16 md:pb-24">
-                <GridOverlay />
+            {/* Image Carousel */}
+            <section className="relative pb-16 md:pb-24">
                 <ImageCarousel />
                 <GridContainer>
-                    <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                    <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                         {`"bluboy" art direction reference - image credit: @bluboy on instagram`}
                     </span>
                 </GridContainer>
             </section>
 
+            <SectionDivider />
+
             {/* ============================================ */}
-            {/* WHITE SECTION: Assessment */}
+            {/* Assessment */}
             {/* ============================================ */}
-            <section id="body" className="relative bg-white py-16 md:py-24">
+            <section id="body" className="relative py-16 md:py-24">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -254,7 +247,7 @@ export default function Bluboy() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto rounded-2xl overflow-hidden"
                         >
                             <Image
                                 src="/projects/bluboyspin/char1.jpg"
@@ -269,7 +262,7 @@ export default function Bluboy() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto rounded-2xl overflow-hidden"
                         >
                             <Image
                                 src="/projects/bluboyspin/char2.jpg"
@@ -284,7 +277,7 @@ export default function Bluboy() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className="flex-shrink-0 w-[75vw] md:w-auto overflow-hidden"
+                            className="flex-shrink-0 w-[75vw] md:w-auto rounded-2xl overflow-hidden"
                         >
                             <Image
                                 src="/projects/bluboyspin/char3.jpg"
@@ -295,17 +288,18 @@ export default function Bluboy() {
                             />
                         </motion.div>
                     </div>
-                    <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                    <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                         Character visual direction reference - image credit: @bluboy on instagram
                     </span>
                 </GridContainer>
             </section>
 
+            <SectionDivider />
+
             {/* ============================================ */}
-            {/* BLUE SECTION: Key Insight */}
+            {/* Key Insight — Pull Quote */}
             {/* ============================================ */}
-            <section className="relative bg-blue-600 py-16 md:py-24">
-                <GridOverlay />
+            <section className="relative bg-gray-200 py-16 md:py-24">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -314,11 +308,11 @@ export default function Bluboy() {
                         transition={{ duration: 0.8 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="border-l-2 border-white pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                        <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
                                 {`Character-driven imagery is a focal point of his narrative, but he wanted to reduce its prominence for this video.`}
                             </span>
-                            <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
+                            <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
                                 Let the pieces speak on their own.
                             </span>
                         </div>
@@ -326,10 +320,12 @@ export default function Bluboy() {
                 </GridContainer>
             </section>
 
+            <SectionDivider />
+
             {/* ============================================ */}
-            {/* WHITE SECTION: Motion */}
+            {/* Motion */}
             {/* ============================================ */}
-            <section className="relative bg-white py-16 md:py-24">
+            <section className="relative py-16 md:py-24">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -365,16 +361,16 @@ export default function Bluboy() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="overflow-hidden bg-gray-100 p-4 md:p-6 rounded-lg">
+                        <div className="overflow-hidden bg-white p-4 md:p-6 rounded-2xl">
                             <Image
                                 src="/projects/bluboyspin/principles.gif"
                                 alt="Principles of Animation"
                                 width={490}
                                 height={490}
-                                className="w-full h-auto rounded-md"
+                                className="w-full h-auto rounded-xl"
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             12 principles of animation - image credit: Chris Totten via Medium
                         </span>
                     </motion.div>
@@ -393,30 +389,31 @@ export default function Bluboy() {
                 </GridContainer>
             </section>
 
+            <SectionDivider />
+
             {/* ============================================ */}
-            {/* DARK SECTION: Result */}
+            {/* Result */}
             {/* ============================================ */}
-            <section className="relative bg-black py-16 md:py-24">
-                <GridOverlay />
+            <section className="relative py-16 md:py-24">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-400 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Result
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             The final piece reads less like an advertisement and more like a visual gesture.
                         </motion.p>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             {`Without an ironed-out brief to work from, this entire project was produced through responsiveness and paying close attention to the client's needs.
                             The result was a piece that supports their message without diluting their voice.`}
@@ -424,7 +421,7 @@ export default function Bluboy() {
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             {`The video generated 50K views within the first week of launch.`}
                         </motion.p>
@@ -440,14 +437,14 @@ export default function Bluboy() {
                         transition={{ duration: 0.6 }}
                         className="w-full"
                     >
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl">
                             <video
-                                className="aspect-video w-full rounded-lg"
+                                className="aspect-video w-full"
                                 src="/projects/bluboyspin/printsvid.mp4"
                                 controls
                             />
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Final rendered animation
                         </span>
                     </motion.div>

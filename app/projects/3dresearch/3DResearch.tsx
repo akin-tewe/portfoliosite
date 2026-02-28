@@ -11,6 +11,7 @@ import {
     DonutChart,
     researchChartData
 } from "@/components/Charts";
+import MaslowHierarchy from "@/components/MaslowHierarchy";
 
 // Animation variants
 const fadeInUp = {
@@ -29,41 +30,20 @@ const staggerContainer = {
     }
 };
 
-// Grid overlay component for dark sections
-function GridOverlay() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
-// Grid overlay for light sections
-function GridOverlayLight() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-black/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
         <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
             {children}
+        </div>
+    );
+}
+
+// Gradient divider between sections
+function SectionDivider() {
+    return (
+        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
 }
@@ -86,19 +66,10 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
     );
 }
 
-// Chart container with glass effect - dark version
+// Chart container
 function ChartContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     return (
-        <div className={`bg-white/5 backdrop-blur-sm p-4 md:p-6 rounded-lg border border-white/5 ${className}`}>
-            {children}
-        </div>
-    );
-}
-
-// Chart container for light sections
-function ChartContainerLight({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-    return (
-        <div className={`bg-black/5 backdrop-blur-sm p-4 md:p-6 rounded-lg border border-black/5 ${className}`}>
+        <div className={`bg-gray-900/80 p-4 md:p-6 rounded-2xl border border-white/5 ${className}`}>
             {children}
         </div>
     );
@@ -110,30 +81,29 @@ export default function D3Project() {
 
     return (
         <main className="overflow-x-hidden">
-            {/* Hero Section - Dark */}
+            {/* Hero Section */}
             <section
                 ref={heroRef}
-                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-black"
+                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
             >
-                <GridOverlay />
                 <GridContainer>
                     <div className="md:w-[60%] lg:w-[45%] md:ml-[20%]">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
                         >
                             the independent
                             <br />
-                            <span className="text-blue-400 italic">3d artist</span>
+                            <span className="text-blue-500 italic">3d artist</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             A qualitative UX Research study exploring the nature of creative work in an online economy.
                         </motion.p>
@@ -147,7 +117,7 @@ export default function D3Project() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-white/30 rounded text-white/80 text-base tracking-wide uppercase hover:bg-white/10 transition-colors`}
+                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
                                 >
                                     View Project
                                 </button>
@@ -155,7 +125,7 @@ export default function D3Project() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('video')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 bg-blue-600 rounded text-white text-base tracking-wide uppercase hover:bg-blue-700 transition-colors flex items-center gap-2`}
+                                    className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}
                                 >
                                     <Video className="w-4 h-4" />
                                     Watch Documentary
@@ -167,9 +137,8 @@ export default function D3Project() {
 
             </section>
 
-            {/* Hero Video Preview - Dark */}
-            <section className="relative w-full pb-16 md:pb-24 bg-black">
-                <GridOverlay />
+            {/* Hero Video Preview */}
+            <section className="relative w-full pt-6 md:pt-10 pb-16 md:pb-24">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -178,24 +147,24 @@ export default function D3Project() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[65%] mx-auto"
                     >
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl">
                             <video
                                 src="/projects/3dresearch/biiboccvid2.mp4"
                                 autoPlay loop muted playsInline
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Expression of creativity - video credit: @biibocc on Instagram
                         </span>
                     </motion.div>
                 </GridContainer>
             </section>
 
-            {/* Main Content - White Section */}
-            <section id="body" className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
-                {/* Section 1: Framing */}
+            <SectionDivider />
+
+            {/* Section 1: Framing */}
+            <section id="body" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -231,9 +200,10 @@ export default function D3Project() {
                 </GridContainer>
             </section>
 
-            {/* Section 2: Methodology - White */}
-            <section className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Section 2: Methodology */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -262,7 +232,7 @@ export default function D3Project() {
                             transition={{ duration: 0.6 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-black text-lg md:text-xl`}>focused, in-person interview</span>
+                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>focused, in-person interview</span>
                             <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
                                 {`An extensive observational interview with visual artist "Oseanworld" (113K followers).
                                 Focuses on his journey into 3D art, motivations, and daily routine.`}
@@ -275,7 +245,7 @@ export default function D3Project() {
                             transition={{ duration: 0.6, delay: 0.1 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-black text-lg md:text-xl`}>remote interview panel</span>
+                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>remote interview panel</span>
                             <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
                                 A series of 4 video calls with independent artists encompassing a broad range of
                                 backgrounds and niches. Financial stability, expectations, platform usability.
@@ -293,23 +263,25 @@ export default function D3Project() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <ChartContainerLight className="flex justify-center">
+                        <ChartContainer className="flex justify-center">
                             <DonutChart
                                 data={researchChartData.interviewThemes}
                                 title="Theme Distribution"
                                 size={220}
+                                variant="dark"
                             />
-                        </ChartContainerLight>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        </ChartContainer>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Distribution of themes across all interview sessions
                         </span>
                     </motion.div>
                 </GridContainer>
             </section>
 
-            {/* Section 3: Human Needs - White */}
-            <section className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Section 3: Human Needs */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -337,16 +309,17 @@ export default function D3Project() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <ChartContainerLight>
-                            <h3 className={`${pixelify.className} text-black/70 text-xl md:text-2xl mb-6`}>
+                        <ChartContainer>
+                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
                                 artist concerns by frequency
                             </h3>
                             <HorizontalBarChart
                                 data={researchChartData.artistConcerns}
                                 showLabels={true}
+                                variant="dark"
                             />
-                        </ChartContainerLight>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        </ChartContainer>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Most frequently mentioned concerns across interviews
                         </span>
                     </motion.div>
@@ -362,7 +335,7 @@ export default function D3Project() {
                             transition={{ duration: 0.6 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-black text-lg md:text-xl`}>
+                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>
                                 freedom vs. stability
                             </span>
                             <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
@@ -378,7 +351,7 @@ export default function D3Project() {
                             transition={{ duration: 0.6, delay: 0.1 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-black text-lg md:text-xl`}>
+                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>
                                 self-doubt vs. output
                             </span>
                             <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
@@ -394,7 +367,7 @@ export default function D3Project() {
                             transition={{ duration: 0.6, delay: 0.2 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-black text-lg md:text-xl`}>
+                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>
                                 technology: not an enemy or saviour
                             </span>
                             <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
@@ -413,32 +386,36 @@ export default function D3Project() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
+                            className="h-full"
                         >
-                            <ChartContainerLight>
-                                <h3 className={`${pixelify.className} text-black/70 text-lg mb-6`}>
+                            <ChartContainer className="h-full">
+                                <h3 className={`${pixelify.className} text-white/70 text-lg mb-6`}>
                                     freedom vs stability
                                 </h3>
                                 <VerticalBarChart
                                     data={researchChartData.freedomStability}
                                     showLabels={true}
+                                    variant="dark"
                                 />
-                            </ChartContainerLight>
+                            </ChartContainer>
                         </motion.div>
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.1 }}
+                            className="h-full"
                         >
-                            <ChartContainerLight>
-                                <h3 className={`${pixelify.className} text-black/70 text-lg mb-6`}>
+                            <ChartContainer className="h-full">
+                                <h3 className={`${pixelify.className} text-white/70 text-lg mb-6`}>
                                     technology perception
                                 </h3>
                                 <HorizontalBarChart
                                     data={researchChartData.techPerception}
                                     showLabels={true}
+                                    variant="dark"
                                 />
-                            </ChartContainerLight>
+                            </ChartContainer>
                         </motion.div>
                     </div>
                 </GridContainer>
@@ -463,37 +440,30 @@ export default function D3Project() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="overflow-hidden bg-black/5 p-4 md:p-6 rounded-lg">
-                            <Image
-                                src="/projects/3dresearch/maslows3.png"
-                                alt="Maslow's Hierarchy Contextualized"
-                                className="rounded-md w-full h-auto"
-                                width={490}
-                                height={490}
-                            />
-                        </div>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <MaslowHierarchy />
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             {`Maslow's hierarchy of needs contextualized`}
                         </span>
                     </motion.div>
                 </GridContainer>
             </section>
 
-            {/* Section 4: Impact - Dark */}
-            <section className="relative py-12 md:py-20 bg-black">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Section 4: Impact */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-400 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Impact
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             This study is an anchor in human continuity.
                             The people behind the output and the platform. It demonstrates:
@@ -512,9 +482,9 @@ export default function D3Project() {
                                 <motion.li
                                     key={index}
                                     variants={fadeInUp}
-                                    className={`${roboto.className} text-white/80 text-lg md:text-xl font-light flex items-center gap-3`}
+                                    className={`${roboto.className} text-black/80 text-lg md:text-xl font-light flex items-center gap-3`}
                                 >
-                                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full flex-shrink-0"></span>
+                                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"></span>
                                     {item}
                                 </motion.li>
                             ))}
@@ -523,9 +493,10 @@ export default function D3Project() {
                 </GridContainer>
             </section>
 
-            {/* Pull Quote - Blue Section */}
-            <section className="relative py-16 md:py-24 bg-blue-600">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Pull Quote */}
+            <section className="relative py-16 md:py-24 bg-gray-200">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -534,11 +505,11 @@ export default function D3Project() {
                         transition={{ duration: 0.8 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="border-l-2 border-white pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                        <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
                                 {`It didn't aim to "solve a problem", because their lives are not problems to be solved.`}
                             </span>
-                            <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
+                            <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
                                 Rather than resolving the tension, it gives it space to exist honestly.
                             </span>
                         </div>
@@ -546,9 +517,10 @@ export default function D3Project() {
                 </GridContainer>
             </section>
 
-            {/* Final Video - Dark */}
-            <section className="relative py-12 md:py-20 bg-black">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Final Video */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer id="video">
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -557,14 +529,14 @@ export default function D3Project() {
                         transition={{ duration: 0.6 }}
                         className="w-full"
                     >
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl">
                             <video
-                                className="aspect-video w-full rounded-lg"
+                                className="aspect-video w-full"
                                 src="/projects/3dresearch/mocpressed.mp4"
                                 controls
                             />
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Final rendered documentary
                         </span>
                     </motion.div>

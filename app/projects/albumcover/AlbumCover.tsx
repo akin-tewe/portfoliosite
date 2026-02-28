@@ -22,41 +22,20 @@ const staggerContainer = {
     }
 };
 
-// Grid overlay component for dark sections
-function GridOverlay() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-white/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-white/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
-// Grid overlay for light sections
-function GridOverlayLight() {
-    return (
-        <div className="absolute inset-0 flex h-full w-full justify-center pointer-events-none">
-            <div className="flex w-full max-w-[1400px] h-full">
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-black/[0.07]"></div>
-                <div className="flex-1 border-l border-r border-black/[0.07]"></div>
-            </div>
-        </div>
-    );
-}
-
 // Grid container for content alignment
-function GridContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
             {children}
+        </div>
+    );
+}
+
+// Gradient divider between sections
+function SectionDivider() {
+    return (
+        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+            <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
 }
@@ -85,30 +64,29 @@ export default function AlbumCover() {
 
     return (
         <main className="overflow-x-hidden">
-            {/* Hero Section - Dark */}
+            {/* Hero Section */}
             <section
                 ref={heroRef}
-                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-black"
+                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
             >
-                <GridOverlay />
                 <GridContainer>
                     <div className="md:w-[60%] lg:w-[50%] md:ml-[20%]">
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-white leading-tight`}
+                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
                         >
                             peaches and eggplants
                             <br />
-                            <span className="text-blue-400 italic">cover art design</span>
+                            <span className="text-blue-500 italic">cover art design</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-white/70 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
                             {`As star artists "Latto" (17M monthly Spotify listeners) and "Sexyy Red" (18M monthly listeners) were brought on to the remix of Young Nudy's
                             hit song, I was commissioned by Nudy's team to reinterpret the original cover.`}
@@ -123,7 +101,7 @@ export default function AlbumCover() {
                             <MagneticWrapper>
                                 <button
                                     onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-white/30 rounded text-white/80 text-base tracking-wide uppercase hover:bg-white/10 transition-colors`}
+                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
                                 >
                                     View Project
                                 </button>
@@ -133,9 +111,8 @@ export default function AlbumCover() {
                 </GridContainer>
             </section>
 
-            {/* Hero Image - Original Cover - Dark */}
-            <section className="relative w-full pb-16 md:pb-24 bg-black">
-                <GridOverlay />
+            {/* Hero Image - Original Cover */}
+            <section className="relative w-full pb-16 md:pb-24">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -144,7 +121,7 @@ export default function AlbumCover() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl">
                             <Image
                                 src="/projects/albumcover/originalcover.jpg"
                                 alt="Original Album Cover"
@@ -153,16 +130,17 @@ export default function AlbumCover() {
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             {`"Peaches and Eggplants" by Young Nudy - original cover art`}
                         </span>
                     </motion.div>
                 </GridContainer>
             </section>
 
-            {/* Main Content - White Section */}
-            <section id="body" className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Main Content */}
+            <section id="body" className="relative py-12 md:py-20">
                 {/* Section 1: Context */}
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
@@ -199,9 +177,10 @@ export default function AlbumCover() {
                 </GridContainer>
             </section>
 
-            {/* Pull Quote - Blue Section */}
-            <section className="relative py-16 md:py-24 bg-blue-600">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Pull Quote */}
+            <section className="relative py-16 md:py-24 bg-gray-200">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -210,11 +189,11 @@ export default function AlbumCover() {
                         transition={{ duration: 0.8 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="border-l-2 border-white pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-white text-2xl md:text-3xl font-light leading-relaxed`}>
+                        <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
+                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
                                 {`The original cover was a still-life composition built around indulgence: food, money, guns, and overt luxury.`}
                             </span>
-                            <span className={`${roboto.className} text-white/70 text-base block mt-4`}>
+                            <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
                                 Safe to say it would not be a light challenge introducing new elements onto an already cluttered scene.
                             </span>
                         </div>
@@ -222,9 +201,10 @@ export default function AlbumCover() {
                 </GridContainer>
             </section>
 
-            {/* Section 2: Iteration - White */}
-            <section className="relative py-12 md:py-20 bg-white">
-                <GridOverlayLight />
+            <SectionDivider />
+
+            {/* Section 2: Iteration */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
@@ -258,7 +238,7 @@ export default function AlbumCover() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
-                            className="overflow-hidden aspect-[3/4]"
+                            className="overflow-hidden aspect-[3/4] rounded-2xl"
                         >
                             <Image
                                 src="/projects/albumcover/red.jpg"
@@ -273,7 +253,7 @@ export default function AlbumCover() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="overflow-hidden aspect-[3/4]"
+                            className="overflow-hidden aspect-[3/4] rounded-2xl"
                         >
                             <Image
                                 src="/projects/albumcover/latto.webp"
@@ -284,7 +264,7 @@ export default function AlbumCover() {
                             />
                         </motion.div>
                     </div>
-                    <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                    <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                         {`Chain references for artists "Sexyy Red" and "Latto"`}
                     </span>
                 </GridContainer>
@@ -298,7 +278,7 @@ export default function AlbumCover() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl">
                             <Image
                                 src="/projects/albumcover/wip2.png"
                                 alt="Work in Progress"
@@ -307,7 +287,7 @@ export default function AlbumCover() {
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Initial work in progress scene
                         </span>
                     </motion.div>
@@ -334,9 +314,10 @@ export default function AlbumCover() {
                 </GridContainer>
             </section>
 
-            {/* Final Result - Dark */}
-            <section className="relative py-12 md:py-20 bg-black">
-                <GridOverlay />
+            <SectionDivider />
+
+            {/* Final Result */}
+            <section className="relative py-12 md:py-20">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -345,7 +326,7 @@ export default function AlbumCover() {
                         transition={{ duration: 0.6 }}
                         className="md:w-[60%] mx-auto"
                     >
-                        <div className="overflow-hidden">
+                        <div className="overflow-hidden rounded-2xl">
                             <Image
                                 src="/projects/albumcover/finalcover.jpg"
                                 alt="Final Album Cover"
@@ -354,7 +335,7 @@ export default function AlbumCover() {
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-white/40 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
                             Final remix cover art
                         </span>
                     </motion.div>
@@ -364,14 +345,14 @@ export default function AlbumCover() {
                     <AnimatedSection className="md:ml-[20%] md:w-[50%]">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-400 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
                         >
                             Conclusion
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
                         >
                             The final cover preserved the identity of the original release while also
                             differentiating itself in a clear and notable manner.
@@ -379,7 +360,7 @@ export default function AlbumCover() {
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-white/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
                             {`The remix has since accumulated over 33M streams on Spotify. While "short-lived" is an understatement for this experience, it was an important lesson in
                             quick thinking, rapid adaptation, and distilling decisions down to their essentials.`}

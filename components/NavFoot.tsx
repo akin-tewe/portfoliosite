@@ -199,27 +199,16 @@ export default function NavBar() {
 }
 
 export function Footer() {
-    const { show, hide } = useLoader();
-
     return (
-        <motion.footer
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="bg-black flex flex-col md:flex-row justify-between items-center p-6 md:p-10 gap-4 md:gap-0 border-t border-white/5"
-        >
-            <span className={`text-white opacity-50 text-sm md:text-base ${pixelify.className}`}>
-                © coded by akin tewe
-            </span>
-            <Link
-                href="/contactme"
-                className={`text-white/60 text-base md:text-xl hover:text-white transition-all ${pixelify.className} group md:mr-24`}
-                onClick={() => { show(); setTimeout(hide, 800) }}
-            >
-                contact me
-                <span className="block h-0.5 w-0 bg-white group-hover:w-full transition-all duration-300" />
-            </Link>
-        </motion.footer>
+        <footer className="px-6 md:px-[clamp(4rem,10vw,11rem)] py-8">
+            <div className="flex justify-between items-end">
+                <span className={`${pixelify.className} text-black/25 text-base tracking-wider`}>
+                    © {new Date().getFullYear()}
+                </span>
+                <span className={`${pixelify.className} text-black/25 text-base tracking-wider`}>
+                    designed & developed by akin tewe
+                </span>
+            </div>
+        </footer>
     )
 }

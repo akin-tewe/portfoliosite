@@ -119,7 +119,7 @@ export default function Projects() {
                                 className="relative block mx-auto flex flex-col w-full max-w-5xl md:grid md:grid-cols-[1fr_auto_1fr] items-center z-20 transition-transform hover:scale-103 border-3 bg-gray-200 p-7 rounded-3xl md:rounded-full pointer-events-none text-center md:text-left">
                                 <div className={`${pixelify.className} relative grid grid-cols-1 text-gray-900 justify-center uppercase`}>
                                     <h1 className="text-4xl max-w-s md:text-right">{project.title}</h1>
-                                    <div className="md:text-right font-bold opacity-60 md:hidden lg:block">{project.subtitle}</div>
+                                    <div className="md:text-right font-bold opacity-60 md:hidden lg:block">{(project as any).subtitle}</div>
                                 </div>
                                 <div className="relative w-[200px] h-[200px]">
                                     {project.image}

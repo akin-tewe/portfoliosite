@@ -38,6 +38,7 @@ yarn-error.log*
 
 # claude task queue
 .claude/tasks/
+.claude/logs/
 .claude/watch-tasks.ps1
 .claude/helpers.ps1
 

@@ -143,7 +143,7 @@ function SkillsList({
         >
             <motion.h3
                 variants={skillItem}
-                className={`${pixelify.className} text-black text-base md:text-lg tracking-wider`}
+                className={`${pixelify.className} text-black text-base tracking-wider`}
             >
                 {title}
             </motion.h3>
@@ -257,10 +257,10 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
     return (
         <div className="relative w-full">
             {/* Left fade */}
-            <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-r from-gray-900 to-transparent z-10 pointer-events-none" />
 
             {/* Right fade */}
-            <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-8 md:w-12 bg-gradient-to-l from-gray-900 to-transparent z-10 pointer-events-none" />
 
             {/* Carousel */}
             <div
@@ -312,7 +312,7 @@ export default function AboutMe() {
     const isHeroInView = useInView(heroRef, { once: true });
 
     return (
-        <main className="bg-white min-h-screen">
+        <main className="bg-[#ebebeb] min-h-screen">
 
             {/* Hero Headline */}
             <section
@@ -340,7 +340,7 @@ export default function AboutMe() {
             </GridContainer>
 
             {/* Section 1: Intro - Text Left, Image Right */}
-            <section className="relative py-16 md:py-24">
+            <section className="relative py-16 md:py-[clamp(4rem,6vw,6rem)]">
                 <GridOverlayLight />
                 <GridContainer>
                     <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10">
@@ -348,10 +348,10 @@ export default function AboutMe() {
                             variants={fadeInLeft}
                             className="md:col-span-2"
                         >
-                            <p className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}>
+                            <p className={`${roboto.className} text-black/80 font-light text-lg leading-relaxed`}>
                                 Hey! I&apos;m Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
                             </p>
-                            <p className={`${roboto.className} text-black/80 mt-8 font-light text-lg md:text-xl leading-relaxed`}>
+                            <p className={`${roboto.className} text-black/80 mt-8 font-light text-lg leading-relaxed`}>
                                 As a designer who can also write code, I think about how things look and how they&apos;re actually built. Whether I&apos;m wireframing in Figma,
                                 conducting user research, or building responsive interfaces with React and TypeScript, I can take a project from initial concept through to functional code.
                             </p>
@@ -375,7 +375,7 @@ export default function AboutMe() {
             </section>
 
             {/* Section 2: Experience - Carousel Left, Text Right */}
-            <section className="relative py-16 md:py-30 bg-black">
+            <section className="relative py-16 md:py-30 bg-gray-900">
                 <GridOverlay />
                 <GridContainer>
                     <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10 items-center">
@@ -389,7 +389,7 @@ export default function AboutMe() {
                             variants={fadeInRight}
                             className="md:col-span-2 md:col-start-4"
                         >
-                            <p className={`${roboto.className} text-white/90 font-light text-lg md:text-xl leading-relaxed`}>
+                            <p className={`${roboto.className} text-white/90 font-light text-lg leading-relaxed`}>
                                 Throughout my time freelancing as a Visual Designer, I&apos;ve worked with large brands like True Religion and Higround, designed for musical artists with over 20M monthly listeners and 10M+ social media followers, and directed brand campaigns reaching 100K+ impressions. Across 30+ commissioned projects, each one taught me how to find the best possible outcome within real constraints. Not always the ideal outcome, but often the smartest.
                             </p>
                         </motion.div>
@@ -398,7 +398,7 @@ export default function AboutMe() {
             </section>
 
             {/* Section 3: Skills - Lists Left, Video Right */}
-            <section className="relative py-16 md:py-24">
+            <section className="relative py-16 md:py-[clamp(4rem,6vw,6rem)]">
                 <GridOverlayLight />
                 <GridContainer>
                     <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-12 items-start">
@@ -408,7 +408,7 @@ export default function AboutMe() {
                         >
                             <motion.h2
                                 variants={fadeInUp}
-                                className={`${pixelify.className} text-black text-2xl md:text-3xl mb-10`}
+                                className={`${pixelify.className} text-black text-2xl mb-10`}
                             >
                                 SKILLS & TOOLS
                             </motion.h2>

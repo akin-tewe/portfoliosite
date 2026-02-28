@@ -8,6 +8,7 @@ const projectsdata = [
         shadow: "rgba(56, 189, 248, 0.4)",
         tags: ["UI/UX Design", "Built with Claude", "Production Ready"],
         image: null,
+        video: "/projects/sifty/siftythumb.mp4",
         link: "/projects/sifty",
         gradient: null,
     },
@@ -120,6 +121,7 @@ const projectsdata = [
             uTime: 0,
             wireframe: false,
         },
+        locked: true,
     },
     {
         id: 5,
@@ -130,6 +132,10 @@ const projectsdata = [
         shadow: "rgba(167, 139, 250, 0.4)",
         tags: ["Commission", "Graphic Design"],
         image: null,
+        slideshow: [
+            "/projects/albumcover/originalcover.jpg",
+            "/projects/albumcover/finalcover.jpg",
+        ],
         link: "/projects/albumcover",
         gradient: null,
     },

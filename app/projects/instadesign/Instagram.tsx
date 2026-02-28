@@ -11,6 +11,7 @@ import {
     ComparisonChart,
     chartData
 } from "@/components/Charts";
+import ProjectMetrics from "@/components/ProjectMetrics";
 
 // Animation variants
 const fadeInUp = {
@@ -137,6 +138,13 @@ export default function Instagram() {
                     </div>
                 </GridContainer>
             </section>
+
+            <ProjectMetrics metrics={[
+                { label: "Role", value: "UX Research \u00B7 Design \u00B7 Development" },
+                { label: "Type", value: "Concept Redesign" },
+                { label: "Method", value: "Survey \u00B7 Figma Prototype \u00B7 Code" },
+                { label: "Scope", value: "End-to-End" },
+            ]} />
 
             {/* Hero Media */}
             <section className="relative pb-16 md:pb-24">

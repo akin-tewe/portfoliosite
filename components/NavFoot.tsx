@@ -25,6 +25,8 @@ export default function NavBar() {
     const pathname = usePathname();
     const [open, setOpen] = useState(false);
 
+    const preventCursorFlash = (e: React.MouseEvent) => { e.preventDefault(); };
+
     useEffect(() => {
         document.body.style.overflow = open ? "hidden" : "";
         return () => {
@@ -117,6 +119,7 @@ export default function NavBar() {
                                         >
                                             <Link
                                                 href={item.href}
+                                                onMouseDown={preventCursorFlash}
                                                 onClick={(e) => {
                                                     handleHashNavigation(e, item.href);
                                                     if (!item.href.includes('#') || pathname !== (item.href.split('#')[0] || '/')) {
@@ -166,6 +169,7 @@ export default function NavBar() {
                     href="/"
                     className={`${pixelify.className} text-white text-sm tracking-wider hover:opacity-70 transition-opacity`}
                     onClick={() => { show(); setTimeout(hide, 800) }}
+                    onMouseDown={preventCursorFlash}
                 >
                     AKIN TEWE
                 </Link>
@@ -182,6 +186,7 @@ export default function NavBar() {
                             key={item.href}
                             href={item.href}
                             className="text-white/50 hover:text-white transition-colors duration-200"
+                            onMouseDown={preventCursorFlash}
                             onClick={(e) => {
                                 handleHashNavigation(e, item.href);
                                 if (!item.href.includes('#') || pathname !== (item.href.split('#')[0] || '/')) {
@@ -201,7 +206,7 @@ export default function NavBar() {
 export function Footer() {
     return (
         <footer className="px-6 md:px-[clamp(4rem,10vw,11rem)] py-8">
-            <div className="flex justify-between items-end">
+            <div className="flex flex-col items-center gap-1 md:flex-row md:justify-between md:items-end">
                 <span className={`${pixelify.className} text-black/25 text-base tracking-wider`}>
                     © {new Date().getFullYear()}
                 </span>

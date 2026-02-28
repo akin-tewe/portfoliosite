@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { LoaderProvider } from "@/components/LoaderContext";
+import { CursorProvider } from "@/components/CursorContext";
+import CustomCursor from "@/components/CustomCursor";
 import NavBar from "@/components/NavFoot";
 import { Footer } from "@/components/NavFoot";
 
@@ -16,11 +18,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Inline cursor:none to prevent native cursor flash before stylesheets load */}
+        <style dangerouslySetInnerHTML={{ __html: `@media(pointer:fine)and(prefers-reduced-motion:no-preference){*{cursor:none!important}}` }} />
+      </head>
       <body>
         <LoaderProvider>
-          <NavBar/>
-          <main>{children}</main>
-          <Footer/>
+          <CursorProvider>
+            <CustomCursor />
+            <NavBar/>
+            <main>{children}</main>
+            <Footer/>
+          </CursorProvider>
         </LoaderProvider>
       </body>
     </html>

@@ -5,6 +5,7 @@ import { Video } from "lucide-react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { MagneticWrapper } from "@/components/MagneticButton";
+import ProjectMetrics from "@/components/ProjectMetrics";
 
 // Animation variants
 const fadeInUp = {
@@ -120,6 +121,13 @@ export default function Rage() {
                 </GridContainer>
 
             </section>
+
+            <ProjectMetrics metrics={[
+                { label: "Timeline", value: "3 Months" },
+                { label: "Role", value: "3D Animator \u00B7 Director" },
+                { label: "For", value: "YourRage" },
+                { label: "Reach", value: "20K+ Live Viewers" },
+            ]} />
 
             {/* Hero Character Image */}
             <section className="relative w-full pb-16 md:pb-24">

@@ -8,9 +8,10 @@ import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
 import { AboutButton } from "@/components/MagneticButton";
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect, useCallback } from "react";
-import { calcModalPosition } from "@/lib/calcModalPosition";
+import { useRef, useState, useEffect } from "react";
+import { useCursor } from "@/components/CursorContext";
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
+import { ClockAlert } from "lucide-react";
 
 // Animated section wrapper
 function AnimatedSection({ children, className = "", delay = 0 }: {
@@ -61,87 +62,20 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
   return <span>{display}</span>;
 }
 
-// Cursor-following hover modal wrapper
-function HoverCard({ children, modal, href, onClick }: {
-  children: React.ReactNode;
-  modal: React.ReactNode;
-  href: string;
-  onClick: () => void;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const rafId = useRef(0);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const cx = e.clientX;
-    const cy = e.clientY;
-
-    cancelAnimationFrame(rafId.current);
-    rafId.current = requestAnimationFrame(() => {
-      const el = modalRef.current;
-      if (!el) return;
-
-      const { x, y } = calcModalPosition({
-        cursorX: cx,
-        cursorY: cy,
-        modalWidth: el.offsetWidth || 300,
-        modalHeight: el.offsetHeight || 200,
-        viewportWidth: window.innerWidth,
-        viewportHeight: window.innerHeight,
-      });
-
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-    });
-  }, []);
-
-  // Clean up rAF on unmount
-  useEffect(() => () => cancelAnimationFrame(rafId.current), []);
-
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="group relative block"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {children}
-      <div
-        ref={modalRef}
-        className="fixed z-50 pointer-events-none transition-opacity duration-150"
-        style={{
-          left: -9999,
-          top: -9999,
-          opacity: hovered ? 1 : 0,
-        }}
-      >
-        {modal}
-      </div>
-    </Link>
-  );
-}
-
-const TAG_COLORS: Record<string, string> = {
-  "UI/UX Design": "bg-sky-500/20 text-sky-300",
-  "Built with Claude": "bg-orange-500/20 text-orange-300",
-  "Production Ready": "bg-emerald-500/20 text-emerald-300",
-  "Front End": "bg-violet-500/20 text-violet-300",
-  "UX Research": "bg-rose-500/20 text-rose-300",
-  "Interviews": "bg-amber-500/20 text-amber-300",
-  "Commission": "bg-yellow-500/20 text-yellow-300",
-  "3D Animation": "bg-cyan-500/20 text-cyan-300",
-  "Branding": "bg-pink-500/20 text-pink-300",
-  "Graphic Design": "bg-purple-500/20 text-purple-300",
-  "Product Launch": "bg-lime-500/20 text-lime-300",
-};
-
 export default function Landing() {
   const { show, hide } = useLoader();
+  const { setCursor, resetCursor } = useCursor();
   const pathname = usePathname();
   const heroRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
+  const [slideshowIndex, setSlideshowIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSlideshowIndex(prev => prev + 1);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="overflow-x-clip">
@@ -206,82 +140,124 @@ export default function Landing() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
           {projectsdata.map((project, i) => (
             <AnimatedSection key={project.id} delay={i * 0.1}>
-              <HoverCard
-                href={project.link}
-                onClick={() => { show(); setTimeout(hide, 800); }}
-                modal={
-                  <div className="bg-gray-900 rounded-2xl shadow-xl p-6 max-w-[280px]">
-                    <h4 className={`${pixelify.className} text-white text-xl uppercase tracking-wide`}>
-                      {project.title}
-                    </h4>
-                    <p className={`${roboto.className} text-white/60 text-base font-light leading-relaxed mt-2`}>
-                      {project.body}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 mt-4">
-                      {project.tags.map((tag: string) => (
-                        <span key={tag} className={`${pixelify.className} text-sm uppercase tracking-wider ${TAG_COLORS[tag] || "text-white/50 bg-white/10"} rounded-full px-3 py-1.5`}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                }
-              >
-                {/* Card */}
+              {project.locked ? (
                 <div
-                  className={`relative ${project.gradient ? '' : project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
-                              group-hover:-translate-y-2 aspect-[9/5]`}
-                  style={{ boxShadow: 'none' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = `0 20px 50px -12px ${project.shadow}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
+                  className="group relative block cursor-default"
+                  onMouseEnter={() => setCursor("project", { title: "", body: "Article coming soon.", tags: [] })}
+                  onMouseLeave={() => resetCursor()}
                 >
-                  {/* Shader gradient background — pixelated */}
-                  {project.gradient && (
-                    <div className="absolute inset-0 overflow-hidden">
-                      <ShaderGradientCanvas
-                        style={{
-                          position: 'absolute',
-                          top: '-10%',
-                          left: '-10%',
-                          width: '120%',
-                          height: '120%',
-                          pointerEvents: 'none',
-                          imageRendering: 'pixelated',
-                          transform: 'scale(5)',
-                          transformOrigin: 'center',
-                        }}
-                        pixelDensity={0.25}
-                      >
-                        <ShaderGradient {...project.gradient as any} />
-                      </ShaderGradientCanvas>
+                  <div
+                    className="relative bg-neutral-300 rounded-2xl overflow-hidden aspect-[9/5]"
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center z-10">
+                      <ClockAlert size={85} strokeWidth={1} className="text-black/20" />
                     </div>
-                  )}
 
-                  {/* Project image overlay — centered */}
-                  {project.image && (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="absolute inset-0 m-auto max-w-[60%] max-h-[60%] object-contain z-10 pointer-events-none"
-                    />
-                  )}
-
-                  {/* Unified pill label — bottom left */}
-                  <div className="absolute bottom-4 left-4 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
-                    <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>
-                      {project.title}
-                    </span>
-                    <div className="w-px h-4 bg-white/20 hidden lg:block" />
-                    <span className={`${pixelify.className} text-white/50 text-xs tracking-wider uppercase hidden lg:inline`}>
-                      {project.tag}
-                    </span>
+                    <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
+                      <span className={`${pixelify.className} text-white/50 text-sm tracking-wider uppercase`}>
+                        {project.title}
+                      </span>
+                      <div className="w-px h-4 bg-white/20 hidden lg:block" />
+                      <span className={`${pixelify.className} text-white/30 text-xs tracking-wider uppercase hidden lg:inline`}>
+                        {project.tag}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </HoverCard>
+              ) : (
+                <Link
+                  href={project.link}
+                  onClick={() => { show(); setTimeout(hide, 800); }}
+                  className="group relative block"
+                  data-cursor="project"
+                  onMouseEnter={() => setCursor("project", { title: project.title, body: project.body, tags: project.tags })}
+                  onMouseLeave={() => resetCursor()}
+                >
+                  <div
+                    className={`relative ${project.gradient ? '' : project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
+                                group-hover:-translate-y-2 aspect-[9/5]`}
+                    style={{ boxShadow: 'none' }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.boxShadow = `0 20px 50px -12px ${project.shadow}`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                  >
+                    {project.gradient && (
+                      <div className="absolute inset-0 overflow-hidden">
+                        <ShaderGradientCanvas
+                          style={{
+                            position: 'absolute',
+                            top: '-10%',
+                            left: '-10%',
+                            width: '120%',
+                            height: '120%',
+                            pointerEvents: 'none',
+                            imageRendering: 'pixelated',
+                            transform: 'scale(5)',
+                            transformOrigin: 'center',
+                          }}
+                          pixelDensity={0.25}
+                        >
+                          <ShaderGradient {...project.gradient as any} />
+                        </ShaderGradientCanvas>
+                      </div>
+                    )}
+
+                    {project.image && (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="absolute inset-0 m-auto max-w-[60%] max-h-[60%] object-contain z-10 pointer-events-none"
+                      />
+                    )}
+
+                    {project.video && (
+                      <video
+                        src={project.video}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+                      />
+                    )}
+
+                    {project.slideshow && (
+                      <div className="absolute inset-0 z-10 overflow-hidden">
+                        <div
+                          className="flex flex-col w-full transition-transform duration-1000 ease-in-out"
+                          style={{
+                            height: `${project.slideshow.length * 100}%`,
+                            transform: `translateY(-${(slideshowIndex % project.slideshow.length) * (100 / project.slideshow.length)}%)`,
+                          }}
+                        >
+                          {project.slideshow.map((src: string) => (
+                            <img
+                              key={src}
+                              src={src}
+                              alt=""
+                              className="w-full flex-shrink-0 object-cover"
+                              style={{ height: `${100 / project.slideshow.length}%` }}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
+                      <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>
+                        {project.title}
+                      </span>
+                      <div className="w-px h-4 bg-white/20 hidden lg:block" />
+                      <span className={`${pixelify.className} text-white/50 text-xs tracking-wider uppercase hidden lg:inline`}>
+                        {project.tag}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )}
             </AnimatedSection>
           ))}
         </div>

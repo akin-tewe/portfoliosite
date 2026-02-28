@@ -4,6 +4,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { MagneticWrapper } from "@/components/MagneticButton";
+import ProjectMetrics from "@/components/ProjectMetrics";
 
 // Animation variants
 const fadeInUp = {
@@ -110,6 +111,13 @@ export default function AlbumCover() {
                     </div>
                 </GridContainer>
             </section>
+
+            <ProjectMetrics metrics={[
+                { label: "Timeline", value: "6 Hours" },
+                { label: "Role", value: "Graphic Designer" },
+                { label: "For", value: "Young Nudy · Sexyy Red · Latto" },
+                { label: "Reach", value: "33M+ Streams on Spotify" },
+            ]} />
 
             {/* Hero Image - Original Cover */}
             <section className="relative w-full pb-16 md:pb-24">

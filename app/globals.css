@@ -18,6 +18,29 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Hide native cursor on devices with fine pointer (desktop).
+   Restore native cursor when user prefers reduced motion. */
+@media (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  *,
+  *::before,
+  *::after,
+  a,
+  a:link,
+  a:visited,
+  a:hover,
+  a:active,
+  a:focus,
+  button,
+  button:hover,
+  button:active,
+  button:focus,
+  [role="button"],
+  [role="button"]:hover,
+  [role="button"]:active {
+    cursor: none !important;
+  }
+}
+
 /* Improve touch behavior on mobile */
 @media (hover: none) and (pointer: coarse) {
   * {

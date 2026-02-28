@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ExternalLink, Check, Calendar, Layers, Sun } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useLoader } from "@/components/LoaderContext";
+import ProjectMetrics from "@/components/ProjectMetrics";
 
 // Animation variants
 const fadeInUp = {
@@ -63,13 +64,13 @@ function FeatureCard({ icon: Icon, title, description }: { icon: React.ElementTy
     return (
         <motion.div
             variants={fadeInUp}
-            className="bg-white border border-black/10 rounded-2xl p-6 hover:bg-white/80 transition-colors duration-300"
+            className="bg-gray-900 rounded-2xl p-6 hover:bg-gray-800 transition-colors duration-300"
         >
-            <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-4">
-                <Icon className="w-6 h-6 text-blue-500" />
+            <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
+                <Icon className="w-6 h-6 text-blue-400" />
             </div>
-            <h3 className={`${pixelify.className} text-gray-800 text-lg mb-2 uppercase`}>{title}</h3>
-            <p className={`${roboto.className} text-black/50 font-light text-sm leading-relaxed`}>{description}</p>
+            <h3 className={`${pixelify.className} text-white text-lg mb-2 uppercase`}>{title}</h3>
+            <p className={`${roboto.className} text-white/50 font-light text-sm leading-relaxed`}>{description}</p>
         </motion.div>
     );
 }
@@ -77,7 +78,7 @@ function FeatureCard({ icon: Icon, title, description }: { icon: React.ElementTy
 // Tech stack pill component
 function TechPill({ name }: { name: string }) {
     return (
-        <span className={`${roboto.className} text-xs md:text-sm text-gray-800 bg-white px-3 py-1 rounded-full border border-black/10`}>
+        <span className={`${roboto.className} text-xs md:text-sm text-white bg-gray-900 px-3 py-1 rounded-full`}>
             {name}
         </span>
     );
@@ -96,7 +97,7 @@ function VideoContainer({ src, caption }: { src: string; caption: string }) {
             transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="group"
         >
-            <div className="relative overflow-hidden bg-white p-2 md:p-3 rounded-2xl transition-all duration-300">
+            <div className="relative overflow-hidden bg-gray-900 p-2 md:p-3 rounded-2xl transition-all duration-300">
                 <video
                     className="w-full h-auto rounded-xl"
                     src={src}
@@ -209,6 +210,13 @@ export default function Sifty() {
                 </GridContainer>
             </section>
 
+            <ProjectMetrics metrics={[
+                { label: "Timeline", value: "2 Months" },
+                { label: "Role", value: "Design & Development" },
+                { label: "Type", value: "Web Application" },
+                { label: "Stack", value: "Next.js \u00B7 Supabase \u00B7 TypeScript" },
+            ]} />
+
             {/* 2. App Preview Section */}
             <section id="preview" className="relative py-20 md:py-24">
                 <GridContainer>
@@ -250,7 +258,7 @@ export default function Sifty() {
                         BUILT FOR CLARITY
                     </motion.h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
                         <FeatureCard
                             icon={Layers}
                             title="Visual Timeline"
@@ -313,7 +321,7 @@ export default function Sifty() {
                         PROJECT CREATION
                     </motion.h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
                         <VideoContainer
                             src="/projects/sifty/onboarding_1_form.mp4"
                             caption="Project creation form"
@@ -340,7 +348,7 @@ export default function Sifty() {
                         THE COMPONENTS
                     </motion.h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
                         <VideoContainer
                             src="/projects/sifty/task_card.mp4"
                             caption="Task cards with expandable details"
@@ -443,10 +451,10 @@ export default function Sifty() {
                             <motion.div
                                 key={index}
                                 variants={fadeInUp}
-                                className="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-black/10"
+                                className="flex flex-col items-center text-center p-4 bg-gray-900 rounded-xl"
                             >
-                                <span className={`${pixelify.className} text-gray-800 text-sm md:text-base`}>{tech.name}</span>
-                                <span className={`${roboto.className} text-black/35 text-xs mt-1`}>{tech.role}</span>
+                                <span className={`${pixelify.className} text-white text-sm md:text-base`}>{tech.name}</span>
+                                <span className={`${roboto.className} text-white/40 text-xs mt-1`}>{tech.role}</span>
                             </motion.div>
                         ))}
                         </motion.div>

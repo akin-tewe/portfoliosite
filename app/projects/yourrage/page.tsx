@@ -1,4 +1,4 @@
-import Rage from "./YourRage";
+import Rage from "./Yourrage";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

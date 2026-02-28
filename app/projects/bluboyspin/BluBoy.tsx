@@ -5,6 +5,7 @@ import { Video } from "lucide-react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { MagneticWrapper } from "@/components/MagneticButton";
+import ProjectMetrics from "@/components/ProjectMetrics";
 
 // Animation variants
 const fadeInUp = {
@@ -195,6 +196,13 @@ export default function Bluboy() {
                     </div>
                 </GridContainer>
             </section>
+
+            <ProjectMetrics metrics={[
+                { label: "Timeline", value: "1 Month" },
+                { label: "Role", value: "3D Animator \u00B7 Director" },
+                { label: "For", value: "Bluboy" },
+                { label: "Reach", value: "100K+ Views" },
+            ]} />
 
             {/* Image Carousel */}
             <section className="relative pb-16 md:pb-24">

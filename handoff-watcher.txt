@@ -1,0 +1,309 @@
+================================================================================
+HANDOFF: CLAUDE TASK WATCHER SYSTEM
+Portfolio Site — Akin Tewe
+Last updated: February 2026
+================================================================================
+
+PURPOSE OF THIS DOCUMENT
+─────────────────────────
+This document explains the task pipeline that connects Cowork (conversation
+mode, i.e. YOU reading this) to Claude Code (the implementation agent that
+edits files in the repo). Understanding this system is essential — it is
+how all implementation work gets done on this project.
+
+You do NOT edit code directly. You write spec files. Claude Code reads them
+and does the implementation.
+
+================================================================================
+1. ARCHITECTURE OVERVIEW
+================================================================================
+
+There are two Claude agents in this workflow:
+
+  ┌──────────────────────┐         ┌──────────────────────┐
+  │   COWORK (you)       │         │   CLAUDE CODE        │
+  │   Conversation mode  │────────▶│   Implementation     │
+  │   Writes specs       │  .md    │   Edits code         │
+  │   Designs solutions  │  file   │   Runs builds        │
+  │   Reviews results    │         │   Scoped tools only  │
+  └──────────────────────┘         └──────────────────────┘
+
+The bridge between them is a folder:
+
+  .claude/tasks/
+
+You write a markdown spec file → drop it in that folder → a watcher script
+detects it → feeds it to Claude Code → Claude Code implements it → the file
+moves to .claude/tasks/done/.
+
+================================================================================
+2. FILE LOCATIONS
+================================================================================
+
+All paths relative to the project root:
+C:\Users\wellf\Dropbox\Front End\Portfolio Website\VSC\portfolio-site\
+
+  .claude/
+  ├── tasks/                 ← DROP SPEC FILES HERE
+  │   ├── done/              ← Completed tasks get moved here automatically
+  │   │   ├── task-001.md
+  │   │   ├── task-002.md
+  │   │   └── ...
+  │   └── README.md          ← Brief explanation of the queue
+  ├── logs/                  ← Full JSON output logs per task run
+  ├── watch-tasks.ps1        ← The watcher script (PowerShell)
+  ├── helpers.ps1            ← Manual helper functions (cc-task, cc-list, cc-watch)
+  ├── settings.local.json    ← Claude Code permission overrides
+  └── worktrees/             ← (unused currently)
+
+Important companion files at project root:
+
+  CLAUDE.md                  ← Claude Code's primary instructions (architecture,
+                               conventions, scope rules, git workflow)
+  DESIGN_SYSTEM.md           ← Visual design system (colors, typography, spacing,
+                               components, animation, responsive strategy)
+
+================================================================================
+3. HOW THE WATCHER WORKS
+================================================================================
+
+The watcher script (.claude/watch-tasks.ps1) runs in a PowerShell terminal:
+
+  .\.claude\watch-tasks.ps1
+
+What it does:
+  1. Polls .claude/tasks/ every 3 seconds for new .md files
+  2. Skips README.md and any files already in done/
+  3. Processes files in alphabetical order (task-001 before task-002)
+  4. For each new file:
+     a. Reads the full markdown content
+     b. Wraps it in a prompt: "Read and implement the following task spec
+        exactly as described:\n\n{content}"
+     c. Sends it to Claude Code via CLI with these scoped tools ONLY:
+        - Edit (modify existing files)
+        - Write (create new files)
+        - Read (read file contents)
+        - Bash(npm run build) (production build check)
+        - Bash(npm run lint) (linting)
+        - Glob (find files by pattern)
+        - Grep (search file contents)
+     d. Streams live progress to terminal (EDIT/WRITE/READ/RUN actions)
+     e. On completion: prints summary (duration, tool calls, files changed, cost)
+     f. Moves the .md file to .claude/tasks/done/
+     g. Saves full JSON log to .claude/logs/{taskname}-{timestamp}.log
+
+  If Claude Code errors, the task file stays in place for retry.
+
+IMPORTANT: Claude Code has NO open-ended bash access. It cannot run arbitrary
+commands, install packages, or do anything outside the scoped tool list.
+
+================================================================================
+4. MANUAL ALTERNATIVES
+================================================================================
+
+If the watcher isn't running, the user can load helpers and run tasks manually:
+
+  # Load helper functions into current PowerShell session
+  . .\.claude\helpers.ps1
+
+  # List pending tasks
+  cc-list
+
+  # Run a specific task by number
+  cc-task 001
+
+  # Start the watcher
+  cc-watch
+
+The cc-task function does the same thing as the watcher but for a single file,
+then moves it to done/.
+
+================================================================================
+5. HOW TO WRITE TASK SPECS
+================================================================================
+
+This is your primary job. Spec quality directly determines implementation
+quality. Below is the format distilled from successful past tasks.
+
+─── FILE NAMING ───
+
+  task-NNN.md
+
+Where NNN is a zero-padded sequential number (001, 002, 003...).
+Check .claude/tasks/done/ to find the last used number.
+
+─── TEMPLATE ───
+
+  # Task NNN: [Short Descriptive Title]
+
+  ## Overview
+
+  [1-3 sentences: what is being changed, why, and what the scope is.
+   Call out what this task is NOT doing if there's ambiguity.]
+
+  Read `DESIGN_SYSTEM.md` [and `CLAUDE.md`] before making changes.
+
+  ## Specific Changes
+
+  ### 1. [Change Category]
+  - **Current:** `[exact current code/value]`
+  - **Fix:** `[exact target code/value]`
+  - [Rationale if non-obvious, referencing design system tokens]
+
+  ### 2. [Next Change Category]
+  ...
+
+  ## DO NOT Change
+  - [Explicit list of things that must remain untouched]
+  - [This section is CRITICAL — scope creep is the #1 problem on this project]
+
+  ## Validation
+  - [Visual checks to perform]
+  - [Behavior to verify]
+  - Run `npm run build` to confirm no TypeScript or build errors.
+
+─── WRITING PRINCIPLES ───
+
+  1. BE SURGICAL: Always specify current value → target value.
+     Bad:  "Fix the text color"
+     Good: "**Current:** `text-black/80` → **Fix:** `text-black/50`"
+
+  2. REFERENCE THE DESIGN SYSTEM: When changing a value, say WHY by
+     citing the design system token or pattern it should match.
+     Example: "Change to `text-black/50` to match the bio paragraph token"
+
+  3. ONE CONCERN PER TASK: A task should do one thing well.
+     Bad:  "Redesign the about page and fix the nav animation"
+     Good: "Task 003: Align About Page with Design System"
+           "Task 004: Fix Nav Entry Animation Timing"
+
+  4. SCOPE BOUNDARIES ARE MANDATORY: The DO NOT section isn't optional.
+     Claude Code will aggressively "improve" adjacent code if you don't
+     explicitly fence it off. From CLAUDE.md:
+     "Only change what is explicitly asked for. Multiple branches have
+      been deleted because of scope creep. This is the #1 source of
+      friction on this project."
+
+  5. INCLUDE VALIDATION: Always end with concrete checks. At minimum:
+     - npm run build passes
+     - Visual verification steps
+     - Behavior verification if interactive
+
+  6. ASSUME CLAUDE CODE HAS FULL REPO ACCESS: It can Read any file,
+     so you can reference other files as examples:
+     "Match the padding pattern used in Landing.tsx's projects section"
+
+  7. MENTION FILE PATHS: Always include the exact file(s) to be modified.
+     "Update `app/aboutme/AboutMe.tsx`" — not "update the about page."
+
+─── SPEC EXAMPLES (FROM COMPLETED TASKS) ───
+
+Task 001 was a design system alignment task (visual consistency fixes):
+  - 8 specific change categories, each with current → fix values
+  - Referenced design system tokens by name
+  - DO NOT list included: content, layout structure, carousel logic,
+    component decomposition, image sources
+  - Validation: 5 visual checks + build
+
+Task 002 was a page redesign (contact page):
+  - Included an ASCII layout diagram of the target
+  - Listed exact component structure (HTML elements, classes, positioning)
+  - Specified what to DELETE as well as what to create
+  - Listed exact animation values matching the standard pattern
+  - Specified responsive behavior for mobile vs desktop
+  - DO NOT list included: no forms, no extra sections, no nav/footer changes
+
+================================================================================
+6. WHAT YOU (COWORK) ARE RESPONSIBLE FOR
+================================================================================
+
+  ✓ Understanding the user's request
+  ✓ Designing the solution (layout, data flow, component structure)
+  ✓ Making design decisions that respect the design system
+  ✓ Writing precise, scoped task specs
+  ✓ Reviewing results with the user
+  ✓ Iterating (writing follow-up tasks if the first pass needs fixes)
+
+  ✗ You do NOT edit code files directly
+  ✗ You do NOT run builds or dev servers
+  ✗ You do NOT make implementation decisions in conversation — put them in specs
+
+================================================================================
+7. KEY PROJECT CONTEXT FOR SPECS
+================================================================================
+
+These are things you must know to write good specs. For full detail, read
+the handoff-portfolio.txt and DESIGN_SYSTEM.md files.
+
+─── TECH STACK ───
+  Next.js 16 (App Router), React 19, TypeScript
+  Tailwind CSS v4 (utility classes, no CSS modules)
+  Framer Motion 12 (all animations)
+  Three.js / React Three Fiber (shader gradients on some cards)
+  shadergradient (animated backgrounds for True Religion & Sprite cards)
+
+─── FONTS ───
+  Pixelify Sans → ${pixelify.className} → display/UI, always uppercase + tracking-wider
+  Roboto        → ${roboto.className}   → body text, font-light
+  Never mix in one element.
+
+─── COLORS ───
+  Background:     #ebebeb (--background)
+  Dark surfaces:  bg-gray-900 (modals, dark sections) — never pure black
+  Text on light:  text-black/{opacity} scale (not named grays)
+  Text on dark:   text-white/{opacity} scale
+  Landing page:   NO blue. Neutral palette only.
+  Deeper pages:   Blue (blue-500) and green accents allowed.
+
+─── ANIMATION ───
+  Standard ease:  [0.25, 0.46, 0.45, 0.94]
+  Standard entry: opacity 0→1, y 20→0, duration 0.6s
+  Stagger:        delay={i * 0.1}
+  Scroll trigger: useInView({ once: true })
+  prefers-reduced-motion collapses all animations.
+
+─── RADII ───
+  Only two: rounded-full (pills/buttons) or rounded-2xl (cards/panels).
+
+─── SPACING ───
+  Responsive padding uses clamp(): clamp(min, preferred-vw, max)
+  Standard horizontal: px-6 md:px-[clamp(4rem,10vw,11rem)]
+
+─── GIT ───
+  Current branch: layout-cards (branched from color-white ← main)
+  Branch naming:  area-change (e.g., hero-shrink, projects-grid)
+  Commits:        branch-name: description
+
+─── SCOPE RULE (MOST IMPORTANT) ───
+  "Only change what is explicitly asked for."
+  "If you notice something else that could be improved, mention it —
+   do not implement it."
+
+================================================================================
+8. TROUBLESHOOTING
+================================================================================
+
+  Watcher not picking up files?
+  → Check file is .md (not .txt), is in .claude/tasks/ (not a subfolder),
+    and isn't named README.md
+
+  Task erroring out?
+  → Check .claude/logs/ for the full JSON output
+  → The task file stays in tasks/ for retry — fix the spec and it'll re-run
+
+  Claude Code changing too much?
+  → Your DO NOT section wasn't explicit enough. Add more fences.
+  → Break the task into smaller pieces.
+
+  Build failing after task?
+  → Check if Claude Code already ran npm run build (it should, per spec)
+  → Review the log for build errors it may have tried to fix
+  → Write a follow-up task targeting the specific error
+
+  Need to see what was already done?
+  → Read completed specs in .claude/tasks/done/
+  → Read logs in .claude/logs/
+
+================================================================================
+END OF HANDOFF
+================================================================================

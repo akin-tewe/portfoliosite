@@ -4,7 +4,6 @@ import { MagneticWrapper } from "@/components/MagneticButton";
 import { useRef } from "react";
 import { ExternalLink, Check, Calendar, Layers, Sun } from "lucide-react";
 import { motion, useInView } from "framer-motion";
-import { useLoader } from "@/components/LoaderContext";
 import ProjectMetrics from "@/components/ProjectMetrics";
 
 // Animation variants
@@ -120,7 +119,6 @@ function VideoContainer({ src, caption }: { src: string; caption: string }) {
 }
 
 export default function Sifty() {
-    const { show, hide } = useLoader();
     const heroRef = useRef(null);
     const isHeroInView = useInView(heroRef, { once: true });
 

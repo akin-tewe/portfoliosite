@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode, useRef } from "react";
+import { ReactNode } from "react";
 import { pixelify } from "@/app/ui/fonts";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 

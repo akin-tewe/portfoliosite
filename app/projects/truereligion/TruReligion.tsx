@@ -76,7 +76,6 @@ const productShots = [
 function ProductCarousel() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isPaused, setIsPaused] = useState(false);
-    const [isDragging, setIsDragging] = useState(false);
 
     // Auto-scroll effect
     useEffect(() => {
@@ -122,9 +121,9 @@ function ProductCarousel() {
                 ref={containerRef}
                 className="flex gap-4 overflow-x-auto scrollbar-hide cursor-grab active:cursor-grabbing"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                onMouseDown={() => { setIsDragging(true); setIsPaused(true); }}
-                onMouseUp={() => { setIsDragging(false); setIsPaused(false); }}
-                onMouseLeave={() => { setIsDragging(false); setIsPaused(false); }}
+                onMouseDown={() => setIsPaused(true)}
+                onMouseUp={() => setIsPaused(false)}
+                onMouseLeave={() => setIsPaused(false)}
                 onTouchStart={() => setIsPaused(true)}
                 onTouchEnd={() => setIsPaused(false)}
             >

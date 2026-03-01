@@ -2,7 +2,6 @@
 import { pixelify, roboto } from "@/app/ui/fonts"
 import { useRef } from "react";
 import { Video } from "lucide-react";
-import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { MagneticWrapper } from "@/components/MagneticButton";
 import {

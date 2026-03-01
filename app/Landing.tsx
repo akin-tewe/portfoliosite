@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
-import { AboutButton } from "@/components/MagneticButton";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useMemo, memo } from "react";
 import { useCursor } from "@/components/CursorContext";
@@ -116,7 +115,7 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
       clearTimeout(timeout);
       if (intervalId) clearInterval(intervalId);
     };
-  }, []);
+  }, [text, delay]);
 
   return <span>{display}</span>;
 }
@@ -137,6 +136,9 @@ const GLASS_N1 = 1.0;
 const GLASS_N2 = 1.5;
 const GLASS_SCALE = 35; // px of max displacement shift
 const GLASS_SURFACE = (t: number) => Math.pow(1 - Math.pow(1 - t, 4), 0.25);
+const GLASS_PILL_WIDTH = 300;
+const GLASS_PILL_HEIGHT = 50;
+const GLASS_PILL_SCALE = 60;
 
 function generateDisplacementMap(): string {
   const size = GLASS_MAP_SIZE;
@@ -235,7 +237,121 @@ function generateSpecularFillMap(): string {
   return canvas.toDataURL();
 }
 
+function generatePillDisplacementMap(width: number, height: number): string {
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  const ctx = canvas.getContext('2d')!;
+  const imageData = ctx.createImageData(width, height);
+  const data = imageData.data;
 
+  // Stadium shape: the radius of the end caps = half the height
+  const capRadius = height / 2;
+  // The flat segment runs from capRadius to (width - capRadius)
+  const bezelWidth = capRadius * GLASS_BEZEL_RATIO;
+
+  // Pre-compute displacement lookup (same physics as circular version)
+  const displacements: number[] = [];
+  for (let i = 0; i <= 127; i++) {
+    const t = i / 127;
+    const h = GLASS_SURFACE(t);
+    const delta = 0.001;
+    const h1 = GLASS_SURFACE(Math.max(0, t - delta));
+    const h2 = GLASS_SURFACE(Math.min(1, t + delta));
+    const derivative = (h2 - h1) / (2 * delta);
+    const incidentAngle = Math.atan(Math.abs(derivative));
+    const sinRefracted = (GLASS_N1 / GLASS_N2) * Math.sin(incidentAngle);
+    if (Math.abs(sinRefracted) >= 1) { displacements.push(0); continue; }
+    const refractedAngle = Math.asin(sinRefracted);
+    displacements.push(h * Math.tan(refractedAngle) * (derivative >= 0 ? -1 : 1));
+  }
+  const maxMag = Math.max(...displacements.map(Math.abs));
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+
+      // Nearest point on the stadium centerline (y = capRadius, x clamped to flat segment)
+      const cx = Math.max(capRadius, Math.min(width - capRadius, x));
+      const cy = capRadius;
+      const dx = x - cx;
+      const dy = y - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist >= capRadius) {
+        data[idx] = 128; data[idx+1] = 128; data[idx+2] = 128; data[idx+3] = 255;
+        continue;
+      }
+
+      const t = Math.min((capRadius - dist) / bezelWidth, 1);
+      const normalizedMag = maxMag === 0 ? 0 : displacements[Math.round(t * 127)] / maxMag;
+      const angle = Math.atan2(dy, dx);
+      data[idx]   = Math.round(Math.max(0, Math.min(255, 128 + Math.cos(angle) * normalizedMag * 127)));
+      data[idx+1] = Math.round(Math.max(0, Math.min(255, 128 + Math.sin(angle) * normalizedMag * 127)));
+      data[idx+2] = 128;
+      data[idx+3] = 255;
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return canvas.toDataURL();
+}
+
+function generatePillSpecularFillMap(width: number, height: number): string {
+  const canvas = document.createElement('canvas');
+  canvas.width = width; canvas.height = height;
+  const ctx = canvas.getContext('2d')!;
+  const imageData = ctx.createImageData(width, height);
+  const data = imageData.data;
+
+  const capRadius = height / 2;
+  const bezelWidth = capRadius * GLASS_BEZEL_RATIO;
+
+  const light1 = { x: Math.cos(-120 * Math.PI / 180), y: Math.sin(-120 * Math.PI / 180) };
+  const light2 = { x: Math.cos(60 * Math.PI / 180), y: Math.sin(60 * Math.PI / 180) };
+
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const idx = (y * width + x) * 4;
+
+      const cx = Math.max(capRadius, Math.min(width - capRadius, x));
+      const cy = capRadius;
+      const dx = x - cx;
+      const dy = y - cy;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist >= capRadius) {
+        data[idx] = 0; data[idx+1] = 0; data[idx+2] = 0; data[idx+3] = 0;
+        continue;
+      }
+
+      const t = Math.min((capRadius - dist) / bezelWidth, 1);
+
+      const fillAlpha = (0.18 + (1 - t) * 0.10) * 255;
+
+      const edgeFactor = Math.pow(Math.max(0, 1 - t * 5), 3);
+      const nx = dist > 0 ? dx / dist : 0;
+      const ny = dist > 0 ? dy / dist : 0;
+      const spec1 = Math.pow(Math.max(0, nx * light1.x + ny * light1.y), 6) * 1.0;
+      const spec2 = Math.pow(Math.max(0, nx * light2.x + ny * light2.y), 6) * 0.3;
+      const specAlpha = Math.min(255, (spec1 + spec2) * edgeFactor * 3.5 * 255);
+
+      const totalAlpha = Math.min(255, specAlpha + fillAlpha);
+      if (totalAlpha < 1) {
+        data[idx] = 0; data[idx+1] = 0; data[idx+2] = 0; data[idx+3] = 0;
+        continue;
+      }
+
+      const sw = specAlpha / totalAlpha;
+      data[idx]   = Math.round(245 * sw + 240 * (1 - sw));
+      data[idx+1] = Math.round(245 * sw + 240 * (1 - sw));
+      data[idx+2] = Math.round(245 * sw + 240 * (1 - sw));
+      data[idx+3] = Math.round(totalAlpha);
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+  return canvas.toDataURL();
+}
 
 function GlassDot() {
   return (
@@ -246,42 +362,6 @@ function GlassDot() {
       backdropFilter: 'url(#glass-circle)',
       WebkitBackdropFilter: 'url(#glass-circle)',
     }} />
-  );
-}
-
-function DotPattern({ count }: { count: number }) {
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      {count === 5 && (
-        <>
-          <div className="flex gap-4"><GlassDot /><GlassDot /></div>
-          <div className="flex justify-center"><GlassDot /></div>
-          <div className="flex gap-4"><GlassDot /><GlassDot /></div>
-        </>
-      )}
-      {count === 4 && (
-        <>
-          <div className="flex gap-4"><GlassDot /><GlassDot /></div>
-          <div className="flex gap-4"><GlassDot /><GlassDot /></div>
-        </>
-      )}
-      {count === 3 && (
-        <>
-          <div className="flex w-full justify-end"><GlassDot /></div>
-          <div className="flex w-full justify-center"><GlassDot /></div>
-          <div className="flex w-full justify-start"><GlassDot /></div>
-        </>
-      )}
-      {count === 2 && (
-        <>
-          <GlassDot />
-          <GlassDot />
-        </>
-      )}
-      {count === 1 && (
-        <GlassDot />
-      )}
-    </div>
   );
 }
 
@@ -416,6 +496,7 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
           }}
           pixelDensity={1}
         >
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <ShaderGradient {...RESEARCH_GRADIENT_CONFIG as any} />
         </ShaderGradientCanvas>
       </div>
@@ -497,20 +578,110 @@ const CHAT_PILLS = [
   "actual movie quality",
 ];
 
-function ChatPillsOverlay() {
+const ChatPillsOverlay = memo(function ChatPillsOverlay() {
+  const pillMaps = useMemo(() => {
+    if (typeof window === 'undefined') return null;
+    return {
+      dispUrl: generatePillDisplacementMap(GLASS_PILL_WIDTH, GLASS_PILL_HEIGHT),
+      specUrl: generatePillSpecularFillMap(GLASS_PILL_WIDTH, GLASS_PILL_HEIGHT),
+    };
+  }, []);
+
   return (
-    <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none flex flex-wrap content-center justify-center gap-2 p-6">
-      {CHAT_PILLS.map((text, i) => (
-        <span
-          key={i}
-          className={`${roboto.className} bg-[#9146FF] text-white text-xs font-light px-3 py-1.5 rounded-full whitespace-nowrap`}
-        >
-          {text}
-        </span>
-      ))}
-    </div>
+    <>
+      <style>{`
+        @keyframes floatUpPill {
+          0% {
+            bottom: -50px;
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.85;
+          }
+          70% {
+            opacity: 0.85;
+          }
+          100% {
+            bottom: calc(100% + 50px);
+            opacity: 0;
+          }
+        }
+      `}</style>
+
+      {/* Dark vignette overlay */}
+      <div
+        className="absolute inset-0 z-[12] pointer-events-none"
+        style={{
+          boxShadow: 'inset 0 0 120px 50px rgba(0, 0, 0, 0.7)',
+        }}
+      />
+
+      {/* Glass pills — right half */}
+      <div className="absolute inset-0 z-[15] pointer-events-none overflow-hidden">
+        {/* SVG filter for glass pills */}
+        {pillMaps && (
+          <svg style={{ position: 'absolute', width: 0, height: 0 }} colorInterpolationFilters="sRGB">
+            <defs>
+              <filter id="glass-pill-yr" x="0%" y="0%" width="100%" height="100%">
+                <feImage
+                  href={pillMaps.dispUrl}
+                  x="0" y="0"
+                  width={GLASS_PILL_WIDTH} height={GLASS_PILL_HEIGHT}
+                  result="disp_map"
+                  preserveAspectRatio="none"
+                />
+                <feDisplacementMap
+                  in="SourceGraphic"
+                  in2="disp_map"
+                  scale={GLASS_PILL_SCALE}
+                  xChannelSelector="R"
+                  yChannelSelector="G"
+                  result="refracted"
+                />
+                <feColorMatrix in="refracted" type="saturate" values="1.3" result="saturated" />
+                <feImage
+                  href={pillMaps.specUrl}
+                  x="0" y="0"
+                  width={GLASS_PILL_WIDTH} height={GLASS_PILL_HEIGHT}
+                  result="specular"
+                  preserveAspectRatio="none"
+                />
+                <feBlend in="saturated" in2="specular" mode="screen" />
+              </filter>
+            </defs>
+          </svg>
+        )}
+
+        {/* Animated floating pills — right half */}
+        <div className="absolute right-0 top-0 bottom-0 w-[55%] overflow-hidden">
+          {CHAT_PILLS.slice(0, 10).map((text, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-center absolute"
+              style={{
+                height: GLASS_PILL_HEIGHT,
+                borderRadius: GLASS_PILL_HEIGHT / 2,
+                paddingLeft: 24,
+                paddingRight: 24,
+                backgroundColor: 'rgba(0, 0, 0, 0.18)',
+                backdropFilter: 'url(#glass-pill-yr)',
+                WebkitBackdropFilter: 'url(#glass-pill-yr)',
+                right: `${8 + (i % 4) * 12}%`,
+                animation: `floatUpPill ${12 + (i % 3) * 2}s linear infinite`,
+                animationDelay: `${i * 2.5}s`,
+                animationFillMode: 'backwards',
+              }}
+            >
+              <span className={`${roboto.className} text-white/90 text-base font-semibold`}>
+                {text}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
-}
+});
 
 function ProjectsGrid() {
   const { show, hide } = useLoader();
@@ -561,7 +732,7 @@ function ProjectsGrid() {
           ) : (
             <Link
               href={project.link}
-              onClick={() => { show(); setTimeout(hide, 800); }}
+              onClick={() => { resetCursor(); show(); setTimeout(hide, 800); }}
               className="group relative block"
               data-cursor="project"
               onMouseEnter={() => setCursor("project", { title: project.title, body: project.body, tags: project.tags })}
@@ -600,6 +771,7 @@ function ProjectsGrid() {
                       }}
                       pixelDensity={project.pixelated ? 0.25 : 1}
                     >
+                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                       <ShaderGradient {...project.gradient as any} />
                     </ShaderGradientCanvas>
                   </div>
@@ -612,11 +784,41 @@ function ProjectsGrid() {
                 )}
 
                 {project.image && (
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="absolute inset-0 m-auto max-w-[60%] max-h-[60%] object-contain z-10 pointer-events-none"
-                  />
+                  project.id === 7 ? (
+                    <motion.img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 m-auto object-contain z-10 pointer-events-none max-w-[40%] max-h-[60%] opacity-90"
+                      animate={{ y: [0, -6, 0] }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    />
+                  ) : project.id === 6 ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+                    />
+                  ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 m-auto object-contain z-10 pointer-events-none max-w-[60%] max-h-[60%]"
+                    />
+                  )
+                )}
+
+                {project.id === 7 && (
+                  <div className="absolute inset-0 z-10 flex items-end justify-center pb-16 pointer-events-none">
+                    <span className={`${roboto.className} text-white/90 text-2xl font-bold tracking-wider`}>
+                      WNTD.
+                    </span>
+                  </div>
                 )}
 
                 {project.video && (
@@ -643,6 +845,7 @@ function ProjectsGrid() {
                         />
                         {/* Crossfade images — small centered tile */}
                         {project.slideshow.map((src: string, imgIndex: number) => (
+                          /* eslint-disable-next-line @next/next/no-img-element */
                           <img
                             key={src}
                             src={src}
@@ -666,6 +869,7 @@ function ProjectsGrid() {
                           }}
                         >
                           {project.slideshow.map((src: string) => (
+                            /* eslint-disable-next-line @next/next/no-img-element */
                             <img
                               key={src}
                               src={src}
@@ -775,7 +979,7 @@ export default function Landing() {
 
         {/* Splash Video - Desktop */}
         <div key={pathname} className="absolute hidden md:block bottom-0 left-[47%] -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[25%] z-50 pointer-events-none overflow-visible">
-          <MainVideo webmSrc="/blacksplashW.webm" mp4Src="/blacksplashM.mp4" />
+          <MainVideo webmSrc="/lowerblacksplashW.webm" mp4Src="/lowerblacksplashM.mp4" />
 
           {/* Bio text — positioned relative to splash video container */}
           <p className={`${roboto.className} absolute hidden 2xl:block bottom-[25%] right-[13%] text-black/50 text-base font-light leading-relaxed max-w-md`}>

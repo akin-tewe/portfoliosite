@@ -30,15 +30,11 @@ const CHAT_MESSAGES = [
 ];
 
 export default function TwitchChat() {
-  const [visibleMessages, setVisibleMessages] = useState<typeof CHAT_MESSAGES>([]);
-  const msgIndex = useRef(0);
+  const [visibleMessages, setVisibleMessages] = useState(() => CHAT_MESSAGES.slice(0, 4));
+  const msgIndex = useRef(4);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Start with a few messages
-    setVisibleMessages(CHAT_MESSAGES.slice(0, 4));
-    msgIndex.current = 4;
-
     const interval = setInterval(() => {
       const next = CHAT_MESSAGES[msgIndex.current % CHAT_MESSAGES.length];
       msgIndex.current++;
@@ -104,7 +100,7 @@ export default function TwitchChat() {
       >
         {visibleMessages.map((msg, i) => (
           <div
-            key={`${msg.user}-${i}-${msgIndex.current}`}
+            key={`${msg.user}-${msg.text}-${i}`}
             style={{
               lineHeight: 1.4,
               animation: "twitchFadeIn 0.2s ease-out",

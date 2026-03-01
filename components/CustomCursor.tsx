@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { motion, useSpring, useMotionValue } from "framer-motion";
 import { useCursor } from "./CursorContext";
 import { pixelify, roboto } from "@/app/ui/fonts";
@@ -23,15 +24,28 @@ const TAG_COLORS: Record<string, string> = {
 
 const MODAL_WIDTH = 280;
 
+function useMediaQuery(query: string) {
+  return useSyncExternalStore(
+    (callback) => {
+      const mql = window.matchMedia(query);
+      mql.addEventListener("change", callback);
+      return () => mql.removeEventListener("change", callback);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
+}
+
 export default function CustomCursor() {
-  const [hasFinePointer, setHasFinePointer] = useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const hasFinePointer = useMediaQuery("(pointer: fine)");
+  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
   const [visible, setVisible] = useState(true);
   const [hasMovedOnce, setHasMovedOnce] = useState(false);
   const { cursorType, cursorData, setCursor, resetCursor } = useCursor();
+  const pathname = usePathname();
 
   const tabVisibleRef = useRef(true);
-  const lastProjectDataRef = useRef<Record<string, unknown> | null>(null);
+  const [displayData, setDisplayData] = useState<Record<string, unknown> | null>(null);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -42,23 +56,10 @@ export default function CustomCursor() {
   const isText = cursorType === "text";
   const isButton = cursorType === "button";
 
-  // Check for fine pointer (desktop)
+  // Reset cursor on route change
   useEffect(() => {
-    const mql = window.matchMedia("(pointer: fine)");
-    setHasFinePointer(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setHasFinePointer(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
-
-  // Reduced motion preference — hide custom cursor entirely
-  useEffect(() => {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mql.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, []);
+    resetCursor();
+  }, [pathname, resetCursor]);
 
   // Pause when tab hidden
   useEffect(() => {
@@ -124,7 +125,7 @@ export default function CustomCursor() {
         return;
       }
 
-      if (cursorType === "text" || cursorType === "button") {
+      if (cursorType === "text" || cursorType === "button" || cursorType === "project") {
         resetCursor();
       }
     };
@@ -132,12 +133,14 @@ export default function CustomCursor() {
     return () => document.removeEventListener("mouseover", handleMouseOver);
   }, [hasFinePointer, cursorType, setCursor, resetCursor]);
 
+  // Persist last project data so modal content doesn't vanish during exit animation
+  // React 19 "store previous rendering props" pattern — setState during render is intentional
+  if (isProject && cursorData && cursorData !== displayData) {
+    setDisplayData(cursorData);
+  }
+
   if (!hasFinePointer || prefersReducedMotion) return null;
 
-  if (isProject && cursorData) {
-    lastProjectDataRef.current = cursorData;
-  }
-  const displayData = lastProjectDataRef.current;
   const tags = (displayData?.tags as string[]) || [];
   const showCursor = visible && hasMovedOnce;
 
@@ -150,10 +153,10 @@ export default function CustomCursor() {
   const dotHeight = isText ? beamHeight : isButton ? 40 : BALL_SIZE;
   const dotRadius = isText ? 2 : 9999;
   const dotBg: React.CSSProperties = isButton
-    ? { backgroundColor: "rgba(0, 0, 0, 0.15)", border: "1.5px solid rgba(0, 0, 0, 0.4)" }
+    ? { backgroundColor: "rgba(120, 120, 120, 0.15)", border: "1.5px solid rgba(120, 120, 120, 0.6)" }
     : isText
       ? { backgroundColor: "rgba(34, 197, 94, 0.85)" }
-      : { backgroundColor: "rgba(0, 0, 0, 0.7)" };
+      : { backgroundColor: "rgba(120, 120, 120, 0.8)" };
 
   return (
     <motion.div

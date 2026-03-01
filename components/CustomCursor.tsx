@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useSpring, useMotionValue } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { useCursor } from "./CursorContext";
 import { pixelify, roboto } from "@/app/ui/fonts";
 
 const BALL_SIZE = 12;
-const SPRING_CONFIG = { stiffness: 800, damping: 35, mass: 0.1 };
 
 const TAG_COLORS: Record<string, string> = {
   "UI/UX Design": "bg-sky-500/20 text-sky-300",
@@ -49,8 +48,8 @@ export default function CustomCursor() {
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
-  const springX = useSpring(cursorX, SPRING_CONFIG);
-  const springY = useSpring(cursorY, SPRING_CONFIG);
+  const springX = cursorX;
+  const springY = cursorY;
 
   const isProject = cursorType === "project";
   const isText = cursorType === "text";
@@ -71,20 +70,15 @@ export default function CustomCursor() {
   // Track mouse position
   useEffect(() => {
     if (!hasFinePointer) return;
-    let rafId: number;
     const onPointerMove = (e: PointerEvent) => {
       if (!hasMovedOnce) setHasMovedOnce(true);
       if (!tabVisibleRef.current) return;
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        cursorX.set(e.clientX);
-        cursorY.set(e.clientY);
-      });
+      cursorX.set(e.clientX);
+      cursorY.set(e.clientY);
     };
     window.addEventListener("pointermove", onPointerMove);
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
-      cancelAnimationFrame(rafId);
     };
   }, [hasFinePointer, hasMovedOnce, cursorX, cursorY]);
 

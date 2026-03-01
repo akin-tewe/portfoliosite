@@ -75,14 +75,14 @@ function AnimatedSection({ children, className = "", delay = 0 }: {
   delay?: number;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "0px" });
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.35, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={className}
     >
       {children}
@@ -709,7 +709,7 @@ function ProjectsGrid() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
       {projectsdata.map((project, i) => (
-        <AnimatedSection key={project.id} delay={i * 0.1}>
+        <AnimatedSection key={project.id} delay={i * 0.05}>
           {project.locked ? (
             <div
               className="group relative block cursor-default"

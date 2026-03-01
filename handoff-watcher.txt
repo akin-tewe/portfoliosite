@@ -1,7 +1,7 @@
 ================================================================================
 HANDOFF: CLAUDE TASK WATCHER SYSTEM
 Portfolio Site — Akin Tewe
-Last updated: February 2026
+Last updated: March 2026
 ================================================================================
 
 PURPOSE OF THIS DOCUMENT
@@ -196,25 +196,84 @@ Check .claude/tasks/done/ to find the last used number.
   7. MENTION FILE PATHS: Always include the exact file(s) to be modified.
      "Update `app/aboutme/AboutMe.tsx`" — not "update the about page."
 
-─── SPEC EXAMPLES (FROM COMPLETED TASKS) ───
+================================================================================
+6. CRITICAL RULES — DO NOT VIOLATE THESE
+================================================================================
 
-Task 001 was a design system alignment task (visual consistency fixes):
-  - 8 specific change categories, each with current → fix values
-  - Referenced design system tokens by name
-  - DO NOT list included: content, layout structure, carousel logic,
-    component decomposition, image sources
-  - Validation: 5 visual checks + build
+These rules exist because every single one of them was violated at least
+once during this project, causing significant wasted time, broken code,
+and destroyed trust. They are non-negotiable.
 
-Task 002 was a page redesign (contact page):
-  - Included an ASCII layout diagram of the target
-  - Listed exact component structure (HTML elements, classes, positioning)
-  - Specified what to DELETE as well as what to create
-  - Listed exact animation values matching the standard pattern
-  - Specified responsive behavior for mobile vs desktop
-  - DO NOT list included: no forms, no extra sections, no nav/footer changes
+─── RULE 1: NEVER OVERWRITE A TASK FILE THAT HAS ALREADY BEEN WRITTEN ───
+
+  The watcher picks up .md files IMMEDIATELY (polls every 3 seconds).
+  The moment you write task-NNN.md, it is gone. It has been consumed.
+  Writing to the same filename again does NOTHING — the watcher already
+  processed it and moved it to done/, or it's mid-execution.
+
+  If you wrote a bad spec and need to fix it:
+    → Write task-NNN+1.md with the correction.
+    → NEVER rewrite the same filename.
+
+  This mistake was made repeatedly (tasks 111, 113) causing specs to
+  silently fail or execute the wrong version. It is the single most
+  avoidable error in this workflow.
+
+─── RULE 2: NEVER MODIFY WORKING COMPONENTS WHEN AN EXISTING ONE WORKS ───
+
+  Before changing ANY component, check if another component in the
+  codebase already does what you need.
+
+  Example of what NOT to do:
+    - MainVideo already handles webm + mp4 HVC1 dual-source rendering
+    - Instead of using MainVideo, task 111 added webmSrc to TransparentVideo
+    - This unnecessarily modified a working component when the solution
+      already existed one export away in the same file
+
+  The rule: USE what exists. Do NOT reinvent or extend components when
+  the functionality is already built. Read the codebase before designing
+  solutions.
+
+─── RULE 3: SPECS ONLY — NEVER EDIT CODE DIRECTLY ───
+
+  You write spec files. That is your ONLY output mechanism for code changes.
+  You do not edit Landing.tsx. You do not edit any .tsx file. You do not
+  create React components in conversation. You write a .md spec, drop it
+  in .claude/tasks/, and Claude Code implements it.
+
+  There are ZERO exceptions to this rule. Even if the user says "just do it
+  directly" — the answer is a spec. The user learned this the hard way
+  after a direct implementation attempt wasted 20+ minutes producing
+  broken output that could have been caught in 30 seconds with a test file.
+
+─── RULE 4: TEST IN ISOLATION BEFORE TOUCHING SOURCE FILES ───
+
+  When implementing a new visual technique (e.g., glass effects, SVG
+  filters, new animation patterns):
+
+    1. Write a spec for a standalone test file (e.g., public/test.html)
+    2. User verifies the test file looks correct
+    3. ONLY THEN write a spec to integrate into the actual component
+
+  Never skip step 2. Never write the test spec AND the integration spec
+  at the same time. The test exists so bad ideas die cheaply.
+
+─── RULE 5: ONE TASK = ONE CONCERN — NO SCOPE CREEP ───
+
+  A task that says "fix the YourRage overlay" should not also clean up
+  unused imports, refactor adjacent components, rename variables, or
+  "improve" anything that wasn't explicitly requested.
+
+  If you notice something worth fixing, tell the user. Do not include
+  it in the spec.
+
+─── RULE 6: CHECK done/ BEFORE NUMBERING ───
+
+  Always check .claude/tasks/done/ to find the last used task number.
+  Then use the next number. Duplicate numbers cause chaos.
 
 ================================================================================
-6. WHAT YOU (COWORK) ARE RESPONSIBLE FOR
+7. WHAT YOU (COWORK) ARE RESPONSIBLE FOR
 ================================================================================
 
   ✓ Understanding the user's request
@@ -223,13 +282,17 @@ Task 002 was a page redesign (contact page):
   ✓ Writing precise, scoped task specs
   ✓ Reviewing results with the user
   ✓ Iterating (writing follow-up tasks if the first pass needs fixes)
+  ✓ Reading the codebase before proposing changes (to avoid Rule 2 violations)
+  ✓ Checking done/ before numbering (to avoid Rule 6 violations)
 
   ✗ You do NOT edit code files directly
   ✗ You do NOT run builds or dev servers
   ✗ You do NOT make implementation decisions in conversation — put them in specs
+  ✗ You do NOT modify working components when alternatives exist
+  ✗ You do NOT overwrite already-written task files
 
 ================================================================================
-7. KEY PROJECT CONTEXT FOR SPECS
+8. KEY PROJECT CONTEXT FOR SPECS
 ================================================================================
 
 These are things you must know to write good specs. For full detail, read
@@ -240,11 +303,12 @@ the handoff-portfolio.txt and DESIGN_SYSTEM.md files.
   Tailwind CSS v4 (utility classes, no CSS modules)
   Framer Motion 12 (all animations)
   Three.js / React Three Fiber (shader gradients on some cards)
-  shadergradient (animated backgrounds for True Religion & Sprite cards)
+  shadergradient (animated backgrounds for Sprite card)
 
 ─── FONTS ───
-  Pixelify Sans → ${pixelify.className} → display/UI, always uppercase + tracking-wider
-  Roboto        → ${roboto.className}   → body text, font-light
+  Pixelify Sans    → ${pixelify.className}        → display/UI, always uppercase + tracking-wider
+  Roboto           → ${roboto.className}           → body text, font-light
+  Instrument Serif → ${instrumentSerif.className}  → Maslow level text on Research card only
   Never mix in one element.
 
 ─── COLORS ───
@@ -254,6 +318,7 @@ the handoff-portfolio.txt and DESIGN_SYSTEM.md files.
   Text on dark:   text-white/{opacity} scale
   Landing page:   NO blue. Neutral palette only.
   Deeper pages:   Blue (blue-500) and green accents allowed.
+  Twitch purple:  #9146FF (YourRage card pills only)
 
 ─── ANIMATION ───
   Standard ease:  [0.25, 0.46, 0.45, 0.94]
@@ -269,6 +334,17 @@ the handoff-portfolio.txt and DESIGN_SYSTEM.md files.
   Responsive padding uses clamp(): clamp(min, preferred-vw, max)
   Standard horizontal: px-6 md:px-[clamp(4rem,10vw,11rem)]
 
+─── VIDEO COMPONENTS ───
+  TransparentVideo  — inline videos (absolute positioned, object-contain)
+                     Props: { mp4Src?, webmSrc? }
+                     Sources: mp4 (HVC1) + webm
+  MainVideo         — hero splash video (desktop only via useMinWidth(1024))
+                     Props: { webmSrc, mp4Src? }
+                     Sources: mp4 (HVC1) + webm
+
+  Both live in components/SplashVideo.tsx. Choose the right one for the
+  use case — do NOT create new video components or modify these.
+
 ─── GIT ───
   Current branch: layout-cards (branched from color-white ← main)
   Branch naming:  area-change (e.g., hero-shrink, projects-grid)
@@ -280,12 +356,14 @@ the handoff-portfolio.txt and DESIGN_SYSTEM.md files.
    do not implement it."
 
 ================================================================================
-8. TROUBLESHOOTING
+9. TROUBLESHOOTING
 ================================================================================
 
   Watcher not picking up files?
-  → Check file is .md (not .txt), is in .claude/tasks/ (not a subfolder),
-    and isn't named README.md
+  → Check file is .md (not .txt unless on iOS), is in .claude/tasks/
+    (not a subfolder), and isn't named README.md
+  → The watcher also accepts .txt files for iOS/Dropbox compatibility
+    (iOS cannot create .md files)
 
   Task erroring out?
   → Check .claude/logs/ for the full JSON output
@@ -303,6 +381,10 @@ the handoff-portfolio.txt and DESIGN_SYSTEM.md files.
   Need to see what was already done?
   → Read completed specs in .claude/tasks/done/
   → Read logs in .claude/logs/
+
+  Wrote a bad spec that already got picked up?
+  → DO NOT rewrite the same file. Write a NEW task with the next number
+    that corrects the mistake.
 
 ================================================================================
 END OF HANDOFF

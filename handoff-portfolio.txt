@@ -1,501 +1,251 @@
+================================================================================
+HANDOFF: PORTFOLIO SITE — CURRENT STATE
+Akin Tewe — Last updated: March 2026
+================================================================================
 
-const projectsdata = [
-    {
-        id: 0,
-        title: "Sifty",
-        tag: "Application",
-        body: "A lightweight project tracking tool for freelancers and small studios.",
-        color: "bg-sky-500",
-        shadow: "rgba(56, 189, 248, 0.4)",
-        tags: ["UI/UX Design", "Built with Claude", "Production Ready"],
-        image: null,
-        link: "/projects/sifty",
-        gradient: null,
-    },
-    {
-        id: 1,
-        title: "Instagram Redesign",
-        tag: "Concept",
-        body: "Conceptual redesign of Instagram's web experience.",
-        color: "bg-rose-500",
-        shadow: "rgba(251, 113, 133, 0.4)",
-        tags: ["Front End", "UI/UX Design"],
-        image: null,
-        link: "/projects/instadesign",
-        gradient: null,
-    },
-    {
-        id: 2,
-        title: "3D Animator Study",
-        tag: "Research",
-        body: "Research-driven interview project exploring independent creators.",
-        color: "bg-emerald-500",
-        shadow: "rgba(52, 211, 153, 0.4)",
-        tags: ["UX Research"],
-        image: null,
-        link: "/projects/3dresearch",
-        gradient: null,
-    },
-    {
-        id: 3,
-        title: "True Religion",
-        tag: "Commission",
-        body: "Commissioned 3D branding piece for True Religion.",
-        color: "bg-amber-400",
-        shadow: "rgba(251, 191, 36, 0.4)",
-        tags: ["Commission", "3D Animation", "Product Launch"],
-        image: "/projects/truereligion/truereligionlogo.png",
-        link: "/projects/truereligion",
-        gradient: {
-            animate: "on",
-            brightness: 1.1,
-            cAzimuthAngle: 180,
-            cDistance: 19.18,
-            cPolarAngle: 115,
-            cameraZoom: 1,
-            color1: "#1e2a5a",
-            color2: "#c9a227",
-            color3: "#0d0d2b",
-            envPreset: "city",
-            fov: 10,
-            grain: "off",
-            lightType: "3d",
-            pixelDensity: 1,
-            positionX: -0.5,
-            positionY: 0.1,
-            positionZ: 0,
-            range: "disabled",
-            rangeEnd: 40,
-            rangeStart: 0,
-            reflection: 0.1,
-            rotationX: 0,
-            rotationY: 0,
-            rotationZ: 235,
-            shader: "defaults",
-            type: "waterPlane",
-            uAmplitude: 0,
-            uDensity: 1.1,
-            uFrequency: 5.5,
-            uSpeed: 0.1,
-            uStrength: 2.4,
-            uTime: 0.2,
-            wireframe: false,
-        },
-    },
-    {
-        id: 4,
-        title: "Sprite",
-        tag: "Commission",
-        body: "3D commercial collaboration with Sprite.",
-        color: "bg-green-500",
-        shadow: "rgba(34, 197, 94, 0.4)",
-        tags: ["Commission", "3D Animation", "Product Launch"],
-        image: null,
-        link: "/projects/sprite",
-        gradient: {
-            animate: "on",
-            brightness: 1.2,
-            cAzimuthAngle: 170,
-            cDistance: 4.19,
-            cPolarAngle: 70,
-            cameraZoom: 1,
-            color1: "#5fff57",
-            color2: "#4076ff",
-            color3: "#75ffe8",
-            envPreset: "dawn",
-            lightType: "3d",
-            grain: "off",
-            positionX: 0,
-            positionY: 0.9,
-            positionZ: -0.3,
-            reflection: 0.1,
-            rotationX: 45,
-            rotationY: 0,
-            rotationZ: 0,
-            type: "waterPlane",
-            uAmplitude: 0,
-            uDensity: 1.2,
-            uFrequency: 0,
-            uSpeed: 0.2,
-            uStrength: 3.4,
-            uTime: 0,
-            wireframe: false,
-        },
-    },
-    {
-        id: 5,
-        title: "Peaches & Eggplants",
-        tag: "Commission",
-        body: "Graphic Design",
-        color: "bg-violet-500",
-        shadow: "rgba(167, 139, 250, 0.4)",
-        tags: ["Commission", "Graphic Design"],
-        image: null,
-        link: "/projects/albumcover",
-        gradient: null,
-    },
-    {
-        id: 6,
-        title: "YourRage",
-        tag: "Commission",
-        body: "Twitch Streamer Intro",
-        color: "bg-orange-500",
-        shadow: "rgba(251, 146, 60, 0.4)",
-        tags: ["Commission", "3D Animation"],
-        image: null,
-        link: "/projects/yourrage",
-        gradient: null,
-    },
-    {
-        id: 7,
-        title: "BluBoy",
-        tag: "Commission",
-        body: "Product Launch Commercial",
-        color: "bg-cyan-500",
-        shadow: "rgba(34, 211, 238, 0.4)",
-        tags: ["Commission", "3D Animation", "Product Launch"],
-        image: null,
-        link: "/projects/bluboyspin",
-        gradient: null,
-    },
-]
+PROJECT LOCATION
+────────────────
+C:\Users\wellf\Dropbox\Front End\Portfolio Website\VSC\portfolio-site\
+Branch: layout-cards (branched from color-white ← main)
 
-const projectminis = [
-    {
-        id: "peaches",
-        title: "Peaches & Eggplants",
-        tag: "Commission",
-        desc: "Graphic Design",
-        color: "bg-violet-500",
-        shadow: "rgba(167, 139, 250, 0.4)",
-        tags: ["Commission", "Graphic Design"],
-        link: "/projects/albumcover",
-    },
-    {
-        id: "rage",
-        title: "YourRage",
-        tag: "Commission",
-        desc: "Twitch Streamer Intro",
-        color: "bg-orange-500",
-        shadow: "rgba(251, 146, 60, 0.4)",
-        tags: ["Commission", "3D Animation"],
-        link: "/projects/yourrage",
-    },
-    {
-        id: "bluboy",
-        title: "BluBoy",
-        tag: "Commission",
-        desc: "Product Launch Commercial",
-        color: "bg-cyan-500",
-        shadow: "rgba(34, 211, 238, 0.4)",
-        tags: ["Commission", "3D Animation", "Product Launch"],
-        link: "/projects/bluboyspin",
-    }
-]
+TECH STACK
+──────────
+Next.js 16 (App Router), React 19, TypeScript
+Tailwind CSS v4, Framer Motion 12, Three.js / React Three Fiber
+shadergradient (animated backgrounds for Sprite card)
 
-export default projectsdata
-export { projectminis }
+================================================================================
+1. DATA: ProjectThumbData.tsx
+================================================================================
 
---- FILE: app/Landing.tsx ---
+Location: data/ProjectThumbData.tsx
 
-"use client";
-import { pixelify, roboto } from "@/app/ui/fonts";
+Each project object can have these fields:
 
-import projectsdata from "@/data/ProjectThumbData";
-import { usePathname } from "next/navigation"
-import Link from "next/link"
-import { useLoader } from "@/components/LoaderContext";
-import { MainVideo } from "@/components/SplashVideo";
-import { AboutButton } from "@/components/MagneticButton";
-import { motion, useInView } from "framer-motion";
-import { useRef, useState, useEffect, useCallback } from "react";
-import { calcModalPosition } from "@/lib/calcModalPosition";
-import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
+  id: number                    — unique identifier
+  title: string                 — display name
+  tag: string                   — category label ("Application", "Concept", "Research", "Commission")
+  body: string                  — hover modal description
+  color: string                 — Tailwind bg class for card background
+  shadow: string                — rgba() for hover shadow
+  tags: string[]                — attribute pills for hover modal
+  image: string | null          — static image overlay (e.g. True Religion logo)
+  video: string                 — primary video thumbnail (webm preferred)
+  videoMobile: string           — fallback mp4 for mobile (HVC1)
+  slideshow: string[]           — array of image paths for slideshow cards
+  pixelated: boolean            — if true, ShaderGradient uses pixelated rendering
+  locked: boolean               — if true, card is non-clickable with ClockAlert icon
+  gradient: object | null       — ShaderGradient config (full props object)
+  link: string                  — route path
 
-function AnimatedSection({ children, className = "", delay = 0 }: {
-  children: React.ReactNode;
-  className?: string;
-  delay?: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "0px" });
+Current projects (in grid order):
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+  id=0  Sifty               — video thumbnail (siftythumb.mp4)
+  id=1  Instagram Redesign   — video thumbnail (igthumbW.webm + igthumbM.mp4 fallback)
+  id=2  3D Animator Study    — ResearchCardOverlay (shader gradient + liquid glass dots + Maslow text)
+  id=3  True Religion        — slideshow crossfade (7 images, dark bg, film grain overlay)
+  id=4  Sprite               — ShaderGradient background, LOCKED (ClockAlert icon)
+  id=5  Peaches & Eggplants  — slideshow vertical slide (2 images, dark vignette)
+  id=6  YourRage             — ChatPillsOverlay (purple Twitch pills)
+  id=7  BluBoy               — plain color card (bg-cyan-500)
 
-function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
-  const [display, setDisplay] = useState(text.replace(/[^ ]/g, '#'));
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+Also exports `projectminis` array (3 items: peaches, rage, bluboy) — currently unused
+in Landing.tsx but still exported.
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      let iteration = 0;
-      const interval = setInterval(() => {
-        setDisplay(
-          text.split('').map((char, i) => {
-            if (char === ' ') return ' ';
-            if (i < iteration) return text[i];
-            return chars[Math.floor(Math.random() * chars.length)];
-          }).join('')
-        );
-        iteration += 1/3;
-        if (iteration >= text.length) clearInterval(interval);
-      }, 40);
-      return () => clearInterval(interval);
-    }, delay);
-    return () => clearTimeout(timeout);
-  }, []);
+================================================================================
+2. LANDING PAGE: app/Landing.tsx (795 lines)
+================================================================================
 
-  return <span>{display}</span>;
-}
+### Helper Components (defined in same file)
 
-function HoverCard({ children, modal, href, onClick }: {
-  children: React.ReactNode;
-  modal: React.ReactNode;
-  href: string;
-  onClick: () => void;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const modalRef = useRef<HTMLDivElement>(null);
-  const rafId = useRef(0);
+LazyVideo          — IntersectionObserver-gated video with 1.5s delay (lets hero load first)
+AnimatedSection    — Scroll-triggered fade-in-up wrapper (useInView, once: true)
+ScrambleText       — Character-by-character reveal with random glyphs
+HoverCard          — Link wrapper with cursor-following modal (uses calcModalPosition)
+ProjectsGrid       — Main 2-column grid rendering all projects
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const cx = e.clientX;
-    const cy = e.clientY;
+### Liquid Glass System (Research card only)
 
-    cancelAnimationFrame(rafId.current);
-    rafId.current = requestAnimationFrame(() => {
-      const el = modalRef.current;
-      if (!el) return;
+Constants:
+  GLASS_MAP_SIZE = 256        — canvas resolution for displacement/specular maps
+  GLASS_DOT_SIZE = 150        — rendered dot diameter in px
+  GLASS_BEZEL_RATIO = 0.4     — proportion of radius that forms the refractive edge
+  GLASS_N1 = 1.0, GLASS_N2 = 1.5  — refractive indices (air → glass)
+  GLASS_SCALE = 35            — feDisplacementMap scale value
+  GLASS_SURFACE              — quartic surface profile function
 
-      const { x, y } = calcModalPosition({
-        cursorX: cx,
-        cursorY: cy,
-        modalWidth: el.offsetWidth || 300,
-        modalHeight: el.offsetHeight || 200,
-        viewportWidth: window.innerWidth,
-        viewportHeight: window.innerHeight,
-      });
+Functions:
+  generateDisplacementMap()   — Canvas → data URL. Snell's law refraction table (127 samples),
+                                radial SDF, encodes normal vectors as R/G channels (128 = neutral).
+  generateSpecularFillMap()   — Canvas → data URL. Dual light sources (upper-left + lower-right),
+                                cubic edge falloff, 18% milky fill + rim specular. Purple-free
+                                (neutral white tones only).
 
-      el.style.left = `${x}px`;
-      el.style.top = `${y}px`;
-    });
-  }, []);
+Components:
+  GlassDot                    — 150×150 circle with backdrop-filter: url(#glass-circle)
+  DotField                    — 6 fixed-slot layout with motion.div position/scale animation.
+                                Layouts keyed by dot count (1-5), nulls scale to 0.
+  ResearchCardOverlay (memo)  — Combines ShaderGradient background + cycling Maslow level text
+                                (instrumentSerif, 3.3s interval) + SVG filter + DotField.
 
-  useEffect(() => () => cancelAnimationFrame(rafId.current), []);
+SVG filter pipeline (id="glass-circle"):
+  feImage(disp) → feDisplacementMap(scale 35) → feColorMatrix(saturate 1.3)
+  → feImage(spec) → feBlend(screen)
 
-  return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className="group relative block"
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      {children}
-      <div
-        ref={modalRef}
-        className="fixed z-50 pointer-events-none transition-opacity duration-150"
-        style={{
-          left: -9999,
-          top: -9999,
-          opacity: hovered ? 1 : 0,
-        }}
-      >
-        {modal}
-      </div>
-    </Link>
-  );
-}
+### Maslow Levels
 
-const TAG_COLORS: Record<string, string> = {
-  "UI/UX Design": "bg-sky-500/20 text-sky-300",
-  "Built with Claude": "bg-orange-500/20 text-orange-300",
-  "Production Ready": "bg-emerald-500/20 text-emerald-300",
-  "Front End": "bg-violet-500/20 text-violet-300",
-  "UX Research": "bg-rose-500/20 text-rose-300",
-  "Interviews": "bg-amber-500/20 text-amber-300",
-  "Commission": "bg-yellow-500/20 text-yellow-300",
-  "3D Animation": "bg-cyan-500/20 text-cyan-300",
-  "Branding": "bg-pink-500/20 text-pink-300",
-  "Graphic Design": "bg-purple-500/20 text-purple-300",
-  "Product Launch": "bg-lime-500/20 text-lime-300",
-};
+  5 dots → "physiological"
+  4 dots → "safety"
+  3 dots → "belonging"
+  2 dots → "esteem"
+  1 dot  → "self-actualization"
 
-export default function Landing() {
-  const { show, hide } = useLoader();
-  const pathname = usePathname();
-  const heroRef = useRef(null);
-  const isHeroInView = useInView(heroRef, { once: true });
+Cycles every 3.3 seconds. Text rendered in Instrument Serif (instrumentSerif),
+text-8xl md:text-9xl, text-gray-900/15, lowercase.
 
-  return (
-    <div className="overflow-x-clip">
-      {/* Hero Section */}
-      <section
-        ref={heroRef}
-        className="relative min-h-fit md:min-h-[350px] md:h-[32vh] bg-gray-200 overflow-visible"
-      >
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isHeroInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col md:flex-row items-start md:items-center justify-center gap-8 md:gap-[clamp(4rem,10vw,16rem)] px-6 md:pl-[clamp(2rem,6vw,8rem)] md:pr-[clamp(1rem,3vw,2.5rem)] pt-12 md:pt-0 md:h-full relative z-10"
-        >
-          <div className="text-left md:w-[22rem] md:flex-shrink-0">
-            <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase whitespace-nowrap`}>
-              <ScrambleText text="UX ENGINEER" delay={500} />
-            </h2>
-            <div className="w-12 h-px bg-black/15 my-3" />
-            <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase whitespace-nowrap`}>
-              <ScrambleText text="PRODUCT DESIGNER" delay={800} />
-            </h2>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={isHeroInView ? { opacity: 1 } : {}}
-              transition={{ duration: 1, delay: 2 }}
-              className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-4 max-w-[200px]`}
-            >
-              <span className="text-black/35">Worked with </span><span className="text-black/80">Sprite · True Religion · Higround</span><span className="text-black/35"> + more</span>
-            </motion.p>
-          </div>
-        </motion.div>
+### YourRage Card Overlay
 
-        <motion.span
-          initial={{ opacity: 0, y: 50 }}
-          animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className={`md:hidden ${pixelify.className} relative text-8xl text-gray-900 text-right pb-2 pr-5 mt-auto pt-4 leading-none block`}
-        >
-          akin<br />tewe
-        </motion.span>
+ChatPillsOverlay — static purple pills with white text.
 
-        <div key={pathname} className="absolute hidden md:block bottom-0 left-[47%] -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[25%] z-50 pointer-events-none overflow-visible">
-          <MainVideo webmSrc="/blacksplashW.webm" mp4Src="/blacksplashM.mp4" />
-          <p className={`${roboto.className} absolute hidden 2xl:block bottom-[25%] right-[13%] text-black/50 text-base font-light leading-relaxed max-w-md`}>
-            Product Designer creating interfaces that<br />emphasize the user and add a touch of childhood wonder.
-          </p>
-        </div>
-      </section>
+```tsx
+const CHAT_PILLS = [
+  "THIS INTRO IS CRAZY", "LEGENDARY", "the mechanical legs 🦿",
+  "PLAY IT BACK", "W W W W W", "who made this??",
+  "RAGE GOT THE BEST INTRO", "the animation is insane", "YOOOOO",
+  "brooo the 3D", "chat we are so back", "NEW INTRO HYPE",
+  "whoever animated this W", "the chase scene tho", "actual movie quality",
+];
+```
 
-      {/* Projects Section */}
-      <section id="projects" className="relative px-6 md:px-[clamp(4rem,10vw,11rem)] pt-20 md:pt-28 -mt-12 md:-mt-20 pb-6 md:pb-[clamp(2rem,4vw,4rem)]">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-          {projectsdata.map((project, i) => (
-            <AnimatedSection key={project.id} delay={i * 0.1}>
-              <HoverCard
-                href={project.link}
-                onClick={() => { show(); setTimeout(hide, 800); }}
-                modal={
-                  <div className="bg-gray-900 rounded-2xl shadow-xl p-6 max-w-[280px]">
-                    <h4 className={`${pixelify.className} text-white text-xl uppercase tracking-wide`}>
-                      {project.title}
-                    </h4>
-                    <p className={`${roboto.className} text-white/60 text-base font-light leading-relaxed mt-2`}>
-                      {project.body}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 mt-4">
-                      {project.tags.map((tag: string) => (
-                        <span key={tag} className={`${pixelify.className} text-sm uppercase tracking-wider ${TAG_COLORS[tag] || "text-white/50 bg-white/10"} rounded-full px-3 py-1.5`}>
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                }
-              >
-                <div
-                  className={`relative ${project.gradient ? '' : project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
-                              group-hover:-translate-y-2 aspect-[9/5]`}
-                  style={{ boxShadow: 'none' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = `0 20px 50px -12px ${project.shadow}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = 'none';
-                  }}
-                >
-                  {project.gradient && (
-                    <div className="absolute inset-0 overflow-hidden">
-                      <ShaderGradientCanvas
-                        style={{
-                          position: 'absolute',
-                          top: '-10%',
-                          left: '-10%',
-                          width: '120%',
-                          height: '120%',
-                          pointerEvents: 'none',
-                          imageRendering: 'pixelated',
-                          transform: 'scale(5)',
-                          transformOrigin: 'center',
-                        }}
-                        pixelDensity={0.25}
-                      >
-                        <ShaderGradient {...project.gradient as any} />
-                      </ShaderGradientCanvas>
-                    </div>
-                  )}
+Styling: bg-[#9146FF] (Twitch purple), text-white text-xs font-light,
+rounded-full, px-3 py-1.5. Flex-wrap centered, gap-2, p-6.
+No animation — pills render immediately on load.
 
-                  {project.image && (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="absolute inset-0 m-auto max-w-[60%] max-h-[60%] object-contain z-10 pointer-events-none"
-                    />
-                  )}
+### Card Rendering Logic
 
-                  <div className="absolute bottom-4 left-4 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
-                    <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>
-                      {project.title}
-                    </span>
-                    <div className="w-px h-4 bg-white/20 hidden lg:block" />
-                    <span className={`${pixelify.className} text-white/50 text-xs tracking-wider uppercase hidden lg:inline`}>
-                      {project.tag}
-                    </span>
-                  </div>
-                </div>
-              </HoverCard>
-            </AnimatedSection>
-          ))}
-        </div>
-      </section>
-    </div>
-  );
-}
+Each card in ProjectsGrid:
+  - locked? → non-clickable div with ClockAlert icon + dimmed pill
+  - else → HoverCard (Link + cursor-following modal)
 
---- FILE: lib/calcModalPosition.ts ---
+Inside card:
+  - gradient? → ShaderGradientCanvas (pixelated mode optional)
+  - id===2? → ResearchCardOverlay
+  - id===6? → ChatPillsOverlay
+  - image? → centered img (max-w-[60%] max-h-[60%])
+  - video? → LazyVideo
+  - slideshow? → id===3 uses crossfade + film grain; others use vertical slide + vignette
 
-(utility function for cursor-following hover modals — viewport-aware positioning)
+### Hover Modal System
 
---- FILE: components/MaslowHierarchy.tsx ---
+HoverCard wraps each project Link. On hover, a fixed-position modal follows
+the cursor using requestAnimationFrame + calcModalPosition (viewport-aware
+edge clamping). Modal contains: title (Pixelify), body (Roboto), tag pills
+(color-coded from TAG_COLORS map).
 
-(CSS component replacing PNG infographic for 3D Animator Study project page —
- 5-level Maslow hierarchy with colored bar, dot patterns, and text descriptions)
+TAG_COLORS:
+  "UI/UX Design"       → bg-sky-500/20 text-sky-300
+  "Built with Claude"  → bg-orange-500/20 text-orange-300
+  "Production Ready"   → bg-emerald-500/20 text-emerald-300
+  "Front End"          → bg-violet-500/20 text-violet-300
+  "UX Research"        → bg-rose-500/20 text-rose-300
+  "Commission"         → bg-yellow-500/20 text-yellow-300
+  "3D Animation"       → bg-cyan-500/20 text-cyan-300
+  "Graphic Design"     → bg-purple-500/20 text-purple-300
+  "Product Launch"     → bg-lime-500/20 text-lime-300
 
---- FILE: package.json (dependencies only) ---
+### Hero Section
 
-  "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.5.0",
-    "framer-motion": "^12.23.26",
-    "lucide-react": "^0.554.0",
-    "next": "^16.0.7",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "react-icons": "^5.5.0",
-    "shadergradient": "^1.3.5",
-    "three": "^0.183.1"
-  }
+- bg-gray-200, min-h-fit mobile / md:h-[32vh] md:min-h-[350px] desktop
+- Left column: ScrambleText ("UX ENGINEER" 500ms, "PRODUCT DESIGNER" 800ms)
+  + credits line (delayed 2s)
+- Mobile: "akin tewe" name block (text-8xl, slide up animation)
+- Splash video: MainVideo (blacksplashW.webm / blacksplashM.mp4),
+  absolutely positioned, extends below hero
+- Bio paragraph: 2xl:block only, inside splash video container
+
+### Projects Section
+
+- Negative margin overlap: -mt-12 md:-mt-20
+- Single 2-column grid (md:grid-cols-2), gap-x-8 gap-y-12
+- Staggered entry: delay={i * 0.1}
+
+================================================================================
+3. VIDEO COMPONENTS: components/SplashVideo.tsx
+================================================================================
+
+Two video components:
+
+TransparentVideo (default export)
+  Props: { mp4Src?: string, webmSrc?: string }
+  - Absolute positioned, object-contain
+  - mp4 source uses type="video/mp4;codecs=hvc1" (Safari HEVC alpha)
+  - webm source uses type="video/webm" (Chrome/Firefox VP9 alpha)
+  - autoPlay, loop, muted, playsInline
+
+MainVideo (named export)
+  Props: { webmSrc: string, mp4Src?: string }
+  - Desktop only (useMinWidth(1024) gate)
+  - Same dual-source pattern (HVC1 + webm)
+  - Used for hero splash video
+
+NOTE: TransparentVideo was modified to accept webmSrc (task 111). Previously
+it only took mp4Src with type="video/mp4". Both components now support the
+dual-source transparent video pattern.
+
+================================================================================
+4. ABOUT PAGE: app/aboutme/AboutMe.tsx (477 lines)
+================================================================================
+
+- Skills section video at bottom: <TransparentVideo mp4Src="/aboutmeM.mp4" webmSrc="/aboutmeW.webm" />
+- Carousel section with video/image items from /about-me-carousel/
+- GridContainer (max-w-[1400px]), GridOverlay/GridOverlayLight for visual grid lines
+- AnimatedSection wrappers with fadeInUp / fadeInRight variants
+- SkillsList component for FRONTEND and SOFTWARE skill lists
+
+================================================================================
+5. FONTS: app/ui/fonts.ts
+================================================================================
+
+Three fonts:
+  pixelify        — Pixelify Sans (400, 500, 600) → display/UI, always uppercase + tracking-wider
+  roboto          — Roboto (300, 400, normal + italic) → body text, font-light
+  instrumentSerif — Instrument Serif (400, latin, normal) → Maslow level text on Research card only
+
+================================================================================
+6. KEY FILE LOCATIONS
+================================================================================
+
+app/Landing.tsx                          — Landing page (hero + projects grid)
+app/aboutme/AboutMe.tsx                  — About page
+app/aboutme/page.tsx                     — About page server wrapper (metadata)
+app/ui/fonts.ts                          — Font definitions
+components/SplashVideo.tsx               — TransparentVideo + MainVideo
+components/CursorContext.tsx             — Cursor state provider (setCursor, resetCursor)
+components/NavFoot.tsx                   — NavBar + Footer
+components/LoaderContext.tsx             — Loading state provider
+components/LoadingOverlay.tsx            — Page transition + boot overlays
+components/MagneticButton.tsx            — Magnetic hover buttons
+data/ProjectThumbData.tsx                — Project card data
+lib/calcModalPosition.ts                — Cursor modal viewport-aware positioning
+docs/liquid-glass-reference.md           — Full documentation of glass dot system
+public/glass-rect-test.html             — Abandoned glass rectangle test file
+public/aboutmeM.mp4                     — About page skills video (Safari)
+public/aboutmeW.webm                    — About page skills video (Chrome/Firefox)
+public/blacksplashM.mp4                 — Hero splash (Safari)
+public/blacksplashW.webm                — Hero splash (Chrome/Firefox)
+
+================================================================================
+7. DEPENDENCIES (package.json)
+================================================================================
+
+  @react-three/drei, @react-three/fiber    — Three.js React bindings
+  framer-motion ^12.23.26                  — All animations
+  lucide-react ^0.554.0                    — Icons (ClockAlert on locked cards)
+  next ^16.0.7                             — Framework
+  react / react-dom 19.2.0                — UI library
+  react-icons ^5.5.0                       — Additional icons
+  shadergradient ^1.3.5                    — Animated gradient backgrounds
+  three ^0.183.1                           — 3D rendering
 
 ================================================================================
 END OF HANDOFF

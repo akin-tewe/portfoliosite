@@ -60,8 +60,9 @@ function ImageCarousel() {
             if (accumulator >= frameDelay) {
                 accumulator = 0;
                 container.scrollLeft += scrollAmount;
-                if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
-                    container.scrollLeft = 0;
+                const halfScroll = container.scrollWidth / 2;
+                if (container.scrollLeft >= halfScroll) {
+                    container.scrollLeft -= halfScroll;
                 }
             }
             animationId = requestAnimationFrame(scroll);
@@ -93,12 +94,8 @@ function ImageCarousel() {
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
                 {images.map((img, index) => (
-                    <motion.div
+                    <div
                         key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: index * 0.1 }}
                         className="flex-shrink-0 w-[240px] md:w-[360px] lg:w-[440px] aspect-[3/4] rounded-2xl overflow-hidden"
                     >
                         <Image
@@ -108,7 +105,7 @@ function ImageCarousel() {
                             height={560}
                             className="w-full h-full object-cover"
                         />
-                    </motion.div>
+                    </div>
                 ))}
             </div>
         </div>
@@ -201,7 +198,7 @@ export default function Bluboy() {
                 { label: "Timeline", value: "1 Month" },
                 { label: "Role", value: "3D Animator \u00B7 Director" },
                 { label: "For", value: "Bluboy" },
-                { label: "Reach", value: "100K+ Views" },
+                { label: "Reach", value: "200K+ Views" },
             ]} />
 
             {/* Image Carousel */}
@@ -431,7 +428,7 @@ export default function Bluboy() {
                             variants={fadeInUp}
                             className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
                         >
-                            {`The video generated 50K views within the first week of launch.`}
+                            {`The video generated 150K views within the first week of launch.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>

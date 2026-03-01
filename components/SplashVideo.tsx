@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 
 type Props = {
@@ -44,21 +44,45 @@ export default function TransparentVideo ({ mp4Src, webmSrc }: Props) {
     )
 }
 
-export function MainVideo ({ webmSrc, mp4Src }: Prop2) {
+export function MainVideo({ webmSrc, mp4Src }: Prop2) {
+  const isDesktop = useMinWidth(1024);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!isDesktop || !containerRef.current) return;
 
-    const isDesktop = useMinWidth(1024);
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const video = videoRef.current;
+        if (!video) return;
 
-    return (
-        <video
-            className="w-full h-full pointer-events-none"
-            autoPlay
-            loop
-            muted
-            playsInline
-            controls={false}
-            preload="metadata">
-            {isDesktop && <source src={mp4Src} type="video/mp4;codecs=hvc1" />}
-            {isDesktop && <source src= {webmSrc} type="video/webm" />}
-        </video>
-    )
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [isDesktop]);
+
+  return (
+    <div ref={containerRef} className="w-full h-full">
+      <video
+        ref={videoRef}
+        className="w-full h-full pointer-events-none"
+        muted
+        playsInline
+        loop
+        controls={false}
+        preload="metadata"
+      >
+        {isDesktop && <source src={mp4Src} type="video/mp4;codecs=hvc1" />}
+        {isDesktop && <source src={webmSrc} type="video/webm" />}
+      </video>
+    </div>
+  );
 }

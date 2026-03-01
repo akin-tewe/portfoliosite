@@ -90,7 +90,7 @@ export default function Rage() {
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
                         >
-                            {`Streamer animation created for "YourRage", a Twitch streamer with over 3M followers.`}
+                            {`Streamer animation created for "YourRage", a Twitch streamer with over 3M followers across social platforms.`}
                         </motion.p>
 
                         <motion.div

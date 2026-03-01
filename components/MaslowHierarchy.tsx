@@ -6,54 +6,103 @@ const levels = [
     title: "Self-Actualization",
     body: "Balancing pioneering one's own brand while simultaneously providing their audience with reliable art is key for artists to feel autonomy.",
     color: "bg-purple-400",
-    dots: [[0, 0]], // 1 dot, top-left
+    count: 1,
   },
   {
     title: "Self-Esteem",
     body: "How artists fulfill self-esteem needs provokes a conversation about human's need for adversity. feeling inferior fuels their creative process.",
     color: "bg-sky-400",
-    dots: [[0, 0], [1, 1]], // 2 dots diagonal
+    count: 2,
   },
   {
     title: "Social",
     body: "Socializing is a crucial part of daily life. constant collaboration and a network of artists create a safe space for healthy competition.",
     color: "bg-lime-400",
-    dots: [[0, 0], [0, 1], [1, 0]], // 3 dots
+    count: 3,
   },
   {
     title: "Safety",
     body: "Feeling safe to create means feeling safe to live. Technology has additionally allowed artists more freedom in a creative space.",
     color: "bg-yellow-400",
-    dots: [[0, 0], [0, 1], [1, 0], [1, 1]], // 4 dots 2x2
+    count: 4,
   },
   {
     title: "Physiological",
     body: "Artists need a space/studio to exist in. New tech has allowed their work to become condensed to a single computer, allowing for additional mobility.",
     color: "bg-red-400",
-    dots: [[0, 0], [0, 1], [1, 0], [1, 1], [2, 0], [2, 1]], // 6 dots 3x2
+    count: 5,
   },
 ];
 
-function DotGrid({ dots }: { dots: number[][] }) {
-  return (
-    <div className="flex flex-col gap-1.5">
-      {/* Build rows from dot positions */}
-      {Array.from(new Set(dots.map((d) => d[0])))
-        .sort()
-        .map((row) => (
-          <div key={row} className="flex gap-1.5">
-            {dots
-              .filter((d) => d[0] === row)
-              .map((_, i) => (
-                <div
-                  key={i}
-                  className="w-2.5 h-2.5 md:w-3 md:h-3 bg-white rounded-full"
-                />
-              ))}
+const DOT = "w-2.5 h-2.5 md:w-3 md:h-3 bg-white rounded-full";
+const DOT_INVIS = "w-2.5 h-2.5 md:w-3 md:h-3 bg-transparent rounded-full";
+
+function DotPattern({ count }: { count: number }) {
+  switch (count) {
+    case 1:
+      return (
+        <div className="flex justify-center">
+          <div className={DOT} />
+        </div>
+      );
+    case 2:
+      return (
+        <div className="flex flex-col gap-1.5 items-center">
+          <div className={DOT} />
+          <div className={DOT} />
+        </div>
+      );
+    case 3:
+      // Diagonal staircase: right, center-left, left
+      return (
+        <div className="flex flex-col gap-1.5">
+          <div className="flex gap-1.5">
+            <div className={DOT_INVIS} />
+            <div className={DOT} />
           </div>
-        ))}
-    </div>
-  );
+          <div className="flex gap-1.5 justify-center">
+            <div className={DOT} />
+          </div>
+          <div className="flex gap-1.5">
+            <div className={DOT} />
+            <div className={DOT_INVIS} />
+          </div>
+        </div>
+      );
+    case 4:
+      // 2x2 grid
+      return (
+        <div className="flex flex-col gap-1.5 items-center">
+          <div className="flex gap-1.5">
+            <div className={DOT} />
+            <div className={DOT} />
+          </div>
+          <div className="flex gap-1.5">
+            <div className={DOT} />
+            <div className={DOT} />
+          </div>
+        </div>
+      );
+    case 5:
+      // 2-1-2 pattern: 2 top, 1 centered middle, 2 bottom
+      return (
+        <div className="flex flex-col gap-1.5 items-center">
+          <div className="flex gap-1.5">
+            <div className={DOT} />
+            <div className={DOT} />
+          </div>
+          <div className="flex justify-center">
+            <div className={DOT} />
+          </div>
+          <div className="flex gap-1.5">
+            <div className={DOT} />
+            <div className={DOT} />
+          </div>
+        </div>
+      );
+    default:
+      return null;
+  }
 }
 
 export default function MaslowHierarchy() {
@@ -66,7 +115,7 @@ export default function MaslowHierarchy() {
             key={i}
             className={`${level.color} flex-1 flex items-center justify-center px-2 py-6 md:py-8`}
           >
-            <DotGrid dots={level.dots} />
+            <DotPattern count={level.count} />
           </div>
         ))}
       </div>

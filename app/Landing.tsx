@@ -664,8 +664,8 @@ const ChatPillsOverlay = memo(function ChatPillsOverlay() {
         )}
 
         {/* Animated floating pills — right half */}
-        <div className="absolute right-0 top-0 bottom-0 w-[55%] overflow-hidden">
-          {CHAT_PILLS.slice(0, 10).map((text, i) => (
+        <div className="absolute right-0 top-0 bottom-0 w-[55%] overflow-hidden [--pill-scale:0.6] md:[--pill-scale:0.75] lg:[--pill-scale:1]">
+          {CHAT_PILLS.slice(0, 6).map((text, i) => (
             <div
               key={i}
               className="flex items-center justify-center absolute"
@@ -681,9 +681,10 @@ const ChatPillsOverlay = memo(function ChatPillsOverlay() {
                 animation: `floatUpPill ${12 + (i % 3) * 2}s linear infinite`,
                 animationDelay: `${i * 2.5}s`,
                 animationFillMode: 'backwards',
+                transform: 'scale(var(--pill-scale, 1))',
               }}
             >
-              <span className={`${roboto.className} text-white/90 text-base font-semibold`}>
+              <span className={`${roboto.className} text-white/90 text-xs md:text-sm lg:text-base font-semibold whitespace-nowrap`}>
                 {text}
               </span>
             </div>
@@ -799,8 +800,8 @@ function ProjectsGrid() {
                     <motion.img
                       src={project.image}
                       alt={project.title}
-                      className="absolute inset-0 m-auto object-contain z-10 pointer-events-none max-w-[40%] max-h-[60%] opacity-90"
-                      animate={{ y: [0, -6, 0] }}
+                      className="absolute bottom-[-12%] right-0 translate-x-[15%] translate-y-[25%] object-contain z-10 pointer-events-none w-[86%] opacity-90"
+                      animate={{ y: ["25%", "22%", "25%"] }}
                       transition={{
                         duration: 4,
                         repeat: Infinity,
@@ -824,13 +825,6 @@ function ProjectsGrid() {
                   )
                 )}
 
-                {project.id === 7 && (
-                  <div className="absolute inset-0 z-10 flex items-end justify-center pb-16 pointer-events-none">
-                    <span className={`${roboto.className} text-white/90 text-2xl font-bold tracking-wider`}>
-                      WNTD.
-                    </span>
-                  </div>
-                )}
 
                 {project.video && (
                   <LazyVideo

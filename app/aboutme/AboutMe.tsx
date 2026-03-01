@@ -4,6 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { pixelify, roboto } from "../ui/fonts";
 import TransparentVideo from "@/components/SplashVideo";
+import { useLoader } from "@/components/LoaderContext";
 
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
@@ -46,10 +47,10 @@ function GridOverlay() {
 
 // Carousel items - add new items here
 const carouselItems = [
-    { type: "video" as const, src: "/about-me-carousel/truvideo.mp4" },
-    { type: "video" as const, src: "/about-me-carousel/crystal-collection.mp4" },
-    { type: "image" as const, src: "/about-me-carousel/finalcover.jpg" },
-    { type: "video" as const, src: "/about-me-carousel/ragelowq.mp4" },
+    { type: "video" as const, src: "/about-me-carousel/truvideo.mp4", href: "/projects/truereligion" },
+    { type: "video" as const, src: "/about-me-carousel/crystal-collection.mp4", href: null },
+    { type: "image" as const, src: "/about-me-carousel/finalcover.jpg", href: "/projects/albumcover" },
+    { type: "video" as const, src: "/about-me-carousel/ragelowq.mp4", href: "/projects/yourrage" },
 ];
 
 const fadeInUp = {
@@ -163,7 +164,7 @@ function SkillsList({
 }
 
 // Auto-scrolling work carousel
-function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string }[] }) {
+function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string; href: string | null }[] }) {
     const carouselRef = useRef<HTMLDivElement>(null)
     const [isHolding, setIsHolding] = useState(false)
     const [isDragging, setIsDragging] = useState(false)
@@ -171,6 +172,8 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
     const [scrollLeft, setScrollLeft] = useState(0)
     const autoScrollRef = useRef<NodeJS.Timeout | null>(null)
     const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const dragDistanceRef = useRef(0)
+    const { show, hide } = useLoader()
 
     // Auto-scroll logic
     useEffect(() => {
@@ -208,6 +211,7 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
     const handleMouseDown = (e: React.MouseEvent) => {
         setIsHolding(true)
         setIsDragging(true)
+        dragDistanceRef.current = 0
         setStartX(e.pageX - (carouselRef.current?.offsetLeft || 0))
         setScrollLeft(carouselRef.current?.scrollLeft || 0)
     }
@@ -227,6 +231,7 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
         e.preventDefault()
         const x = e.pageX - (carouselRef.current?.offsetLeft || 0)
         const walk = (x - startX) * 2
+        dragDistanceRef.current += Math.abs(e.movementX)
         if (carouselRef.current) {
             carouselRef.current.scrollLeft = scrollLeft - walk
         }
@@ -236,6 +241,7 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
     const handleTouchStart = (e: React.TouchEvent) => {
         setIsHolding(true)
         setIsDragging(true)
+        dragDistanceRef.current = 0
         setStartX(e.touches[0].pageX - (carouselRef.current?.offsetLeft || 0))
         setScrollLeft(carouselRef.current?.scrollLeft || 0)
     }
@@ -249,6 +255,7 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
         if (!isDragging) return
         const x = e.touches[0].pageX - (carouselRef.current?.offsetLeft || 0)
         const walk = (x - startX) * 2
+        dragDistanceRef.current += Math.abs(x - startX)
         if (carouselRef.current) {
             carouselRef.current.scrollLeft = scrollLeft - walk
         }
@@ -276,10 +283,22 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
                 onTouchMove={handleTouchMove}
             >
                 {/* Duplicate items for seamless loop */}
-                {[...items, ...items].map((item, index) => (
+                {[...items, ...items].map((item, index) => {
+                    const handleClick = () => {
+                        if (item.href && dragDistanceRef.current < 5) {
+                            show();
+                            setTimeout(hide, 800);
+                            window.location.href = item.href;
+                        }
+                    };
+
+                    return (
                     <div
                         key={index}
-                        className="flex-shrink-0 w-56 md:w-92 aspect-square rounded-2xl overflow-hidden pointer-events-none select-none"
+                        onClick={handleClick}
+                        className={`flex-shrink-0 w-56 md:w-92 aspect-square rounded-2xl overflow-hidden select-none ${
+                            item.href ? 'cursor-pointer pointer-events-auto' : 'pointer-events-none'
+                        }`}
                     >
                         {item.type === "video" ? (
                             <video
@@ -301,7 +320,8 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
                             />
                         )}
                     </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     )

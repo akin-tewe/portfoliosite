@@ -23,6 +23,14 @@ const overlayVariants = {
 export default function NavBar() {
     const { show, hide } = useLoader();
     const pathname = usePathname();
+    const isActive = (href: string) => {
+        if (href === '/') return pathname === '/';
+        if (href.includes('#')) {
+            const basePath = href.split('#')[0] || '/';
+            return pathname === basePath;
+        }
+        return pathname === href || pathname.startsWith(href + '/');
+    };
     const [open, setOpen] = useState(false);
 
     const preventCursorFlash = (e: React.MouseEvent) => { e.preventDefault(); };
@@ -128,10 +136,16 @@ export default function NavBar() {
                                                         setOpen(false);
                                                     }
                                                 }}
-                                                className="group flex items-center justify-between px-5 py-4 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-150"
+                                                className={`group flex items-center justify-between px-5 py-4 transition-all duration-150 ${
+                                                    isActive(item.href)
+                                                        ? 'text-white bg-white/10'
+                                                        : 'text-white/40 hover:text-white hover:bg-white/10'
+                                                }`}
                                             >
                                                 <span className="text-xl">{item.label}</span>
-                                                <span className="text-white/30 group-hover:text-blue-400 text-sm transition-colors duration-150">
+                                                <span className={`text-sm transition-colors duration-150 ${
+                                                    isActive(item.href) ? 'text-white/60' : 'text-white/30 group-hover:text-blue-400'
+                                                }`}>
                                                     0{index + 1}
                                                 </span>
                                             </Link>

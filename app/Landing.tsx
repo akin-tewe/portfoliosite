@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { pixelify, roboto, instrumentSerif } from "@/app/ui/fonts";
 
 import projectsdata from "@/data/ProjectThumbData";
@@ -12,7 +13,7 @@ import { useRef, useState, useEffect, useMemo, memo } from "react";
 import { useCursor } from "@/components/CursorContext";
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
 import { ClockAlert } from "lucide-react";
-import TwitchChat from "@/app/projects/yourrage/TwitchChat";
+
 
 function LazyVideo({ src, srcFallback, playbackRate, className }: {
   src: string;
@@ -137,10 +138,6 @@ const GLASS_N2 = 1.5;
 const GLASS_SCALE = 35; // px of max displacement shift
 const GLASS_SURFACE = (t: number) => Math.pow(1 - Math.pow(1 - t, 4), 0.25);
 
-const GLASS_RECT_W = 296;  // TwitchChat 280 + 16 padding
-const GLASS_RECT_H = 336;  // TwitchChat 320 + 16 padding
-const GLASS_RECT_RADIUS = 16;
-
 function generateDisplacementMap(): string {
   const size = GLASS_MAP_SIZE;
   const canvas = document.createElement('canvas');
@@ -239,235 +236,6 @@ function generateSpecularFillMap(): string {
 }
 
 
-
-function generateRectDisplacementMap(): string {
-  const size = GLASS_MAP_SIZE;
-  const canvas = document.createElement('canvas');
-  canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext('2d')!;
-  const imageData = ctx.createImageData(size, size);
-  const data = imageData.data;
-
-  const W = GLASS_RECT_W;
-  const H = GLASS_RECT_H;
-  const R = GLASS_RECT_RADIUS;
-  const bezelWidth = Math.min(W, H) / 2 * GLASS_BEZEL_RATIO;
-
-  // Exact same refraction table as circle
-  const displacements: number[] = [];
-  for (let i = 0; i <= 127; i++) {
-    const t = i / 127;
-    const h = GLASS_SURFACE(t);
-    const delta = 0.001;
-    const h1 = GLASS_SURFACE(Math.max(0, t - delta));
-    const h2 = GLASS_SURFACE(Math.min(1, t + delta));
-    const derivative = (h2 - h1) / (2 * delta);
-    const incidentAngle = Math.atan(Math.abs(derivative));
-    const sinRefracted = (GLASS_N1 / GLASS_N2) * Math.sin(incidentAngle);
-    if (Math.abs(sinRefracted) >= 1) { displacements.push(0); continue; }
-    const refractedAngle = Math.asin(sinRefracted);
-    displacements.push(h * Math.tan(refractedAngle) * (derivative >= 0 ? -1 : 1));
-  }
-  const maxMag = Math.max(...displacements.map(Math.abs));
-
-  for (let py = 0; py < size; py++) {
-    for (let px = 0; px < size; px++) {
-      const idx = (py * size + px) * 4;
-
-      // Map canvas pixel to element pixel space
-      const ex = (px / (size - 1)) * W;
-      const ey = (py / (size - 1)) * H;
-
-      // Standard rounded rect SDF
-      // Fold into first quadrant relative to center
-      const qx = Math.abs(ex - W / 2) - (W / 2 - R);
-      const qy = Math.abs(ey - H / 2) - (H / 2 - R);
-
-      let dist: number;
-      let nx: number, ny: number; // outward-facing normal
-
-      if (qx > 0 && qy > 0) {
-        // Corner region: distance to arc
-        const cornerDist = Math.sqrt(qx * qx + qy * qy);
-        dist = cornerDist - R;
-        nx = qx / cornerDist;
-        ny = qy / cornerDist;
-      } else if (qx > qy) {
-        // Near left/right edge
-        dist = qx;
-        nx = 1;
-        ny = 0;
-      } else {
-        // Near top/bottom edge
-        dist = qy;
-        nx = 0;
-        ny = 1;
-      }
-
-      // Unfold normal back to full coordinate space
-      if (ex < W / 2) nx = -nx;
-      if (ey < H / 2) ny = -ny;
-
-      // Outside shape — neutral
-      if (dist >= 0) {
-        data[idx] = 128; data[idx + 1] = 128; data[idx + 2] = 128; data[idx + 3] = 255;
-        continue;
-      }
-
-      // Inside: same bezel + refraction as circle
-      const insideDist = -dist;
-      const t = Math.min(insideDist / bezelWidth, 1);
-      const normalizedMag = maxMag === 0 ? 0 : displacements[Math.round(t * 127)] / maxMag;
-
-      // Encode displacement in outward normal direction
-      data[idx]     = Math.round(Math.max(0, Math.min(255, 128 + nx * normalizedMag * 127)));
-      data[idx + 1] = Math.round(Math.max(0, Math.min(255, 128 + ny * normalizedMag * 127)));
-      data[idx + 2] = 128;
-      data[idx + 3] = 255;
-    }
-  }
-
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toDataURL();
-}
-
-function generateRectSpecularMap(): string {
-  const size = GLASS_MAP_SIZE;
-  const canvas = document.createElement('canvas');
-  canvas.width = size; canvas.height = size;
-  const ctx = canvas.getContext('2d')!;
-  const imageData = ctx.createImageData(size, size);
-  const data = imageData.data;
-
-  const W = GLASS_RECT_W;
-  const H = GLASS_RECT_H;
-  const R = GLASS_RECT_RADIUS;
-  const bezelWidth = Math.min(W, H) / 2 * GLASS_BEZEL_RATIO;
-
-  // Same dual lights as circle
-  const light1 = { x: Math.cos(-120 * Math.PI / 180), y: Math.sin(-120 * Math.PI / 180) };
-  const light2 = { x: Math.cos(60 * Math.PI / 180), y: Math.sin(60 * Math.PI / 180) };
-
-  for (let py = 0; py < size; py++) {
-    for (let px = 0; px < size; px++) {
-      const idx = (py * size + px) * 4;
-
-      const ex = (px / (size - 1)) * W;
-      const ey = (py / (size - 1)) * H;
-
-      const qx = Math.abs(ex - W / 2) - (W / 2 - R);
-      const qy = Math.abs(ey - H / 2) - (H / 2 - R);
-
-      let dist: number;
-      let nx: number, ny: number;
-
-      if (qx > 0 && qy > 0) {
-        const cornerDist = Math.sqrt(qx * qx + qy * qy);
-        dist = cornerDist - R;
-        nx = qx / cornerDist;
-        ny = qy / cornerDist;
-      } else if (qx > qy) {
-        dist = qx;
-        nx = 1; ny = 0;
-      } else {
-        dist = qy;
-        nx = 0; ny = 1;
-      }
-
-      if (ex < W / 2) nx = -nx;
-      if (ey < H / 2) ny = -ny;
-
-      if (dist >= 0) {
-        data[idx] = 0; data[idx + 1] = 0; data[idx + 2] = 0; data[idx + 3] = 0;
-        continue;
-      }
-
-      const insideDist = -dist;
-      const t = Math.min(insideDist / bezelWidth, 1);
-
-      // Same fill formula as circle: 18% milky + 10% edge boost
-      const fillAlpha = (0.18 + (1 - t) * 0.10) * 255;
-
-      // Same specular formula as circle: power 6, brightness 3.5
-      const edgeFactor = Math.pow(Math.max(0, 1 - t * 5), 3);
-      const spec1 = Math.pow(Math.max(0, nx * light1.x + ny * light1.y), 6) * 1.0;
-      const spec2 = Math.pow(Math.max(0, nx * light2.x + ny * light2.y), 6) * 0.3;
-      const specAlpha = Math.min(255, (spec1 + spec2) * edgeFactor * 3.5 * 255);
-
-      const totalAlpha = Math.min(255, specAlpha + fillAlpha);
-      if (totalAlpha < 1) {
-        data[idx] = 0; data[idx + 1] = 0; data[idx + 2] = 0; data[idx + 3] = 0;
-        continue;
-      }
-
-      // Purple tint (only difference from circle which uses neutral 240-245)
-      const sw = specAlpha / totalAlpha;
-      // Rim: rgb(200, 170, 255)  Fill: rgb(180, 150, 240)
-      data[idx]     = Math.round(200 * sw + 180 * (1 - sw));
-      data[idx + 1] = Math.round(170 * sw + 150 * (1 - sw));
-      data[idx + 2] = Math.round(255 * sw + 240 * (1 - sw));
-      data[idx + 3] = Math.round(totalAlpha);
-    }
-  }
-
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toDataURL();
-}
-
-function GlassRect() {
-  const rectMaps = useMemo(() => {
-    if (typeof window === 'undefined') return null;
-    return {
-      dispUrl: generateRectDisplacementMap(),
-      specUrl: generateRectSpecularMap(),
-    };
-  }, []);
-
-  return (
-    <>
-      {rectMaps && (
-        <svg style={{ position: 'absolute', width: 0, height: 0 }} colorInterpolationFilters="sRGB">
-          <defs>
-            <filter id="glass-rect" x="0%" y="0%" width="100%" height="100%">
-              <feImage
-                href={rectMaps.dispUrl}
-                x="0" y="0"
-                width={GLASS_RECT_W} height={GLASS_RECT_H}
-                result="rect_disp"
-                preserveAspectRatio="none"
-              />
-              <feDisplacementMap
-                in="SourceGraphic"
-                in2="rect_disp"
-                scale={GLASS_SCALE}
-                xChannelSelector="R"
-                yChannelSelector="G"
-                result="rect_refracted"
-              />
-              <feColorMatrix in="rect_refracted" type="saturate" values="1.3" result="rect_saturated" />
-              <feImage
-                href={rectMaps.specUrl}
-                x="0" y="0"
-                width={GLASS_RECT_W} height={GLASS_RECT_H}
-                result="rect_specular"
-                preserveAspectRatio="none"
-              />
-              <feBlend in="rect_saturated" in2="rect_specular" mode="screen" />
-            </filter>
-          </defs>
-        </svg>
-      )}
-      <div style={{
-        width: GLASS_RECT_W,
-        height: GLASS_RECT_H,
-        borderRadius: GLASS_RECT_RADIUS,
-        backdropFilter: 'url(#glass-rect)',
-        WebkitBackdropFilter: 'url(#glass-rect)',
-        pointerEvents: 'none',
-      }} />
-    </>
-  );
-}
 
 function GlassDot() {
   return (
@@ -711,6 +479,39 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
 });
 
 
+const CHAT_PILLS = [
+  "THIS INTRO IS CRAZY",
+  "LEGENDARY",
+  "the mechanical legs 🦿",
+  "PLAY IT BACK",
+  "W W W W W",
+  "who made this??",
+  "RAGE GOT THE BEST INTRO",
+  "the animation is insane",
+  "YOOOOO",
+  "brooo the 3D",
+  "chat we are so back",
+  "NEW INTRO HYPE",
+  "whoever animated this W",
+  "the chase scene tho",
+  "actual movie quality",
+];
+
+function ChatPillsOverlay() {
+  return (
+    <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none flex flex-wrap content-center justify-center gap-2 p-6">
+      {CHAT_PILLS.map((text, i) => (
+        <span
+          key={i}
+          className={`${roboto.className} bg-[#9146FF] text-white text-xs font-light px-3 py-1.5 rounded-full whitespace-nowrap`}
+        >
+          {text}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 function ProjectsGrid() {
   const { show, hide } = useLoader();
   const { setCursor, resetCursor } = useCursor();
@@ -807,27 +608,7 @@ function ProjectsGrid() {
                 {project.id === 2 && <ResearchCardOverlay />}
 
                 {project.id === 6 && (
-                  <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none">
-                    <div style={{ position: 'relative', width: GLASS_RECT_W, height: GLASS_RECT_H }}>
-                      {/* TwitchChat underneath */}
-                      <div style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                      }}>
-                        <TwitchChat />
-                      </div>
-                      {/* Glass rect overlay ON TOP — distorts chat beneath via backdrop-filter */}
-                      <div style={{
-                        position: 'absolute',
-                        inset: 0,
-                        zIndex: 1,
-                      }}>
-                        <GlassRect />
-                      </div>
-                    </div>
-                  </div>
+                  <ChatPillsOverlay />
                 )}
 
                 {project.image && (

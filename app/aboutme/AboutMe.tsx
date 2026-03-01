@@ -463,7 +463,7 @@ export default function AboutMe() {
                             variants={fadeInRight}
                             className="relative w-full md:col-span-2 md:col-start-4 aspect-square"
                         >
-                            <TransparentVideo mp4Src="/aboutme-skills.mp4" />
+                            <TransparentVideo mp4Src="/aboutmeM.mp4" webmSrc="/aboutmeW.webm" />
                         </motion.div>
                     </AnimatedSection>
                 </GridContainer>

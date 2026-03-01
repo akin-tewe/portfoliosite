@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 type Props = {
     mp4Src?: string;
+    webmSrc?: string;
 }
 
 type Prop2 = {
@@ -27,7 +28,7 @@ function useMinWidth(px: number) {
 }
 
 
-export default function TransparentVideo ({ mp4Src }: Props) {
+export default function TransparentVideo ({ mp4Src, webmSrc }: Props) {
     return (
         <video
             className="absolute inset-0 w-full h-full object-contain pointer-events-none"
@@ -37,7 +38,8 @@ export default function TransparentVideo ({ mp4Src }: Props) {
             playsInline
             controls={false}
             preload="metadata">
-            {mp4Src ? <source src={mp4Src} type="video/mp4" /> : null}
+            {mp4Src ? <source src={mp4Src} type="video/mp4;codecs=hvc1" /> : null}
+            {webmSrc ? <source src={webmSrc} type="video/webm" /> : null}
         </video>
     )
 }

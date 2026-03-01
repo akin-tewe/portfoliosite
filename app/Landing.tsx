@@ -8,11 +8,16 @@ import Link from "next/link"
 import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState, useEffect, useMemo, memo } from "react";
+import { useRef, useState, useEffect, useMemo, memo, useSyncExternalStore } from "react";
 import { useCursor } from "@/components/CursorContext";
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
 import { ClockAlert } from "lucide-react";
 
+
+const emptySubscribe = () => () => {};
+function useIsClient() {
+  return useSyncExternalStore(emptySubscribe, () => true, () => false);
+}
 
 function LazyVideo({ src, srcFallback, playbackRate, className }: {
   src: string;
@@ -464,13 +469,15 @@ function DotField({ count }: { count: number }) {
 
 const ResearchCardOverlay = memo(function ResearchCardOverlay() {
   const [index, setIndex] = useState(0);
+  const isClient = useIsClient();
+
   const filterMaps = useMemo(() => {
-    if (typeof window === 'undefined') return null;
+    if (!isClient) return null;
     return {
       dispUrl: generateDisplacementMap(),
       specUrl: generateSpecularFillMap(),
     };
-  }, []);
+  }, [isClient]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -579,13 +586,17 @@ const CHAT_PILLS = [
 ];
 
 const ChatPillsOverlay = memo(function ChatPillsOverlay() {
+  const isClient = useIsClient();
+
   const pillMaps = useMemo(() => {
-    if (typeof window === 'undefined') return null;
+    if (!isClient) return null;
     return {
       dispUrl: generatePillDisplacementMap(GLASS_PILL_WIDTH, GLASS_PILL_HEIGHT),
       specUrl: generatePillSpecularFillMap(GLASS_PILL_WIDTH, GLASS_PILL_HEIGHT),
     };
-  }, []);
+  }, [isClient]);
+
+  if (!isClient || !pillMaps) return null;
 
   return (
     <>

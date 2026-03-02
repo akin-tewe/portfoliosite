@@ -59,10 +59,18 @@ function LazyVideo({ src, srcFallback, playbackRate, className }: {
       preload="metadata"
       className={className}
     >
-      <source src={src} type={src.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
-      {srcFallback && (
-        <source src={srcFallback} type={srcFallback.endsWith('.webm') ? 'video/webm' : 'video/mp4'} />
-      )}
+      {/* MP4 first for Safari H.265 alpha support */}
+      {src.endsWith('.mp4') ? (
+        <source src={src} type="video/mp4;codecs=hvc1" />
+      ) : srcFallback?.endsWith('.mp4') ? (
+        <source src={srcFallback} type="video/mp4;codecs=hvc1" />
+      ) : null}
+      {/* WebM second for Chrome/Firefox */}
+      {src.endsWith('.webm') ? (
+        <source src={src} type="video/webm" />
+      ) : srcFallback?.endsWith('.webm') ? (
+        <source src={srcFallback} type="video/webm" />
+      ) : null}
     </video>
   );
 }

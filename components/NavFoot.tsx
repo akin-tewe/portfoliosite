@@ -180,7 +180,9 @@ export default function NavBar() {
 
                 <Link
                     href="/"
-                    className={`${pixelify.className} text-white text-sm tracking-wider hover:opacity-70 transition-opacity`}
+                    className={`${pixelify.className} text-sm tracking-wider transition-colors duration-200 ${
+                        isActive('/') ? 'text-white' : 'text-white/50 hover:text-white'
+                    }`}
                     onClick={() => { show(); setTimeout(hide, 800) }}
                     onMouseDown={preventCursorFlash}
                 >
@@ -197,7 +199,9 @@ export default function NavBar() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="text-white/50 hover:text-white transition-colors duration-200"
+                            className={`transition-colors duration-200 ${
+                                isActive(item.href) ? 'text-white' : 'text-white/50 hover:text-white'
+                            }`}
                             onMouseDown={preventCursorFlash}
                             onClick={(e) => {
                                 handleHashNavigation(e, item.href);

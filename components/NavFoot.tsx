@@ -10,7 +10,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
     { label: "Home", href: "/" },
-    { label: "Projects", href: "/#projects" },
     { label: "About", href: "/aboutme" },
     { label: "Contact", href: "/contactme" },
 ];
@@ -176,7 +175,7 @@ export default function NavBar() {
 
             {/* Desktop Floating Pill Nav */}
             <div className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-[60]
-                 bg-black/80 backdrop-blur-lg rounded-full px-8 py-3.5
+                 bg-black/80 backdrop-blur-lg rounded-full px-10 py-3.5
                  items-center gap-7 border border-white/15 shadow-lg shadow-black/20">
 
                 <Link
@@ -192,7 +191,6 @@ export default function NavBar() {
 
                 <nav className={`${pixelify.className} flex items-center gap-5 text-xs tracking-wider uppercase`}>
                     {[
-                        { label: "Projects", href: "/#projects" },
                         { label: "About", href: "/aboutme" },
                         { label: "Contact", href: "/contactme" },
                     ].map((item) => (

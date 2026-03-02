@@ -4,7 +4,7 @@ const projectsdata = [
         title: "Sifty",
         tag: "Application",
         body: "A lightweight project tracking tool for freelancers and small studios.",
-        color: "bg-sky-500",
+        color: "bg-gray-200",
         shadow: "rgba(0, 0, 0, 0.35)",
         tags: ["UI/UX Design", "Built with Claude", "Production Ready"],
         image: null,

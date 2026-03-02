@@ -11,7 +11,6 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useMemo, memo, useSyncExternalStore } from "react";
 import { useCursor } from "@/components/CursorContext";
 import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
-import { ClockAlert } from "lucide-react";
 
 
 const emptySubscribe = () => () => {};
@@ -711,38 +710,7 @@ function ProjectsGrid() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
       {projectsdata.map((project, i) => (
         <AnimatedSection key={project.id} delay={i * 0.05}>
-          {project.locked ? (
-            <div
-              className="group relative block cursor-default"
-              onMouseEnter={() => setCursor("project", { title: "", body: "Article coming soon.", tags: [] })}
-              onMouseLeave={() => resetCursor()}
-            >
-              <div
-                className="relative bg-neutral-300 rounded-2xl overflow-hidden aspect-[9/5]"
-              >
-                <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <ClockAlert size={85} strokeWidth={1} className="text-black/20" />
-                </div>
-
-                <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
-                  <span className={`${pixelify.className} text-white/50 text-sm tracking-wider uppercase`}>
-                    {project.title}
-                  </span>
-                  <div className="w-px h-4 bg-white/20 hidden lg:block" />
-                  <span className={`${pixelify.className} text-white/30 text-xs tracking-wider uppercase hidden lg:inline`}>
-                    {project.tag}
-                  </span>
-                </div>
-              </div>
-              {/* Mobile caption — hidden on desktop where hover modal handles this */}
-              <div className="md:hidden mt-3 px-1">
-                <p className={`${roboto.className} text-black/50 text-sm font-light`}>
-                  Article coming soon.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <Link
+          <Link
               href={project.link}
               onClick={() => { resetCursor(); show(); setTimeout(hide, 800); }}
               className="group relative block"
@@ -767,7 +735,7 @@ function ProjectsGrid() {
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               >
-                {project.gradient && !project.locked && (
+                {project.gradient && (
                   <div className="absolute inset-0 overflow-hidden">
                     <ShaderGradientCanvas
                       style={{
@@ -925,7 +893,6 @@ function ProjectsGrid() {
                 )}
               </div>
             </Link>
-          )}
         </AnimatedSection>
       ))}
     </div>
@@ -966,7 +933,7 @@ export default function Landing() {
               transition={{ duration: 1, delay: 2 }}
               className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-4 max-w-[200px]`}
             >
-              <span className="text-black/35">Worked with </span><span className="text-black/80">Sprite · True Religion · Higround</span><span className="text-black/35"> + more</span>
+              <span className="text-black/35">Worked with </span><span className="text-black/80">True Religion · Higround</span><span className="text-black/35"> + more</span>
             </motion.p>
           </div>
 

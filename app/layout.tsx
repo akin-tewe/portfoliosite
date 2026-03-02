@@ -19,8 +19,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head suppressHydrationWarning>
-        {/* Inline cursor:none to prevent native cursor flash before stylesheets load */}
-        <style suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `@media(pointer:fine)and(prefers-reduced-motion:no-preference){*{cursor:none!important}}` }} />
       </head>
       <body>
         <LoaderProvider>

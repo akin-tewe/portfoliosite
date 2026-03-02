@@ -99,8 +99,8 @@ export default function ContactMe() {
                         muted
                         playsInline
                     >
+                        <source src="/blackwalkingM.mp4" type="video/mp4;codecs=hvc1" />
                         <source src="/blackwalkingW.webm" type="video/webm" />
-                        <source src="/blackwalkingM.mp4" type="video/mp4" />
                     </video>
                 </motion.div>
             </section>

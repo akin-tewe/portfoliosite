@@ -29,7 +29,6 @@ app/projects/3dresearch/          → Main project page
 app/projects/truereligion/        → Main project page
 app/projects/albumcover/          → Mini project page
 app/projects/yourrage/            → Mini project page
-app/projects/bluboyspin/          → Mini project page
 app/aboutme/AboutMe.tsx           → About page
 app/contactme/ContactMe.tsx       → Contact page
 components/NavFoot.tsx            → Nav bar + Footer (rendered by layout.tsx)

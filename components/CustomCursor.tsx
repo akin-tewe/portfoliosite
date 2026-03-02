@@ -1,11 +1,9 @@
 "use client";
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useMotionValue } from "framer-motion";
+import { useMotionValue } from "framer-motion";
 import { useCursor } from "./CursorContext";
 import { pixelify, roboto } from "@/app/ui/fonts";
-
-const BALL_SIZE = 12;
 
 const TAG_COLORS: Record<string, string> = {
   "UI/UX Design": "bg-sky-500/20 text-sky-300",
@@ -22,6 +20,7 @@ const TAG_COLORS: Record<string, string> = {
 };
 
 const MODAL_WIDTH = 280;
+const PAD = 16;
 
 function useMediaQuery(query: string) {
   return useSyncExternalStore(
@@ -37,165 +36,93 @@ function useMediaQuery(query: string) {
 
 export default function CustomCursor() {
   const hasFinePointer = useMediaQuery("(pointer: fine)");
-  const prefersReducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
-  const [visible, setVisible] = useState(true);
-  const [hasMovedOnce, setHasMovedOnce] = useState(false);
-  const { cursorType, cursorData, setCursor, resetCursor } = useCursor();
+  const { cursorType, cursorData, resetCursor } = useCursor();
   const pathname = usePathname();
 
-  const tabVisibleRef = useRef(true);
   const [displayData, setDisplayData] = useState<Record<string, unknown> | null>(null);
-
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-  const springX = cursorX;
-  const springY = cursorY;
+  const posRef = useRef({ x: -9999, y: -9999 });
+  const modalRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
 
   const isProject = cursorType === "project";
-  const isText = cursorType === "text";
-  const isButton = cursorType === "button";
 
   // Reset cursor on route change
   useEffect(() => {
     resetCursor();
   }, [pathname, resetCursor]);
 
-  // Pause when tab hidden
-  useEffect(() => {
-    const onVisibilityChange = () => { tabVisibleRef.current = !document.hidden; };
-    document.addEventListener("visibilitychange", onVisibilityChange);
-    return () => document.removeEventListener("visibilitychange", onVisibilityChange);
-  }, []);
-
-  // Track mouse position
+  // Track mouse position and update modal via rAF (no re-renders)
   useEffect(() => {
     if (!hasFinePointer) return;
     const onPointerMove = (e: PointerEvent) => {
-      if (!hasMovedOnce) setHasMovedOnce(true);
-      if (!tabVisibleRef.current) return;
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      posRef.current = { x: e.clientX, y: e.clientY };
+      if (!rafRef.current) {
+        rafRef.current = requestAnimationFrame(() => {
+          rafRef.current = 0;
+          const modal = modalRef.current;
+          if (!modal) return;
+          const { x, y } = posRef.current;
+          const modalHeight = modal.offsetHeight;
+
+          // Top-right of cursor, clamped to viewport
+          let left = x + PAD;
+          let top = y - modalHeight - PAD;
+
+          // Flip left if overflows right
+          if (left + MODAL_WIDTH > window.innerWidth) {
+            left = x - MODAL_WIDTH - PAD;
+          }
+          // Flip below if overflows top
+          if (top < 0) {
+            top = y + PAD;
+          }
+          // Clamp edges
+          left = Math.max(4, Math.min(left, window.innerWidth - MODAL_WIDTH - 4));
+          top = Math.max(4, Math.min(top, window.innerHeight - modalHeight - 4));
+
+          modal.style.transform = `translate(${left}px, ${top}px)`;
+        });
+      }
     };
     window.addEventListener("pointermove", onPointerMove);
     return () => {
       window.removeEventListener("pointermove", onPointerMove);
-    };
-  }, [hasFinePointer, hasMovedOnce, cursorX, cursorY]);
-
-  // Hide on viewport leave
-  useEffect(() => {
-    if (!hasFinePointer) return;
-    const onLeave = () => setVisible(false);
-    const onEnter = () => setVisible(true);
-    document.documentElement.addEventListener("pointerleave", onLeave);
-    document.documentElement.addEventListener("pointerenter", onEnter);
-    return () => {
-      document.documentElement.removeEventListener("pointerleave", onLeave);
-      document.documentElement.removeEventListener("pointerenter", onEnter);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [hasFinePointer]);
 
-  // Auto-detect text/button via event delegation
-  useEffect(() => {
-    if (!hasFinePointer) return;
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (!target) return;
-
-      const interactive = target.closest("a, button, [role=button]");
-      if (interactive) {
-        if (interactive.closest("[data-cursor=project]")) return;
-        if (cursorType === "project") return;
-        setCursor("button");
-        return;
-      }
-
-      const textEl = target.closest("h1, h2, h3, h4, h5, h6, p, span, li");
-      if (textEl) {
-        if (textEl.closest("a, button, [role=button], [data-cursor=project]")) return;
-        if (cursorType === "project") return;
-        const fontSize = parseFloat(window.getComputedStyle(textEl).fontSize);
-        setCursor("text", { fontSize });
-        return;
-      }
-
-      if (cursorType === "text" || cursorType === "button" || cursorType === "project") {
-        resetCursor();
-      }
-    };
-    document.addEventListener("mouseover", handleMouseOver);
-    return () => document.removeEventListener("mouseover", handleMouseOver);
-  }, [hasFinePointer, cursorType, setCursor, resetCursor]);
-
   // Persist last project data so modal content doesn't vanish during exit animation
-  // React 19 "store previous rendering props" pattern — setState during render is intentional
   if (isProject && cursorData && cursorData !== displayData) {
     setDisplayData(cursorData);
   }
 
-  if (!hasFinePointer || prefersReducedMotion) return null;
+  if (!hasFinePointer) return null;
 
   const tags = (displayData?.tags as string[]) || [];
-  const showCursor = visible && hasMovedOnce;
-
-  // Dot layer dimensions (ball / beam / ring)
-  const textFontSize = (cursorData?.fontSize as number) || 16;
-  const beamHeight = Math.min(60, Math.max(20, Math.round(textFontSize * 1.4)));
-  const beamWidth = textFontSize > 32 ? 4 : textFontSize > 20 ? 3 : 2;
-
-  const dotWidth = isText ? beamWidth : isButton ? 40 : BALL_SIZE;
-  const dotHeight = isText ? beamHeight : isButton ? 40 : BALL_SIZE;
-  const dotRadius = isText ? 2 : 9999;
-  const dotBg: React.CSSProperties = isButton
-    ? { backgroundColor: "rgba(120, 120, 120, 0.15)", border: "1.5px solid rgba(120, 120, 120, 0.6)" }
-    : isText
-      ? { backgroundColor: "rgba(34, 197, 94, 0.85)" }
-      : { backgroundColor: "rgba(120, 120, 120, 0.8)" };
 
   return (
-    <motion.div
+    <div
+      ref={modalRef}
       style={{
         position: "fixed",
         top: 0,
         left: 0,
-        x: springX,
-        y: springY,
+        width: MODAL_WIDTH,
         zIndex: 999,
         pointerEvents: "none",
+        willChange: "transform",
+        transform: "translate(-9999px, -9999px)",
       }}
     >
-      {/* Small cursor: ball / beam / ring — transitions width/height (tiny, no jank) */}
       <div
         style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: dotWidth,
-          height: dotHeight,
-          borderRadius: dotRadius,
-          transform: "translate(-50%, -50%)",
-          transition: "width 0.2s cubic-bezier(0.25,0.46,0.45,0.94), height 0.2s cubic-bezier(0.25,0.46,0.45,0.94), border-radius 0.2s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.15s ease, background-color 0.15s ease",
-          opacity: showCursor && !isProject ? 1 : 0,
-          ...dotBg,
-        }}
-      />
-
-      {/* Project modal: always full size, GPU-composited scale + opacity only */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: MODAL_WIDTH,
           backgroundColor: "#111827",
           borderRadius: 16,
           overflow: "hidden",
-          transform: isProject
-            ? "translate(-50%, -50%) scale(1)"
-            : "translate(-50%, -50%) scale(0)",
-          opacity: showCursor && isProject ? 1 : 0,
+          transform: isProject ? "scale(1)" : "scale(0)",
+          opacity: isProject ? 1 : 0,
           transition: "transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.2s ease",
-          transformOrigin: "center center",
+          transformOrigin: "top left",
         }}
       >
         {displayData && (
@@ -220,6 +147,6 @@ export default function CustomCursor() {
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }

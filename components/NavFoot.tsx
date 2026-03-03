@@ -222,7 +222,7 @@ export default function NavBar() {
 export function Footer() {
     return (
         <footer className="px-6 md:px-[clamp(4rem,10vw,11rem)] py-8">
-            <div className="flex flex-col items-center gap-1 md:flex-row md:justify-between md:items-end">
+            <div className="flex flex-col items-center gap-1 md:flex-row md:justify-between md:items-end relative">
                 <span className={`${pixelify.className} text-black/25 text-base tracking-wider`}>
                     © {new Date().getFullYear()}
                 </span>
@@ -230,7 +230,7 @@ export function Footer() {
                     href="https://github.com/akin-tewe/portfoliosite"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${pixelify.className} text-black/25 hover:text-black/50 text-base tracking-wider transition-colors uppercase`}
+                    className={`${pixelify.className} underline text-black/25 hover:text-black/50 text-base tracking-wider transition-colors uppercase md:absolute md:left-1/2 md:-translate-x-1/2`}
                 >
                     Changelog
                 </a>

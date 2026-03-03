@@ -226,6 +226,14 @@ export function Footer() {
                 <span className={`${pixelify.className} text-black/25 text-base tracking-wider`}>
                     © {new Date().getFullYear()}
                 </span>
+                <a
+                    href="https://github.com/akin-tewe/portfoliosite"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`${pixelify.className} text-black/25 hover:text-black/50 text-base tracking-wider transition-colors uppercase`}
+                >
+                    Changelog
+                </a>
                 <span className={`${pixelify.className} text-black/25 text-base tracking-wider`}>
                     designed & developed by akin tewe
                 </span>

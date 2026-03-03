@@ -117,7 +117,7 @@ export default function Instagram() {
                             transition={{ duration: 0.6, delay: 0.5 }}
                             className={`${roboto.className} text-black/35 font-light text-base mt-4 italic`}
                         >
-                            All code for this project was written from scratch by me.
+                            All code for this project was written from scratch by me, without direct AI assistance.
                         </motion.p>
 
                         <motion.div
@@ -258,6 +258,12 @@ export default function Instagram() {
                     </motion.div>
                 </GridContainer>
 
+                <GridContainer className="mt-8">
+                    <p className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed`}>
+                        Across both charts, one pattern remained consistent. Mobile users found things easy, and engaged with the app on a more frequent basis. Web users struggled on the same tasks and visited notably less frequently. Generally, web users also engaged only with a primary goal in mind, while mobile users engaged in a more casual format. The web app is treated differently than the mobile app, but the web app does nothing to aid that difference.
+                    </p>
+                </GridContainer>
+
                 {/* Additional Charts */}
                 <GridContainer className="mt-8 md:mt-12">
                     <motion.div
@@ -271,12 +277,7 @@ export default function Instagram() {
                             <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6`}>
                                 additional user insights
                             </h3>
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                                <VerticalBarChart
-                                    data={chartData.useFrequency}
-                                    title="Daily Engagement"
-                                    variant="dark"
-                                />
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
                                 <VerticalBarChart
                                     data={chartData.webInteraction}
                                     title="Web Interaction Level"
@@ -293,6 +294,12 @@ export default function Instagram() {
                             Additional findings from user research
                         </span>
                     </motion.div>
+                </GridContainer>
+
+                <GridContainer className="mt-8">
+                    <p className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed`}>
+                        Messaging was a large standout here. Almost nobody rated it as &ldquo;easy&rdquo; on web. Interaction levels were moderate across the board, but messaging ease was lopsided enough to justify it as a core focus of the redesign.
+                    </p>
                 </GridContainer>
 
                 {/* User Frustrations */}

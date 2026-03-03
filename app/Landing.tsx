@@ -1001,8 +1001,8 @@ export default function Landing() {
           <MainVideo webmSrc="/lowerblacksplashW.webm" mp4Src="/lowerblacksplashM.mp4" />
 
           {/* Bio text — positioned relative to splash video container */}
-          <p className={`${roboto.className} absolute hidden 2xl:block bottom-[25%] right-[13%] text-black/50 text-base font-light leading-relaxed max-w-md`}>
-            Product Designer creating interfaces that<br />emphasize the user and add a touch of childhood wonder.
+          <p className={`${roboto.className} absolute hidden 2xl:block bottom-[25%] right-[14%] text-black/50 text-base font-light leading-relaxed max-w-lg`}>
+            Product Designer who treats screens like physical<br />objects; with depth, weight, and motion. I chase the<br />moments where using something feels like discovering it.
           </p>
         </div>
 

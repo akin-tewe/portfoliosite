@@ -716,7 +716,7 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
   const { setCursor, resetCursor } = useCursor();
 
   return (
-    <AnimatedSection key={project.id} delay={i * 0.05} margin={isSecondary ? "0px" : "-80px"}>
+    <AnimatedSection key={project.id} delay={i * 0.05} margin={isSecondary ? "0px 0px 0px 0px" : "-80px"}>
       <Link
           href={project.link}
           onClick={() => { resetCursor(); show(); setTimeout(hide, 800); }}

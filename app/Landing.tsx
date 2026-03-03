@@ -83,7 +83,7 @@ function AnimatedSection({ children, className = "", delay = 0, margin = "-80px"
   children: React.ReactNode;
   className?: string;
   delay?: number;
-  margin?: string;
+  margin?: `${number}px` | `${number}px ${number}px ${number}px ${number}px`;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin });

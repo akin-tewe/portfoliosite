@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { LoaderProvider } from "@/components/LoaderContext";
 import { CursorProvider } from "@/components/CursorContext";
 import CustomCursor from "@/components/CustomCursor";
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Footer/>
           </CursorProvider>
         </LoaderProvider>
+        <Analytics />
       </body>
     </html>
   );

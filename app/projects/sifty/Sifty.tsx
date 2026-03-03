@@ -228,7 +228,7 @@ export default function Sifty() {
                             variants={fadeInUp}
                             className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}
                         >
-                            Sifty is a project scoping and tracking tool designed and built from research through production code. The goal was to give freelancers a single source of truth that makes scope boundaries as visible as the work itself, without adding process overhead to their existing workflow.
+                            Sifty (sifty.app) is a project scoping and tracking tool both designed and built by me (with the assistance of AI tools) from initial research to full production code. The goal was not to recreate what already exists in management tools like Trello, but to create a simple and efficient tool that helps freelancers constrain scope boundaries, without adding large overhead to their existing workflow.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -251,7 +251,7 @@ export default function Sifty() {
                             variants={fadeInUp}
                             className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}
                         >
-                            Scope creep is the most common source of conflict in freelance work. Not because anyone is acting in bad faith, but because client and freelancer each build a different mental model of what&#39;s &ldquo;included.&rdquo; As the project progresses, these invisible misalignments surface as disputes about deliverables, timelines, and cost.
+                            In freelance work, scope creep is one of the most common sources of general conflict. This isn&#39;t due to intentional bad faith actors, but because the client and freelancer perspective of an assignment will always be fundamentally different. As the project progresses, that difference can easily snowball and present themselves as constant disputes against deliverables, timelines, costs, and more.
                         </motion.p>
 
                         <div className="flex flex-col gap-10">
@@ -260,7 +260,7 @@ export default function Sifty() {
                                     Invisible boundaries
                                 </h3>
                                 <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                                    Most projects rely on a proposal email or a brief conversation to define scope. These informal agreements live in different inboxes, different memories, and different interpretations. There&#39;s no single artifact both parties reference.
+                                    When setting up a new project, scope can be defined in a multitude of ways. It can be a well documented proposal email, a long chain of DMs, or even something as informal as a short facetime call. When operating from such an informal medium of communication, agreements can easily be remembered (or digested) very differently by each participating member. And oftentimes there is no singular artifact to reference.
                                 </p>
                             </motion.div>
 
@@ -269,7 +269,7 @@ export default function Sifty() {
                                     Tools that manage tasks, not scope
                                 </h3>
                                 <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                                    Existing project management tools like Trello, Asana, and Notion track what you&#39;re doing, but none of them make what you&#39;re NOT doing equally visible. Scope is an afterthought, buried in a notes field if it&#39;s documented at all.
+                                    When looking at what&#39;s already on the market, its easy to point to tools like Trello, Asana, and Notion as products that have already &ldquo;solved&rdquo; these issues. These products however are largely focused on product management, and often do not act as client-facing solutions for a problem like scope creep. Scope there is an afterthought buried in a field of busy notes, if addressed at all.
                                 </p>
                             </motion.div>
 
@@ -278,7 +278,7 @@ export default function Sifty() {
                                     Documentation friction
                                 </h3>
                                 <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                                    When a client changes something on a call, the freelancer needs to document it immediately or it&#39;s lost. But existing tools require navigating to a project, finding the right section, and filling out forms. The overhead means most changes go unrecorded.
+                                    Freelancers don&#39;t like heavy documentation work. When clients shift expectations, this shift needs to be documented and preserved immediately. Existing tools require navigating to a project, finding the right sections, filling out forms, etc.. The overhead in initializing a simple task means most changes often go unrecorded.
                                 </p>
                             </motion.div>
                         </div>
@@ -416,7 +416,7 @@ export default function Sifty() {
                             variants={fadeInUp}
                             className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase`}
                         >
-                            DEFINING THE SCOPE
+                            DEFINING SCOPE
                         </motion.h2>
 
                         <motion.p
@@ -483,7 +483,7 @@ export default function Sifty() {
                                 The timeline was designed as the only primary view. Not one tab among many, but the entire interface. Project details, exclusions, and the changelog are accessed via expandable overlays from the timeline context.
                             </p>
                             <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mt-4`}>
-                                I considered a horizontal Gantt-style timeline, which is standard in project management. It follows the natural reading direction left-to-right and can show parallel work tracks. But horizontal timelines require horizontal scrolling, they&#39;re difficult on mobile, and they feel corporate. A vertical timeline follows how people already consume content (social feeds, messaging apps). Since most freelance projects are sequential rather than heavily parallel, vertical was the better fit.
+                                I considered a horizontal Gantt chart initially, which is standard in project management. It follows the natural reading direction left-to-right and can show parallel work tracks. But this already presents a number of issues. Horizontal timelines require horizontal scrolling. From a mobile-first viewpoint, this is already a failure. They also have a more corporate feel, where this project is intended to appeal to individuals. A vertical timeline follows the current style in how content is consumed (social media applications), and would provide a more appealing fit to freelancers.
                             </p>
 
                             <TradeoffBlock>
@@ -501,10 +501,10 @@ export default function Sifty() {
                         {/* 2. Making exclusions visible */}
                         <SolutionSubsection number="2" title="Making exclusions visible">
                             <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                                Most tools only track what you&#39;re building. Sifty makes what&#39;s NOT included equally prominent. The &ldquo;out of scope&rdquo; section uses a badge showing the count of excluded items, and it&#39;s always visible on the client view, collapsible on the freelancer side, but never hidden from the client.
+                                Most tools only track what you&#39;re building. Sifty makes what&#39;s NOT included equally prominent. The &ldquo;out of scope&rdquo; section uses a badge showing the count of excluded items, and makes itself persistent on the client side. The utility of explicitly directing what is completely out of scope for the project helps solve most creep problems before they even have the chance to manifest.
                             </p>
                             <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mt-4`}>
-                                The simpler option would have been a single &ldquo;notes&rdquo; field where freelancers could type whatever they wanted about scope. But unstructured notes don&#39;t create accountability. A dedicated exclusions section with a visible item count turns &ldquo;I think we mentioned that wasn&#39;t included&rdquo; into &ldquo;there are 4 items explicitly listed as out of scope, and here they are.&rdquo;
+                                A simpler option could have been a single &ldquo;notes&rdquo; field where freelancers could type whatever they wanted about scope. But unstructured notes don&#39;t create accountability. A dedicated exclusions section with a visible item count turns &ldquo;I think we mentioned that wasn&#39;t included&rdquo; into &ldquo;there are 4 items explicitly listed as out of scope, and here they are.&rdquo; No room for arguments.
                             </p>
 
                             <TradeoffBlock>
@@ -536,7 +536,7 @@ export default function Sifty() {
                                 The project creation form collects 9 fields (5 mandatory, 4 optional behind toggles). A critical design question was when to show validation errors.
                             </p>
                             <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mt-4`}>
-                                On-blur validation catches errors early but feels aggressive. Red borders appearing while you&#39;re still filling out the form. On-change validation is worse, flagging errors mid-keystroke. The choice was to validate only on submit: errors appear when the user signals &ldquo;I think I&#39;m ready,&rdquo; not while they&#39;re still thinking. After the first submit attempt, fields update in real-time as the user corrects them.
+                                On-blur validation catches errors early but feels aggressive. Red borders appearing while you&#39;re still filling out the form. On-change validation is worse, flagging errors mid-keystroke. The choice was to validate only on submit: errors appear when the user tells us &ldquo;I think I&#39;m ready,&rdquo; not while they&#39;re still thinking. After the first submit attempt, fields update in real-time as the user corrects them.
                             </p>
 
                             <TradeoffBlock>
@@ -655,7 +655,7 @@ export default function Sifty() {
                             variants={fadeInUp}
                             className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mx-auto text-center`}
                         >
-                            The backend uses Supabase with PostgreSQL for project storage and real-time updates. Radix UI provides accessible, unstyled primitives that allowed full design control without fighting a component library&#39;s opinions. The entire application was built using Claude Code for implementation, with specifications written as detailed task documents.
+                            For the backend, Supabase with PostgreSQL was implemented for secure project storage and consistent data updates. Radix UI was used to implement clean primitives that allowed for further design control while keeping our design language grounded. The entire application was built by leveraging Claude Code for implementation with myself acting as the design director, writing specifications as detailed task documents
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -671,14 +671,14 @@ export default function Sifty() {
                             variants={fadeInUp}
                             className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 max-w-2xl`}
                         >
-                            Sifty is live and in use. Future iterations will introduce export functionality, email and message logging for informal change documentation, and enhanced dependency tracking.
+                            Sifty is currently live and in active use. I plan on continuing live development on the website in my free time. Future updates will include further debugging for a smoother experience, enhanced dependency tracking, image hosting, a more fleshed out dating system, and much more.
                         </motion.p>
 
                         <motion.p
                             variants={fadeInUp}
                             className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 max-w-2xl`}
                         >
-                            If I could go back, I&#39;d invest more time in user testing before launch. The research grounded the initial design decisions, but I moved into building relatively quickly once the direction felt right. Running the prototype past a few freelancers earlier would have surfaced usability issues sooner, especially around the timeline interaction model which took several iterations to get right during development.
+                            If I could go back and redo any part of the project, I would invest more time in user testing before launch. While the research phase was extensive enough to properly outline necessity and guide decision making, my user base for actual product testing was fairly limited. Having the prototype broadcast to more freelancers earlier would have helped identify usability issues much sooner, and would likely aid in identifying additional markers that may still not be present.
                         </motion.p>
 
                         <motion.div variants={fadeInUp}>

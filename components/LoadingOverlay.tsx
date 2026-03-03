@@ -1,5 +1,5 @@
 "use client";
-import { MainVideo } from "./SplashVideo";
+import TransparentVideo from "./SplashVideo";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -20,7 +20,7 @@ export default function PageLoader({ loading }: { loading: boolean }) {
                         exit={{ scale: 1.1, opacity: 0 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <MainVideo webmSrc="/runningW.webm" mp4Src="/runningM.mp4" />
+                        <TransparentVideo mp4Src="/runningM.mp4" webmSrc="/runningW.webm" preload="auto" />
                     </motion.div>
                 </motion.div>
             )}
@@ -68,7 +68,7 @@ export function BootOverlay() {
                         }}
                         transition={{ duration: 0.4 }}
                     >
-                        <MainVideo webmSrc="/runningW.webm" mp4Src="/runningM.mp4" />
+                        <TransparentVideo mp4Src="/runningM.mp4" webmSrc="/runningW.webm" preload="auto" />
                     </motion.div>
 
                     {/* Loading bar */}

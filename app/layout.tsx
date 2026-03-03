@@ -8,7 +8,7 @@ import { Footer } from "@/components/NavFoot";
 
 export const metadata: Metadata = {
   title: "Akin Tewe. Product Designer",
-  description: "Akin Tewe's portfolio website.",
+  description: "Portfolio website of Akin Tewe. Product Designer.",
 };
 
 export default function RootLayout({

@@ -82,7 +82,7 @@ export default function ContactMe() {
                     >
                         @n8ghbr
                     </a>
-                    ..
+                    .
                 </motion.p>
 
                 {/* Bottom-right video */}

@@ -107,7 +107,7 @@ function DotPattern({ count }: { count: number }) {
 
 export default function MaslowHierarchy() {
   return (
-    <div className="flex gap-4 md:gap-6 max-w-xl py-6 md:py-10">
+    <div className="flex gap-4 md:gap-6 max-w-xl mx-auto py-6 md:py-10">
       {/* Color bar with dots */}
       <div className="flex flex-col w-16 md:w-20 flex-shrink-0 rounded-lg overflow-hidden">
         {levels.map((level, i) => (

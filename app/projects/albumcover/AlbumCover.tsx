@@ -26,7 +26,7 @@ const staggerContainer = {
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
             {children}
         </div>
     );
@@ -35,7 +35,7 @@ function GridContainer({ children, className = "", id }: { children: React.React
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -71,23 +71,23 @@ export default function AlbumCover() {
                 className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
             >
                 <GridContainer>
-                    <div className="md:w-[60%] lg:w-[50%] md:ml-[20%]">
+                    <div>
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
+                            className={`${pixelify.className} text-4xl md:text-5xl lg:text-6xl text-gray-800 leading-tight`}
                         >
                             peaches and eggplants
                             <br />
-                            <span className="text-blue-500 italic">cover art design</span>
+                            <span className="text-blue-500 italic text-lg md:text-xl">cover art design</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}
                         >
                             {`As star artists "Latto" (17M monthly Spotify listeners) and "Sexyy Red" (18M monthly listeners) were brought on to the remix of Young Nudy's
                             hit song, I was commissioned by Nudy's team to reinterpret the original cover.`}
@@ -127,7 +127,7 @@ export default function AlbumCover() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <div className="overflow-hidden rounded-2xl">
                             <Image
@@ -138,7 +138,7 @@ export default function AlbumCover() {
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             {`"Peaches and Eggplants" by Young Nudy - original cover art`}
                         </span>
                     </motion.div>
@@ -151,35 +151,19 @@ export default function AlbumCover() {
             <section id="body" className="relative py-12 md:py-20">
                 {/* Section 1: Context */}
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Context
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
-                            6 short hours. This was all the time provided to make this happen.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            Something not unusual to the music industry but entirely unusual
-                            to my regular process. I had to rethink how I design entirely.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            Instead of broad stylistic changes and innovation, the
-                            focus was on precise, high impact additions that respectfully leave their mark.
+                            6 short hours. This was all the time provided to make this happen. Something not unusual to the music industry but entirely unusual to my regular process. I had to rethink how I design entirely. Instead of broad stylistic changes and innovation, the focus was on precise, high impact additions that respectfully leave their mark.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -195,10 +179,10 @@ export default function AlbumCover() {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
+                            <span className={`${roboto.className} text-gray-800 text-xl md:text-2xl font-light leading-relaxed`}>
                                 {`The original cover was a still-life composition built around indulgence: food, money, guns, and overt luxury.`}
                             </span>
                             <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
@@ -214,33 +198,26 @@ export default function AlbumCover() {
             {/* Section 2: Iteration */}
             <section className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Iteration
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
-                            After deciding what made sense to remove, we had to figure out what new elements to introduce that would both fit the existing aesthetic, and signify the presence of the new artists.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            To this effect, their chains were recreated to serve as the central motif of the new piece.
+                            After deciding what made sense to remove, we had to figure out what new elements to introduce that would both fit the existing aesthetic, and signify the presence of the new artists. To this effect, their chains were recreated to serve as the central motif of the new piece.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
 
                 {/* Chain References */}
                 <GridContainer className="mt-12 md:mt-16">
-                    <div className="grid grid-cols-2 gap-3 md:gap-4 md:w-[60%] mx-auto">
+                    <div className="grid grid-cols-2 gap-3 md:gap-4">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -272,7 +249,7 @@ export default function AlbumCover() {
                             />
                         </motion.div>
                     </div>
-                    <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                    <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                         {`Chain references for artists "Sexyy Red" and "Latto"`}
                     </span>
                 </GridContainer>
@@ -284,7 +261,7 @@ export default function AlbumCover() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <div className="overflow-hidden rounded-2xl">
                             <Image
@@ -295,28 +272,19 @@ export default function AlbumCover() {
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             Initial work in progress scene
                         </span>
                     </motion.div>
                 </GridContainer>
 
                 <GridContainer className="mt-12 md:mt-16">
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed`}
                         >
-                            Scale and placement were the two factors that provided the most friction.
-                            Everything needed to be set perfectly.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            {`Nearly a dozen iterations were produced in the tight timeframe, shifting pieces around (sometimes by just a few pixels)
-                            until harmony was established.`}
+                            {`Scale and placement were the two factors that provided the most friction. Everything needed to be set perfectly. Nearly a dozen iterations were produced in the tight timeframe, shifting pieces around (sometimes by just a few pixels) until harmony was established.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -332,7 +300,7 @@ export default function AlbumCover() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <div className="overflow-hidden rounded-2xl">
                             <Image
@@ -343,35 +311,26 @@ export default function AlbumCover() {
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             Final remix cover art
                         </span>
                     </motion.div>
                 </GridContainer>
 
                 <GridContainer className="mt-12 md:mt-16">
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Conclusion
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
-                            The final cover preserved the identity of the original release while also
-                            differentiating itself in a clear and notable manner.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            {`The remix has since accumulated over 33M streams on Spotify. While "short-lived" is an understatement for this experience, it was an important lesson in
-                            quick thinking, rapid adaptation, and distilling decisions down to their essentials.`}
+                            {`The final cover preserved the identity of the original release while also differentiating itself in a clear and notable manner. The remix has since accumulated over 33M streams on Spotify. While "short-lived" is an understatement for this experience, it was an important lesson in quick thinking, rapid adaptation, and distilling decisions down to their essentials.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>

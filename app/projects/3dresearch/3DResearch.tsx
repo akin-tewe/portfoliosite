@@ -33,7 +33,7 @@ const staggerContainer = {
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
             {children}
         </div>
     );
@@ -42,7 +42,7 @@ function GridContainer({ children, className = "", id }: { children: React.React
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -87,23 +87,23 @@ export default function D3Project() {
                 className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
             >
                 <GridContainer>
-                    <div className="md:w-[60%] lg:w-[45%] md:ml-[20%]">
+                    <div>
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
+                            className={`${pixelify.className} text-4xl md:text-5xl lg:text-6xl text-gray-800 leading-tight`}
                         >
                             the independent
                             <br />
-                            <span className="text-blue-500 italic">3d artist</span>
+                            <span className="text-blue-500 italic text-lg md:text-xl">3d artist</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}
                         >
                             A qualitative UX Research study exploring the nature of creative work in an online economy.
                         </motion.p>
@@ -152,7 +152,7 @@ export default function D3Project() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:w-[65%] mx-auto"
+                        className=""
                     >
                         <div className="overflow-hidden rounded-2xl">
                             <video
@@ -161,7 +161,7 @@ export default function D3Project() {
                                 className="w-full h-auto"
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             Expression of creativity - video credit: @biibocc on Instagram
                         </span>
                     </motion.div>
@@ -173,35 +173,26 @@ export default function D3Project() {
             {/* Section 1: Framing */}
             <section id="body" className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Framing
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
                             {`What does "freedom" actually look like for independent artists once it becomes their livelihood?`}
                         </motion.p>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-6`}
                         >
-                            This central question was the driving component for the entire study.
-                            From this a number of secondary themes emerged; platform dependence, the emergence of AI, {`"impostor syndrome"`}, and sustainability.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            To answer this, interview questions were designed to feel open.
-                            Rather than leading participants to a presupposed narrative, these prompts focused on their lived experience.
+                            {`This central question was the driving component for the entire study. From this a number of secondary themes emerged; platform dependence, the emergence of AI, "impostor syndrome", and sustainability. To answer this, interview questions were designed to feel open. Rather than leading participants to a presupposed narrative, these prompts focused on their lived experience.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -212,17 +203,17 @@ export default function D3Project() {
             {/* Section 2: Methodology */}
             <section className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Methodology
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
                             Two separate interview formats were conducted to capture the picture on both a micro and macro level:
                         </motion.p>
@@ -231,7 +222,7 @@ export default function D3Project() {
 
                 {/* Callout boxes */}
                 <GridContainer className="mt-12 md:mt-16">
-                    <div className="md:w-[60%] mx-auto flex flex-col gap-6">
+                    <div className="flex flex-col gap-6">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -239,8 +230,8 @@ export default function D3Project() {
                             transition={{ duration: 0.6 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>focused, in-person interview</span>
-                            <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
+                            <span className={`${pixelify.className} text-gray-800 text-base md:text-lg`}>focused, in-person interview</span>
+                            <p className={`${roboto.className} mt-4 text-black/70 text-sm md:text-base font-light leading-relaxed`}>
                                 {`An extensive observational interview with visual artist "Oseanworld" (113K followers).
                                 Focuses on his journey into 3D art, motivations, and daily routine.`}
                             </p>
@@ -252,8 +243,8 @@ export default function D3Project() {
                             transition={{ duration: 0.6, delay: 0.1 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>remote interview panel</span>
-                            <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
+                            <span className={`${pixelify.className} text-gray-800 text-base md:text-lg`}>remote interview panel</span>
+                            <p className={`${roboto.className} mt-4 text-black/70 text-sm md:text-base font-light leading-relaxed`}>
                                 A series of 4 video calls with independent artists encompassing a broad range of
                                 backgrounds and niches. Financial stability, expectations, platform usability.
                             </p>
@@ -268,7 +259,7 @@ export default function D3Project() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <ChartContainer className="flex justify-center">
                             <DonutChart
@@ -278,7 +269,7 @@ export default function D3Project() {
                                 variant="dark"
                             />
                         </ChartContainer>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             Distribution of themes across all interview sessions
                         </span>
                     </motion.div>
@@ -290,17 +281,17 @@ export default function D3Project() {
             {/* Section 3: Human Needs */}
             <section className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Human Needs
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
                             Across 8+ hours of interviews, several consistent themes emerged:
                         </motion.p>
@@ -314,10 +305,10 @@ export default function D3Project() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <ChartContainer>
-                            <h3 className={`${pixelify.className} text-white/70 text-xl md:text-2xl mb-6`}>
+                            <h3 className={`${pixelify.className} text-white/70 text-lg md:text-xl mb-6`}>
                                 artist concerns by frequency
                             </h3>
                             <HorizontalBarChart
@@ -326,7 +317,7 @@ export default function D3Project() {
                                 variant="dark"
                             />
                         </ChartContainer>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             Most frequently mentioned concerns across interviews
                         </span>
                     </motion.div>
@@ -334,7 +325,7 @@ export default function D3Project() {
 
                 {/* Theme breakdowns */}
                 <GridContainer className="mt-16 md:mt-24">
-                    <div className="md:w-[60%] mx-auto flex flex-col gap-8">
+                    <div className="flex flex-col gap-8">
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -342,10 +333,10 @@ export default function D3Project() {
                             transition={{ duration: 0.6 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>
+                            <span className={`${pixelify.className} text-gray-800 text-base md:text-lg`}>
                                 freedom vs. stability
                             </span>
-                            <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
+                            <p className={`${roboto.className} mt-4 text-black/70 text-sm md:text-base font-light leading-relaxed`}>
                                 Artists describe the freedom provided through freelance as liberating,
                                 but acknowledge unpredictability and instability of financial status.
                             </p>
@@ -358,10 +349,10 @@ export default function D3Project() {
                             transition={{ duration: 0.6, delay: 0.1 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>
+                            <span className={`${pixelify.className} text-gray-800 text-base md:text-lg`}>
                                 self-doubt vs. output
                             </span>
-                            <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
+                            <p className={`${roboto.className} mt-4 text-black/70 text-sm md:text-base font-light leading-relaxed`}>
                                 {`Impostor syndrome was a big theme throughout the interviews.
                                 Posting content makes you feel inferior, but that inferiority is only subsided through validation of that same content.`}
                             </p>
@@ -374,10 +365,10 @@ export default function D3Project() {
                             transition={{ duration: 0.6, delay: 0.2 }}
                             className="border-l-2 border-blue-500 pl-6 md:pl-8"
                         >
-                            <span className={`${pixelify.className} text-gray-800 text-lg md:text-xl`}>
+                            <span className={`${pixelify.className} text-gray-800 text-base md:text-lg`}>
                                 technology: not an enemy or saviour
                             </span>
-                            <p className={`${roboto.className} mt-4 text-black/70 text-base md:text-lg font-light leading-relaxed`}>
+                            <p className={`${roboto.className} mt-4 text-black/70 text-sm md:text-base font-light leading-relaxed`}>
                                 While Blender is celebrated for its capability and accessibility, tools like A.I. are seen as emotionally empty.
                                 A.I. is not seen as a large threat, and has the potential to be reformed into a tool.
                             </p>
@@ -387,7 +378,7 @@ export default function D3Project() {
 
                 {/* Additional Charts */}
                 <GridContainer className="mt-12 md:mt-16">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:w-[60%] mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <motion.div
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -429,10 +420,10 @@ export default function D3Project() {
 
                 {/* Maslow's Hierarchy */}
                 <GridContainer className="mt-16 md:mt-24">
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed`}
                         >
                             {`To better materialize these findings we can observe them using Maslow's hierarchy of needs, interpreted through the lens of creative labor.`}
                         </motion.p>
@@ -445,10 +436,10 @@ export default function D3Project() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <MaslowHierarchy />
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             {`Maslow's hierarchy of needs contextualized`}
                         </span>
                     </motion.div>
@@ -460,17 +451,17 @@ export default function D3Project() {
             {/* Section 4: Impact */}
             <section className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Impact
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
                             This study is an anchor in human continuity.
                             The people behind the output and the platform. It demonstrates:
@@ -489,7 +480,7 @@ export default function D3Project() {
                                 <motion.li
                                     key={index}
                                     variants={fadeInUp}
-                                    className={`${roboto.className} text-black/80 text-lg md:text-xl font-light flex items-center gap-3`}
+                                    className={`${roboto.className} text-black/80 text-base md:text-lg font-light flex items-center gap-3`}
                                 >
                                     <span className="w-1.5 h-1.5 bg-blue-500 rounded-full flex-shrink-0"></span>
                                     {item}
@@ -510,10 +501,10 @@ export default function D3Project() {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
+                            <span className={`${roboto.className} text-gray-800 text-xl md:text-2xl font-light leading-relaxed`}>
                                 {`It didn't aim to "solve a problem", because their lives are not problems to be solved.`}
                             </span>
                             <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
@@ -543,7 +534,7 @@ export default function D3Project() {
                                 controls
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             Final rendered documentary
                         </span>
                     </motion.div>

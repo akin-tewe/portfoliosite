@@ -27,7 +27,7 @@ const staggerContainer = {
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div id={id} className={`w-full max-w-[1400px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
             {children}
         </div>
     );
@@ -36,7 +36,7 @@ function GridContainer({ children, className = "", id }: { children: React.React
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1400px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -160,23 +160,23 @@ export default function TruReligion() {
                 className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
             >
                 <GridContainer>
-                    <div className="md:w-[60%] lg:w-[50%] md:ml-[20%]">
+                    <div>
                         <motion.h1
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.2 }}
-                            className={`${pixelify.className} text-5xl md:text-6xl lg:text-7xl text-gray-800 leading-tight`}
+                            className={`${pixelify.className} text-4xl md:text-5xl lg:text-6xl text-gray-800 leading-tight`}
                         >
                             true religion x
                             <br />
-                            <span className="text-blue-500 italic">{`"bluboy"`}</span>
+                            <span className="text-blue-500 italic text-lg md:text-xl">{`"bluboy"`}</span>
                         </motion.h1>
 
                         <motion.p
                             initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
-                            className={`${roboto.className} text-black/50 font-light text-lg md:text-xl mt-6 leading-relaxed`}
+                            className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}
                         >
                             {`A 3D animated commercial developed entirely by me made to promote the collaborative
                             clothing drop between True Religion Brand Jeans and clothing designer "Bluboy" (@bluboy, 110K followers on Instagram).`}
@@ -220,7 +220,7 @@ export default function TruReligion() {
             {/* Product Carousel */}
             <section className="relative w-full pb-6 md:pb-8">
                 <ProductCarousel />
-                <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-4 block text-center italic`}>
+                <span className={`${roboto.className} text-black/35 text-sm mt-4 block text-center italic`}>
                     In-scene product shot direction
                 </span>
             </section>
@@ -230,27 +230,19 @@ export default function TruReligion() {
             {/* Section 1: Premise */}
             <section id="body" className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Premise
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
-                            {`The intention here was not to make a traditional "product launch" advertisement,
-                            but to frame the moment as a part of Bluboy's visual narrative, while still carrying the weight and class expected of such a well-known brand.`}
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            This meant treating the collaboration less as strictly a campaign asset, and more as a shared world-building experience.
+                            {`The intention here was not to make a traditional "product launch" advertisement, but to frame the moment as a part of Bluboy's visual narrative, while still carrying the weight and class expected of such a well-known brand.`} This meant treating the collaboration less as strictly a campaign asset, and more as a shared world-building experience.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -261,28 +253,19 @@ export default function TruReligion() {
             {/* Section 2: Audience */}
             <section className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Audience
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
-                            {`To represent a collaboration between two notably different visual entities,
-                            this video needed to find a way to resonate with two audience groups at the same time.`}
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            {`Bluboy's audience is used to whimsical, character-driven visuals.
-                            The True Religion consumer base however expects familiarity, branding clarity, and to know exactly what's being presented to them.`}
+                            {`To represent a collaboration between two notably different visual entities, this video needed to find a way to resonate with two audience groups at the same time. Bluboy's audience is used to whimsical, character-driven visuals. The True Religion consumer base however expects familiarity, branding clarity, and to know exactly what's being presented to them.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -336,7 +319,7 @@ export default function TruReligion() {
                             />
                         </motion.div>
                     </div>
-                    <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                    <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                         Branding aesthetic reference - image credit: @bluboy on Instagram
                     </span>
                 </GridContainer>
@@ -352,10 +335,10 @@ export default function TruReligion() {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.8 }}
-                        className="md:w-[60%] mx-auto"
+                        className=""
                     >
                         <div className="border-l-2 border-blue-500 pl-6 md:pl-8">
-                            <span className={`${roboto.className} text-gray-800 text-2xl md:text-3xl font-light leading-relaxed`}>
+                            <span className={`${roboto.className} text-gray-800 text-xl md:text-2xl font-light leading-relaxed`}>
                                 {`The video's pacing lives comfortably between these two ideas; combining whimsical character moments with a clear product showcase.`}
                             </span>
                             <span className={`${roboto.className} text-black/50 text-base block mt-4`}>
@@ -371,27 +354,19 @@ export default function TruReligion() {
             {/* Section 3: Hero Character */}
             <section className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Our Hero
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
-                            {`The star of our video is none other than Bluboy himself.
-                            Making him the focal point was crucial to selling the nature of the collaboration.`}
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            {`The character was designed to be recognizable without chasing realism, breaking down the complex details of Bluboy's aesthetic into an iconic silhouette.`}
+                            {`The star of our video is none other than Bluboy himself. Making him the focal point was crucial to selling the nature of the collaboration. The character was designed to be recognizable without chasing realism, breaking down the complex details of Bluboy's aesthetic into an iconic silhouette.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -444,15 +419,15 @@ export default function TruReligion() {
                         />
                     </motion.div>
                 </div>
-                <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                     {`Original "bluboy" character render shots`}
                 </span>
 
                 <GridContainer className="mt-12 md:mt-16">
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed`}
                         >
                             This allows us to show off the clothing through the natural antics of the character
                             himself, rather than spinning dioramas or basic product renders.
@@ -466,28 +441,19 @@ export default function TruReligion() {
             {/* Section 4: Refinement */}
             <section className="relative py-12 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-blue-500 text-2xl md:text-3xl tracking-wide uppercase`}
+                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
                         >
                             Refinement
                         </motion.span>
 
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-4`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed mt-4`}
                         >
-                            This project was completed on a very tight one-month turnaround with constant
-                            direct feedback from Bluboy and the True Religion team.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            Juggling an abstract vision alongside a tight deadline proved
-                            to be a daunting challenge, but keeping two goals at the forefront guided the process: clarity and engagement.
+                            This project was completed on a very tight one-month turnaround with constant direct feedback from Bluboy and the True Religion team. Juggling an abstract vision alongside a tight deadline proved to be a daunting challenge, but keeping two goals at the forefront guided the process: clarity and engagement.
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>
@@ -508,7 +474,7 @@ export default function TruReligion() {
                                 controls
                             />
                         </div>
-                        <span className={`${roboto.className} text-black/35 text-sm md:text-base mt-5 block text-center italic`}>
+                        <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                             Final rendered animation
                         </span>
                     </motion.div>
@@ -516,21 +482,12 @@ export default function TruReligion() {
 
                 {/* Reception */}
                 <GridContainer className="mt-16 md:mt-24">
-                    <AnimatedSection className="md:ml-[20%] md:w-[50%]">
+                    <AnimatedSection className="">
                         <motion.p
                             variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed`}
+                            className={`${roboto.className} text-black/80 font-light text-base md:text-lg leading-relaxed`}
                         >
-                            The video was very well received, generating over 10,000 likes
-                            and 300K+ impressions across all accounts.
-                        </motion.p>
-
-                        <motion.p
-                            variants={fadeInUp}
-                            className={`${roboto.className} text-black/80 font-light text-lg md:text-xl leading-relaxed mt-6`}
-                        >
-                            {`For me, this project was a learning process in how to carry a
-                            client's vision alongside my own, and present it in a way that felt natural rather than manufactured.`}
+                            {`The video was very well received, generating over 10,000 likes and 300K+ impressions across all accounts. For me, this project was a learning process in how to carry a client's vision alongside my own, and present it in a way that felt natural rather than manufactured.`}
                         </motion.p>
                     </AnimatedSection>
                 </GridContainer>

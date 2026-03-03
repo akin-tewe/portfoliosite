@@ -82,7 +82,7 @@ export default function ContactMe() {
                     >
                         @n8ghbr
                     </a>
-                    .
+                    ..
                 </motion.p>
 
                 {/* Bottom-right video */}
@@ -99,8 +99,8 @@ export default function ContactMe() {
                         muted
                         playsInline
                     >
-                        <source src="/blackwalkingM.mp4" type="video/mp4;codecs=hvc1" />
-                        <source src="/blackwalkingW.webm" type="video/webm" />
+                        <source src="/walkingM.mp4" type="video/mp4;codecs=hvc1" />
+                        <source src="/walkingW.webm" type="video/webm" />
                     </video>
                 </motion.div>
             </section>

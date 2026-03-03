@@ -80,7 +80,7 @@ export default function AlbumCover() {
                         >
                             peaches and eggplants
                             <br />
-                            <span className="text-blue-500 italic text-lg md:text-xl">cover art design</span>
+                            <span className="text-blue-500">cover art design</span>
                         </motion.h1>
 
                         <motion.p

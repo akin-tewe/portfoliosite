@@ -96,7 +96,7 @@ export default function D3Project() {
                         >
                             the independent
                             <br />
-                            <span className="text-blue-500 italic text-lg md:text-xl">3d artist</span>
+                            <span className="text-blue-500">3d artist</span>
                         </motion.h1>
 
                         <motion.p

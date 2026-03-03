@@ -169,7 +169,7 @@ export default function TruReligion() {
                         >
                             true religion x
                             <br />
-                            <span className="text-blue-500 italic text-lg md:text-xl">{`"bluboy"`}</span>
+                            <span className="text-blue-500">{`"bluboy"`}</span>
                         </motion.h1>
 
                         <motion.p

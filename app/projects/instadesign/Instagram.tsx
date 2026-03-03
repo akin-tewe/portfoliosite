@@ -98,7 +98,7 @@ export default function Instagram() {
                         >
                             instagram web
                             <br />
-                            <span className="text-blue-500 italic text-lg md:text-xl">application redesign</span>
+                            <span className="text-blue-500">application redesign</span>
                         </motion.h1>
 
                         <motion.p

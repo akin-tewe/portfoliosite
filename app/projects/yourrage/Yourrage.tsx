@@ -81,7 +81,7 @@ export default function Rage() {
                         >
                             stream intro for
                             <br />
-                            <span className="text-blue-500 italic text-lg md:text-xl">{`"yourrage"`}</span>
+                            <span className="text-blue-500">{`"yourrage"`}</span>
                         </motion.h1>
 
                         <motion.p

@@ -24,7 +24,42 @@ const projectsdata = [
         video: "/projects/instadesign/igthumbW.webm",
         videoMobile: "/projects/instadesign/igthumbM.mp4",
         link: "/projects/instadesign",
-        gradient: null,
+        gradient: {
+            control: "props",
+            animate: "on",
+            brightness: 3.8,
+            cAzimuthAngle: 180,
+            cDistance: 4.5,
+            cPolarAngle: 90,
+            cameraZoom: 1,
+            color1: "#e8926f",
+            color2: "#c13584",
+            color3: "#e0457b",
+            envPreset: "lobby",
+            fov: 80,
+            grain: "off",
+            lightType: "3d",
+            pixelDensity: 1,
+            positionX: -0.5,
+            positionY: 0.1,
+            positionZ: 0,
+            range: "disabled",
+            rangeEnd: 40,
+            rangeStart: 0,
+            reflection: 0.1,
+            rotationX: 0,
+            rotationY: 0,
+            rotationZ: 235,
+            shader: "defaults",
+            type: "waterPlane",
+            uAmplitude: 0,
+            uDensity: 1.1,
+            uFrequency: 5.5,
+            uSpeed: 0.08,
+            uStrength: 2.4,
+            uTime: 0.2,
+            wireframe: false,
+        },
     },
     {
         id: 2,
@@ -90,29 +125,4 @@ const projectsdata = [
     },
 ]
 
-const projectminis = [
-    {
-        id: "peaches",
-        title: "Peaches & Eggplants",
-        tag: "Commission",
-        desc: "Graphic Design",
-        color: "bg-violet-500",
-        shadow: "rgba(167, 139, 250, 0.4)",
-        tags: ["Commission", "Graphic Design"],
-        link: "/projects/albumcover",
-    },
-    {
-        id: "rage",
-        title: "YourRage",
-        tag: "Commission",
-        desc: "Twitch Streamer Intro",
-        color: "bg-orange-500",
-        shadow: "rgba(251, 146, 60, 0.4)",
-        tags: ["Commission", "3D Animation"],
-        link: "/projects/yourrage",
-    },
-]
-
 export default projectsdata
-
-export { projectminis }

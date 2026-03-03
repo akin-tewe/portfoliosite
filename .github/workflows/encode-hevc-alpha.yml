@@ -1,0 +1,54 @@
+name: Encode HEVC Alpha (macOS)
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_path:
+        description: "Path to source video in repo (e.g. public/test/testwalk.mxf)"
+        required: true
+        default: "public/test/testwalk.mxf"
+      output_name:
+        description: "Output filename (without extension)"
+        required: true
+        default: "testwalk"
+
+jobs:
+  encode:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install FFmpeg
+        run: brew install ffmpeg
+
+      - name: Check input file
+        run: |
+          echo "Input: ${{ github.event.inputs.input_path }}"
+          ls -lh "${{ github.event.inputs.input_path }}"
+          ffprobe -v info "${{ github.event.inputs.input_path }}" 2>&1 | grep -E "Stream|pix_fmt|Duration"
+
+      - name: Encode HEVC with alpha (VideoToolbox)
+        run: |
+          ffmpeg -i "${{ github.event.inputs.input_path }}" \
+            -c:v hevc_videotoolbox \
+            -allow_sw 1 \
+            -alpha_quality 0.75 \
+            -tag:v hvc1 \
+            -b:v 2M \
+            -an \
+            "${{ github.event.inputs.output_name }}.mp4" \
+            -y 2>&1
+
+      - name: Verify output
+        run: |
+          ls -lh "${{ github.event.inputs.output_name }}.mp4"
+          ffprobe -v info "${{ github.event.inputs.output_name }}.mp4" 2>&1 | grep -E "Stream|pix_fmt|Duration"
+
+      - name: Upload encoded video
+        uses: actions/upload-artifact@v4
+        with:
+          name: hevc-alpha-${{ github.event.inputs.output_name }}
+          path: "${{ github.event.inputs.output_name }}.mp4"
+          retention-days: 7

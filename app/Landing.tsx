@@ -79,13 +79,14 @@ function LazyVideo({ src, srcFallback, playbackRate, className }: {
 }
 
 // Animated section wrapper
-function AnimatedSection({ children, className = "", delay = 0 }: {
+function AnimatedSection({ children, className = "", delay = 0, margin = "-80px" }: {
   children: React.ReactNode;
   className?: string;
   delay?: number;
+  margin?: string;
 }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin });
 
   return (
     <motion.div
@@ -145,7 +146,7 @@ const maslowLevels = [
 
 // --- Liquid Glass: see /docs/liquid-glass-reference.md for full details ---
 const GLASS_MAP_SIZE = 256;
-const GLASS_DOT_SIZE = 150;
+const GLASS_DOT_SIZE = 75;
 const GLASS_BEZEL_RATIO = 0.4;
 const GLASS_N1 = 1.0;
 const GLASS_N2 = 1.5;
@@ -422,23 +423,23 @@ const RESEARCH_GRADIENT_CONFIG = {
 // Coordinates are offsets from center of the container
 const DOT_LAYOUTS: Record<number, Array<{ x: number; y: number } | null>> = {
   5: [
-    { x: -85, y: -170 }, { x: 85, y: -170 },
+    { x: -42, y: -85 },  { x: 42, y: -85 },
     { x: 0, y: 0 },      null,
-    { x: -85, y: 170 },  { x: 85, y: 170 },
+    { x: -42, y: 85 },   { x: 42, y: 85 },
   ],
   4: [
-    { x: -85, y: -85 },  { x: 85, y: -85 },
-    { x: -85, y: 85 },   { x: 85, y: 85 },
+    { x: -42, y: -42 },  { x: 42, y: -42 },
+    { x: -42, y: 42 },   { x: 42, y: 42 },
     null,                 null,
   ],
   3: [
-    { x: 85, y: -140 },  null,
+    { x: 42, y: -70 },   null,
     { x: 0, y: 0 },      null,
-    { x: -85, y: 140 },  null,
+    { x: -42, y: 70 },   null,
   ],
   2: [
-    { x: 0, y: -85 },    null,
-    { x: 0, y: 85 },     null,
+    { x: 0, y: -42 },    null,
+    { x: 0, y: 42 },     null,
     null,                 null,
   ],
   1: [
@@ -527,7 +528,7 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className={`${instrumentSerif.className} text-8xl md:text-9xl text-gray-900/15 tracking-normal text-center lowercase`}
+            className={`${instrumentSerif.className} text-4xl md:text-5xl text-gray-900/15 tracking-normal text-center lowercase`}
           >
             {level.label}
           </motion.span>
@@ -674,7 +675,7 @@ const ChatPillsOverlay = memo(function ChatPillsOverlay() {
         )}
 
         {/* Animated floating pills — right half */}
-        <div className="absolute right-0 top-0 bottom-0 w-[55%] overflow-hidden [--pill-scale:0.6] md:[--pill-scale:0.75] lg:[--pill-scale:1]">
+        <div className="absolute right-0 top-0 bottom-0 w-[55%] [--pill-scale:0.4] md:[--pill-scale:0.45] lg:[--pill-scale:0.55]">
           {CHAT_PILLS.slice(0, 6).map((text, i) => (
             <div
               key={i}
@@ -684,7 +685,7 @@ const ChatPillsOverlay = memo(function ChatPillsOverlay() {
                 borderRadius: GLASS_PILL_HEIGHT / 2,
                 paddingLeft: 24,
                 paddingRight: 24,
-                backgroundColor: 'rgba(0, 0, 0, 0.18)',
+                backgroundColor: 'rgba(100, 65, 165, 0.25)',
                 backdropFilter: 'url(#glass-pill-yr)',
                 WebkitBackdropFilter: 'url(#glass-pill-yr)',
                 right: `${8 + (i % 4) * 12}%`,
@@ -705,9 +706,205 @@ const ChatPillsOverlay = memo(function ChatPillsOverlay() {
   );
 });
 
-function ProjectsGrid() {
+function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
+  project: typeof projectsdata[number];
+  i: number;
+  slideshowIndex: number;
+  isSecondary?: boolean;
+}) {
   const { show, hide } = useLoader();
   const { setCursor, resetCursor } = useCursor();
+
+  return (
+    <AnimatedSection key={project.id} delay={i * 0.05} margin={isSecondary ? "0px" : "-80px"}>
+      <Link
+          href={project.link}
+          onClick={() => { resetCursor(); show(); setTimeout(hide, 800); }}
+          className="group relative block"
+          data-cursor="project"
+          onMouseEnter={() => setCursor("project", { title: project.title, body: project.body, tags: project.tags })}
+          onMouseLeave={() => resetCursor()}
+        >
+          <div
+            className={`relative ${project.gradient ? '' : project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
+                        group-hover:-translate-y-2 ${isSecondary ? 'aspect-card-secondary' : ''}`}
+            style={{ boxShadow: 'none', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
+            onMouseEnter={(e) => {
+              let shadow = project.shadow;
+              if (project.id === 5 && project.slideshow) {
+                shadow = slideshowIndex % project.slideshow.length === 0
+                  ? 'rgba(220, 50, 50, 0.45)'
+                  : 'rgba(167, 139, 250, 0.4)';
+              }
+              e.currentTarget.style.boxShadow = `0 20px 50px -12px ${shadow}`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.boxShadow = 'none';
+            }}
+          >
+            {project.gradient && (
+              <div className="absolute inset-0 overflow-hidden">
+                <ShaderGradientCanvas
+                  style={{
+                    position: 'absolute',
+                    top: project.pixelated ? '-10%' : '0',
+                    left: project.pixelated ? '-10%' : '0',
+                    width: project.pixelated ? '120%' : '100%',
+                    height: project.pixelated ? '120%' : '100%',
+                    pointerEvents: 'none',
+                    ...(project.pixelated
+                      ? { imageRendering: 'pixelated' as const, transform: 'scale(5)', transformOrigin: 'center' }
+                      : {}),
+                  }}
+                  pixelDensity={project.pixelated ? 0.25 : 1}
+                >
+                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                  <ShaderGradient {...project.gradient as any} />
+                </ShaderGradientCanvas>
+              </div>
+            )}
+
+            {project.id === 2 && <ResearchCardOverlay />}
+
+            {project.id === 6 && (
+              <ChatPillsOverlay />
+            )}
+
+            {project.image && (
+              project.id === 7 ? (
+                <motion.img
+                  src={project.image}
+                  alt={project.title}
+                  className="absolute bottom-[-12%] right-0 translate-x-[15%] translate-y-[25%] object-contain z-10 pointer-events-none w-[86%] opacity-90"
+                  animate={{ y: ["25%", "22%", "25%"] }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+              ) : project.id === 6 ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+                />
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="absolute inset-0 m-auto object-contain z-10 pointer-events-none max-w-[60%] max-h-[60%]"
+                />
+              )
+            )}
+
+
+            {project.video && (
+              <LazyVideo
+                src={project.video}
+                srcFallback={project.videoMobile}
+                playbackRate={project.id === 1 ? 0.85 : undefined}
+                className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
+              />
+            )}
+
+            {project.slideshow && (
+              <div className="absolute inset-0 z-10 overflow-hidden">
+                {project.id === 3 ? (
+                  <>
+                    {/* Film grain overlay */}
+                    <div
+                      className="absolute inset-0 z-20 pointer-events-none opacity-[0.07] mix-blend-overlay"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                        backgroundRepeat: 'repeat',
+                        backgroundSize: '128px 128px',
+                      }}
+                    />
+                    {/* Crossfade images — small centered tile */}
+                    {project.slideshow.map((src: string, imgIndex: number) => (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        key={src}
+                        src={src}
+                        alt=""
+                        loading="lazy"
+                        className="absolute inset-0 m-auto max-w-[45%] max-h-[70%] object-contain transition-opacity duration-1000 ease-in-out z-10 drop-shadow-[0_8px_30px_rgba(10,22,50,0.6)]"
+                        style={{
+                          opacity: (slideshowIndex % project.slideshow.length) === imgIndex ? 1 : 0,
+                        }}
+                      />
+                    ))}
+                  </>
+                ) : (
+                  /* Original vertical slide behavior for other slideshow cards */
+                  <>
+                    <div
+                      className="flex flex-col w-full transition-transform duration-1000 ease-in-out"
+                      style={{
+                        height: `${project.slideshow.length * 100}%`,
+                        transform: `translateY(-${(slideshowIndex % project.slideshow.length) * (100 / project.slideshow.length)}%)`,
+                      }}
+                    >
+                      {project.slideshow.map((src: string) => (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          key={src}
+                          src={src}
+                          alt=""
+                          className="w-full flex-shrink-0 object-cover"
+                          style={{ height: `${100 / project.slideshow.length}%` }}
+                        />
+                      ))}
+                    </div>
+                    {/* Dark vignette overlay */}
+                    <div
+                      className="absolute inset-0 z-10 pointer-events-none"
+                      style={{
+                        boxShadow: 'inset 0 0 100px 30px rgba(0, 0, 0, 0.45)',
+                      }}
+                    />
+                  </>
+                )}
+              </div>
+            )}
+
+            <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
+              <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>
+                {project.title}
+              </span>
+              <div className="w-px h-4 bg-white/20 hidden lg:block" />
+              <span className={`${pixelify.className} text-white/50 text-xs tracking-wider uppercase hidden lg:inline`}>
+                {project.tag}
+              </span>
+            </div>
+          </div>
+          {/* Mobile caption — hidden on desktop where hover modal handles this */}
+          <div className="md:hidden mt-3 px-1">
+            <p className={`${roboto.className} text-black/50 text-sm font-light`}>
+              {project.body}
+            </p>
+            {project.tags && project.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1.5 mt-2">
+                {project.tags.map((tag: string) => (
+                  <span
+                    key={tag}
+                    className={`${pixelify.className} text-[10px] uppercase tracking-wider text-black/40 bg-black/[0.04] rounded-full px-2.5 py-1`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </Link>
+    </AnimatedSection>
+  );
+}
+
+function ProjectsGrid() {
   const [slideshowIndex, setSlideshowIndex] = useState(0);
 
   useEffect(() => {
@@ -717,196 +914,35 @@ function ProjectsGrid() {
     return () => clearInterval(interval);
   }, []);
 
+  const primary = projectsdata.filter(p => p.tier === "primary");
+  const secondary = projectsdata.filter(p => p.tier === "secondary");
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
-      {projectsdata.map((project, i) => (
-        <AnimatedSection key={project.id} delay={i * 0.05}>
-          <Link
-              href={project.link}
-              onClick={() => { resetCursor(); show(); setTimeout(hide, 800); }}
-              className="group relative block"
-              data-cursor="project"
-              onMouseEnter={() => setCursor("project", { title: project.title, body: project.body, tags: project.tags })}
-              onMouseLeave={() => resetCursor()}
-            >
-              <div
-                className={`relative ${project.gradient ? '' : project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
-                            group-hover:-translate-y-2 aspect-[9/5]`}
-                style={{ boxShadow: 'none' }}
-                onMouseEnter={(e) => {
-                  let shadow = project.shadow;
-                  if (project.id === 5 && project.slideshow) {
-                    shadow = slideshowIndex % project.slideshow.length === 0
-                      ? 'rgba(220, 50, 50, 0.45)'
-                      : 'rgba(167, 139, 250, 0.4)';
-                  }
-                  e.currentTarget.style.boxShadow = `0 20px 50px -12px ${shadow}`;
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                {project.gradient && (
-                  <div className="absolute inset-0 overflow-hidden">
-                    <ShaderGradientCanvas
-                      style={{
-                        position: 'absolute',
-                        top: project.pixelated ? '-10%' : '0',
-                        left: project.pixelated ? '-10%' : '0',
-                        width: project.pixelated ? '120%' : '100%',
-                        height: project.pixelated ? '120%' : '100%',
-                        pointerEvents: 'none',
-                        ...(project.pixelated
-                          ? { imageRendering: 'pixelated' as const, transform: 'scale(5)', transformOrigin: 'center' }
-                          : {}),
-                      }}
-                      pixelDensity={project.pixelated ? 0.25 : 1}
-                    >
-                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                      <ShaderGradient {...project.gradient as any} />
-                    </ShaderGradientCanvas>
-                  </div>
-                )}
+    <>
+      {/* Primary projects — 2 column */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-12">
+        {primary.map((project, i) => (
+          <ProjectCard key={project.id} project={project} i={i} slideshowIndex={slideshowIndex} />
+        ))}
+      </div>
 
-                {project.id === 2 && <ResearchCardOverlay />}
+      {/* Divider */}
+      <div className="flex items-center gap-6 my-12 md:my-16">
+        <div className="flex-1 h-px bg-black/10" />
+        <span className={`${pixelify.className} text-black/25 text-xs tracking-[0.2em] uppercase`}>
+          Other Work
+        </span>
+        <div className="flex-1 h-px bg-black/10" />
+      </div>
 
-                {project.id === 6 && (
-                  <ChatPillsOverlay />
-                )}
+      {/* Secondary projects — 4 column */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-10">
+        {secondary.map((project, i) => (
+          <ProjectCard key={project.id} project={project} i={i} slideshowIndex={slideshowIndex} isSecondary />
 
-                {project.image && (
-                  project.id === 7 ? (
-                    <motion.img
-                      src={project.image}
-                      alt={project.title}
-                      className="absolute bottom-[-12%] right-0 translate-x-[15%] translate-y-[25%] object-contain z-10 pointer-events-none w-[86%] opacity-90"
-                      animate={{ y: ["25%", "22%", "25%"] }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  ) : project.id === 6 ? (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
-                    />
-                  ) : (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="absolute inset-0 m-auto object-contain z-10 pointer-events-none max-w-[60%] max-h-[60%]"
-                    />
-                  )
-                )}
-
-
-                {project.video && (
-                  <LazyVideo
-                    src={project.video}
-                    srcFallback={project.videoMobile}
-                    playbackRate={project.id === 1 ? 0.85 : undefined}
-                    className="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none"
-                  />
-                )}
-
-                {project.slideshow && (
-                  <div className="absolute inset-0 z-10 overflow-hidden">
-                    {project.id === 3 ? (
-                      <>
-                        {/* Film grain overlay */}
-                        <div
-                          className="absolute inset-0 z-20 pointer-events-none opacity-[0.07] mix-blend-overlay"
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-                            backgroundRepeat: 'repeat',
-                            backgroundSize: '128px 128px',
-                          }}
-                        />
-                        {/* Crossfade images — small centered tile */}
-                        {project.slideshow.map((src: string, imgIndex: number) => (
-                          /* eslint-disable-next-line @next/next/no-img-element */
-                          <img
-                            key={src}
-                            src={src}
-                            alt=""
-                            loading="lazy"
-                            className="absolute inset-0 m-auto max-w-[45%] max-h-[70%] object-contain transition-opacity duration-1000 ease-in-out z-10 drop-shadow-[0_8px_30px_rgba(10,22,50,0.6)]"
-                            style={{
-                              opacity: (slideshowIndex % project.slideshow.length) === imgIndex ? 1 : 0,
-                            }}
-                          />
-                        ))}
-                      </>
-                    ) : (
-                      /* Original vertical slide behavior for other slideshow cards */
-                      <>
-                        <div
-                          className="flex flex-col w-full transition-transform duration-1000 ease-in-out"
-                          style={{
-                            height: `${project.slideshow.length * 100}%`,
-                            transform: `translateY(-${(slideshowIndex % project.slideshow.length) * (100 / project.slideshow.length)}%)`,
-                          }}
-                        >
-                          {project.slideshow.map((src: string) => (
-                            /* eslint-disable-next-line @next/next/no-img-element */
-                            <img
-                              key={src}
-                              src={src}
-                              alt=""
-                              className="w-full flex-shrink-0 object-cover"
-                              style={{ height: `${100 / project.slideshow.length}%` }}
-                            />
-                          ))}
-                        </div>
-                        {/* Dark vignette overlay */}
-                        <div
-                          className="absolute inset-0 z-10 pointer-events-none"
-                          style={{
-                            boxShadow: 'inset 0 0 100px 30px rgba(0, 0, 0, 0.45)',
-                          }}
-                        />
-                      </>
-                    )}
-                  </div>
-                )}
-
-                <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
-                  <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>
-                    {project.title}
-                  </span>
-                  <div className="w-px h-4 bg-white/20 hidden lg:block" />
-                  <span className={`${pixelify.className} text-white/50 text-xs tracking-wider uppercase hidden lg:inline`}>
-                    {project.tag}
-                  </span>
-                </div>
-              </div>
-              {/* Mobile caption — hidden on desktop where hover modal handles this */}
-              <div className="md:hidden mt-3 px-1">
-                <p className={`${roboto.className} text-black/50 text-sm font-light`}>
-                  {project.body}
-                </p>
-                {project.tags && project.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 mt-2">
-                    {project.tags.map((tag: string) => (
-                      <span
-                        key={tag}
-                        className={`${pixelify.className} text-[10px] uppercase tracking-wider text-black/40 bg-black/[0.04] rounded-full px-2.5 py-1`}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </Link>
-        </AnimatedSection>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 }
 

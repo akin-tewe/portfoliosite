@@ -47,6 +47,16 @@ body {
   font-family: var(--font-pixelify);
 }
 
+/* Secondary card: shorter on mobile, normal on desktop */
+.aspect-card-secondary {
+  aspect-ratio: 9/4;
+}
+@media (min-width: 768px) {
+  .aspect-card-secondary {
+    aspect-ratio: 9/5;
+  }
+}
+
 /* Scrollbar hiding */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { scrollbar-width: none; -ms-overflow-style: none; }

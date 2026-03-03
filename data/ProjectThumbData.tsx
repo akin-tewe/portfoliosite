@@ -11,6 +11,7 @@ const projectsdata = [
         video: "/projects/sifty/siftythumb.mp4",
         link: "/projects/sifty",
         gradient: null,
+        tier: "primary",
     },
     {
         id: 1,
@@ -24,6 +25,7 @@ const projectsdata = [
         video: "/projects/instadesign/igthumbW.webm",
         videoMobile: "/projects/instadesign/igthumbM.mp4",
         link: "/projects/instadesign",
+        tier: "primary",
         gradient: {
             control: "props",
             animate: "on",
@@ -72,6 +74,7 @@ const projectsdata = [
         image: null,
         link: "/projects/3dresearch",
         gradient: null,
+        tier: "secondary",
     },
     {
         id: 3,
@@ -94,6 +97,7 @@ const projectsdata = [
         link: "/projects/truereligion",
         pixelated: false,
         gradient: null,
+        tier: "secondary",
     },
     {
         id: 6,
@@ -106,6 +110,7 @@ const projectsdata = [
         image: "/projects/yourrage/character.jpg",
         link: "/projects/yourrage",
         gradient: null,
+        tier: "secondary",
     },
     {
         id: 5,
@@ -122,6 +127,7 @@ const projectsdata = [
         ],
         link: "/projects/albumcover",
         gradient: null,
+        tier: "secondary",
     },
 ]
 

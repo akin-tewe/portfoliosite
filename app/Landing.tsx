@@ -988,7 +988,7 @@ export default function Landing() {
               initial={{ opacity: 0 }}
               animate={isHeroInView ? { opacity: 1 } : {}}
               transition={{ duration: 1, delay: 2 }}
-              className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-8 max-w-[280px]`}
+              className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-8 max-w-[280px] hidden md:block`}
             >
               <span className="text-black/35">Worked with </span><span className="text-black/80">True Religion, Higround</span><span className="text-black/35"> + more</span>
             </motion.p>
@@ -996,15 +996,26 @@ export default function Landing() {
 
         </motion.div>
 
-        {/* Hero Name - Mobile */}
-        <motion.span
-          initial={{ opacity: 0, y: 50 }}
-          animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className={`md:hidden ${pixelify.className} relative text-8xl text-gray-900 text-right pb-2 pr-5 mt-auto pt-4 leading-none block`}
-        >
-          akin<br />tewe
-        </motion.span>
+        {/* Hero Name + Worked with - Mobile */}
+        <div className="md:hidden px-6 mt-auto pt-4">
+          <motion.span
+            initial={{ opacity: 0, y: 50 }}
+            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className={`${pixelify.className} relative text-8xl text-gray-900 text-left pb-2 leading-none block`}
+          >
+            akin<br />tewe
+          </motion.span>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={isHeroInView ? { opacity: 1 } : {}}
+            transition={{ duration: 1, delay: 2 }}
+            className={`${roboto.className} text-black/35 text-[11px] uppercase tracking-[0.15em] mt-4 text-left`}
+          >
+            <span className="text-black/35">Worked with </span><span className="text-black/80">True Religion, Higround</span><span className="text-black/35"> + more</span>
+          </motion.p>
+        </div>
 
         {/* Splash Video - Desktop */}
         <div key={pathname} className="absolute hidden md:block bottom-0 left-[47%] -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[25%] z-50 pointer-events-none overflow-visible">

@@ -56,7 +56,7 @@ export function BootOverlay() {
                             className="h-full bg-gray-900 rounded-full"
                             initial={{ width: "0%" }}
                             animate={{ width: "100%" }}
-                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                            transition={{ duration: 1.6, ease: [0.1, 0.6, 0.3, 1] }}
                         />
                     </motion.div>
                 </motion.div>

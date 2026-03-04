@@ -741,14 +741,6 @@ export default function Landing() {
         >
           {/* LEFT: scramble text + credits */}
           <div className="text-left md:w-[22rem] md:flex-shrink-0">
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={isHeroInView ? { opacity: 1 } : {}}
-              transition={{ duration: 1, delay: 2 }}
-              className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-8 max-w-[280px] hidden md:block`}
-            >
-              <span className="text-black/35">Worked with </span><span className="text-black/80">True Religion, Higround</span><span className="text-black/35"> + more</span>
-            </motion.p>
           </div>
 
         </motion.div>
@@ -777,6 +769,16 @@ export default function Landing() {
         {/* Splash Video - Desktop */}
         <div key={pathname} className="absolute hidden md:block bottom-0 left-[47%] -translate-x-1/2 w-full max-w-[1600px] aspect-[1600/560] translate-y-[25%] z-50 pointer-events-none overflow-visible">
           <MainVideo webmSrc="/lowerblacksplashW.webm" mp4Src="/lowerblacksplashM.mp4" />
+
+          {/* Worked with — anchored to splash video container */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={isHeroInView ? { opacity: 1 } : {}}
+            transition={{ duration: 1, delay: 2 }}
+            className={`${roboto.className} absolute left-[41%] top-[50%] text-black/35 text-[min(0.875vw,14px)] uppercase tracking-[0.15em] max-w-[min(17.5vw,280px)] hidden md:block`}
+          >
+            <span className="text-black/35">Worked with </span><span className="text-black/80">True Religion, Higround</span><span className="text-black/35"> + more</span>
+          </motion.p>
 
           {/* Bio text — positioned relative to splash video container */}
           <p className={`${roboto.className} absolute hidden 2xl:block bottom-[25%] right-[14%] text-black/50 text-base font-light leading-relaxed max-w-lg`}>

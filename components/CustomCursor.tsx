@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
-import { useMotionValue } from "framer-motion";
 import { useCursor } from "./CursorContext";
 import { pixelify, roboto } from "@/app/ui/fonts";
 

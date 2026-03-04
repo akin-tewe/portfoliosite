@@ -137,11 +137,11 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
 }
 
 const maslowLevels = [
-  { dots: 5, label: "physiological" },
-  { dots: 4, label: "safety" },
-  { dots: 3, label: "belonging" },
-  { dots: 2, label: "esteem" },
-  { dots: 1, label: "self-actualization" },
+  { dots: 5, label: "physiological", colors: { color1: "#38bdf8", color2: "#0ea5e9", color3: "#0284c7" } },
+  { dots: 4, label: "safety", colors: { color1: "#38bdf8", color2: "#0ea5e9", color3: "#0284c7" } },
+  { dots: 3, label: "belonging", colors: { color1: "#38bdf8", color2: "#0ea5e9", color3: "#0284c7" } },
+  { dots: 2, label: "esteem", colors: { color1: "#38bdf8", color2: "#0ea5e9", color3: "#0284c7" } },
+  { dots: 1, label: "self-actualization", colors: { color1: "#38bdf8", color2: "#0ea5e9", color3: "#0284c7" } },
 ];
 
 // --- Liquid Glass: see /docs/liquid-glass-reference.md for full details ---
@@ -515,7 +515,7 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
           pixelDensity={1}
         >
           {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <ShaderGradient {...RESEARCH_GRADIENT_CONFIG as any} />
+          <ShaderGradient {...RESEARCH_GRADIENT_CONFIG as any} {...level.colors} />
         </ShaderGradientCanvas>
       </div>
 
@@ -528,7 +528,7 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className={`${instrumentSerif.className} text-4xl md:text-5xl text-gray-900/15 tracking-normal text-center lowercase`}
+            className={`${instrumentSerif.className} text-4xl md:text-5xl text-white/60 tracking-normal text-center lowercase`}
           >
             {level.label}
           </motion.span>
@@ -766,9 +766,6 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
 
             {project.id === 2 && <ResearchCardOverlay />}
 
-            {project.id === 6 && (
-              <ChatPillsOverlay />
-            )}
 
             {project.image && (
               project.id === 7 ? (
@@ -800,6 +797,19 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
               )
             )}
 
+            {project.thumbnailImages && (
+              <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center gap-8 px-[10%] py-[8%]">
+                {project.thumbnailImages.map((src: string, i: number) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={src}
+                    src={src}
+                    alt=""
+                    className={`${i === 0 ? 'h-full' : 'h-[80%]'} w-auto object-contain`}
+                  />
+                ))}
+              </div>
+            )}
 
             {project.video && (
               <LazyVideo

@@ -20,7 +20,7 @@ const projectsdata = [
             cPolarAngle: 90,
             cameraZoom: 1,
             color1: "#f0f4fb",
-            color2: "#f8fbff",
+            color2: "#ffffff",
             color3: "#eef2fa",
             envPreset: "lobby",
             fov: 80,

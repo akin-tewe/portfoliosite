@@ -115,7 +115,7 @@ export default function CustomCursor() {
     >
       <div
         style={{
-          backgroundColor: "#111827",
+          backgroundColor: "rgba(0, 0, 0, 0.9)",
           borderRadius: 16,
           overflow: "hidden",
           transform: isProject ? "scale(1)" : "scale(0)",

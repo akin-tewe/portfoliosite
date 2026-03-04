@@ -963,7 +963,7 @@ export default function Landing() {
           initial={{ opacity: 0 }}
           animate={isHeroInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col md:flex-row items-start md:items-center justify-center gap-8 md:gap-[clamp(4rem,10vw,16rem)] px-6 md:pl-[clamp(2rem,6vw,8rem)] md:pr-[clamp(1rem,3vw,2.5rem)] pt-12 md:pt-0 md:h-full relative z-10"
+          className="flex flex-col md:flex-row items-start md:items-center justify-center gap-8 md:gap-[clamp(4rem,10vw,16rem)] px-6 md:pl-0 md:-ml-[1.5vw] md:pr-[clamp(1rem,3vw,2.5rem)] pt-12 md:pt-0 md:h-full relative z-10"
         >
           {/* LEFT: scramble text + credits */}
           <div className="text-left md:w-[22rem] md:flex-shrink-0">

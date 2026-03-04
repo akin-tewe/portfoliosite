@@ -766,6 +766,13 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
 
             {project.id === 2 && <ResearchCardOverlay />}
 
+            {project.id === 6 && (
+              <div
+                className="absolute inset-0 z-[12] pointer-events-none"
+                style={{ boxShadow: 'inset 0 0 120px 50px rgba(0, 0, 0, 0.7)' }}
+              />
+            )}
+
 
             {project.image && (
               project.id === 7 ? (
@@ -966,7 +973,7 @@ export default function Landing() {
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="relative min-h-fit md:min-h-[350px] md:h-[32vh] bg-gray-200 overflow-visible"
+        className="relative min-h-fit md:min-h-[280px] md:h-[26vh] bg-[#fafafa] overflow-visible pt-20 md:pt-24 pb-8 md:pb-12"
       >
         {/* Two-column content */}
         <motion.div
@@ -977,20 +984,13 @@ export default function Landing() {
         >
           {/* LEFT: scramble text + credits */}
           <div className="text-left md:w-[22rem] md:flex-shrink-0">
-            <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase whitespace-nowrap`}>
-              <ScrambleText text="UX ENGINEER" delay={500} />
-            </h2>
-            <div className="w-12 h-px bg-black/15 my-3" />
-            <h2 className={`${pixelify.className} text-2xl md:text-5xl text-gray-800 uppercase whitespace-nowrap`}>
-              <ScrambleText text="PRODUCT DESIGNER" delay={800} />
-            </h2>
             <motion.p
               initial={{ opacity: 0 }}
               animate={isHeroInView ? { opacity: 1 } : {}}
               transition={{ duration: 1, delay: 2 }}
-              className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-4 max-w-[200px]`}
+              className={`${roboto.className} text-black/35 text-[11px] md:text-sm uppercase tracking-[0.15em] mt-8 max-w-[280px]`}
             >
-              <span className="text-black/35">Worked with </span><span className="text-black/80">True Religion · Higround</span><span className="text-black/35"> + more</span>
+              <span className="text-black/35">Worked with </span><span className="text-black/80">True Religion, Higround</span><span className="text-black/35"> + more</span>
             </motion.p>
           </div>
 

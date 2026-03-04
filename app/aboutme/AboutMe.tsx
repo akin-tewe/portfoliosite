@@ -332,7 +332,7 @@ export default function AboutMe() {
     const isHeroInView = useInView(heroRef, { once: true });
 
     return (
-        <main className="bg-[#ebebeb] min-h-screen overflow-x-hidden">
+        <main className="bg-[#fafafa] min-h-screen overflow-x-hidden">
 
             {/* Hero Headline */}
             <section
@@ -418,7 +418,7 @@ export default function AboutMe() {
             </section>
 
             {/* Section 3: Skills - Lists Left, Video Right */}
-            <section className="relative py-16 md:py-[clamp(4rem,6vw,6rem)]">
+            <section className="relative py-16 md:py-[clamp(4rem,6vw,6rem)]" style={{ backgroundColor: "#ffffff" }}>
                 <GridOverlayLight />
                 <GridContainer>
                     <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-12 items-start">

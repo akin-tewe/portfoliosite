@@ -86,7 +86,7 @@ export default function Instagram() {
             {/* ============================================ */}
             <section
                 ref={heroRef}
-                className="relative bg-gray-200 pt-32 md:pt-40 pb-16 md:pb-24"
+                className="relative bg-[#fafafa] pt-32 md:pt-40 pb-16 md:pb-24"
             >
                 <GridContainer>
                     <div>

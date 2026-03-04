@@ -84,7 +84,7 @@ export default function D3Project() {
             {/* Hero Section */}
             <section
                 ref={heroRef}
-                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
+                className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 bg-[#fafafa]"
             >
                 <GridContainer>
                     <div>
@@ -494,7 +494,7 @@ export default function D3Project() {
             <SectionDivider />
 
             {/* Pull Quote */}
-            <section className="relative py-16 md:py-24 bg-gray-200">
+            <section className="relative py-16 md:py-24 bg-[#fafafa]">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0 }}

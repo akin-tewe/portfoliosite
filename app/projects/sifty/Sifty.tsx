@@ -136,7 +136,7 @@ export default function Sifty() {
             {/* 1. Hero Section */}
             <section
                 ref={heroRef}
-                className="relative w-full flex items-center justify-center pt-32 md:pt-40 pb-16 md:pb-24 bg-gray-200"
+                className="relative w-full flex items-center justify-center pt-32 md:pt-40 pb-16 md:pb-24 bg-[#fafafa]"
             >
                 <GridContainer className="flex justify-center">
                     <motion.div

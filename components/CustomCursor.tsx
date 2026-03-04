@@ -35,6 +35,7 @@ function useMediaQuery(query: string) {
 
 export default function CustomCursor() {
   const hasFinePointer = useMediaQuery("(pointer: fine)");
+  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const { cursorType, cursorData, resetCursor } = useCursor();
   const pathname = usePathname();
 
@@ -43,7 +44,7 @@ export default function CustomCursor() {
   const modalRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
 
-  const isProject = cursorType === "project";
+  const isProject = cursorType === "project" && !isDesktop;
 
   // Reset cursor on route change
   useEffect(() => {

@@ -105,40 +105,6 @@ function AnimatedSection({ children, className = "", delay = 0, margin = "-80px"
 }
 
 
-function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
-  const [display, setDisplay] = useState(text.replace(/[^ ]/g, '#'));
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
-
-  useEffect(() => {
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-
-    const timeout = setTimeout(() => {
-      let iteration = 0;
-      intervalId = setInterval(() => {
-        setDisplay(
-          text.split('').map((char, i) => {
-            if (char === ' ') return ' ';
-            if (i < iteration) return text[i];
-            return chars[Math.floor(Math.random() * chars.length)];
-          }).join('')
-        );
-        iteration += 1/3;
-        if (iteration >= text.length) {
-          clearInterval(intervalId!);
-          intervalId = null;
-        }
-      }, 40);
-    }, delay);
-
-    return () => {
-      clearTimeout(timeout);
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [text, delay]);
-
-  return <span>{display}</span>;
-}
-
 const maslowLevels = [
   { dots: 5, label: "physiological", colors: { color1: "#38bdf8", color2: "#0ea5e9", color3: "#0284c7" } },
   { dots: 4, label: "safety", colors: { color1: "#38bdf8", color2: "#0ea5e9", color3: "#0284c7" } },
@@ -155,9 +121,6 @@ const GLASS_N1 = 1.0;
 const GLASS_N2 = 1.5;
 const GLASS_SCALE = 35; // px of max displacement shift
 const GLASS_SURFACE = (t: number) => Math.pow(1 - Math.pow(1 - t, 4), 0.25);
-const GLASS_PILL_WIDTH = 300;
-const GLASS_PILL_HEIGHT = 50;
-const GLASS_PILL_SCALE = 60;
 
 function generateDisplacementMap(): string {
   const size = GLASS_MAP_SIZE;
@@ -252,122 +215,6 @@ function generateSpecularFillMap(): string {
       data[idx+3] = Math.round(totalAlpha);
     }
   }
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toDataURL();
-}
-
-function generatePillDisplacementMap(width: number, height: number): string {
-  const canvas = document.createElement('canvas');
-  canvas.width = width; canvas.height = height;
-  const ctx = canvas.getContext('2d')!;
-  const imageData = ctx.createImageData(width, height);
-  const data = imageData.data;
-
-  // Stadium shape: the radius of the end caps = half the height
-  const capRadius = height / 2;
-  // The flat segment runs from capRadius to (width - capRadius)
-  const bezelWidth = capRadius * GLASS_BEZEL_RATIO;
-
-  // Pre-compute displacement lookup (same physics as circular version)
-  const displacements: number[] = [];
-  for (let i = 0; i <= 127; i++) {
-    const t = i / 127;
-    const h = GLASS_SURFACE(t);
-    const delta = 0.001;
-    const h1 = GLASS_SURFACE(Math.max(0, t - delta));
-    const h2 = GLASS_SURFACE(Math.min(1, t + delta));
-    const derivative = (h2 - h1) / (2 * delta);
-    const incidentAngle = Math.atan(Math.abs(derivative));
-    const sinRefracted = (GLASS_N1 / GLASS_N2) * Math.sin(incidentAngle);
-    if (Math.abs(sinRefracted) >= 1) { displacements.push(0); continue; }
-    const refractedAngle = Math.asin(sinRefracted);
-    displacements.push(h * Math.tan(refractedAngle) * (derivative >= 0 ? -1 : 1));
-  }
-  const maxMag = Math.max(...displacements.map(Math.abs));
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const idx = (y * width + x) * 4;
-
-      // Nearest point on the stadium centerline (y = capRadius, x clamped to flat segment)
-      const cx = Math.max(capRadius, Math.min(width - capRadius, x));
-      const cy = capRadius;
-      const dx = x - cx;
-      const dy = y - cy;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      if (dist >= capRadius) {
-        data[idx] = 128; data[idx+1] = 128; data[idx+2] = 128; data[idx+3] = 255;
-        continue;
-      }
-
-      const t = Math.min((capRadius - dist) / bezelWidth, 1);
-      const normalizedMag = maxMag === 0 ? 0 : displacements[Math.round(t * 127)] / maxMag;
-      const angle = Math.atan2(dy, dx);
-      data[idx]   = Math.round(Math.max(0, Math.min(255, 128 + Math.cos(angle) * normalizedMag * 127)));
-      data[idx+1] = Math.round(Math.max(0, Math.min(255, 128 + Math.sin(angle) * normalizedMag * 127)));
-      data[idx+2] = 128;
-      data[idx+3] = 255;
-    }
-  }
-
-  ctx.putImageData(imageData, 0, 0);
-  return canvas.toDataURL();
-}
-
-function generatePillSpecularFillMap(width: number, height: number): string {
-  const canvas = document.createElement('canvas');
-  canvas.width = width; canvas.height = height;
-  const ctx = canvas.getContext('2d')!;
-  const imageData = ctx.createImageData(width, height);
-  const data = imageData.data;
-
-  const capRadius = height / 2;
-  const bezelWidth = capRadius * GLASS_BEZEL_RATIO;
-
-  const light1 = { x: Math.cos(-120 * Math.PI / 180), y: Math.sin(-120 * Math.PI / 180) };
-  const light2 = { x: Math.cos(60 * Math.PI / 180), y: Math.sin(60 * Math.PI / 180) };
-
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const idx = (y * width + x) * 4;
-
-      const cx = Math.max(capRadius, Math.min(width - capRadius, x));
-      const cy = capRadius;
-      const dx = x - cx;
-      const dy = y - cy;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      if (dist >= capRadius) {
-        data[idx] = 0; data[idx+1] = 0; data[idx+2] = 0; data[idx+3] = 0;
-        continue;
-      }
-
-      const t = Math.min((capRadius - dist) / bezelWidth, 1);
-
-      const fillAlpha = (0.18 + (1 - t) * 0.10) * 255;
-
-      const edgeFactor = Math.pow(Math.max(0, 1 - t * 5), 3);
-      const nx = dist > 0 ? dx / dist : 0;
-      const ny = dist > 0 ? dy / dist : 0;
-      const spec1 = Math.pow(Math.max(0, nx * light1.x + ny * light1.y), 6) * 1.0;
-      const spec2 = Math.pow(Math.max(0, nx * light2.x + ny * light2.y), 6) * 0.3;
-      const specAlpha = Math.min(255, (spec1 + spec2) * edgeFactor * 3.5 * 255);
-
-      const totalAlpha = Math.min(255, specAlpha + fillAlpha);
-      if (totalAlpha < 1) {
-        data[idx] = 0; data[idx+1] = 0; data[idx+2] = 0; data[idx+3] = 0;
-        continue;
-      }
-
-      const sw = specAlpha / totalAlpha;
-      data[idx]   = Math.round(245 * sw + 240 * (1 - sw));
-      data[idx+1] = Math.round(245 * sw + 240 * (1 - sw));
-      data[idx+2] = Math.round(245 * sw + 240 * (1 - sw));
-      data[idx+3] = Math.round(totalAlpha);
-    }
-  }
-
   ctx.putImageData(imageData, 0, 0);
   return canvas.toDataURL();
 }
@@ -581,134 +428,6 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
 });
 
 
-const CHAT_PILLS = [
-  "THIS INTRO IS CRAZY",
-  "LEGENDARY",
-  "the mechanical legs 🦿",
-  "PLAY IT BACK",
-  "W W W W W",
-  "who made this??",
-  "RAGE GOT THE BEST INTRO",
-  "the animation is insane",
-  "YOOOOO",
-  "brooo the 3D",
-  "chat we are so back",
-  "NEW INTRO HYPE",
-  "whoever animated this W",
-  "the chase scene tho",
-  "actual movie quality",
-];
-
-const ChatPillsOverlay = memo(function ChatPillsOverlay() {
-  const isClient = useIsClient();
-
-  const pillMaps = useMemo(() => {
-    if (!isClient) return null;
-    return {
-      dispUrl: generatePillDisplacementMap(GLASS_PILL_WIDTH, GLASS_PILL_HEIGHT),
-      specUrl: generatePillSpecularFillMap(GLASS_PILL_WIDTH, GLASS_PILL_HEIGHT),
-    };
-  }, [isClient]);
-
-  if (!isClient || !pillMaps) return null;
-
-  return (
-    <>
-      <style>{`
-        @keyframes floatUpPill {
-          0% {
-            bottom: -50px;
-            opacity: 0;
-          }
-          10% {
-            opacity: 0.85;
-          }
-          70% {
-            opacity: 0.85;
-          }
-          100% {
-            bottom: calc(100% + 50px);
-            opacity: 0;
-          }
-        }
-      `}</style>
-
-      {/* Dark vignette overlay */}
-      <div
-        className="absolute inset-0 z-[12] pointer-events-none"
-        style={{
-          boxShadow: 'inset 0 0 120px 50px rgba(0, 0, 0, 0.7)',
-        }}
-      />
-
-      {/* Glass pills — right half */}
-      <div className="absolute inset-0 z-[15] pointer-events-none overflow-hidden">
-        {/* SVG filter for glass pills */}
-        {pillMaps && (
-          <svg style={{ position: 'absolute', width: 0, height: 0 }} colorInterpolationFilters="sRGB">
-            <defs>
-              <filter id="glass-pill-yr" x="0%" y="0%" width="100%" height="100%">
-                <feImage
-                  href={pillMaps.dispUrl}
-                  x="0" y="0"
-                  width={GLASS_PILL_WIDTH} height={GLASS_PILL_HEIGHT}
-                  result="disp_map"
-                  preserveAspectRatio="none"
-                />
-                <feDisplacementMap
-                  in="SourceGraphic"
-                  in2="disp_map"
-                  scale={GLASS_PILL_SCALE}
-                  xChannelSelector="R"
-                  yChannelSelector="G"
-                  result="refracted"
-                />
-                <feColorMatrix in="refracted" type="saturate" values="1.3" result="saturated" />
-                <feImage
-                  href={pillMaps.specUrl}
-                  x="0" y="0"
-                  width={GLASS_PILL_WIDTH} height={GLASS_PILL_HEIGHT}
-                  result="specular"
-                  preserveAspectRatio="none"
-                />
-                <feBlend in="saturated" in2="specular" mode="screen" />
-              </filter>
-            </defs>
-          </svg>
-        )}
-
-        {/* Animated floating pills — right half */}
-        <div className="absolute right-0 top-0 bottom-0 w-[55%] [--pill-scale:0.4] md:[--pill-scale:0.45] lg:[--pill-scale:0.55]">
-          {CHAT_PILLS.slice(0, 6).map((text, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-center absolute"
-              style={{
-                height: GLASS_PILL_HEIGHT,
-                borderRadius: GLASS_PILL_HEIGHT / 2,
-                paddingLeft: 24,
-                paddingRight: 24,
-                backgroundColor: 'rgba(100, 65, 165, 0.25)',
-                backdropFilter: 'url(#glass-pill-yr)',
-                WebkitBackdropFilter: 'url(#glass-pill-yr)',
-                right: `${8 + (i % 4) * 12}%`,
-                animation: `floatUpPill ${12 + (i % 3) * 2}s linear infinite`,
-                animationDelay: `${i * 2.5}s`,
-                animationFillMode: 'backwards',
-                transform: 'scale(var(--pill-scale, 1))',
-              }}
-            >
-              <span className={`${roboto.className} text-white/90 text-xs md:text-sm lg:text-base font-semibold whitespace-nowrap`}>
-                {text}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
-  );
-});
-
 function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
   project: typeof projectsdata[number];
   i: number;
@@ -891,14 +610,42 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
               </div>
             )}
 
-            <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap">
+            <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap lg:hidden">
               <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>
                 {project.title}
               </span>
-              <div className="w-px h-4 bg-white/20 hidden lg:block" />
-              <span className={`${pixelify.className} text-white/50 text-xs tracking-wider uppercase hidden lg:inline`}>
-                {project.tag}
+            </div>
+
+            {/* Desktop gradient + text overlay */}
+            <div
+              className="absolute bottom-0 left-0 right-0 z-[15] pointer-events-none hidden lg:block"
+              style={{
+                height: '65%',
+                background: isSecondary
+                  ? 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 50%, transparent 100%)'
+                  : 'linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.22) 40%, transparent 100%)',
+                borderRadius: 'inherit',
+              }}
+            />
+            <div className="absolute bottom-0 left-0 right-0 z-[25] pointer-events-none p-4 hidden lg:block">
+              <span className={`${pixelify.className} text-white ${isSecondary ? 'text-base font-medium' : 'text-2xl'} tracking-wider uppercase`}>
+                {project.title}
               </span>
+              <p className={`${roboto.className} text-white/80 ${isSecondary ? 'text-sm' : 'text-base'} font-light mt-1`}>
+                {project.body}
+              </p>
+              {project.tags && project.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {project.tags.map((tag: string) => (
+                    <span
+                      key={tag}
+                      className={`${roboto.className} text-white/60 ${isSecondary ? 'text-xs' : 'text-sm'} bg-white/10 rounded-full px-2 py-0.5`}
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
           {/* Mobile caption — hidden on desktop where hover modal handles this */}
@@ -926,6 +673,8 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
 
 function ProjectsGrid() {
   const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const sentinelRef = useRef(null);
+  const sentinelInView = useInView(sentinelRef, { amount: 0.5, once: false });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -956,12 +705,17 @@ function ProjectsGrid() {
       </div>
 
       {/* Secondary projects — 4 column */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-10">
+      <motion.div
+        className="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-10"
+        animate={{ opacity: sentinelInView ? 1 : 0.6 }}
+        whileHover={{ opacity: 1 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
         {secondary.map((project, i) => (
           <ProjectCard key={project.id} project={project} i={i} slideshowIndex={slideshowIndex} isSecondary />
-
         ))}
-      </div>
+        <div ref={sentinelRef} className="col-span-full w-full h-px" aria-hidden="true" />
+      </motion.div>
     </>
   );
 }

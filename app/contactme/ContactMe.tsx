@@ -28,7 +28,7 @@ export default function ContactMe() {
         <main
             ref={ref}
             className="h-dvh overflow-hidden"
-            style={{ backgroundColor: "#fafafa" }}
+            style={{ backgroundColor: "#ffffff" }}
         >
             <section className="relative h-full px-6 md:px-[clamp(4rem,10vw,11rem)]">
                 <GridOverlayLight />

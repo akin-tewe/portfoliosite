@@ -332,7 +332,7 @@ export default function AboutMe() {
     const isHeroInView = useInView(heroRef, { once: true });
 
     return (
-        <main className="bg-[#fafafa] min-h-screen overflow-x-hidden">
+        <main className="bg-white min-h-screen overflow-x-hidden">
 
             {/* Hero Headline */}
             <section

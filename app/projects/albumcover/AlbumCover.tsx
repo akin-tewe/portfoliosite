@@ -110,7 +110,6 @@ export default function AlbumCover() {
                         </motion.div>
                     </div>
                 </GridContainer>
-            </section>
 
             <ProjectMetrics metrics={[
                 { label: "Timeline", value: "6 Hours" },
@@ -118,6 +117,7 @@ export default function AlbumCover() {
                 { label: "For", value: "Young Nudy · Sexyy Red · Latto" },
                 { label: "Reach", value: "33M+ Streams on Spotify" },
             ]} />
+            </section>
 
             {/* Hero Image - Original Cover */}
             <section className="relative w-full pb-16 md:pb-24">

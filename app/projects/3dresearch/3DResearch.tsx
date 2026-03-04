@@ -135,14 +135,13 @@ export default function D3Project() {
                     </div>
                 </GridContainer>
 
-            </section>
-
             <ProjectMetrics metrics={[
                 { label: "Role", value: "UX Researcher" },
                 { label: "Type", value: "Qualitative Study" },
-                { label: "Method", value: "In-Person & Remote Interviews" },
+                { label: "Method", value: "In-Person · Remote Interviews" },
                 { label: "Output", value: "Research Report · Documentary" },
             ]} />
+            </section>
 
             {/* Hero Video Preview */}
             <section className="relative w-full pt-6 md:pt-10 pb-16 md:pb-24">

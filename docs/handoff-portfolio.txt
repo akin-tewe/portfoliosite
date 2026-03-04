@@ -1,251 +1,633 @@
 ================================================================================
 HANDOFF: PORTFOLIO SITE — CURRENT STATE
-Akin Tewe — Last updated: March 2026
+Akin Tewe — Last updated: March 4, 2026
 ================================================================================
 
 PROJECT LOCATION
 ────────────────
 C:\Users\wellf\Dropbox\Front End\Portfolio Website\VSC\portfolio-site\
 Branch: layout-cards (branched from color-white ← main)
+Git branches: main (blue theme), color-white (grey/white neutral),
+  layout-cards (current — merged hero/about into two-column layout)
+GitHub repo: akin-tewe/portfoliosite (public)
+Live: https://akintewe.dev
 
 TECH STACK
 ──────────
 Next.js 16 (App Router), React 19, TypeScript
 Tailwind CSS v4, Framer Motion 12, Three.js / React Three Fiber
-shadergradient (animated backgrounds for Sprite card)
+shadergradient (animated backgrounds)
+Supabase (Sifty backend — familiar level)
+Vercel Web Analytics (@vercel/analytics)
+
+WORKFLOW
+────────
+Two-AI pipeline: Cowork (this conversation) writes task specs → drops
+.md/.txt files into .claude/tasks/ → watcher script feeds them to
+Claude Code → Claude Code implements → file moves to .claude/tasks/done/
+
+Rules:
+  - DO NOT write code directly in conversation — only task specs
+  - DO NOT overwrite existing task files — always increment number
+  - DO NOT bundle unrelated changes — one concern per task
+  - Watcher CANNOT execute git commands or npm install
+  - Watcher accepts .txt files for iOS/Dropbox compatibility
+  - Scope creep is the #1 friction point on this project
+  - Test new visual techniques in isolation (public/test.html) before
+    integrating into source files
+  - See docs/handoff-watcher.txt for full watcher documentation
 
 ================================================================================
-1. DATA: ProjectThumbData.tsx
+1. DESIGN SYSTEM
+================================================================================
+
+Fonts:
+  pixelify        — Pixelify Sans (400, 500, 600) → display/UI, UPPERCASE + tracking-wider
+  roboto          — Roboto (300, 400, normal + italic) → body, font-light
+  instrumentSerif — Instrument Serif (400) → Maslow text on Research card only
+
+Colors:
+  Background: #ebebeb (landing), #fafafa (case study pages)
+  Dark surfaces: bg-gray-900 — never pure black
+  Text on light: text-black/{opacity} scale (not named grays)
+  Text on dark: text-white/{opacity} scale
+  Landing page: neutral palette only — NO blue
+  Deeper pages: blue-500 and green accents allowed
+  Twitch purple: #9146FF (YourRage card only)
+
+Border radii: rounded-full (pills/buttons) OR rounded-2xl (cards/panels) — only two
+Animation ease: [0.25, 0.46, 0.45, 0.94]
+Standard entry: opacity 0→1, y 20→0, duration 0.6s
+Stagger: delay={i * 0.1}
+Scroll trigger: useInView({ once: true })
+
+Documented in: DESIGN_SYSTEM.md (project root)
+
+================================================================================
+2. STRATEGIC CONTEXT & PORTFOLIO DIRECTION
+================================================================================
+
+### Ex-Meta Product Lead Feedback (March 2, 2026)
+
+An ex-product leader at Meta reviewed the portfolio and delivered the most
+actionable feedback of the job search:
+
+Core issue: Portfolio reads as illustration/3D work rather than product design.
+A hiring manager scanning for PD signals (user research, interaction design,
+problem framing, data-driven iteration) won't find much to latch onto outside
+of Sifty. There's a mismatch between what's shown and what's being applied for.
+
+Key recommendations:
+  1. Lead with Sifty as full case study → DONE (complete rewrite, task 173)
+  2. Reframe Instagram around its research, not UI showcase → DONE (tasks 176-182)
+  3. Demote visual/3D work below product work → Partially done ("OTHER WORK" divider)
+  4. Remove custom cursor interaction → Cursor simplified but not removed
+
+### Earlier Portfolio Structural Analysis (pre-March 1)
+
+Before this conversation series, a structural analysis was conducted comparing
+the portfolio against liumichelle.com as a benchmark. Key findings:
+  - Work was hidden behind click interactions
+  - Credentials weren't visible on homepage
+  - Path to case studies was too long
+  - Two full redesign specs were drafted: "editorial-grid" and "immersive-identity"
+    to address these while preserving the aesthetic
+  - These specs led to the layout-cards branch (current branch)
+
+### Competitive Analysis: Caleb Wu (calebwu.ca, March 4)
+
+Reviewed via browser for structural insights:
+  - Homepage: 4 stacked full-viewport cards (hero, RevisionDojo, Axis, farewell)
+  - Only 2 projects on homepage. ALL illustration/animation work segregated
+    to separate "Playground" page — not linked from homepage cards
+  - RevisionDojo case study: sticky left sidebar nav with section anchors
+    (Intro → Mission → Solution → Flows → Research → Decisions → Testing → Reflection)
+  - Team metadata: "1 Designer (Me), 2 Developers, 4 Ideated with" + year
+  - Personality expressed through presentation layer (emoji shapes in hero),
+    not through portfolio pieces
+  - Key discipline: commission work completely separated from product narrative
+  - His edge: surgically clean presentation because less to organize
+  - Our edge: solo-built shipped product (Sifty) — something he can't claim
+
+Actionable items:
+  1. Sidebar nav → Task 239 (spec written)
+  2. "OTHER WORK" label → consider "SELECTED CLIENT WORK" or unlabeled divider
+
+### Case Study References Analyzed
+
+Found& (Esther Park): Reviewed as structural benchmark for Sifty rewrite.
+  Structure: Overview → Problem → Opportunity → Scope → Solution Design
+  Strengths: sole designer framing, tradeoff documentation, explicit scope
+  decisions. This pattern was adopted for Sifty's rewrite.
+
+Rewired (Esther Park): Reviewed for Instagram case study improvements.
+  Structure: Overview → Problem → Research → Scope → Solution → Reflection
+  Strengths: literature review → interviews → insights pipeline, HMW statement,
+  explicit alternatives considered in scope decisions.
+
+### Portfolio Assessment (Current)
+
+Strengths:
+  - Sifty: real shipped product, solo end-to-end, research-backed case study
+  - Instagram: genuine survey data, data-driven redesign decisions
+  - Technical execution: built everything himself (Next.js, Supabase, etc.)
+  - "Childhood wonder" aesthetic with pixel art, character animations
+
+Gaps:
+  - Commission-heavy grid crowds product work
+  - No team/collaboration projects visible
+  - No quantitative impact metrics on case studies
+  - Strategic recommendation: new PD projects will reorder the grid naturally
+
+### Positioning
+
+Design-engineer hybrid, not pure product designer. The market demands both.
+Engineering ability shows through Sifty and the codebase itself — doesn't need
+to be announced in a title. Both "UX ENGINEER" and "PRODUCT DESIGNER" titles
+were removed from the hero for this reason.
+
+================================================================================
+3. DATA: ProjectThumbData.tsx
 ================================================================================
 
 Location: data/ProjectThumbData.tsx
 
-Each project object can have these fields:
-
-  id: number                    — unique identifier
-  title: string                 — display name
-  tag: string                   — category label ("Application", "Concept", "Research", "Commission")
-  body: string                  — hover modal description
-  color: string                 — Tailwind bg class for card background
-  shadow: string                — rgba() for hover shadow
-  tags: string[]                — attribute pills for hover modal
-  image: string | null          — static image overlay (e.g. True Religion logo)
-  video: string                 — primary video thumbnail (webm preferred)
-  videoMobile: string           — fallback mp4 for mobile (HVC1)
-  slideshow: string[]           — array of image paths for slideshow cards
-  pixelated: boolean            — if true, ShaderGradient uses pixelated rendering
-  locked: boolean               — if true, card is non-clickable with ClockAlert icon
-  gradient: object | null       — ShaderGradient config (full props object)
-  link: string                  — route path
+Fields per project:
+  id, title, tag, body, color, shadow, tags, image, video, videoMobile,
+  slideshow, thumbnailImages, pixelated, locked, gradient, link
 
 Current projects (in grid order):
 
-  id=0  Sifty               — video thumbnail (siftythumb.mp4)
-  id=1  Instagram Redesign   — video thumbnail (igthumbW.webm + igthumbM.mp4 fallback)
-  id=2  3D Animator Study    — ResearchCardOverlay (shader gradient + liquid glass dots + Maslow text)
+  id=0  Sifty               — thumbnailImages: iPad + iPhone side-by-side on white bg
+                               (sifty_ipad.png + sifty_iphone.png, gap-8, iPhone h-[75%])
+  id=1  Instagram Redesign   — ShaderGradient (muted white/blue: #f2f4f8, #dfe4ed, #ffffff)
+  id=2  3D Animator Study    — ResearchCardOverlay (shader gradient + glass dots + Maslow text)
   id=3  True Religion        — slideshow crossfade (7 images, dark bg, film grain overlay)
   id=4  Sprite               — ShaderGradient background, LOCKED (ClockAlert icon)
   id=5  Peaches & Eggplants  — slideshow vertical slide (2 images, dark vignette)
   id=6  YourRage             — ChatPillsOverlay (purple Twitch pills)
   id=7  BluBoy               — plain color card (bg-cyan-500)
 
-Also exports `projectminis` array (3 items: peaches, rage, bluboy) — currently unused
-in Landing.tsx but still exported.
+Also exports projectminis array (3 items) — currently unused.
+
+Thumbnail evolution:
+  Sifty: was video → thumbnailImages with iPad + iPhone (tasks 230-231)
+  Instagram: was video → flat red gradient → brand colors → warm pink/orange
+    → calm white/blue → muted tones (tasks 149-150, 197-201, 227-229)
+  Card order was reordered from original (tasks 146-147)
 
 ================================================================================
-2. LANDING PAGE: app/Landing.tsx (795 lines)
+4. LANDING PAGE: app/Landing.tsx
 ================================================================================
-
-### Helper Components (defined in same file)
-
-LazyVideo          — IntersectionObserver-gated video with 1.5s delay (lets hero load first)
-AnimatedSection    — Scroll-triggered fade-in-up wrapper (useInView, once: true)
-ScrambleText       — Character-by-character reveal with random glyphs
-HoverCard          — Link wrapper with cursor-following modal (uses calcModalPosition)
-ProjectsGrid       — Main 2-column grid rendering all projects
-
-### Liquid Glass System (Research card only)
-
-Constants:
-  GLASS_MAP_SIZE = 256        — canvas resolution for displacement/specular maps
-  GLASS_DOT_SIZE = 150        — rendered dot diameter in px
-  GLASS_BEZEL_RATIO = 0.4     — proportion of radius that forms the refractive edge
-  GLASS_N1 = 1.0, GLASS_N2 = 1.5  — refractive indices (air → glass)
-  GLASS_SCALE = 35            — feDisplacementMap scale value
-  GLASS_SURFACE              — quartic surface profile function
-
-Functions:
-  generateDisplacementMap()   — Canvas → data URL. Snell's law refraction table (127 samples),
-                                radial SDF, encodes normal vectors as R/G channels (128 = neutral).
-  generateSpecularFillMap()   — Canvas → data URL. Dual light sources (upper-left + lower-right),
-                                cubic edge falloff, 18% milky fill + rim specular. Purple-free
-                                (neutral white tones only).
-
-Components:
-  GlassDot                    — 150×150 circle with backdrop-filter: url(#glass-circle)
-  DotField                    — 6 fixed-slot layout with motion.div position/scale animation.
-                                Layouts keyed by dot count (1-5), nulls scale to 0.
-  ResearchCardOverlay (memo)  — Combines ShaderGradient background + cycling Maslow level text
-                                (instrumentSerif, 3.3s interval) + SVG filter + DotField.
-
-SVG filter pipeline (id="glass-circle"):
-  feImage(disp) → feDisplacementMap(scale 35) → feColorMatrix(saturate 1.3)
-  → feImage(spec) → feBlend(screen)
-
-### Maslow Levels
-
-  5 dots → "physiological"
-  4 dots → "safety"
-  3 dots → "belonging"
-  2 dots → "esteem"
-  1 dot  → "self-actualization"
-
-Cycles every 3.3 seconds. Text rendered in Instrument Serif (instrumentSerif),
-text-8xl md:text-9xl, text-gray-900/15, lowercase.
-
-### YourRage Card Overlay
-
-ChatPillsOverlay — static purple pills with white text.
-
-```tsx
-const CHAT_PILLS = [
-  "THIS INTRO IS CRAZY", "LEGENDARY", "the mechanical legs 🦿",
-  "PLAY IT BACK", "W W W W W", "who made this??",
-  "RAGE GOT THE BEST INTRO", "the animation is insane", "YOOOOO",
-  "brooo the 3D", "chat we are so back", "NEW INTRO HYPE",
-  "whoever animated this W", "the chase scene tho", "actual movie quality",
-];
-```
-
-Styling: bg-[#9146FF] (Twitch purple), text-white text-xs font-light,
-rounded-full, px-3 py-1.5. Flex-wrap centered, gap-2, p-6.
-No animation — pills render immediately on load.
-
-### Card Rendering Logic
-
-Each card in ProjectsGrid:
-  - locked? → non-clickable div with ClockAlert icon + dimmed pill
-  - else → HoverCard (Link + cursor-following modal)
-
-Inside card:
-  - gradient? → ShaderGradientCanvas (pixelated mode optional)
-  - id===2? → ResearchCardOverlay
-  - id===6? → ChatPillsOverlay
-  - image? → centered img (max-w-[60%] max-h-[60%])
-  - video? → LazyVideo
-  - slideshow? → id===3 uses crossfade + film grain; others use vertical slide + vignette
-
-### Hover Modal System
-
-HoverCard wraps each project Link. On hover, a fixed-position modal follows
-the cursor using requestAnimationFrame + calcModalPosition (viewport-aware
-edge clamping). Modal contains: title (Pixelify), body (Roboto), tag pills
-(color-coded from TAG_COLORS map).
-
-TAG_COLORS:
-  "UI/UX Design"       → bg-sky-500/20 text-sky-300
-  "Built with Claude"  → bg-orange-500/20 text-orange-300
-  "Production Ready"   → bg-emerald-500/20 text-emerald-300
-  "Front End"          → bg-violet-500/20 text-violet-300
-  "UX Research"        → bg-rose-500/20 text-rose-300
-  "Commission"         → bg-yellow-500/20 text-yellow-300
-  "3D Animation"       → bg-cyan-500/20 text-cyan-300
-  "Graphic Design"     → bg-purple-500/20 text-purple-300
-  "Product Launch"     → bg-lime-500/20 text-lime-300
 
 ### Hero Section
 
-- bg-gray-200, min-h-fit mobile / md:h-[32vh] md:min-h-[350px] desktop
-- Left column: ScrambleText ("UX ENGINEER" 500ms, "PRODUCT DESIGNER" 800ms)
-  + credits line (delayed 2s)
+- bg-gray-200, padding: pt-24 md:pt-32 pb-10 md:pb-16
+- BOTH titles removed: "UX ENGINEER" and "PRODUCT DESIGNER" (tasks 232, 235, 238)
+  ScrambleText component still exists in file but no longer used in hero
+- Left column: "Worked with TRUE RELIGION, HIGROUND + MORE" (mt-8)
+  Swapping bio and client list positions was attempted and rejected as
+  "ugly as fuck" (tasks 236-237)
+- Splash video: MainVideo (blacksplashW.webm / blacksplashM.mp4)
+  max-w-[1600px], aspect-[1600/560]
+  Re-encoded from near-8K (7424×2600) to 1920×674 for performance (tasks 152-153)
+  Splash size reduction was attempted and reverted (tasks 233-234)
+- Bio text (hidden 2xl:block, positioned near splash):
+  "Product Designer who treats screens like physical objects; with depth,
+  weight, and motion. I chase the moments where using something feels
+  like discovering it."
 - Mobile: "akin tewe" name block (text-8xl, slide up animation)
-- Splash video: MainVideo (blacksplashW.webm / blacksplashM.mp4),
-  absolutely positioned, extends below hero
-- Bio paragraph: 2xl:block only, inside splash video container
+- Site title: just "Akin Tewe" in metadata and nav (task 226)
 
-### Projects Section
+### Projects Grid
 
-- Negative margin overlap: -mt-12 md:-mt-20
+- "OTHER WORK" divider label between primary and secondary projects
 - Single 2-column grid (md:grid-cols-2), gap-x-8 gap-y-12
+- Negative margin overlap: -mt-12 md:-mt-20
 - Staggered entry: delay={i * 0.1}
 
-================================================================================
-3. VIDEO COMPONENTS: components/SplashVideo.tsx
-================================================================================
+### thumbnailImages Rendering
 
-Two video components:
+For cards with thumbnailImages array (Sifty):
+  flex container, items-center, gap-8, px-[10%] py-[8%]
+  iPad: h-full, iPhone: h-[75%] — realistic device proportions chosen over
+  equal heights because the brain recognizes the size mismatch, reinforcing
+  "shipped product on real devices" credibility.
 
-TransparentVideo (default export)
-  Props: { mp4Src?: string, webmSrc?: string }
-  - Absolute positioned, object-contain
-  - mp4 source uses type="video/mp4;codecs=hvc1" (Safari HEVC alpha)
-  - webm source uses type="video/webm" (Chrome/Firefox VP9 alpha)
-  - autoPlay, loop, muted, playsInline
+### Card-Specific Overlays
 
-MainVideo (named export)
-  Props: { webmSrc: string, mp4Src?: string }
-  - Desktop only (useMinWidth(1024) gate)
-  - Same dual-source pattern (HVC1 + webm)
-  - Used for hero splash video
+ResearchCardOverlay (id=2):
+  ShaderGradient + liquid glass dots (SVG displacement filter) + Maslow text
+  Maslow levels cycle every 3.3s: physiological → safety → belonging → esteem
+    → self-actualization. Text: Instrument Serif, text-8xl, text-gray-900/15.
+  Full documentation: docs/liquid-glass-reference.md
+  Constants: GLASS_MAP_SIZE=256, GLASS_DOT_SIZE=150, GLASS_SCALE=35
+  SVG filter: feImage → feDisplacementMap → feColorMatrix → feBlend(screen)
 
-NOTE: TransparentVideo was modified to accept webmSrc (task 111). Previously
-it only took mp4Src with type="video/mp4". Both components now support the
-dual-source transparent video pattern.
+ChatPillsOverlay (id=6):
+  Static purple pills (bg-[#9146FF]), text-white, rounded-full.
+  Originally had animated glass pills with SVG displacement mapping — extensive
+  iteration (tasks 133-143) ultimately abandoned for static pills due to
+  complexity (SVG feImage percentage sizing breaks displacement effects).
 
-================================================================================
-4. ABOUT PAGE: app/aboutme/AboutMe.tsx (477 lines)
-================================================================================
+BluBoy (id=7):
+  Ghost mascot image (bb.png) with float animation, plain bg-cyan-500.
+  EXTENSIVE iteration history: image overlay → shader gradient + glass dots →
+  tiled ghost pattern → typography → dark gradient with large ghost → text
+  overlay → plain color with ghost. Went through ~20 tasks (116-132, 160-168)
+  before settling on simplicity. Text overlay was removed (task 160).
 
-- Skills section video at bottom: <TransparentVideo mp4Src="/aboutmeM.mp4" webmSrc="/aboutmeW.webm" />
-- Carousel section with video/image items from /about-me-carousel/
-- GridContainer (max-w-[1400px]), GridOverlay/GridOverlayLight for visual grid lines
-- AnimatedSection wrappers with fadeInUp / fadeInRight variants
-- SkillsList component for FRONTEND and SOFTWARE skill lists
+### Hover Modal System
 
-================================================================================
-5. FONTS: app/ui/fonts.ts
-================================================================================
+HoverCard: fixed-position modal follows cursor via rAF + calcModalPosition.
+TAG_COLORS map for color-coded pills. Edge-aware clamping prevents overflow.
 
-Three fonts:
-  pixelify        — Pixelify Sans (400, 500, 600) → display/UI, always uppercase + tracking-wider
-  roboto          — Roboto (300, 400, normal + italic) → body text, font-light
-  instrumentSerif — Instrument Serif (400, latin, normal) → Maslow level text on Research card only
+### Helper Components
 
-================================================================================
-6. KEY FILE LOCATIONS
-================================================================================
-
-app/Landing.tsx                          — Landing page (hero + projects grid)
-app/aboutme/AboutMe.tsx                  — About page
-app/aboutme/page.tsx                     — About page server wrapper (metadata)
-app/ui/fonts.ts                          — Font definitions
-components/SplashVideo.tsx               — TransparentVideo + MainVideo
-components/CursorContext.tsx             — Cursor state provider (setCursor, resetCursor)
-components/NavFoot.tsx                   — NavBar + Footer
-components/LoaderContext.tsx             — Loading state provider
-components/LoadingOverlay.tsx            — Page transition + boot overlays
-components/MagneticButton.tsx            — Magnetic hover buttons
-data/ProjectThumbData.tsx                — Project card data
-lib/calcModalPosition.ts                — Cursor modal viewport-aware positioning
-docs/liquid-glass-reference.md           — Full documentation of glass dot system
-public/glass-rect-test.html             — Abandoned glass rectangle test file
-public/aboutmeM.mp4                     — About page skills video (Safari)
-public/aboutmeW.webm                    — About page skills video (Chrome/Firefox)
-public/blacksplashM.mp4                 — Hero splash (Safari)
-public/blacksplashW.webm                — Hero splash (Chrome/Firefox)
+LazyVideo          — IntersectionObserver-gated video with 1.5s delay
+AnimatedSection    — Scroll-triggered fade-in-up (useInView, once: true)
+                     Configurable margin prop (default -50px, added task 216)
+ScrambleText       — Character-by-character reveal (unused in hero now)
+HoverCard          — Link wrapper with cursor-following modal
+ProjectsGrid       — Main grid rendering
 
 ================================================================================
-7. DEPENDENCIES (package.json)
+5. CASE STUDY: Sifty (app/projects/sifty/Sifty.tsx)
 ================================================================================
 
-  @react-three/drei, @react-three/fiber    — Three.js React bindings
-  framer-motion ^12.23.26                  — All animations
-  lucide-react ^0.554.0                    — Icons (ClockAlert on locked cards)
-  next ^16.0.7                             — Framework
-  react / react-dom 19.2.0                — UI library
-  react-icons ^5.5.0                       — Additional icons
-  shadergradient ^1.3.5                    — Animated gradient backgrounds
-  three ^0.183.1                           — 3D rendering
+### Rewrite Context
+
+Sifty case study was COMPLETELY REWRITTEN (tasks 173-175) based on the Meta
+feedback. The original was a feature showcase ("here's what I built"). The new
+version is a problem-framed narrative following the Found& pattern.
+
+### Sections
+1. Hero + metadata (Role: Sole Designer & Developer, Timeline: 2 Months,
+   Type: Web Application, Status: Live at sifty.app)
+2. Overview
+3. THE PROBLEM — three named breakdowns: invisible boundaries, tools that
+   manage tasks not scope, documentation friction
+4. RESEARCH — competitive analysis of Trello/Asana/Notion/Basecamp through
+   scope visibility lens. Trello dashboard screenshot. Stats from MIT Sloan
+   and PwC (25-40% budget overrun, 42% insufficient requirements, 23% clear
+   acceptance criteria). Research questions that shaped design.
+5. THE OPPORTUNITY — scope as primary interface, not one feature among many
+6. DEFINING SCOPE — Included vs. Deliberately Excluded side-by-side with
+   rationale baked into each bullet. This section is one of the strongest.
+7. SOLUTION DESIGN — 5 numbered subsections, each with tension → decision →
+   tradeoff pattern:
+   1. Timeline as primary interface (vertical vs horizontal Gantt tradeoff)
+   2. Making exclusions visible (structured vs unstructured notes tradeoff)
+   3. Client view: read-only by design (removed vs disabled controls)
+   4. Form design: validation on submit (on-blur vs on-change vs on-submit)
+   5. Quick-add: 30-second documentation (speed vs completeness tradeoff)
+8. RESPONSIVE DESIGN — mobile not compressed desktop, separate experience.
+   Timeline stem at 65% scale, cards full-size. Complex editing desktop-only.
+9. BUILT WITH — tech stack pills
+10. Closing — reflection paragraph about investing more in user testing
+
+### Copy Guidelines
+- No em dashes anywhere (tasks 175, 185)
+- First person, direct voice, short sentences
+- No AI writing patterns: no triple-parallel lists, "leveraging",
+  "Furthermore", "In conclusion". Voice pass (task 177) ensured natural tone.
+- TradeoffBlock component for explicit design decision rationale
+
+### Pending: CaseStudySidebar (Task 239)
+Sidebar: Problem → Research → Opportunity → Scope → Solution → Responsive → Built With
+
+================================================================================
+6. CASE STUDY: Instagram (app/projects/instadesign/Instagram.tsx)
+================================================================================
+
+### Improvement Context
+
+Instagram case study was significantly improved (tasks 176-182) to add
+research evidence and design decision rationale. Previously was mostly UI
+showcase with minimal research framing. Voice pass (task 177) ensured
+natural tone matching the rest of the portfolio. Usability testing claim
+was removed since testing wasn't actually conducted (task 181).
+
+### Header
+- Title: "instagram web / application redesign" (Pixelify, blue accent)
+- Italic: "All code was written from scratch by me, without direct AI assistance." (task 225)
+- Metadata: Role | Type | Method | Scope
+
+### Sections
+1. Hero + metadata
+2. RESEARCH — open-ended survey, chart groups with interpretation paragraphs
+3. IDEATION — UI Concepts, Discovery Tab, Supporting Improvements
+4. SCOPE & CONSTRAINTS
+5. IMPACT
+
+### Chart Groups
+- Charts 1+2: Ease of Search + Platform Usage Frequency (2-col)
+  Followed by interpretation paragraph: "Across both charts, one pattern
+  remained consistent. Mobile users found things easy, and engaged with the
+  app on a more frequent basis..."
+- Chart 3: Additional User Insights (interaction + messaging ease)
+  Followed by messaging standout paragraph.
+- Charts 4-5: Reported Frustrations + Desired Changes (no interpretation needed)
+- "Daily Engagement" chart REMOVED as redundant (task 224), grid 3→2 col
+
+### Pending: CaseStudySidebar (Task 239)
+Sidebar: Research → Ideation → Scope → Impact
+
+================================================================================
+7. ALL PROJECT PAGES — LAYOUT HOMOGENIZATION
+================================================================================
+
+All six project pages (sifty, instadesign, 3dresearch, albumcover,
+truereligion, yourrage) went through comprehensive layout standardization
+(tasks 183-196):
+
+- GridContainer width: max-w-[1000px] everywhere (was 1400px)
+- Removed all ml-[20%]/w-[50%] per-element offset patterns
+- Unified text sizes and caption styles across all pages
+- Section header color unified (removed blue headers on commission pages)
+- Hero padding and text sizes matched to Sifty's proportions
+- All imagery and media centered (task 194)
+- Fragmented paragraphs consolidated on commission/research pages (task 195)
+- Em dashes removed site-wide (task 185)
+
+================================================================================
+8. VIDEO SYSTEM
+================================================================================
+
+### components/SplashVideo.tsx
+
+TransparentVideo (default export):
+  Props: { mp4Src?, webmSrc? }
+  mp4: type="video/mp4;codecs=hvc1" (Safari HEVC alpha)
+  webm: type="video/webm" (Chrome/Firefox VP9 alpha)
+
+MainVideo (named export):
+  Desktop only (useMinWidth(1024) gate)
+  IntersectionObserver: play when visible, pause when not.
+
+### Video Alpha Debugging (Tasks 205-208)
+
+WebM sources were temporarily disabled for MP4 HEVC alpha debugging.
+Task 206 incorrectly re-enabled WebMs, task 207 tried to revert but broke
+H.264 fallbacks entirely (videos became invisible), task 208 was an emergency
+restoration to pre-interference state.
+
+Current state: WebM sources likely commented out with "TEMP: WebM disabled".
+H.264 fallback sources should be intact.
+
+All video source tags site-wide were audited and fixed (tasks 171-172).
+
+### Hero Video Performance (Tasks 149-153)
+
+Hero splash video was causing severe page lag. Root cause: 7424×2600 resolution.
+Re-encoded via ffmpeg to 1920×674 with alpha channel preservation. Multiple
+false starts (removing wrong videos, trying different files) before landing
+on the correct optimized sources.
+
+================================================================================
+9. CURSOR SYSTEM
+================================================================================
+
+Custom cursor went through significant iteration:
+- Started with mix-blend-mode: difference approach → failed due to stacking
+  context isolation preventing blending with page content
+- Reverted to simple grey dot (tasks 119, 121, 123)
+- Cursor state fixed to properly reset on navigation (task 115)
+- Cursor lag addressed by simplifying implementation (task 157)
+- Hydration mismatch on cursor style tag fixed (task 169)
+
+Meta feedback mentioned cursor as potential friction point for reviewers.
+
+================================================================================
+10. NAVIGATION & CHROME
+================================================================================
+
+### NavBar (components/NavFoot.tsx)
+- Desktop: floating pill nav — "AKIN TEWE" | ABOUT | CONTACT
+- Active page highlighting (task 170)
+- Mobile: menu button → overlay card with items, active states (task 159)
+- Hash navigation support for same-page anchors
+
+### Footer
+- Changelog link added, centered, subtly styled as clickable (tasks 202-204)
+
+### Loading System
+- LoaderContext + LoadingOverlay for page transitions and boot overlay
+
+### About Page (app/aboutme/AboutMe.tsx)
+- Skills section video (TransparentVideo)
+- Carousel with clickable project links (task 161)
+- GridContainer max-w-[1400px]
+
+### Contact Page
+- Video source tags fixed (tasks 171-172)
+
+### Vercel Analytics
+Added via @vercel/analytics (tasks 211-213). Required manual npm install
+and package file commit since watcher can't run npm.
+
+### GitHub Repo
+Made public with description and topics for recruiter visibility (tasks 197-201 session).
+Repo: akin-tewe/portfoliosite. Discussion of copying risks vs visibility benefits.
+
+================================================================================
+11. WATCHER SYSTEM IMPROVEMENTS
+================================================================================
+
+- Changelog output added to watcher terminal after each task (task 144)
+- Changelog simplified to show only current task's changes (task 154, 167)
+- Watcher accepts .txt files for iOS compatibility
+- Full documentation: docs/handoff-watcher.txt
+
+================================================================================
+12. KEY FILE LOCATIONS
+================================================================================
+
+Landing & routing:
+  app/Landing.tsx                    — Landing page (hero + grid)
+  app/aboutme/AboutMe.tsx            — About page
+  app/contactme/ContactMe.tsx        — Contact page
+  app/ui/fonts.ts                    — Font definitions
+
+Case studies:
+  app/projects/sifty/Sifty.tsx       — Sifty case study (REWRITTEN)
+  app/projects/instadesign/Instagram.tsx — Instagram case study (IMPROVED)
+  app/projects/3dresearch/            — 3D Animator Study
+  app/projects/albumcover/            — Peaches & Eggplants
+  app/projects/truereligion/          — True Religion
+  app/projects/yourrage/              — YourRage
+
+Components:
+  components/SplashVideo.tsx         — TransparentVideo + MainVideo
+  components/CursorContext.tsx       — Cursor state provider
+  components/NavFoot.tsx             — NavBar + Footer
+  components/Charts.tsx              — Chart components (Instagram)
+  components/ProjectMetrics.tsx      — Metadata row (case studies)
+  components/MagneticButton.tsx      — Magnetic hover buttons
+  components/LoaderContext.tsx       — Loading state
+  components/LoadingOverlay.tsx      — Page transitions
+
+Data & config:
+  data/ProjectThumbData.tsx          — Project card data
+  lib/calcModalPosition.ts          — Cursor modal positioning
+  CLAUDE.md                          — Claude Code's primary instructions
+
+Docs:
+  docs/handoff-portfolio.txt        — This file
+  docs/handoff-watcher.txt          — Watcher workflow + critical rules
+  docs/liquid-glass-reference.md    — Glass dot system docs
+  DESIGN_SYSTEM.md                   — Design system reference
+
+Task system:
+  .claude/tasks/                     — Drop specs here
+  .claude/tasks/done/                — Completed tasks
+  .claude/logs/                      — Full JSON logs per task
+  .claude/watch-tasks.ps1            — Watcher script (PowerShell)
+  .claude/helpers.ps1                — Manual helper functions
+  .claude/grid-hierarchy-spec.md     — Grid hierarchy clean spec
+
+Public assets:
+  public/blacksplashM.mp4           — Hero splash (Safari)
+  public/blacksplashW.webm          — Hero splash (Chrome/Firefox)
+  public/aboutmeM.mp4               — About page video (Safari)
+  public/aboutmeW.webm              — About page video (Chrome/Firefox)
+  public/projects/sifty/sifty_ipad.png   — Sifty thumbnail
+  public/projects/sifty/sifty_iphone.png — Sifty thumbnail
+
+================================================================================
+13. COMPLETE TASK LOG (Tasks 114-239)
+================================================================================
+
+### Cursor & Navigation (114-115)
+114: Swap BluBoy and Sprite card order
+115: Fix cursor state not resetting on navigation
+
+### BluBoy Card — Extended Iteration (116-132, 160-168)
+116: bb.png image overlay → 117: ShaderGradient + glass dots → 118: view count
+copy → 119: mix-blend-mode cursor (failed) → 120: tiled ghost pattern → 121:
+revert cursor to grey dot → 122: light peaceful gradient → 123: grey cursor on
+buttons → 124-126: tuning (bluer, bigger dot, smaller ghost) → 127: remove glass
+dot → 128: near-black gradient → 129: lower ghost opacity → 130-131: text overlay
+positioning → 132: float animation → 160: remove WNTD text → 162-166: ghost
+sizing iterations (40% → 52% → wrong direction → 85%) → 165,167: changelog fixes
+→ 168: cleanup
+
+### YourRage Card Redesign (133-143)
+133: character image bg → 134: large animated floating pills → 135: glass pill
+generators + test page → 136-137: pill animation fixes → 138: integrate glass
+pills from test → 139: increase pill size → 140: tint for legibility → 141:
+content-sized pills (BROKE displacement with percentages) → 142: fix displacement
+→ 143: reduce tint. Final: abandoned glass for static ChatPillsOverlay.
+
+### Watcher & Docs (144-145, 154)
+144: Add changelog output to watcher → 145: Fix liquid-glass-reference.md
+→ 154: Simplify watcher changelog output
+
+### Card Reordering & Thumbnails (146-153)
+146-147: Reorder project cards → 148: Update hover shadows → 149-150: Instagram/
+Sifty video swap experiments → 151: Restore Sifty video, remove hero splash →
+152: Fix hero splash video performance (7424×2600 → 1920×674) → 153: Swap to
+optimized source files
+
+### Bug Fixes Round 1 (155-161)
+155: Remove permanent pause from hero splash → 156: ChatPillsOverlay hydration
+mismatch → 157: Custom cursor lag → 158: YourRage pills responsive → 159: Mobile
+menu active states → 160: Remove BluBoy text → 161: Add project links to carousel
+
+### Meta Feedback Response (162-172)
+162-166: BluBoy ghost sizing → 167: Changelog scope fix → 168: cleanup → 169:
+Cursor style hydration mismatch → 170: Active page nav highlight → 171-172:
+Fix ALL video source tags site-wide
+
+### Sifty Case Study Rewrite (173-175)
+173: Complete rewrite — feature showcase → problem-framed narrative following
+Found& pattern. Structure: Problem → Research → Opportunity → Scope → Solution
+174: Follow-up fixes → 175: Remove all em dashes
+
+### Instagram Case Study Improvements (176-182)
+176: Add research evidence, design rationale, alternatives considered → 177:
+Voice pass for natural tone → 178: Additional improvements → 179-180: Sifty
+follow-ups → 181: Remove usability testing claim → 182: Research section
+restructure (stats, wordmarks — implementation went wrong, needed follow-up)
+
+### Layout Homogenization (183-196)
+183: Sifty research section fix → 184: Unify section header colors →
+185: Remove em dashes site-wide → 186: Trello dashboard screenshot → 187-188:
+Text width unification → 189: Stats layout fix → 190-191: Text size reduction
+across all pages → 192: GridContainer 1400px→1000px everywhere → 193: Comprehensive
+hero sizing → 194: Center all imagery → 195: Consolidate fragmented paragraphs →
+196: Match hero text sizes + reduce Sifty hero padding
+
+### Instagram Thumbnail Evolution (197-201, 227-229)
+197: Add ShaderGradient → 198: Instagram brand colors → 199: Soften orange →
+200: Adjust colors → 201: Replace purple with warm pink → 227: Plain white bg →
+228: Calm white/blue gradient → 229: Mute blue further (#f2f4f8, #dfe4ed, #ffffff)
+
+### GitHub & Footer (202-204)
+202: Add changelog link to footer → 203: Make it subtly clickable → 204: Center it
+
+### Video Alpha Debugging (205-208)
+205: Fix video alpha on mobile (redundant) → 206: Re-enable WebMs (MISTAKE —
+broke things) → 207: Revert 206 (ALSO BROKE — removed H.264 fallbacks) →
+208: Emergency restore to pre-interference state
+
+### Sifty Copy & Meta (209-210)
+209: Replace Sifty case study copy → 210: Fix meta description apostrophe encoding
+
+### Vercel Analytics (211-213)
+211: Add @vercel/analytics → 212: Install package (build fix) → 213: Commit
+package files
+
+### Grid Hierarchy (214-217)
+214: Implement primary/secondary grid split → 215: Fix empty secondary grid →
+216: Fix invisible secondary cards (IntersectionObserver margin bug — led to
+AnimatedSection getting configurable margin prop) → 217: Attempted git branch
+deletion (failed — watcher can't do git). User: "Fuck this. Just write me a
+simple spec." Clean spec written at .claude/grid-hierarchy-spec.md.
+
+### Hero Simplification (218-222, 232-238)
+218: Update hero bio text → 219-221: Fix bio line lengths (multiple attempts) →
+222: Fix hero bio to three lines → 232: Remove "UX ENGINEER" title → 233-234:
+Splash size reduction (attempted, reverted) → 235: Remove "PRODUCT DESIGNER"
+title → 236-237: Swap bio and client list positions (attempted, rejected —
+"ugly as fuck", reverted) → 238: Reduce hero padding
+
+### Instagram Charts & Copy (223-226)
+223: Add interpretive paragraphs below chart groups → 224: Remove redundant
+Daily Engagement chart → 225: Update "without direct AI assistance" line →
+226: Simplify site title to "Akin Tewe"
+
+### Sifty Thumbnail (230-231)
+230: Add thumbnailImages field, iPad + iPhone side-by-side on white →
+231: Adjust sizing (gap-8, iPhone h-[75%])
+
+### Case Study Sidebar Nav (239)
+239: Spec written for sticky left sidebar nav on Instagram and Sifty case
+studies. Desktop only. Inspired by Caleb Wu's RevisionDojo.
+
+================================================================================
+14. PENDING / NOT YET IMPLEMENTED
+================================================================================
+
+Task 239: CaseStudySidebar
+  Spec: .claude/tasks/task-239-case-study-sidebar-nav.md
+  Sticky left nav for Instagram (4 anchors) + Sifty (7 anchors)
+  Desktop only (lg: breakpoint), outside max-w-[1000px] content
+
+Grid hierarchy re-implementation
+  Spec: .claude/grid-hierarchy-spec.md
+  Primary 2-col / secondary 3-col with divider
+  Previous attempts failed due to IntersectionObserver bugs
+
+"OTHER WORK" label reframing
+  Consider: "SELECTED CLIENT WORK" or unlabeled divider
+
+Video alpha (WebM sources still disabled)
+  WebM sources commented out pending HEVC alpha resolution
+
+New PD projects
+  User plans to add new product design projects in coming days,
+  which will naturally reorder the grid hierarchy
 
 ================================================================================
 END OF HANDOFF

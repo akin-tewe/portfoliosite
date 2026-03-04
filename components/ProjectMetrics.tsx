@@ -18,7 +18,7 @@ export default function ProjectMetrics({ metrics }: { metrics: Metric[] }) {
             initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.3 }}
-            className="w-full max-w-[1400px] mx-auto px-5 md:px-8 py-8 md:py-10"
+            className="w-full max-w-[1000px] mx-auto px-5 md:px-8 py-8 md:py-10"
         >
             <div className={`grid grid-cols-2 gap-y-6 gap-x-4 md:gap-0 ${metrics.length === 4 ? 'md:grid-cols-4' : 'md:grid-cols-3'}`}>
                 {metrics.map((m, i) => (
@@ -27,7 +27,13 @@ export default function ProjectMetrics({ metrics }: { metrics: Metric[] }) {
                             {m.label}
                         </span>
                         <span className={`${roboto.className} text-gray-800 text-sm md:text-base font-normal leading-snug`}>
-                            {m.value}
+                            {m.value.includes(' · ') ? (
+                                m.value.split(' · ').map((part, j) => (
+                                    <span key={j} className="block">{part.trim()}</span>
+                                ))
+                            ) : (
+                                m.value
+                            )}
                         </span>
                     </div>
                 ))}

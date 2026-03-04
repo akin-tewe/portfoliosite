@@ -208,14 +208,13 @@ export default function TruReligion() {
                         </motion.div>
                     </div>
                 </GridContainer>
-            </section>
-
             <ProjectMetrics metrics={[
                 { label: "Timeline", value: "1 Month" },
                 { label: "Role", value: "3D Animator \u00B7 Director" },
                 { label: "For", value: "True Religion \u00D7 Bluboy" },
                 { label: "Reach", value: "300K+ Impressions" },
             ]} />
+            </section>
 
             {/* Product Carousel */}
             <section className="relative w-full pb-6 md:pb-8">

@@ -120,14 +120,13 @@ export default function Rage() {
                     </div>
                 </GridContainer>
 
-            </section>
-
             <ProjectMetrics metrics={[
                 { label: "Timeline", value: "3 Months" },
                 { label: "Role", value: "3D Animator \u00B7 Director" },
                 { label: "For", value: "YourRage" },
                 { label: "Reach", value: "20K+ Live Viewers" },
             ]} />
+            </section>
 
             {/* Hero Character Image */}
             <section className="relative w-full pb-16 md:pb-24">

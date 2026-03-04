@@ -6,6 +6,17 @@ import { useRef } from "react";
 import { ExternalLink } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import ProjectMetrics from "@/components/ProjectMetrics";
+import CaseStudySidebar from "@/components/CaseStudySidebar";
+
+const siftySections = [
+    { id: 'problem', label: 'Problem' },
+    { id: 'research', label: 'Research' },
+    { id: 'opportunity', label: 'Opportunity' },
+    { id: 'scope', label: 'Scope' },
+    { id: 'solution', label: 'Solution' },
+    { id: 'responsive', label: 'Responsive' },
+    { id: 'built-with', label: 'Reflections' },
+];
 
 // Animation variants
 const fadeInUp = {
@@ -120,7 +131,7 @@ function SolutionSubsection({ number, title, children }: { number: string; title
         <motion.div variants={fadeInUp} className="mb-16 md:mb-20">
             <div className="flex items-baseline gap-4 mb-6">
                 <span className={`${pixelify.className} text-3xl md:text-4xl text-gray-300`}>{number}.</span>
-                <h3 className={`${pixelify.className} text-lg md:text-xl text-gray-800 uppercase`}>{title}</h3>
+                <h3 className={`${roboto.className} font-light text-lg md:text-xl text-gray-800 uppercase tracking-wider`}>{title}</h3>
             </div>
             {children}
         </motion.div>
@@ -132,18 +143,18 @@ export default function Sifty() {
     const isHeroInView = useInView(heroRef, { once: true });
 
     return (
-        <main className="overflow-x-hidden">
+        <main className="overflow-x-clip">
             {/* 1. Hero Section */}
             <section
                 ref={heroRef}
-                className="relative w-full flex items-center justify-center pt-32 md:pt-40 pb-16 md:pb-24 bg-[#fafafa]"
+                className="relative w-full flex flex-col pt-32 md:pt-40 pb-16 md:pb-24 bg-[#fafafa]"
             >
-                <GridContainer className="flex justify-center">
+                <GridContainer>
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                        className="flex flex-col items-center text-center max-w-4xl relative z-10"
+                        className="flex flex-col items-start text-left max-w-4xl relative z-10"
                     >
                     <motion.h1
                         initial={{ opacity: 0, y: 20 }}
@@ -175,7 +186,7 @@ export default function Sifty() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.5 }}
-                        className="flex flex-wrap gap-4 justify-center"
+                        className="flex flex-wrap gap-4"
                     >
                         <MagneticWrapper>
                             <button
@@ -199,14 +210,19 @@ export default function Sifty() {
                     </motion.div>
                     </motion.div>
                 </GridContainer>
-            </section>
 
             <ProjectMetrics metrics={[
-                { label: "Role", value: "Sole Designer & Developer" },
+                { label: "Role", value: "Sole Designer · Developer" },
                 { label: "Timeline", value: "2 Months" },
                 { label: "Type", value: "Web Application" },
                 { label: "Status", value: "Live at sifty.app" },
             ]} />
+            </section>
+
+            {/* Grid layout for sidebar + content */}
+            <div className="lg:grid lg:grid-cols-[200px_1fr]">
+                <CaseStudySidebar sections={siftySections} />
+                <div>
 
             {/* Leading visual - main app video */}
             <section className="relative py-12 md:py-16">
@@ -237,12 +253,12 @@ export default function Sifty() {
             <SectionDivider />
 
             {/* 3. The Problem */}
-            <section className="relative py-16 md:py-20">
+            <section id="problem" className="relative py-16 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase`}
+                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
                         >
                             THE PROBLEM
                         </motion.h2>
@@ -256,7 +272,7 @@ export default function Sifty() {
 
                         <div className="flex flex-col gap-10">
                             <motion.div variants={fadeInUp}>
-                                <h3 className={`${pixelify.className} text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
+                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
                                     Invisible boundaries
                                 </h3>
                                 <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
@@ -265,7 +281,7 @@ export default function Sifty() {
                             </motion.div>
 
                             <motion.div variants={fadeInUp}>
-                                <h3 className={`${pixelify.className} text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
+                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
                                     Tools that manage tasks, not scope
                                 </h3>
                                 <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
@@ -274,7 +290,7 @@ export default function Sifty() {
                             </motion.div>
 
                             <motion.div variants={fadeInUp}>
-                                <h3 className={`${pixelify.className} text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
+                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
                                     Documentation friction
                                 </h3>
                                 <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
@@ -289,12 +305,12 @@ export default function Sifty() {
             <SectionDivider />
 
             {/* Research */}
-            <section className="relative py-16 md:py-20">
+            <section id="research" className="relative py-16 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase`}
+                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
                         >
                             RESEARCH
                         </motion.h2>
@@ -355,7 +371,7 @@ export default function Sifty() {
                         {/* Research questions */}
                         <motion.div variants={fadeInUp} className="flex flex-col items-center">
                             <div className="max-w-2xl w-full flex flex-col items-center text-center gap-4">
-                                <h3 className={`${pixelify.className} text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-2`}>
+                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-2`}>
                                     QUESTIONS THAT SHAPED THE DESIGN
                                 </h3>
                                 <p className={`${roboto.className} font-light text-base md:text-lg text-black/70 italic`}>
@@ -379,12 +395,12 @@ export default function Sifty() {
             <SectionDivider />
 
             {/* 4. The Opportunity */}
-            <section className="relative py-16 md:py-20">
+            <section id="opportunity" className="relative py-16 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="flex flex-col gap-8 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase`}
+                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
                         >
                             THE OPPORTUNITY
                         </motion.h2>
@@ -409,12 +425,12 @@ export default function Sifty() {
             <SectionDivider />
 
             {/* 5. Defining the Scope */}
-            <section className="relative py-16 md:py-20">
+            <section id="scope" className="relative py-16 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="flex flex-col gap-8 md:gap-10 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase`}
+                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
                         >
                             DEFINING SCOPE
                         </motion.h2>
@@ -429,7 +445,7 @@ export default function Sifty() {
                         <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {/* Included */}
                             <div className="border-l-2 border-green-500 pl-6">
-                                <h3 className={`${pixelify.className} text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
+                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
                                     INCLUDED
                                 </h3>
                                 <ul className={`${roboto.className} font-light text-sm md:text-base leading-relaxed text-black/80 space-y-2`}>
@@ -445,7 +461,7 @@ export default function Sifty() {
 
                             {/* Excluded */}
                             <div className="border-l-2 border-red-400/50 pl-6">
-                                <h3 className={`${pixelify.className} text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
+                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
                                     DELIBERATELY EXCLUDED
                                 </h3>
                                 <ul className={`${roboto.className} font-light text-sm md:text-base leading-relaxed text-black/80 space-y-2`}>
@@ -464,12 +480,12 @@ export default function Sifty() {
             <SectionDivider />
 
             {/* 6. Solution Design */}
-            <section className="relative py-16 md:py-20">
+            <section id="solution" className="relative py-16 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="flex flex-col gap-8 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase mb-4`}
+                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider mb-4`}
                         >
                             SOLUTION DESIGN
                         </motion.h2>
@@ -590,12 +606,12 @@ export default function Sifty() {
             <SectionDivider />
 
             {/* 7. Responsive Design */}
-            <section className="relative py-16 md:py-20">
+            <section id="responsive" className="relative py-16 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="flex flex-col gap-8 md:gap-10 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase`}
+                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
                         >
                             RESPONSIVE DESIGN
                         </motion.h2>
@@ -628,12 +644,12 @@ export default function Sifty() {
             <SectionDivider />
 
             {/* 8. Tech Stack */}
-            <section className="relative py-16 md:py-20">
+            <section id="built-with" className="relative py-16 md:py-20">
                 <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-10 relative z-10">
+                    <AnimatedSection className="flex flex-col items-center gap-8 md:gap-10 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase text-center`}
+                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider text-center`}
                         >
                             BUILT WITH
                         </motion.h2>
@@ -697,6 +713,9 @@ export default function Sifty() {
                     </AnimatedSection>
                 </GridContainer>
             </section>
+
+                </div>
+            </div>
         </main>
     );
 }

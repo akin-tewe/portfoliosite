@@ -109,7 +109,7 @@ function AnimatedSection({
     className?: string
 }) {
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-100px" });
+    const isInView = useInView(ref, { once: true, margin: "200px" });
 
     return (
         <motion.div
@@ -341,8 +341,8 @@ export default function AboutMe() {
                 <GridContainer>
                     <div className="md:grid md:grid-cols-5">
                         <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            initial={{ opacity: 0 }}
+                            animate={isHeroInView ? { opacity: 1 } : {}}
                             transition={{ duration: 0.5, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] as const }}
                             className={`${roboto.className} font-light text-black text-4xl md:text-5xl lg:text-6xl leading-tight md:col-span-4`}
                         >
@@ -395,9 +395,9 @@ export default function AboutMe() {
             {/* Section 2: Experience - Carousel Left, Text Right */}
             <motion.section
                 className="relative py-16 md:py-30 bg-gray-900"
-                style={{ opacity: 0 }}
+                initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: "-50px" }}
+                viewport={{ once: true, margin: "100px" }}
                 transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}>
                 <GridOverlay />
                 <GridContainer>

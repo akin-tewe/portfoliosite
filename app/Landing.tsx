@@ -1033,7 +1033,7 @@ export default function Landing() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="relative px-6 md:px-[clamp(4rem,10vw,11rem)] pt-20 md:pt-28 -mt-12 md:-mt-20 pb-6 md:pb-[clamp(2rem,4vw,4rem)]">
+      <section id="projects" className="relative px-6 md:px-[clamp(2rem,6vw,7rem)] pt-20 md:pt-28 -mt-12 md:-mt-20 pb-6 md:pb-[clamp(2rem,4vw,4rem)]">
         {/* Main Projects — 2 column grid */}
         <ProjectsGrid />
       </section>

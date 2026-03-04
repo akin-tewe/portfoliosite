@@ -8,7 +8,7 @@ import NavBar from "@/components/NavFoot";
 import { Footer } from "@/components/NavFoot";
 
 export const metadata: Metadata = {
-  title: "Akin Tewe. Product Designer",
+  title: "Akin Tewe",
   description: "Portfolio website of Akin Tewe. Product Designer.",
 };
 

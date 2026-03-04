@@ -70,9 +70,12 @@ function LazyVideo({ src, srcFallback, playbackRate, className }: {
       ) : srcFallback?.endsWith('.webm') ? (
         <source src={srcFallback} type="video/webm" />
       ) : null}
-      {/* H.264 fallback for non-alpha mp4s (e.g. sifty thumbnail) */}
+      {/* H.264 fallback for Chrome (can't play HEVC) */}
       {src.endsWith('.mp4') && (
         <source src={src} type="video/mp4" />
+      )}
+      {srcFallback?.endsWith('.mp4') && (
+        <source src={srcFallback} type="video/mp4" />
       )}
     </video>
   );

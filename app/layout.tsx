@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
-import { LoaderProvider } from "@/components/LoaderContext";
+import { BootOverlay } from "@/components/LoadingOverlay";
+import PageTransition from "@/components/PageTransition";
 import { CursorProvider } from "@/components/CursorContext";
 import CustomCursor from "@/components/CustomCursor";
 import NavBar from "@/components/NavFoot";
@@ -22,14 +23,13 @@ export default function RootLayout({
       <head suppressHydrationWarning>
       </head>
       <body>
-        <LoaderProvider>
+        <BootOverlay />
           <CursorProvider>
             <CustomCursor />
             <NavBar/>
-            <main>{children}</main>
+            <main><PageTransition>{children}</PageTransition></main>
             <Footer/>
           </CursorProvider>
-        </LoaderProvider>
         <Analytics />
       </body>
     </html>

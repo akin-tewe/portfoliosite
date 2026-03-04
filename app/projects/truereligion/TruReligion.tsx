@@ -6,6 +6,14 @@ import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { MagneticWrapper } from "@/components/MagneticButton";
 import ProjectMetrics from "@/components/ProjectMetrics";
+import CaseStudySidebar from "@/components/CaseStudySidebar";
+
+const trueSections = [
+    { id: 'premise', label: 'Premise' },
+    { id: 'audience', label: 'Audience' },
+    { id: 'hero', label: 'Our Hero' },
+    { id: 'refinement', label: 'Refinement' },
+];
 
 // Animation variants
 const fadeInUp = {
@@ -27,7 +35,7 @@ const staggerContainer = {
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div id={id} className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1000px] mx-auto px-8 ${className}`}>
             {children}
         </div>
     );
@@ -36,7 +44,7 @@ function GridContainer({ children, className = "", id }: { children: React.React
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -153,7 +161,7 @@ export default function TruReligion() {
     const isHeroInView = useInView(heroRef, { once: true });
 
     return (
-        <main className="overflow-x-hidden">
+        <main className="overflow-x-clip">
             {/* Hero Section */}
             <section
                 ref={heroRef}
@@ -190,14 +198,6 @@ export default function TruReligion() {
                         >
                             <MagneticWrapper>
                                 <button
-                                    onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
-                                >
-                                    View Project
-                                </button>
-                            </MagneticWrapper>
-                            <MagneticWrapper>
-                                <button
                                     onClick={() => document.getElementById('video')?.scrollIntoView({ behavior: 'smooth' })}
                                     className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}
                                 >
@@ -216,10 +216,14 @@ export default function TruReligion() {
             ]} />
             </section>
 
+            <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
+                <CaseStudySidebar sections={trueSections} />
+                <div className="lg:-translate-x-[100px]">
+
             {/* Product Carousel */}
             <section className="relative w-full pb-6 md:pb-8">
                 <ProductCarousel />
-                <span className={`${roboto.className} text-black/35 text-sm mt-4 block text-center italic`}>
+                <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                     In-scene product shot direction
                 </span>
             </section>
@@ -227,12 +231,12 @@ export default function TruReligion() {
             <SectionDivider />
 
             {/* Section 1: Premise */}
-            <section id="body" className="relative py-12 md:py-20">
+            <section id="premise" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Premise
                         </motion.span>
@@ -250,12 +254,12 @@ export default function TruReligion() {
             <SectionDivider />
 
             {/* Section 2: Audience */}
-            <section className="relative py-12 md:py-20">
+            <section id="audience" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Audience
                         </motion.span>
@@ -351,12 +355,12 @@ export default function TruReligion() {
             <SectionDivider />
 
             {/* Section 3: Hero Character */}
-            <section className="relative py-12 md:py-20">
+            <section id="hero" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Our Hero
                         </motion.span>
@@ -371,7 +375,8 @@ export default function TruReligion() {
                 </GridContainer>
 
                 {/* Character Renders */}
-                <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 w-[85%] md:w-[90%] mx-auto">
+                <GridContainer className="mt-12 md:mt-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -421,6 +426,7 @@ export default function TruReligion() {
                 <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                     {`Original "bluboy" character render shots`}
                 </span>
+                </GridContainer>
 
                 <GridContainer className="mt-12 md:mt-16">
                     <AnimatedSection className="">
@@ -438,12 +444,12 @@ export default function TruReligion() {
             <SectionDivider />
 
             {/* Section 4: Refinement */}
-            <section className="relative py-12 md:py-20">
+            <section id="refinement" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Refinement
                         </motion.span>
@@ -491,6 +497,9 @@ export default function TruReligion() {
                     </AnimatedSection>
                 </GridContainer>
             </section>
+
+                </div>
+            </div>
         </main>
     )
 }

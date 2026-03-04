@@ -37,7 +37,7 @@ const staggerContainer = {
 
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div id={id} className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1000px] mx-auto px-8 ${className}`}>
             {children}
         </div>
     );
@@ -46,7 +46,7 @@ function GridContainer({ children, className = "", id }: { children: React.React
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -176,7 +176,7 @@ export default function Sifty() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.4 }}
-                        className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl max-w-2xl leading-relaxed mb-10`}
+                        className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}
                     >
                         A lightweight scoping tool that makes project boundaries visible before they become disputes. Built for freelancers and small studios who need clarity without complexity.
                     </motion.p>
@@ -186,22 +186,14 @@ export default function Sifty() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.6, delay: 0.5 }}
-                        className="flex flex-wrap gap-4"
+                        className="flex flex-wrap gap-4 mt-10 justify-center md:justify-start"
                     >
-                        <MagneticWrapper>
-                            <button
-                                onClick={() => document.getElementById('overview')?.scrollIntoView({ behavior: 'smooth' })}
-                                className={`${pixelify.className} px-6 py-3 border border-black/20 text-gray-800 text-base hover:bg-black/5 transition-colors tracking-wide uppercase rounded-md`}
-                            >
-                                View Project
-                            </button>
-                        </MagneticWrapper>
                         <MagneticWrapper>
                             <a
                                 href="https://sifty.app"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className={`${pixelify.className} px-6 py-3 bg-gray-900 text-white text-base hover:bg-gray-800 transition-colors flex items-center gap-2 tracking-wide uppercase rounded-md`}
+                                className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}
                             >
                                 <ExternalLink className="w-4 h-4" />
                                 Visit Live Site
@@ -220,9 +212,9 @@ export default function Sifty() {
             </section>
 
             {/* Grid layout for sidebar + content */}
-            <div className="lg:grid lg:grid-cols-[200px_1fr]">
+            <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
                 <CaseStudySidebar sections={siftySections} />
-                <div>
+                <div className="lg:-translate-x-[100px]">
 
             {/* Leading visual - main app video */}
             <section className="relative py-12 md:py-16">
@@ -258,7 +250,7 @@ export default function Sifty() {
                     <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             THE PROBLEM
                         </motion.h2>
@@ -310,7 +302,7 @@ export default function Sifty() {
                     <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             RESEARCH
                         </motion.h2>
@@ -334,9 +326,9 @@ export default function Sifty() {
                                     className="w-full h-auto"
                                 />
                             </div>
-                            <p className={`${roboto.className} text-black/35 text-sm mt-3 italic text-center`}>
+                            <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                                 A Trello analytics dashboard via <a href="https://getnave.com/dashboard-for-trello" target="_blank" rel="noopener noreferrer" className="underline hover:text-black/50 transition-colors">Nave</a>. Detailed task metrics, but no indication of what's in or out of scope.
-                            </p>
+                            </span>
                         </motion.div>
 
                         {/* The data */}
@@ -355,9 +347,9 @@ export default function Sifty() {
                                     <p className={`${roboto.className} font-light text-sm md:text-base text-black/80 mt-2`}>Of digital projects have clearly defined acceptance criteria</p>
                                 </div>
                             </div>
-                            <p className={`${roboto.className} text-black/35 text-sm italic mt-2 text-center`}>
+                            <span className={`${roboto.className} text-black/35 text-sm mt-5 block text-center italic`}>
                                 Data from MIT Sloan Management Center and PwC survey of 1,500 project managers
-                            </p>
+                            </span>
                         </motion.div>
 
                         {/* What freelancers told us */}
@@ -400,7 +392,7 @@ export default function Sifty() {
                     <AnimatedSection className="flex flex-col gap-8 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             THE OPPORTUNITY
                         </motion.h2>
@@ -430,7 +422,7 @@ export default function Sifty() {
                     <AnimatedSection className="flex flex-col gap-8 md:gap-10 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             DEFINING SCOPE
                         </motion.h2>
@@ -485,7 +477,7 @@ export default function Sifty() {
                     <AnimatedSection className="flex flex-col gap-8 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider mb-4`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal mb-4`}
                         >
                             SOLUTION DESIGN
                         </motion.h2>
@@ -611,7 +603,7 @@ export default function Sifty() {
                     <AnimatedSection className="flex flex-col gap-8 md:gap-10 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             RESPONSIVE DESIGN
                         </motion.h2>
@@ -649,7 +641,7 @@ export default function Sifty() {
                     <AnimatedSection className="flex flex-col items-center gap-8 md:gap-10 relative z-10">
                         <motion.h2
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-xl md:text-2xl lg:text-3xl text-gray-800 uppercase tracking-wider text-center`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal text-center`}
                         >
                             BUILT WITH
                         </motion.h2>
@@ -703,7 +695,7 @@ export default function Sifty() {
                                     href="https://sifty.app"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={`${pixelify.className} px-6 py-3 bg-gray-900 text-white text-base hover:bg-gray-800 transition-colors flex items-center gap-2 tracking-wide uppercase rounded-md`}
+                                    className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base hover:bg-gray-800 transition-colors flex items-center gap-2 tracking-wide uppercase`}
                                 >
                                     <ExternalLink className="w-4 h-4" />
                                     Visit Sifty

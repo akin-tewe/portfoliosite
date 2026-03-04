@@ -6,6 +6,13 @@ import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { MagneticWrapper } from "@/components/MagneticButton";
 import ProjectMetrics from "@/components/ProjectMetrics";
+import CaseStudySidebar from "@/components/CaseStudySidebar";
+
+const rageSections = [
+    { id: 'scope', label: 'Scope' },
+    { id: 'process', label: 'Process' },
+    { id: 'reception', label: 'Reception' },
+];
 
 // Animation variants
 const fadeInUp = {
@@ -27,7 +34,7 @@ const staggerContainer = {
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div id={id} className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1000px] mx-auto px-8 ${className}`}>
             {children}
         </div>
     );
@@ -36,7 +43,7 @@ function GridContainer({ children, className = "", id }: { children: React.React
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -65,7 +72,7 @@ export default function Rage() {
     const isHeroInView = useInView(heroRef, { once: true });
 
     return (
-        <main className="overflow-x-hidden">
+        <main className="overflow-x-clip">
             {/* Hero Section */}
             <section
                 ref={heroRef}
@@ -101,14 +108,6 @@ export default function Rage() {
                         >
                             <MagneticWrapper>
                                 <button
-                                    onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
-                                >
-                                    View Project
-                                </button>
-                            </MagneticWrapper>
-                            <MagneticWrapper>
-                                <button
                                     onClick={() => document.getElementById('video')?.scrollIntoView({ behavior: 'smooth' })}
                                     className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}
                                 >
@@ -127,6 +126,10 @@ export default function Rage() {
                 { label: "Reach", value: "20K+ Live Viewers" },
             ]} />
             </section>
+
+            <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
+                <CaseStudySidebar sections={rageSections} />
+                <div className="lg:-translate-x-[100px]">
 
             {/* Hero Character Image */}
             <section className="relative w-full pb-16 md:pb-24">
@@ -157,13 +160,13 @@ export default function Rage() {
             <SectionDivider />
 
             {/* Main Content */}
-            <section id="body" className="relative py-12 md:py-20">
+            <section id="scope" className="relative py-12 md:py-20">
                 {/* Section 1: Scope */}
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Scope
                         </motion.span>
@@ -205,7 +208,7 @@ export default function Rage() {
             <SectionDivider />
 
             {/* Continued Content */}
-            <section className="relative py-12 md:py-20">
+            <section id="process" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.p
@@ -245,12 +248,12 @@ export default function Rage() {
             <SectionDivider />
 
             {/* Section 2: Reception */}
-            <section className="relative py-12 md:py-20">
+            <section id="reception" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Reception
                         </motion.span>
@@ -286,6 +289,9 @@ export default function Rage() {
                     </motion.div>
                 </GridContainer>
             </section>
+
+                </div>
+            </div>
         </main>
     )
 }

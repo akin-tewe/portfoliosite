@@ -5,12 +5,20 @@ import { pixelify, roboto, instrumentSerif } from "@/app/ui/fonts";
 import projectsdata from "@/data/ProjectThumbData";
 import { usePathname } from "next/navigation"
 import Link from "next/link"
-import { useLoader } from "@/components/LoaderContext";
 import { MainVideo } from "@/components/SplashVideo";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect, useMemo, memo, useSyncExternalStore } from "react";
 import { useCursor } from "@/components/CursorContext";
-import { ShaderGradientCanvas, ShaderGradient } from 'shadergradient';
+import dynamic from "next/dynamic";
+
+const ShaderGradientCanvas = dynamic(
+  () => import('shadergradient').then(mod => mod.ShaderGradientCanvas),
+  { ssr: false }
+);
+const ShaderGradient = dynamic(
+  () => import('shadergradient').then(mod => mod.ShaderGradient),
+  { ssr: false }
+);
 
 
 const emptySubscribe = () => () => {};
@@ -94,9 +102,9 @@ function AnimatedSection({ children, className = "", delay = 0, margin = "-80px"
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.35, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.4, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={className}
     >
       {children}
@@ -428,27 +436,32 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
 });
 
 
-function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
+const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
   project: typeof projectsdata[number];
   i: number;
   slideshowIndex: number;
   isSecondary?: boolean;
 }) {
-  const { show, hide } = useLoader();
   const { setCursor, resetCursor } = useCursor();
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setRevealed(true), 150 + i * 80);
+    return () => clearTimeout(timeout);
+  }, [i]);
 
   return (
     <AnimatedSection key={project.id} delay={i * 0.05} margin={isSecondary ? "0px 0px 0px 0px" : "-80px"}>
       <Link
           href={project.link}
-          onClick={() => { resetCursor(); show(); setTimeout(hide, 800); }}
+          onClick={() => { resetCursor(); }}
           className="group relative block"
           data-cursor="project"
           onMouseEnter={() => setCursor("project", { title: project.title, body: project.body, tags: project.tags })}
           onMouseLeave={() => resetCursor()}
         >
           <div
-            className={`relative ${project.gradient ? '' : project.color} rounded-2xl overflow-hidden transition-all duration-300 ease-out
+            className={`relative bg-[#ececec] rounded-2xl overflow-hidden transition-all duration-300 ease-out
                         group-hover:-translate-y-2 ${isSecondary ? 'aspect-card-secondary' : ''}`}
             style={{ boxShadow: 'none', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
             onMouseEnter={(e) => {
@@ -464,6 +477,11 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
               e.currentTarget.style.boxShadow = 'none';
             }}
           >
+            {/* Card content — fades in over placeholder */}
+            <div
+              className={`absolute inset-0 ${project.gradient ? '' : project.color}`}
+              style={{ opacity: revealed ? 1 : 0, transition: 'opacity 0.5s ease-out' }}
+            >
             {project.gradient && (
               <div className="absolute inset-0 overflow-hidden">
                 <ShaderGradientCanvas
@@ -647,6 +665,7 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
                 </div>
               )}
             </div>
+            </div>
           </div>
           {/* Mobile caption — hidden on desktop where hover modal handles this */}
           <div className="md:hidden mt-3 px-1">
@@ -669,7 +688,15 @@ function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
         </Link>
     </AnimatedSection>
   );
-}
+}, (prev, next) => {
+  // Skip re-render when only slideshowIndex changed, unless this card has a slideshow
+  if (prev.project.id !== next.project.id) return false;
+  if (prev.i !== next.i) return false;
+  if (prev.isSecondary !== next.isSecondary) return false;
+  if (prev.project.slideshow && prev.slideshowIndex !== next.slideshowIndex) return false;
+  if (!prev.project.slideshow && prev.slideshowIndex !== next.slideshowIndex) return true;
+  return true;
+});
 
 function ProjectsGrid() {
   const [slideshowIndex, setSlideshowIndex] = useState(0);
@@ -732,25 +759,12 @@ export default function Landing() {
         ref={heroRef}
         className="relative min-h-fit md:min-h-[280px] md:h-[26vh] bg-[#fafafa] overflow-visible pt-20 md:pt-24 pb-8 md:pb-12"
       >
-        {/* Two-column content */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={isHeroInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="flex flex-col md:flex-row items-start md:items-center justify-center gap-8 md:gap-[clamp(4rem,10vw,16rem)] px-6 md:pl-0 md:-ml-[1.5vw] md:pr-[clamp(1rem,3vw,2.5rem)] pt-12 md:pt-0 md:h-full relative z-10"
-        >
-          {/* LEFT: scramble text + credits */}
-          <div className="text-left md:w-[22rem] md:flex-shrink-0">
-          </div>
-
-        </motion.div>
-
         {/* Hero Name + Worked with - Mobile */}
         <div className="md:hidden px-6 mt-auto pt-4">
           <motion.span
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.5, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
             className={`${pixelify.className} relative text-8xl text-gray-900 text-left pb-2 leading-none block`}
           >
             akin<br />tewe

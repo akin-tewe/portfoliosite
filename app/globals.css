@@ -36,17 +36,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Mask image utility */
-.mask-image {
-  mask-image: url("/pholdIMGz.png");
-  mask-size: contain;
-  mask-repeat: no-repeat;
-}
-
-.className {
-  font-family: var(--font-pixelify);
-}
-
 /* Secondary card: shorter on mobile, normal on desktop */
 .aspect-card-secondary {
   aspect-ratio: 9/4;
@@ -105,17 +94,3 @@ body {
   }
 }
 
-/* Glass effect utility */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-/* Gradient text utility */
-.gradient-text {
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}

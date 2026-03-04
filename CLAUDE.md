@@ -36,8 +36,8 @@ app/not-found.tsx                 → 404 page
 components/NavFoot.tsx            → Nav bar + Footer (rendered by layout.tsx)
 components/SplashVideo.tsx        → Transparent video component (TransparentVideo + MainVideo)
 components/MagneticButton.tsx     → Magnetic hover button (AboutButton)
-components/LoadingOverlay.tsx     → Page transition overlay + boot overlay
-components/LoaderContext.tsx      → Global loading state context
+components/LoadingOverlay.tsx     → Boot overlay (initial page load animation)
+components/PageTransition.tsx    → Entrance crossfade on route changes
 components/MaslowHierarchy.tsx    → Maslow pyramid visualization (used on 3D Research card)
 components/ProjectMetrics.tsx     → Project page metrics display
 components/Charts.tsx             → Chart components for project pages
@@ -153,7 +153,6 @@ Landing.tsx is large (~980 lines) and defines several components inline:
 - `generateDisplacementMap()` / `generateSpecularFillMap()` / `generatePillDisplacementMap()` — Canvas-based glass effect generators using refraction math
 
 ### State Management
-- `LoaderContext`: Global page transition state via React Context
 - Local state with `useState` for component-specific UI (menus, hover effects, slideshows)
 - No external state libraries
 
@@ -184,7 +183,7 @@ Components tend to be self-contained with:
 - `AnimatePresence` for exit animations (page transitions)
 - Consistent easing: `ease: [0.25, 0.46, 0.45, 0.94]` for smooth deceleration
 - Staggered card animations via `delay={i * 0.1}` on grid items
-- Page transitions: `show(); setTimeout(hide, 800)` pattern on all navigation clicks
+- Page transitions: entrance-only crossfade via `PageTransition.tsx` (opacity 0→1, y 8→0)
 - Entrance animations: `opacity: 0 → 1` with `y: 20 → 0`, duration 0.35–0.6s
 - Hover/interaction transitions: 150–200ms, no delay
 - Hero scramble text: custom character randomization, delays at 500ms and 800ms

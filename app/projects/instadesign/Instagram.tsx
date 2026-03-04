@@ -3,7 +3,6 @@ import { pixelify, roboto } from "@/app/ui/fonts"
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { MagneticWrapper } from "@/components/MagneticButton";
 import {
     HorizontalBarChart,
     VerticalBarChart,
@@ -41,7 +40,7 @@ const staggerContainer = {
 // Grid container for content alignment
 function GridContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
     return (
-        <div className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
+        <div className={`w-full max-w-[1000px] mx-auto px-8 ${className}`}>
             {children}
         </div>
     );
@@ -50,7 +49,7 @@ function GridContainer({ children, className = "" }: { children: React.ReactNode
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -128,21 +127,6 @@ export default function Instagram() {
                             All code for this project was written from scratch by me, without direct AI assistance.
                         </motion.p>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.6, delay: 0.6 }}
-                            className="flex justify-center md:justify-start mt-10"
-                        >
-                            <MagneticWrapper>
-                                <button
-                                    onClick={() => document.getElementById('research')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
-                                >
-                                    View Project
-                                </button>
-                            </MagneticWrapper>
-                        </motion.div>
                     </div>
                 </GridContainer>
             <ProjectMetrics metrics={[
@@ -153,10 +137,9 @@ export default function Instagram() {
             ]} />
             </section>
 
-            {/* Grid layout for sidebar + content */}
-            <div className="lg:grid lg:grid-cols-[200px_1fr]">
+            <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
                 <CaseStudySidebar sections={instagramSections} />
-                <div>
+                <div className="lg:-translate-x-[100px]">
 
             {/* Hero Media */}
             <section className="relative pb-16 md:pb-24">
@@ -193,7 +176,7 @@ export default function Instagram() {
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wider uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Research
                         </motion.span>
@@ -343,7 +326,7 @@ export default function Instagram() {
                 {/* Identified Issues */}
                 <GridContainer className="mt-10 md:mt-16">
                     <div className="flex flex-col gap-4">
-                        <span className={`${roboto.className} font-light text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wider uppercase mb-2`}>
+                        <span className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal mb-2`}>
                             Additionally Identified
                         </span>
                         {[
@@ -358,7 +341,7 @@ export default function Instagram() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                                className="border-l-2 border-blue-500 pl-6"
+                                className="border-l-2 border-blue-500 pl-6 md:pl-8"
                             >
                                 <span className={`${roboto.className} text-black/80 text-base md:text-lg font-light`}>
                                     {item}
@@ -402,7 +385,7 @@ export default function Instagram() {
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wider uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Ideation
                         </motion.span>
@@ -428,7 +411,7 @@ export default function Instagram() {
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wider uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             UI Concepts
                         </motion.span>
@@ -516,7 +499,7 @@ export default function Instagram() {
                 {/* Additional Improvements */}
                 <GridContainer className="mt-8 md:mt-12 pb-8">
                     <div className="flex flex-col gap-4">
-                        <span className={`${roboto.className} font-light text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wider uppercase mb-2`}>
+                        <span className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal mb-2`}>
                             Supporting Improvements
                         </span>
                         {[
@@ -531,7 +514,7 @@ export default function Instagram() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.4, delay: index * 0.1 }}
-                                className="border-l-2 border-blue-500 pl-6"
+                                className="border-l-2 border-blue-500 pl-6 md:pl-8"
                             >
                                 <span className={`${roboto.className} text-black/80 text-base md:text-lg font-light`}>
                                     {item.title}
@@ -555,7 +538,7 @@ export default function Instagram() {
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wider uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Scope & Constraints
                         </motion.span>
@@ -610,7 +593,7 @@ export default function Instagram() {
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${roboto.className} font-light text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wider uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Impact
                         </motion.span>

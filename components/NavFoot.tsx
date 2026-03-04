@@ -2,11 +2,10 @@
 
 import Link from "next/link"
 import { pixelify } from "@/app/ui/fonts"
-import { useLoader } from "./LoaderContext"
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 
 const menuItems = [
     { label: "Home", href: "/" },
@@ -20,7 +19,6 @@ const overlayVariants = {
 };
 
 export default function NavBar() {
-    const { show, hide } = useLoader();
     const pathname = usePathname();
     const isActive = (href: string) => {
         if (href === '/') return pathname === '/';
@@ -43,8 +41,6 @@ export default function NavBar() {
 
     const handleNavClick = () => {
         setOpen(false);
-        show();
-        setTimeout(hide, 800);
     };
 
     const handleHashNavigation = (e: React.MouseEvent, href: string) => {
@@ -102,7 +98,7 @@ export default function NavBar() {
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2, ease: "easeOut" }}
+                        transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
                         {/* Card Container */}
                         <div className="relative w-[70vw] max-w-[260px] rounded-2xl shadow-xl bg-[#1a1a1a]/95 border border-white/10">
@@ -174,16 +170,19 @@ export default function NavBar() {
             </AnimatePresence>
 
             {/* Desktop Floating Pill Nav */}
-            <div className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-[60]
+            <motion.div
+                className="hidden md:flex fixed top-6 left-1/2 -translate-x-1/2 z-[60]
                  bg-black/80 backdrop-blur-lg rounded-full px-10 py-3.5
-                 items-center gap-7 border border-white/15 shadow-lg shadow-black/20">
+                 items-center gap-7 border border-white/15 shadow-lg shadow-black/20"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}>
 
                 <Link
                     href="/"
                     className={`${pixelify.className} text-sm tracking-wider transition-colors duration-200 ${
                         isActive('/') ? 'text-white' : 'text-white/50 hover:text-white'
                     }`}
-                    onClick={() => { show(); setTimeout(hide, 800) }}
                     onMouseDown={preventCursorFlash}
                 >
                     AKIN TEWE
@@ -205,23 +204,29 @@ export default function NavBar() {
                             onMouseDown={preventCursorFlash}
                             onClick={(e) => {
                                 handleHashNavigation(e, item.href);
-                                if (!item.href.includes('#') || pathname !== (item.href.split('#')[0] || '/')) {
-                                    show(); setTimeout(hide, 800);
-                                }
                             }}
                         >
                             {item.label}
                         </Link>
                     ))}
                 </nav>
-            </div>
+            </motion.div>
         </div>
     )
 }
 
 export function Footer() {
+    const footerRef = useRef(null);
+    const footerInView = useInView(footerRef, { once: true, margin: "-40px" });
+
     return (
-        <footer className="px-6 md:px-[clamp(4rem,10vw,11rem)] py-8">
+        <motion.footer
+            ref={footerRef}
+            className="px-6 md:px-[clamp(4rem,10vw,11rem)] py-8"
+            initial={{ opacity: 0, y: 12 }}
+            animate={footerInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        >
             <div className="flex flex-col items-center gap-1 md:flex-row md:justify-between md:items-end relative">
                 <span className={`${pixelify.className} text-black/25 text-base tracking-wider`}>
                     © {new Date().getFullYear()}
@@ -238,6 +243,6 @@ export function Footer() {
                     designed & developed by akin tewe
                 </span>
             </div>
-        </footer>
+        </motion.footer>
     )
 }

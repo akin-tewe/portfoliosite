@@ -3,31 +3,6 @@ import TransparentVideo from "./SplashVideo";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function PageLoader({ loading }: { loading: boolean }) {
-    return (
-        <AnimatePresence>
-            {loading && (
-                <motion.div
-                    className="fixed inset-0 z-[500] flex items-center justify-center bg-[#fafafa]"
-                    initial={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                >
-                    <motion.div
-                        className="relative text-white w-[300px] h-[300px] md:w-[400px] md:h-[400px]"
-                        initial={{ scale: 0.9, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 1.1, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                    >
-                        <TransparentVideo mp4Src="/runningM.mp4" webmSrc="/runningW.webm" preload="auto" />
-                    </motion.div>
-                </motion.div>
-            )}
-        </AnimatePresence>
-    )
-}
-
 export function BootOverlay() {
     const [show, setShow] = useState(true);
     const [fadeOut, setFadeOut] = useState(false);
@@ -36,12 +11,12 @@ export function BootOverlay() {
         // Start fade out after initial display
         const fadeTimer = setTimeout(() => {
             setFadeOut(true);
-        }, 800);
+        }, 1800);
 
         // Remove from DOM after fade
         const removeTimer = setTimeout(() => {
             setShow(false);
-        }, 1200);
+        }, 2200);
 
         return () => {
             clearTimeout(fadeTimer);

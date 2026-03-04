@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { pixelify, roboto } from "../ui/fonts";
 import TransparentVideo from "@/components/SplashVideo";
-import { useLoader } from "@/components/LoaderContext";
+import { useRouter } from "next/navigation";
 
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
@@ -85,8 +85,8 @@ const staggerContainer = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.08,
-            delayChildren: 0.1
+            staggerChildren: 0.1,
+            delayChildren: 0.2
         }
     }
 };
@@ -173,7 +173,7 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
     const autoScrollRef = useRef<NodeJS.Timeout | null>(null)
     const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
     const dragDistanceRef = useRef(0)
-    const { show, hide } = useLoader()
+    const router = useRouter()
 
     // Auto-scroll logic
     useEffect(() => {
@@ -286,9 +286,7 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
                 {[...items, ...items].map((item, index) => {
                     const handleClick = () => {
                         if (item.href && dragDistanceRef.current < 5) {
-                            show();
-                            setTimeout(hide, 800);
-                            window.location.href = item.href;
+                            router.push(item.href);
                         }
                     };
 
@@ -343,9 +341,9 @@ export default function AboutMe() {
                 <GridContainer>
                     <div className="md:grid md:grid-cols-5">
                         <motion.h1
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] as const }}
+                            transition={{ duration: 0.5, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] as const }}
                             className={`${roboto.className} font-light text-black text-4xl md:text-5xl lg:text-6xl leading-tight md:col-span-4`}
                         >
                             Driven by a child-like sense of curiosity and a deep attention to detail.
@@ -395,7 +393,12 @@ export default function AboutMe() {
             </section>
 
             {/* Section 2: Experience - Carousel Left, Text Right */}
-            <section className="relative py-16 md:py-30 bg-gray-900">
+            <motion.section
+                className="relative py-16 md:py-30 bg-gray-900"
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}>
                 <GridOverlay />
                 <GridContainer>
                     <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10 items-center">
@@ -415,7 +418,7 @@ export default function AboutMe() {
                         </motion.div>
                     </AnimatedSection>
                 </GridContainer>
-            </section>
+            </motion.section>
 
             {/* Section 3: Skills - Lists Left, Video Right */}
             <section className="relative py-16 md:py-[clamp(4rem,6vw,6rem)]" style={{ backgroundColor: "#ffffff" }}>

@@ -65,7 +65,7 @@ export default function CaseStudySidebar({ sections }: CaseStudySidebarProps) {
     }, []);
 
     return (
-        <nav className="hidden lg:block sticky top-32 self-start pl-8 pt-8 md:pt-10">
+        <nav className="hidden lg:block sticky top-32 self-start pl-8 pt-8 md:pt-10 z-20">
             <ul className="flex flex-col gap-3">
                 {sections.map((section) => (
                     <li key={section.id}>

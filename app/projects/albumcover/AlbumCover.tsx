@@ -3,8 +3,14 @@ import { pixelify, roboto } from "@/app/ui/fonts"
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { MagneticWrapper } from "@/components/MagneticButton";
 import ProjectMetrics from "@/components/ProjectMetrics";
+import CaseStudySidebar from "@/components/CaseStudySidebar";
+
+const albumSections = [
+    { id: 'context', label: 'Context' },
+    { id: 'iteration', label: 'Iteration' },
+    { id: 'conclusion', label: 'Conclusion' },
+];
 
 // Animation variants
 const fadeInUp = {
@@ -26,7 +32,7 @@ const staggerContainer = {
 // Grid container for content alignment
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
     return (
-        <div id={id} className={`w-full max-w-[1000px] mx-auto px-5 md:px-8 ${className}`}>
+        <div id={id} className={`w-full max-w-[1000px] mx-auto px-8 ${className}`}>
             {children}
         </div>
     );
@@ -35,7 +41,7 @@ function GridContainer({ children, className = "", id }: { children: React.React
 // Gradient divider between sections
 function SectionDivider() {
     return (
-        <div className="w-full max-w-[1000px] mx-auto px-5 md:px-8">
+        <div className="w-full max-w-[1000px] mx-auto px-8">
             <div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" />
         </div>
     );
@@ -64,7 +70,7 @@ export default function AlbumCover() {
     const isHeroInView = useInView(heroRef, { once: true });
 
     return (
-        <main className="overflow-x-hidden">
+        <main className="overflow-x-clip">
             {/* Hero Section */}
             <section
                 ref={heroRef}
@@ -93,21 +99,6 @@ export default function AlbumCover() {
                             hit song, I was commissioned by Nudy's team to reinterpret the original cover.`}
                         </motion.p>
 
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                            transition={{ duration: 0.6, delay: 0.6 }}
-                            className="flex justify-center md:justify-start mt-10"
-                        >
-                            <MagneticWrapper>
-                                <button
-                                    onClick={() => document.getElementById('body')?.scrollIntoView({ behavior: 'smooth' })}
-                                    className={`${pixelify.className} px-6 py-3 border border-black/20 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-black/5 transition-colors`}
-                                >
-                                    View Project
-                                </button>
-                            </MagneticWrapper>
-                        </motion.div>
                     </div>
                 </GridContainer>
 
@@ -118,6 +109,10 @@ export default function AlbumCover() {
                 { label: "Reach", value: "33M+ Streams on Spotify" },
             ]} />
             </section>
+
+            <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
+                <CaseStudySidebar sections={albumSections} />
+                <div className="lg:-translate-x-[100px]">
 
             {/* Hero Image - Original Cover */}
             <section className="relative w-full pb-16 md:pb-24">
@@ -148,13 +143,13 @@ export default function AlbumCover() {
             <SectionDivider />
 
             {/* Main Content */}
-            <section id="body" className="relative py-12 md:py-20">
+            <section id="context" className="relative py-12 md:py-20">
                 {/* Section 1: Context */}
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Context
                         </motion.span>
@@ -196,12 +191,12 @@ export default function AlbumCover() {
             <SectionDivider />
 
             {/* Section 2: Iteration */}
-            <section className="relative py-12 md:py-20">
+            <section id="iteration" className="relative py-12 md:py-20">
                 <GridContainer>
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Iteration
                         </motion.span>
@@ -293,7 +288,7 @@ export default function AlbumCover() {
             <SectionDivider />
 
             {/* Final Result */}
-            <section className="relative py-12 md:py-20">
+            <section id="conclusion" className="relative py-12 md:py-20">
                 <GridContainer>
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -321,7 +316,7 @@ export default function AlbumCover() {
                     <AnimatedSection className="">
                         <motion.span
                             variants={fadeInUp}
-                            className={`${pixelify.className} text-gray-800 text-xl md:text-2xl lg:text-3xl tracking-wide uppercase`}
+                            className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}
                         >
                             Conclusion
                         </motion.span>
@@ -335,6 +330,9 @@ export default function AlbumCover() {
                     </AnimatedSection>
                 </GridContainer>
             </section>
+
+                </div>
+            </div>
         </main>
     )
 }

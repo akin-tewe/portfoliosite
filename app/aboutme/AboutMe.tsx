@@ -326,28 +326,29 @@ function WorkCarousel({ items }: { items: { type: "video" | "image"; src: string
 }
 
 export default function AboutMe() {
-    const heroRef = useRef(null);
-    const isHeroInView = useInView(heroRef, { once: true });
+    const [revealed, setRevealed] = useState(false);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => setRevealed(true), 150);
+        return () => clearTimeout(timeout);
+    }, []);
 
     return (
         <main className="bg-white min-h-screen overflow-x-hidden">
 
             {/* Hero Headline */}
             <section
-                ref={heroRef}
                 className="relative pt-28 md:pt-40 pb-16 md:pb-24"
             >
                 <GridOverlayLight />
                 <GridContainer>
                     <div className="md:grid md:grid-cols-5">
-                        <motion.h1
-                            initial={{ opacity: 0 }}
-                            animate={isHeroInView ? { opacity: 1 } : {}}
-                            transition={{ duration: 0.5, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] as const }}
+                        <h1
                             className={`${roboto.className} font-light text-black text-4xl md:text-5xl lg:text-6xl leading-tight md:col-span-4`}
+                            style={{ opacity: revealed ? 1 : 0, transition: 'opacity 0.5s ease-out' }}
                         >
                             Driven by a child-like sense of curiosity and a deep attention to detail.
-                        </motion.h1>
+                        </h1>
                     </div>
                 </GridContainer>
             </section>
@@ -361,11 +362,11 @@ export default function AboutMe() {
             <section className="relative py-16 md:py-[clamp(4rem,6vw,6rem)]">
                 <GridOverlayLight />
                 <GridContainer>
-                    <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10">
-                        <motion.div
-                            variants={fadeInLeft}
-                            className="md:col-span-2"
-                        >
+                    <div
+                        className="flex flex-col md:grid md:grid-cols-5 gap-10"
+                        style={{ opacity: revealed ? 1 : 0, transition: 'opacity 0.6s ease-out 0.1s' }}
+                    >
+                        <div className="md:col-span-2">
                             <p className={`${roboto.className} text-black/80 font-light text-lg leading-relaxed`}>
                                 Hey! I&apos;m Akin Tewe, a Product Designer with a background in Industrial Design from Georgia Tech.
                             </p>
@@ -373,11 +374,8 @@ export default function AboutMe() {
                                 As a designer who can also write code, I think about how things look and how they&apos;re actually built. Whether I&apos;m wireframing in Figma,
                                 conducting user research, or building responsive interfaces with React and TypeScript, I can take a project from initial concept through to functional code.
                             </p>
-                        </motion.div>
-                        <motion.div
-                            variants={fadeInRight}
-                            className="md:col-span-2 md:col-start-4"
-                        >
+                        </div>
+                        <div className="md:col-span-2 md:col-start-4">
                             <div className="relative overflow-hidden rounded-2xl shadow-xl">
                                 <Image
                                     src="/profilephoto.png"
@@ -387,18 +385,14 @@ export default function AboutMe() {
                                     className="w-full h-auto"
                                 />
                             </div>
-                        </motion.div>
-                    </AnimatedSection>
+                        </div>
+                    </div>
                 </GridContainer>
             </section>
 
             {/* Section 2: Experience - Carousel Left, Text Right */}
-            <motion.section
-                className="relative py-16 md:py-30 bg-gray-900"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true, margin: "100px" }}
-                transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}>
+            <section
+                className="relative py-16 md:py-30 bg-gray-900">
                 <GridOverlay />
                 <GridContainer>
                     <AnimatedSection className="flex flex-col md:grid md:grid-cols-5 gap-10 items-center">
@@ -418,7 +412,7 @@ export default function AboutMe() {
                         </motion.div>
                     </AnimatedSection>
                 </GridContainer>
-            </motion.section>
+            </section>
 
             {/* Section 3: Skills - Lists Left, Video Right */}
             <section className="relative py-16 md:py-[clamp(4rem,6vw,6rem)]" style={{ backgroundColor: "#ffffff" }}>

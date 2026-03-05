@@ -336,6 +336,9 @@ export default function AboutMe() {
     return (
         <main className="bg-white min-h-screen overflow-x-hidden">
 
+            {/* White content wrapper — min-h-screen ensures dark section starts below viewport */}
+            <div className="min-h-screen">
+
             {/* Hero Headline */}
             <section
                 className="relative pt-28 md:pt-40 pb-16 md:pb-24"
@@ -389,6 +392,8 @@ export default function AboutMe() {
                     </div>
                 </GridContainer>
             </section>
+
+            </div>
 
             {/* Section 2: Experience - Carousel Left, Text Right */}
             <section

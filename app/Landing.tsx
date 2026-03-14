@@ -544,17 +544,50 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
               )
             )}
 
-            {project.thumbnailImages && (
-              <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center gap-8 px-[10%] py-[8%]">
-                {project.thumbnailImages.map((src: string, i: number) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={src}
-                    src={src}
-                    alt=""
-                    className={`${i === 0 ? 'h-full' : 'h-[80%]'} w-auto object-contain`}
+            {project.thumbnailVideos && (
+              <div className="absolute inset-0 z-10 pointer-events-none">
+                {/* Desktop frame */}
+                <div className="absolute rounded-lg overflow-hidden"
+                  style={{
+                    left: '14%',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '68%',
+                    aspectRatio: '16/10',
+                    boxShadow: '0 12px 35px rgba(0,0,0,0.3)',
+                    zIndex: 1,
+                  }}
+                >
+                  <video
+                    src={project.thumbnailVideos.desktop}
+                    autoPlay loop muted playsInline
+                    className="w-full h-full object-cover block"
                   />
-                ))}
+                  <div className="absolute inset-0 rounded-lg pointer-events-none"
+                    style={{ boxShadow: 'inset 0 0 40px 12px rgba(255,255,255,0.18)' }}
+                  />
+                </div>
+                {/* Phone frame */}
+                <div className="absolute rounded-2xl overflow-hidden"
+                  style={{
+                    left: '70%',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '16%',
+                    aspectRatio: '9/19.5',
+                    boxShadow: '0 14px 40px rgba(0,0,0,0.35)',
+                    zIndex: 2,
+                  }}
+                >
+                  <video
+                    src={project.thumbnailVideos.phone}
+                    autoPlay loop muted playsInline
+                    className="w-full h-full object-cover block"
+                  />
+                  <div className="absolute inset-0 rounded-2xl pointer-events-none"
+                    style={{ boxShadow: 'inset 0 0 40px 12px rgba(255,255,255,0.18)' }}
+                  />
+                </div>
               </div>
             )}
 
@@ -640,8 +673,8 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
               style={{
                 height: '65%',
                 background: isSecondary
-                  ? 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 50%, transparent 100%)'
-                  : 'linear-gradient(to top, rgba(0,0,0,0.62) 0%, rgba(0,0,0,0.22) 40%, transparent 100%)',
+                  ? 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 50%, transparent 100%)'
+                  : 'linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.18) 40%, transparent 100%)',
                 borderRadius: 'inherit',
               }}
             />

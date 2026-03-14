@@ -9,7 +9,7 @@ const projectsdata = [
         tags: ["UI/UX Design", "Built with Claude", "Production Ready"],
         image: null,
         video: null,
-        thumbnailImages: ["/projects/sifty/sifty_ipad.png", "/projects/sifty/sifty_iphone.png"],
+        thumbnailVideos: { desktop: "/projects/sifty/main_thumbnail_video.mp4", phone: "/projects/sifty/mobile_view.mp4" },
         link: "/projects/sifty",
         gradient: {
             control: "props",

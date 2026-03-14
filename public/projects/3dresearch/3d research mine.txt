@@ -1,0 +1,76 @@
+﻿The Independent 3D Artist
+
+
+A qualitative UX Research study exploring the nature of creative work in an online economy. Through a mixture of in-person and remote interviews, I observed the story behind an entire community of “underground” 3D artists, and how they stamp their own identities in an industry defined by visibility, algorithmic pressure, instability.
+
+
+framing.
+
+
+What does “freedom” actually look like for independent artists once it becomes their livelihood?
+
+
+This central question was the driving component for the entire study. From this a number of secondary themes emerged; platform dependence, the emergence of AI, “impostor syndrome”, and sustainability. This became a question of human need, framed through the lens of multiple talented individuals.
+
+
+To answer this, interview questions were designed to feel open. Rather than leading participants to a presupposed narrative, these prompts focused on their lived experience, and allowed them to showcase it in the way that properly represented them.
+
+
+methodology.
+
+
+Two separate interview formats were conducted to capture the picture on both a micro and macro level.
+
+
+* focused, in-person interview
+An extensive observational interview with visual artist “Oseanworld.” Focuses on his journey into 3D art, motivations, and daily routine. This soft, more intimate presentation leads the video off with a feeling of comfort.
+
+
+* remote interview panel 
+A series of video calls with independent artists encompassing a broad range of backgrounds and niches. These conversations focused on their shared experience as independent artists. Financial stability, expectations, platform usability, and the overall broader state of the social media landscape
+
+
+
+
+
+
+interpreting human needs.
+
+
+Across both formats, several consistent themes emerged:
+
+
+* freedom vs. stability
+Artists describe the freedom provided through freelance as liberating, but acknowledge unpredictability and instability of financial status.
+
+
+* self-doubt vs. output
+Impostor syndrome was a big theme throughout the interviews. Posting content makes you feel inferior, but that inferiority is only subsided through validation of that same content. It’s a toxic cycle that these artists perpetually exist under.
+
+
+* technology: not an enemy or saviour
+While Blender (a 3D creation software) is celebrated for its capability and accessibility, tools like A.I. are seen as emotionally empty. Because of this, A.I. is not seen as a large threat, and has the potential to also be reformed into a tool to strengthen capability.
+
+
+Statements constantly juxtapose each other. Later comments contradict earlier claims. The emotional investment these artists put into their career becomes clear through their response. To better materialize these findings we can observe them using Maslow’s hierarchy of needs, interpreted through the lens of creative labor.
+
+
+( pic of hierarchy )
+
+
+This framework helps to contextualize responses without reducing them to generalizations.
+
+
+why does it matter?
+
+
+This study is an anchor in human continuity. The people behind the output and the platform. Although delivered as a documentary, it fundamentally highlights understanding users within a system. To that effect, it demonstrates:
+
+
+* Qualitative research planning
+* Interview design
+* Organization and utilization of large, unstructured data
+* Translation of research into a coherent narrative
+
+
+It didn’t aim to “solve a problem”, because their lives are not problems to be solved. Rather than resolving the tension of an independent artist, it gives it space to exist honestly.

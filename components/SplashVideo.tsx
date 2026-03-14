@@ -75,6 +75,7 @@ export function MainVideo({ webmSrc, mp4Src }: Prop2) {
       <video
         ref={videoRef}
         className="w-full h-full pointer-events-none"
+        style={{ imageRendering: 'pixelated' }}
         muted
         playsInline
         loop

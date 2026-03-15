@@ -463,7 +463,7 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
           <div
             className={`relative bg-[#ececec] rounded-2xl overflow-hidden transition-all duration-300 ease-out
                         group-hover:-translate-y-2 ${isSecondary ? 'aspect-card-secondary' : ''}`}
-            style={{ boxShadow: 'none', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
+            style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04)', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
             onMouseEnter={(e) => {
               let shadow = project.shadow;
               if (project.id === 5 && project.slideshow) {
@@ -474,7 +474,7 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
               e.currentTarget.style.boxShadow = `0 20px 50px -12px ${shadow}`;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = 'none';
+              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04)';
             }}
           >
             {/* Card content — fades in over placeholder */}
@@ -667,30 +667,20 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
               </span>
             </div>
 
-            {/* Desktop gradient + text overlay */}
-            <div
-              className="absolute bottom-0 left-0 right-0 z-[15] pointer-events-none hidden lg:block"
-              style={{
-                height: '65%',
-                background: isSecondary
-                  ? 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 50%, transparent 100%)'
-                  : 'linear-gradient(to top, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.18) 40%, transparent 100%)',
-                borderRadius: 'inherit',
-              }}
-            />
-            <div className="absolute bottom-0 left-0 right-0 z-[25] pointer-events-none p-4 hidden lg:block">
-              <span className={`${pixelify.className} text-white ${isSecondary ? 'text-base font-medium' : 'text-2xl'} tracking-wider uppercase`}>
+            </div>
+          </div>
+          {/* Caption below card */}
+          <div className="mt-3 px-1">
+            <div className="flex items-center justify-between gap-2">
+              <span className={`${pixelify.className} text-gray-900 ${isSecondary ? 'text-lg' : 'text-xl'} tracking-wider`}>
                 {project.title}
               </span>
-              <p className={`${roboto.className} text-white/80 ${isSecondary ? 'text-sm' : 'text-base'} font-light mt-1`}>
-                {project.body}
-              </p>
               {project.tags && project.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1 mt-2">
+                <div className="flex flex-wrap gap-1.5 justify-end">
                   {project.tags.map((tag: string) => (
                     <span
                       key={tag}
-                      className={`${roboto.className} text-white/60 ${isSecondary ? 'text-xs' : 'text-sm'} bg-white/10 rounded-full px-2 py-0.5`}
+                      className={`${pixelify.className} text-xs uppercase tracking-wider text-black/40 bg-black/[0.04] rounded-full px-2.5 py-1`}
                     >
                       {tag}
                     </span>
@@ -698,25 +688,9 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
                 </div>
               )}
             </div>
-            </div>
-          </div>
-          {/* Mobile caption — hidden on desktop where hover modal handles this */}
-          <div className="md:hidden mt-3 px-1">
-            <p className={`${roboto.className} text-black/50 text-sm font-light`}>
+            <p className={`${roboto.className} text-black/50 text-base font-light mt-1`}>
               {project.body}
             </p>
-            {project.tags && project.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mt-2">
-                {project.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    className={`${pixelify.className} text-[10px] uppercase tracking-wider text-black/40 bg-black/[0.04] rounded-full px-2.5 py-1`}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
           </div>
         </Link>
     </AnimatedSection>

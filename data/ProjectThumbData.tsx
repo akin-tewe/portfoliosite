@@ -3,7 +3,7 @@ const projectsdata = [
         id: 7,
         title: "Neighborhood",
         tag: "Design System",
-        body: "A component library and design system with warmth, motion, and personality baked into every token.",
+        body: "Design system built from the ground up and shipped as a fully packaged component library, token system, and living documentation site.",
         color: "bg-white",
         shadow: "rgba(22, 168, 90, 0.3)",
         tags: ["Design Systems", "UI Engineering", "Documentation"],

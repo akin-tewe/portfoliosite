@@ -463,7 +463,7 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
           <div
             className={`relative bg-[#ececec] rounded-2xl overflow-hidden transition-all duration-300 ease-out
                         group-hover:-translate-y-2 ${isSecondary ? 'aspect-card-secondary' : ''}`}
-            style={{ boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04)', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
+            style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06)', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
             onMouseEnter={(e) => {
               let shadow = project.shadow;
               if (project.id === 5 && project.slideshow) {
@@ -474,7 +474,7 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
               e.currentTarget.style.boxShadow = `0 20px 50px -12px ${shadow}`;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.06), 0 0 1px rgba(0, 0, 0, 0.04)';
+              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06)';
             }}
           >
             {/* Card content — fades in over placeholder */}

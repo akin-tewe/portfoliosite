@@ -359,7 +359,7 @@ export default function Neighborhood() {
                         <motion.p initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}>
-                            A component library and design system built from the ground up, with warmth, motion, and personality baked into every token. This case study covers the initial v0.1 conception and implementation. Neighborhood is actively under development, and the system continues to evolve beyond what is documented here.
+                            A component library and design system built completely by me from the ground up. This case study exclusively covers the thinking and decision making behind the v0.1 release. Neighborhood is still under active development, and the system continues to evolve beyond what&apos;s documented here.
                         </motion.p>
                         <motion.div initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.5 }} className="flex flex-wrap gap-4 mt-10">
@@ -382,7 +382,7 @@ export default function Neighborhood() {
                     { label: "Role", value: "Sole Designer · Developer" },
                     { label: "Components", value: "18 Components · 11 Atomic · 7 Compositional" },
                     { label: "Type", value: "Design System · Documentation" },
-                    { label: "Status", value: "v0.1 Shipped · Active Development" },
+                    { label: "Status", value: "v0.1 Released · Active Development" },
                 ]} />
             </section>
 
@@ -417,9 +417,9 @@ export default function Neighborhood() {
             <section id="showcase" className="relative py-16 md:py-20">
                 <GridContainer>
                     <RevealOnScroll>
-                        <SectionLabel>The System at a Glance</SectionLabel>
+                        <SectionLabel>System at a Glance</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
-                            Every component below is live — not a screenshot, not a mockup. These are the actual shipped npm components rendered on this page. Interact with them.
+                            A small preview of Neighborhood&apos;s component library. These aren&apos;t screenshots or mockups, but the functional, live components that are packaged and ready to be installed through the GitHub. Explore them!
                         </p>
                     </RevealOnScroll>
                 </GridContainer>
@@ -495,7 +495,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>Token System</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
-                            Every visual decision is a CSS custom property. Components reference tokens exclusively — no hardcoded values. Six categories: typography, color, spacing, radius, elevation, and motion. The token system was finalized before any components were built.
+                            Every visual decision is a CSS custom property. Components completely reference tokens (not hardcoded values), ensuring structure and consistency throughout. Currently we have six primary token categories: typography, color, spacing, radius, elevation, and motion. This token system was finalized before any components were built.
                         </p>
                     </RevealOnScroll>
 
@@ -578,7 +578,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>Components</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
-                            18 components in two layers. Eleven atomic primitives handle individual interactions. Seven compositional components compose atoms into reusable patterns — this is where the systems thinking lives.
+                            18 components in two layers. 11 atomic primitives handle individual interactions and act as building blocks for compositional components. 7 compositional components compose those atoms into reusable patterns. This is where our systems thinking lives.
                         </p>
                     </RevealOnScroll>
 
@@ -613,7 +613,7 @@ export default function Neighborhood() {
                         {/* SettingRow */}
                         <RevealOnScroll>
                             <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
-                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800`}>Setting Row</span>
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800`}>Setting</span>
                                 <p className={`${roboto.className} text-sm text-black/45 font-light mt-1 mb-4`}>
                                     Appeared 10+ times on a single Notion page. Label + description left, any control right. The slot accepts any atom.
                                 </p>
@@ -686,7 +686,7 @@ export default function Neighborhood() {
                                 <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
                                     <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Two-Repo Architecture</span>
                                     <p className={`${roboto.className} font-light text-sm text-black/50 mb-3`}>
-                                        Published as @neighborhood/ui. Doc site imports from the package, not local files — enforcing a clean API boundary.
+                                        Published as @neighborhood/ui. Doc site imports from the package, not local files. This ensures a clean API boundary, and allows our doc site to live as a live consumer of the design system.
                                     </p>
                                     <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs text-gray-300">
                                         <span className="text-gray-500">$</span> <span className="text-green-400">npm</span> install github:akin-tewe/neighborhood-ui
@@ -695,7 +695,7 @@ export default function Neighborhood() {
                                 <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
                                     <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Accessibility</span>
                                     <p className={`${roboto.className} font-light text-sm text-black/50`}>
-                                        Every component has a visible focus ring via :focus-visible. Consistent spec: 2px solid sky-400, 2px offset. Every documented keyboard interaction works. Claims without implementation are worse than no claims.
+                                        Every component has a visible focus ring via :focus-visible. Consistent spec: 2px solid sky-400, 2px offset. Every documented keyboard interaction works.
                                     </p>
                                 </div>
                             </div>
@@ -712,7 +712,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>Composition</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3`}>
-                            Atoms compose into patterns. Scroll to watch a settings panel assemble itself from individual components — the thesis made visible.
+                            Atoms compose into reusable patterns. Scroll to watch a settings panel assemble itself from individual components.
                         </p>
                     </RevealOnScroll>
 
@@ -728,7 +728,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>Methodology</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
-                            Structured audits of three shipping products — analyzing full-page layouts, mid-level patterns, and atomic elements. Three products chosen as a triangle: content tools, data dashboards, social platforms.
+                            Constructing random components to make up the initial pool would leave most of them dead and unused, which is a common problem in design systems. To ensure a strong foundation, the initial component pool was built using 3 pilots as a reference model. I performed an in-depth analysis of Notion, Stripe, and Discord&apos;s infrastructure to see which components came up consistently across all 3. From this we could decide what to extract and abstract into our usable component pools. These websites were chosen as a triangle: content tools, data dashboards, and social platforms. This ensures a valuable range of information and core use cases to abstract from.
                         </p>
                     </RevealOnScroll>
 
@@ -764,7 +764,7 @@ export default function Neighborhood() {
 
                     <RevealOnScroll className="mt-8">
                         <p className={`${roboto.className} font-light text-base leading-relaxed text-black/60`}>
-                            If a component appeared in all three, it was non-negotiable. Two appearances meant strong consideration. One appearance required high compositional value to earn inclusion. Setting rows, property displays, and banners all passed. Command palette and user profile card are documented for v0.2.
+                            If a component appeared in all three, it was flagged as a non-negotiable addition. Two appearances meant strong consideration. One appearance required a high compositional value to earn inclusion. Among all of our identified components, 18 were picked out thoughtfully in regards to what would best serve Neighborhood&apos;s identity.
                         </p>
                     </RevealOnScroll>
                 </GridContainer>
@@ -778,7 +778,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>Tradeoffs</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-6`}>
-                            Every decision to include a component was also a decision to exclude others. The inventory is deliberately tight — 18 components with clear cross-product rationale over 40 from a checklist.
+                            Every decision to include a component was also an active decision to exclude others. This deliberately tight inventory ensured development time wasn&apos;t bogged down with creating dead components, and set the pace on how to prioritize implementation for future development.
                         </p>
                     </RevealOnScroll>
 
@@ -787,7 +787,7 @@ export default function Neighborhood() {
                             <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
                                 <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Same Need, Different Solutions</span>
                                 <p className={`${roboto.className} font-light text-sm leading-relaxed text-black/60`}>
-                                    Settings architecture alone had three valid approaches — Notion uses a modal overlay, Discord does a full-page takeover, Stripe uses a card grid hub. Property display had three implementations. Destructive actions used red fill (Stripe) vs red text (Discord). Neighborhood documents the analysis and picks the right approach per context, not per preference.
+                                    Settings architecture alone had three valid approaches. Notion uses a modal overlay, Discord does a full-page takeover, and Stripe uses a card grid hub. Property display had three implementations. Destructive actions used consistently used a red fill throughout most observations. Neighborhood documents this analysis and picks the right approach per context, not per preference.
                                 </p>
                             </div>
                         </RevealOnScroll>
@@ -795,7 +795,7 @@ export default function Neighborhood() {
                             <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
                                 <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Inclusion vs Exclusion</span>
                                 <p className={`${roboto.className} font-light text-sm leading-relaxed text-black/60`}>
-                                    Toggle appeared in Notion (10+ instances) and Discord but not Stripe — included because two products confirmed universality. Switcher appeared only in Stripe but its compositional value (filtering data in place without navigating) earned inclusion as a distinctive pattern. Metric Card was excluded from v0.1 — rich and reusable, but too specific to data-dense dashboards for a system establishing its identity. Reaction badges (Discord-only) were excluded entirely: high personality, low cross-product applicability.
+                                    Toggle appeared in Notion (10+ instances) and Discord but not Stripe. This meant it should still be included because two products confirmed universality. Switcher appeared only in Stripe but its compositional value (filtering data in place without navigating) earned inclusion as a distinctive pattern. A metric card was deliberately excluded from v0.1. It was deemed too specific to data-dense dashboards for a system still establishing its identity.
                                 </p>
                             </div>
                         </RevealOnScroll>
@@ -819,9 +819,10 @@ export default function Neighborhood() {
                             <div className="border-l-2 border-red-400/40 pl-5 py-1">
                                 <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/40 font-medium mb-2 block`}>Up Next — v0.2 Roadmap</span>
                                 <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/70 space-y-1`}>
-                                    <li>• Emerging patterns: card system, showcase surfaces, flat strip indicator</li>
-                                    <li>• New components: Command Palette, avatar color prop</li>
-                                    <li>• Dark mode via token architecture · messaging + e-commerce demos</li>
+                                    <li>• Emerging patterns: fleshed out card system, showcase surfaces, flat strip indicator</li>
+                                    <li>• New components: Command Palette, avatar color props</li>
+                                    <li>• Dark mode via token architecture</li>
+                                    <li>• Messaging + e-commerce demos</li>
                                 </ul>
                             </div>
                         </RevealOnScroll>
@@ -837,7 +838,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>Demos</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-6`}>
-                            Three demo pages, each exercising a different composition context. The settings demo below uses 14 of 18 components. Switch tabs to see the content change.
+                            Three demo pages, each exercising different composition contexts. These utilize a number of our components in each composition to demonstrate what this design system would look like working in harmony. Switch tabs to see different context demonstrations.
                         </p>
                     </RevealOnScroll>
 
@@ -925,7 +926,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>What&apos;s Next</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
-                            v0.1 shipped the foundation — but several patterns emerged during documentation site development that are actively shaping the next version.
+                            While v0.1 shipped the foundation, several patterns emerged during documentation site development that are already actively shaping the next version.
                         </p>
                     </RevealOnScroll>
 
@@ -955,7 +956,7 @@ export default function Neighborhood() {
                                     <div>
                                         <span className={`${spaceGrotesk.className} text-xs text-black/30 uppercase tracking-wider font-medium mb-2 block`}>New Components</span>
                                         <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/55 space-y-1`}>
-                                            <li>• Metric Card (Stripe), Command Palette (Notion), Profile Card (Discord)</li>
+                                            <li>• Command Palette (Notion), Profile Card (Discord)</li>
                                             <li>• Avatar color prop, card system, showcase surfaces</li>
                                             <li>• Dark mode via token architecture</li>
                                         </ul>
@@ -984,7 +985,7 @@ export default function Neighborhood() {
                                 <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
                                     <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Responsive Infrastructure</span>
                                     <p className={`${roboto.className} text-sm text-black/50 font-light`}>
-                                        CSS-first responsive system with two breakpoints (768px tablet, 640px mobile). Components include their own mobile behavior — Setting Row wraps controls, Block hides descriptions, Switcher stacks vertically inside settings. Pages use layout classes and the CSS handles the rest.
+                                        CSS-first responsive system with two breakpoints (768px tablet, 640px mobile). Components also include their own mobile behavior. Setting wraps controls, Block hides descriptions, Switcher stacks vertically inside settings. Pages use layout classes and the CSS handles the rest.
                                     </p>
                                 </div>
                             </div>
@@ -993,7 +994,7 @@ export default function Neighborhood() {
                         {/* Additional demos */}
                         <RevealOnScroll delay={0.15}>
                             <p className={`${roboto.className} font-light text-base leading-relaxed text-black/60`}>
-                                Additional demo pages covering messaging and e-commerce contexts are planned to demonstrate wider compositional range. Dark mode implementation via the existing token architecture is also in scope — the CSS custom property foundation means it&apos;s a matter of defining alternate values, not restructuring components.
+                                Additional demo pages covering messaging and e-commerce contexts are planned to demonstrate wider compositional range. Dark mode implementation via the existing token architecture is also in scope. The CSS custom property foundation means this is just a matter of defining alternate values, not restructuring components.
                             </p>
                         </RevealOnScroll>
                     </div>

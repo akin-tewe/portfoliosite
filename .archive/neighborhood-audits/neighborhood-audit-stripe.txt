@@ -1,0 +1,1230 @@
+NEIGHBORHOOD DESIGN SYSTEM — STRIPE AUDIT
+==========================================
+Product: Stripe Dashboard (dashboard.stripe.com)
+Audited: March 13, 2026
+Method: Screenshot analysis of live authenticated sandbox dashboard
+  (light mode). 8 screenshots provided by Akin Tewe, analyzed by Claude.
+Views analyzed: 8 distinct screens
+Auditor: Claude (conversation with Akin Tewe)
+
+Purpose: This document captures every observed UI pattern from the live
+Stripe Dashboard, organized by abstraction layer. This is the third and
+final product audit. A cross-product synthesis across Notion, Discord,
+and Stripe will follow in a separate document.
+
+IMPORTANT DISTINCTION: Stripe is the only product audited in LIGHT MODE.
+Notion and Discord were both in dark mode. This gives us visual data on
+how patterns translate across color schemes — relevant for Neighborhood
+which will need to define both.
+
+
+TABLE OF CONTENTS
+=================
+1. Page-level patterns (full-page structural templates)
+2. Compositional patterns (mid-level grouped components)
+3. Atomic components (individual UI elements with observed states)
+4. Interaction patterns (behaviors and state transitions)
+5. Notable design decisions
+6. Extraction candidates for Neighborhood
+
+
+========================================================================
+1. PAGE-LEVEL PATTERNS
+========================================================================
+
+------------------------------------------------------------------------
+1A. APP SHELL (TWO-COLUMN, LIGHT)
+------------------------------------------------------------------------
+Source: Every screenshot
+
+Stripe uses a clean two-column layout — structurally similar to Notion
+but visually distinct due to light mode and minimal styling.
+
+Structure (left to right):
+  [Sidebar] [Main Content Area]
+
+Sidebar (~200px wide):
+  - White/light background, matching the content area (unlike Notion
+    and Discord which use a darker sidebar than content).
+  - Top: Workspace selector — "Test Business sandbox / Test Business"
+    with chevron dropdown. Purple "T" icon/avatar.
+  - Top-level nav items (NO icons on most items, text only):
+    * Home, Balances, Transactions, Customers, Product catalog
+    * These are plain text links, not icon + label pairs.
+  - "Shortcuts" section label (muted, small):
+    * Context-dependent items (e.g., "Payments analytics",
+      "Revenue recovery", "Usage-based billing", "Invoices",
+      "Subscriptions", "Revenue Recognition")
+    * These appear to change based on the current product context.
+  - "Products" section label (muted, small):
+    * Expandable items with icons + chevrons: Payments (wallet icon),
+      Billing (document icon), Reporting (chart icon), More (dots icon)
+    * Expanding shows sub-items: Analytics, Disputes, Radar,
+      Payment Links, Terminal (under Payments)
+    * Sub-items have NO icons — text only, indented.
+  - Bottom: "Developers" (terminal icon)
+  - Active item: blue/purple text color (vs. gray for inactive).
+  - Hover: not observed in screenshots but expected to show bg change.
+  - The sidebar has NO section dividers — spacing and labels alone.
+  - The sidebar is narrower and more minimal than Notion's or
+    Discord's — fewer visual elements per item.
+
+Top bar:
+  - NOT part of the sidebar — spans the full width above the content.
+  - Left-center: Search input (magnifying glass icon + "Search"
+    placeholder) — wider than Notion's, prominently placed.
+  - Right: Info banner area ("Sandboxes are the new way to test.
+    Learn more" link) + icon buttons: grid (apps), help circle,
+    notification bell, gear (settings), another icon, user avatar
+    (circular with green status indicator).
+  - The top bar is consistent across all views — same height, same
+    search input, same right-aligned icons.
+
+Main content area:
+  - White background, max-width constrained, centered.
+  - Generous left margin from the sidebar edge.
+  - Content scrolls independently; top bar stays fixed.
+  - Some pages have a right sidebar within the content area
+    (observed on Customer detail and Revenue recovery pages).
+
+Extraction potential for Neighborhood:
+  → AppShell: same two-column pattern as Notion but with distinct
+    visual treatment (light, minimal, no icon-heavy sidebar).
+  → Sidebar: minimal variant — text-only nav items for top-level,
+    icon + text for product sections, expandable groups.
+  → TopBar: search-centered with right-aligned utility icons.
+  → The light mode treatment is directly relevant for Neighborhood's
+    token system.
+
+------------------------------------------------------------------------
+1B. HOME / OVERVIEW DASHBOARD
+------------------------------------------------------------------------
+Source: Home page screenshot
+
+Structure (top to bottom):
+  [Top bar]
+  ["Today" section — summary metrics + sparkline]
+  [Recommendations card (right-aligned)]
+  ["Your overview" section — filter bar + metric card grid]
+  [Additional metric cards below]
+  [Setup guide widget (floating, bottom-right)]
+
+"Today" section:
+  - Section header: "Today" (large heading).
+  - Metric selectors: "Gross volume" dropdown + "Yesterday" dropdown
+    — these are text links with chevrons, not buttons.
+  - Summary values: "$0.00" (large, bold number) + "5:12 AM"
+    timestamp below.
+  - Sparkline chart: minimal line chart with just axis labels
+    ("12:00 AM" on both ends), no grid, no legend.
+  - Below chart: "USD balance $0.00" with "View" link + "Payouts —"
+    with "View" link — inline metric + action pairs.
+
+Recommendations card (right sidebar):
+  - Bordered card, positioned in a right column.
+  - "Recommendations" header + dismiss (X circled) icon.
+  - Bullet-style content links (blue text).
+  - "API keys" subsection within the card: "View docs" link +
+    key-value rows (Publishable key / truncated value, Secret key /
+    truncated value).
+  - This is a contextual sidebar card — not a page-level sidebar.
+
+"Your overview" section:
+  - Section header: "Your overview" (large heading).
+  - Filter bar: "Date range" label + "Last 7 days" dropdown + "Daily"
+    dropdown + "Compare" icon toggle + "Previous period" dropdown.
+    Right-aligned: "+ Add" button + "Edit" button with gear icon.
+  - Metric card grid (3 columns):
+    * "Payments" card: title with info (i) icon + chart area showing
+      "No data" centered text.
+    * "Gross volume" card: title with info icon + "$0.00" large value
+      + "$0.00 previous period" comparison text + mini chart with
+      date axis + "Updated 4 seconds ago" timestamp + "More details"
+      link.
+    * "Net volume" card: same pattern as Gross volume.
+  - Below: more metric cards — "Failed payments", "New customers",
+    "Top customers by spend" with "All time" text filter.
+
+Setup guide widget:
+  - Floating card, bottom-right corner (persistent across pages).
+  - "Setup guide" header + pin icon + progress bar (blue fill) +
+    "Next: Verify your business" link.
+  - This is a persistent onboarding element — appears on every page.
+
+Extraction potential for Neighborhood:
+  → DashboardLayout: section-based, with optional right sidebar card.
+  → MetricCard: title + info icon + large value + comparison value +
+    mini chart + timestamp + action link. Rich and reusable.
+  → FilterBar: dropdowns + toggles + action buttons, horizontally
+    arranged. Distinct from Notion's filter chips (which are
+    pill-shaped) and Discord's (which doesn't have this pattern).
+  → SummaryMetric: label dropdown + large value + timestamp. Inline.
+  → RecommendationCard / ContextualSidebar: bordered card with
+    mixed content (text links, key-value pairs, dismiss action).
+  → SetupGuide / OnboardingWidget: floating persistent card.
+  → SparklineChart: minimal chart with just a line and axis labels.
+
+------------------------------------------------------------------------
+1C. TRANSACTIONS LIST PAGE
+------------------------------------------------------------------------
+Source: Transactions page screenshot
+
+This is the canonical "list page" pattern — the most common page type
+in any SaaS dashboard. Stripe's implementation is the most structured
+of the three products.
+
+Structure (top to bottom):
+  [Page header: title + action buttons]
+  [Tabs]
+  [Info banner (conditional)]
+  [Status filter pills]
+  [Filter chips row + table actions]
+  [Data table]
+  [Result count footer]
+
+Page header:
+  - "Transactions" (large heading, left-aligned).
+  - Right-aligned action buttons: "+ Create payment" (blue/purple,
+    filled, primary) + "Analyze" (outlined, with chart icon).
+  - No breadcrumb — this is a top-level page.
+
+Tabs:
+  - "Payments" (active, blue underline + blue text), "Payouts",
+    "Top-ups", "All activity".
+  - Underline style, same as Notion's database view tabs and
+    Discord's settings tabs.
+  - Positioned directly below the page header.
+
+Info banner:
+  - Full-width, white background with left border or icon accent.
+  - Blue "Resource" badge (pill) + informational text + "Read the
+    letter" link (blue) + dismiss X icon (right-aligned).
+  - This is a promotional/informational banner, not an error state.
+
+Status filter pills:
+  - Horizontal row of selectable rectangular pills: "All" (active —
+    purple/blue border), "Succeeded", "Refunded", "Disputed",
+    "Failed", "Uncaptured", "Blocked".
+  - Each pill: bordered rectangle with text label, ~100px wide.
+  - Active pill: purple/blue left border accent or full border.
+  - Inactive pills: gray border, muted text.
+  - This pattern is UNIQUE to Stripe — Notion and Discord don't
+    have horizontal status filter pills.
+
+Filter chips row:
+  - "Date and time", "Amount", "Currency", "Status", "Payment
+    method", "More filters" — each with a small circle/plus icon
+    prefix.
+  - These are additive filters — clicking opens a popover to set
+    filter criteria.
+  - Right-aligned: "Export" icon button + "Edit columns" with gear
+    icon.
+  - This row sits between the status pills and the data table.
+
+Data table:
+  - Column headers: checkbox (select all) + "Amount" + "Payment
+    method" + "Description" + "Customer" + "Date" + "Refunded date"
+    + "Decline reason" + three-dot menu column.
+  - Row anatomy: checkbox + "$100.00 USD" + "Canceled" badge
+    (orange, with X icon) + truncated ID (monospace) + email link +
+    date + em dash (—) for empty values + three-dot row menu.
+  - Header row: muted text, acts as column labels.
+  - Row hover: expected to show background highlight.
+  - Checkbox column: enables bulk actions.
+  - Three-dot column: row-level actions menu.
+
+Result count:
+  - "1 item" — left-aligned below the table. Simple text.
+  - For larger datasets, pagination would appear here.
+
+Extraction potential for Neighborhood:
+  → ListPage layout: the full template (header + tabs + banners +
+    filters + table + pagination). This is arguably the most
+    important page-level pattern for a SaaS design system.
+  → StatusFilterBar: horizontal selectable pills for status filtering.
+    Unique and high-value extraction.
+  → DataTable: column headers + typed rows + checkboxes + row actions.
+    The most complex data display component.
+  → FilterChipRow (Stripe variant): icon prefix + label, additive
+    filter pattern. Different from Notion's command palette chips.
+  → InfoBanner: badge + text + link + dismiss. Promotional variant.
+  → ResultCount / Pagination: table footer with count and controls.
+
+------------------------------------------------------------------------
+1D. CUSTOMER DETAIL PAGE
+------------------------------------------------------------------------
+Source: Customer detail screenshot
+
+Structure:
+  [Breadcrumb]
+  [Page header: title + subtitle + action buttons]
+  [Main content (left, ~65%) + Details sidebar (right, ~35%)]
+  [Stacked content sections]
+
+Breadcrumb:
+  - "Customers" link (blue) positioned above the page title.
+  - Single level — just the parent page, no multi-level chain.
+  - This pattern repeats on the Personal details page ("Settings").
+
+Page header:
+  - "Test Customer" (large heading).
+  - "johndoe@gmail.com" (muted text, below title).
+  - Right-aligned: "Create payment" (outlined button) + "Create
+    invoice" (outlined button) + three-dot menu.
+  - Multiple secondary action buttons — unusual. Notion typically
+    has one primary + one three-dot. Stripe surfaces more actions.
+
+Main content (stacked sections):
+  Each section follows the same pattern:
+  - Section title (bold, medium heading) + right-aligned add (+) icon.
+  - Content area below: either a data table, an empty state, or a
+    description paragraph + empty state.
+
+  "Subscriptions" section:
+    - Data table with columns: checkbox, Product, Frequency, Next
+      invoice + three-dot row menu.
+    - Row: "Test Product" + "Active" badge (green pill) + "Billing
+      monthly" + "Apr 13 for $100.00" (date as link) + three-dot.
+    - "1 result" count below.
+
+  "Payments" section:
+    - Empty state: centered "No payments" text within a bordered/
+      shaded container. No icon, no action — simpler than Notion's
+      dashed-border empty state.
+
+  "Payment methods" section:
+    - Same empty state pattern: "No payment methods".
+
+  "Financial Connections accounts" section:
+    - Section title + description paragraph + "Learn more" link.
+    - Empty state: "No accounts".
+
+  "Entitlements" section:
+    - Same pattern with description + "Learn more" link + empty state.
+
+Details sidebar (right column):
+  - "Details" card header + edit (pen) icon.
+  - Property rows:
+    * "Customer ID" (muted label) + "cus_U8tKSbl..." (value with
+      copy icon).
+    * "Customer since" (muted) + calendar icon + "Mar 13" (value).
+    * "Billing emails" (muted) + "johndoe@gmail.com" (value with
+      copy icon).
+    * "Business name" (muted) + "—" (empty value).
+  - "Show more" link (blue) at bottom of card.
+  - "Metadata" card below: header + edit icon + "No metadata" empty
+    state.
+
+Extraction potential for Neighborhood:
+  → DetailPage layout: breadcrumb + header + two-column (main +
+    sidebar). Different from Notion's split view (list + detail)
+    and Discord's full-width settings.
+  → ContentSection: section title + add action + content area. The
+    most repeated pattern on this page.
+  → DetailsSidebar / PropertyCard: card with header + edit action +
+    property rows + "show more". The property rows here are
+    label-above-value (like Discord) but in a card container.
+  → EmptyState (Stripe variant): simple centered text in a subtle
+    container. No icon, no dashed border, no action — the most
+    minimal empty state of the three products.
+
+------------------------------------------------------------------------
+1E. SETTINGS HUB
+------------------------------------------------------------------------
+Source: Settings page screenshot
+
+This is a COMPLETELY DIFFERENT settings approach from Notion and Discord.
+Not a sidebar-nav + content layout. Instead: a card grid.
+
+Structure:
+  [Section label]
+  [3-column card grid]
+  [Section label]
+  [3-column card grid]
+  [Footer links]
+
+Section grouping:
+  - "Personal settings" — 3 cards
+  - "Account settings" — 6 cards (2 rows of 3)
+  - "Product settings" — 8 cards (3 rows, last row has 2)
+
+Settings card anatomy:
+  +-------------------------------------------------------------+
+  | [Icon]  [Title (blue link text)]                             |
+  |         [Description (muted, 1-2 lines)]                     |
+  +-------------------------------------------------------------+
+
+  - Icon: muted/gray, left of title. Each card has a unique icon
+    (person, bell, terminal, building, shield, star, etc.).
+  - Title: blue/purple link color, bold/medium weight. Clickable —
+    navigates to the settings detail page.
+  - Description: muted text, below the title. Brief explanation
+    of what the setting controls.
+  - Cards have NO visible borders — they're laid out in a grid with
+    spacing, but each card is just icon + text, not a bordered box.
+  - 3-column grid, consistent spacing.
+
+Cards observed:
+  Personal settings:
+    - Personal details / Communication preferences / Developers
+  Account settings:
+    - Business / Team and security / Stripe profile / Your plans /
+      Compliance and documents / Perks
+  Product settings:
+    - Billing / Payments / Discover more features / Financial
+      Connections / Radar / Managed Payments / Sigma
+
+Footer:
+  - "Share feedback · Keyboard shortcuts" — utility links, muted.
+
+Extraction potential for Neighborhood:
+  → SettingsHub: card grid layout for top-level settings navigation.
+    This is a third settings pattern (Notion: sidebar modal, Discord:
+    full-page sidebar, Stripe: card grid). Demonstrates that
+    "settings" isn't one pattern — it's a family.
+  → SettingsCard: icon + title + description, in a grid. Could be
+    generalized as a NavigationCard or LinkCard.
+  → The 3-column grid layout itself is a reusable pattern.
+
+------------------------------------------------------------------------
+1F. PERSONAL DETAILS (SETTINGS FORM PAGE)
+------------------------------------------------------------------------
+Source: Personal details screenshot
+
+Structure:
+  [Breadcrumb: "Settings"]
+  [Page header: title + "Global setting" badge]
+  [Form sections, stacked vertically]
+
+Page header:
+  - Breadcrumb: "Settings" link (blue).
+  - Title: "Personal details" (large heading).
+  - "Global setting" badge (muted pill with info icon) — indicates
+    this setting applies across workspaces.
+
+Form sections (stacked, each with its own pattern):
+
+  "User" section:
+    - Section header: "User" (bold) + "Edit" button (right-aligned,
+      outlined, with pen icon).
+    - Property rows (read-only display):
+      * "Name" (muted label, left column) + "Akin Tewe" (value,
+        right column)
+      * "Password" + "(Password not set)" muted/italic value
+      * "Email" + email value
+      * "Backup email" + "New" badge (green pill) + "Add backup
+        email" button (outlined)
+      * "Contact phone" + info icon + "Add contact phone number"
+        button (outlined)
+    - This is a READ-ONLY section that becomes editable when "Edit"
+      is clicked (assumed — edit mode not captured).
+
+  "Google account" section:
+    - Section header: "Google account" (bold).
+    - Description paragraph below header.
+    - Connected account row: avatar (circle "A" initial, purple bg) +
+      name + email.
+    - "Disconnect Google account" button (RED, filled — destructive).
+    - This is a section with a DESTRUCTIVE primary action.
+
+  "Passkeys" section:
+    - Section header + description + additional paragraph.
+    - "Add passkey" button (outlined, with + icon).
+
+  "Two-step authentication" section:
+    - Same pattern: header + description + paragraph + "Add
+      authentication method" button (outlined).
+
+  "Language" section:
+    - Section header + description.
+    - Select dropdown: "Auto-detect" with chevron (full-width input
+      style, bordered).
+    - Helper text: "Your detected language is English (United States)."
+    - "Save" button (purple, filled, primary) — right-aligned.
+    - This is the only section with an actual FORM INPUT (the select)
+      rather than property rows.
+
+  "Login sessions" section:
+    - Section header + description.
+    - Data table: Location, Device, IP Address, Time columns.
+    - Row: "United States (GA)" + "Chrome - Windows" + IP address +
+      "3 minutes ago" + "Current session" label.
+    - "Sign out all other sessions" button (outlined) — right-aligned
+      above the table.
+
+Extraction potential for Neighborhood:
+  → FormSection: section header + optional description + content area
+    + optional action button (right-aligned). The most repeated
+    pattern on this page.
+  → PropertyRow (Stripe read-only variant): label (left column) +
+    value (right column). Two-column, no icon prefix. Different
+    from Notion's (icon + label + value) and Discord's (label above
+    value).
+  → ConnectedAccountRow: avatar + name + email — a MemberRow variant
+    specific to account connections.
+  → FormInput with helper: select dropdown + helper text below +
+    save button. Traditional form pattern not seen in Notion or
+    Discord settings (which use inline toggles/selects).
+  → SectionAction: right-aligned action button associated with a
+    section header (Edit, Add, Save, Sign out).
+
+------------------------------------------------------------------------
+1G. REVENUE RECOVERY (ANALYTICS PAGE)
+------------------------------------------------------------------------
+Source: Revenue recovery screenshot
+
+A distinct page type — analytics/reporting — with patterns not seen
+on other Stripe pages.
+
+Structure:
+  [Page header: title + description + feedback button]
+  [Tabs]
+  [Warning banner]
+  [Time range selector]
+  [Metric row]
+  [Chart sections with right sidebar]
+
+Page header:
+  - "Revenue recovery" (large heading).
+  - Description paragraph below (muted) — explains what the page does.
+  - "Give feedback" button (outlined, right-aligned, with chat icon).
+  - This header includes a description — different from the
+    Transactions page (title + actions only) and the Customer detail
+    page (title + subtitle).
+
+Tabs:
+  - "Overview" (active, blue underline), "Retries", "Emails",
+    "Automations".
+  - Same underline style seen on Transactions page.
+
+Warning banner:
+  - Yellow/amber background (not blue like the info banner on
+    Transactions).
+  - Warning triangle icon + text + dismiss X.
+  - This is a WARNING variant of the banner pattern (vs. INFO on
+    Transactions page). Different color = different severity.
+
+Time range selector (UNIQUE TO STRIPE):
+  - Segmented control: "3m", "6m", "1y" (active — bordered/filled),
+    "2y".
+  - Date range text: "Apr 01, 2025 – Mar 13, 2026" beside the
+    segments.
+  - This is a segmented button group / toggle group — not a dropdown,
+    not tabs. A distinct interaction pattern.
+
+Metric row:
+  - 4 inline metrics in a horizontal row:
+    * "Failed payments" + info icon + "$0.00"
+    * "Failure rate" + info icon + "0%"
+    * "Recovered payments" + info icon + "$0.00"
+    * "Recovery rate" + info icon + "0%"
+  - Each metric: muted label + info icon + large bold value.
+  - This is a summary strip — denser than the dashboard's metric
+    cards (no chart, no comparison, no timestamp).
+
+Chart sections:
+  - "Recovery breakdown" header + "Explore" link (right-aligned).
+  - Chart legend: colored squares + labels ("In recovery",
+    "Recovered", "Not recovered", "Recovery rate") — horizontal row.
+  - Stacked bar chart with line overlay, date axis (Apr 2025 –
+    Mar 2026).
+  - Below: "Recovered volume by method" with same chart pattern.
+
+Right sidebar (within content area):
+  - "Optimize your revenue recovery" section:
+    * Checklist with status indicators:
+      - Green checkmark (completed): "Enable smart retries"
+      - Blue circle (in progress/active): "Enable recovery emails"
+      - Gray circle (not started): "Use hosted recovery surface"
+    * Each item is a link (blue text).
+  - "Top customers in recovery" section:
+    * Info icon + bordered card with informational text.
+  - "Resources" section:
+    * Resource items: title + "View doc >" link, separated by divider.
+
+Extraction potential for Neighborhood:
+  → AnalyticsPage layout: header with description + tabs + filters +
+    metrics + charts + sidebar. A third distinct page type alongside
+    ListPage and DetailPage.
+  → SegmentedControl: horizontal button group for selecting a value
+    from a small set (time ranges). Active state: bordered/filled.
+    Different from tabs (which navigate) — this filters data.
+  → MetricStrip: horizontal row of label + value metrics. Denser
+    than MetricCard. Good for summary displays.
+  → ChartSection: title + action link + legend + chart visualization.
+  → ChartLegend: colored squares + labels, horizontally arranged.
+  → ProgressChecklist: items with status indicators (completed/
+    active/incomplete) as a vertical list. Unique to Stripe.
+  → ResourceCard: title + "View doc" link, within a sidebar.
+  → WarningBanner: yellow/amber variant of the info banner.
+
+
+========================================================================
+2. COMPOSITIONAL PATTERNS
+========================================================================
+
+------------------------------------------------------------------------
+2A. METRIC CARD
+------------------------------------------------------------------------
+Sources: Home overview dashboard
+
+The most repeated pattern on the dashboard.
+
+Full anatomy:
+  +-------------------------------------------------------------+
+  | [Title] [Info icon]                          [Chart icon]    |
+  | [$0.00] <- large value                                       |
+  | [$0.00 previous period] <- comparison (muted)                |
+  |                                                              |
+  | [Mini chart area]                                            |
+  |                                                              |
+  | [Mar 7]                                  [Mar 13]            |
+  | [Updated 4 seconds ago]              [More details]          |
+  +-------------------------------------------------------------+
+
+  - Title: muted text + info (i) icon for tooltip.
+  - Large value: bold, primary text, prominent.
+  - Comparison: muted text showing previous period value.
+  - Chart: mini line/bar chart within the card.
+  - Date axis: below chart.
+  - Footer: timestamp (muted) + "More details" link.
+  - Optional chart icon (top-right) for chart type toggle.
+  - Border: subtle, full card border with rounded corners.
+
+  Variants observed:
+  - With chart data: shows the chart and all metadata.
+  - Empty: shows "No data" centered text instead of chart.
+  - Minimal: "Failed payments" / "New customers" — title + value
+    only, no chart, more compact.
+
+------------------------------------------------------------------------
+2B. CONTENT SECTION
+------------------------------------------------------------------------
+Sources: Customer detail page (appears 5+ times)
+
+The most repeated pattern on detail pages.
+
+Anatomy:
+  +-------------------------------------------------------------+
+  | [Section title (bold)]                              [+ icon] |
+  |                                                              |
+  | [Content: data table, empty state, or description + empty]   |
+  +-------------------------------------------------------------+
+
+  - Section title: bold, medium heading.
+  - Add action: "+" icon, right-aligned. For adding items to the
+    section (subscriptions, payments, etc.).
+  - Content: varies by section — can be a data table with rows, a
+    simple "No [items]" empty state, or a description paragraph +
+    "Learn more" link + empty state.
+  - Sections separated by generous vertical spacing.
+
+  Variants:
+  - Table section: "Subscriptions" with data table.
+  - Empty section: "Payments" with "No payments".
+  - Descriptive section: "Financial Connections" with description +
+    learn more link + empty state.
+
+------------------------------------------------------------------------
+2C. PROPERTY ROW (STRIPE VARIANT)
+------------------------------------------------------------------------
+Sources: Customer detail sidebar, Personal details form
+
+Stripe has TWO property row patterns:
+
+Variant 1 — Detail sidebar (label above value):
+  +-------------------------------------------------------------+
+  | [Label (muted)]                                              |
+  | [Value] [Copy icon]                                          |
+  +-------------------------------------------------------------+
+
+  - Label: muted, small text.
+  - Value: primary text, with optional copy icon or calendar icon.
+  - Vertically stacked (label above value).
+  - Within a bordered card with "Details" header + edit icon.
+
+Variant 2 — Form page (two-column):
+  +-------------------------------------------------------------+
+  | [Label (muted)]          [Value or input]                    |
+  +-------------------------------------------------------------+
+
+  - Label: muted, left column (~30% width).
+  - Value: primary text, right column (~70% width).
+  - Some rows have action buttons instead of values: "Add backup
+    email" button, "Add contact phone number" button.
+  - Some rows have badges: "Backup email" + "New" green pill.
+  - Horizontal layout, rows separated by subtle spacing.
+
+------------------------------------------------------------------------
+2D. FORM SECTION
+------------------------------------------------------------------------
+Sources: Personal details page
+
+Anatomy:
+  +-------------------------------------------------------------+
+  | [Section title (bold)]                    [Action button]    |
+  | [Description (muted, optional)]                              |
+  | [Additional paragraph (optional)]                            |
+  |                                                              |
+  | [Content: property rows, inputs, connected accounts, table]  |
+  +-------------------------------------------------------------+
+
+  - Section title: bold, medium heading.
+  - Action button: right-aligned. Types observed:
+    * "Edit" (outlined, pen icon) — makes the section editable
+    * "Add passkey" / "Add authentication method" (outlined, + icon)
+    * "Save" (filled, primary/purple) — commits changes
+    * "Sign out all other sessions" (outlined) — utility action
+    * "Disconnect Google account" (filled, RED) — destructive
+  - Description: muted text below title. 1-2 sentences.
+  - Content varies: property rows, form inputs with helpers,
+    connected account displays, data tables.
+  - No visible border on the section itself — spacing separates
+    sections.
+
+------------------------------------------------------------------------
+2E. DATA TABLE
+------------------------------------------------------------------------
+Sources: Transactions page, Customer detail, Login sessions
+
+The most structured data display pattern across all three products.
+
+Anatomy:
+  +-------------------------------------------------------------+
+  | [☐] [Col 1]  [Col 2]  [Col 3]  [Col 4]  [Col 5]     [...]  |
+  |-------------------------------------------------------------|
+  | [☐] [val]    [badge]  [val]    [val]     [date]       [•••] |
+  |-------------------------------------------------------------|
+  | [Result count]                                               |
+  +-------------------------------------------------------------+
+
+  - Header row: column labels in muted text. Optional checkbox
+    column for bulk selection. Optional three-dot column for row
+    actions.
+  - Data rows: typed cell values — text, badges, links, dates,
+    currency amounts, monospace IDs.
+  - Row actions: three-dot menu on far right per row.
+  - Footer: result count ("1 item"), pagination for larger sets.
+  - Table cells can contain:
+    * Plain text
+    * Currency values ("$100.00 USD")
+    * Status badges ("Canceled" orange pill, "Active" green pill)
+    * Email addresses (as links)
+    * Truncated IDs (monospace)
+    * Dates ("Mar 13, 5:18 AM")
+    * Em dashes (—) for empty/null values
+    * "Current session" labels
+
+  Variants observed:
+  - Full table (Transactions): checkbox + many columns + row menu.
+  - Compact table (Subscriptions): fewer columns, within a section.
+  - Simple table (Login sessions): no checkbox, no row menu,
+    informational only.
+
+------------------------------------------------------------------------
+2F. FILTER BAR (STRIPE)
+------------------------------------------------------------------------
+Sources: Transactions page, Home overview
+
+Stripe has TWO filter patterns:
+
+Status filter pills (Transactions):
+  +-------------------------------------------------------------+
+  | [All*] [Succeeded] [Refunded] [Disputed] [Failed] [...]     |
+  +-------------------------------------------------------------+
+
+  - Horizontal row of rectangular pills.
+  - Active: purple/blue border accent.
+  - Inactive: gray border.
+  - Each pill is selectable — filters the table below.
+  - This is a single-select filter — only one status active at a time.
+
+Additive filter chips (Transactions):
+  +-------------------------------------------------------------+
+  | [⊕ Date/time] [⊕ Amount] [⊕ Currency] ... [Export] [Cols]   |
+  +-------------------------------------------------------------+
+
+  - Each chip: circle/plus icon + label text.
+  - Clicking opens a filter popover to set criteria.
+  - Multiple can be active simultaneously (additive).
+  - Right-aligned: "Export" + "Edit columns" utility actions.
+
+Overview filter bar:
+  +-------------------------------------------------------------+
+  | Date range [Last 7 days ▾] [Daily ▾] ⊕Compare [Prev ▾]     |
+  |                                             [+ Add] [⚙ Edit]|
+  +-------------------------------------------------------------+
+
+  - Mix of labels, dropdowns, and toggle.
+  - "Date range" as a static label.
+  - Dropdowns: "Last 7 days", "Daily", "Previous period".
+  - Toggle: "Compare" with icon.
+  - Actions: "+ Add" and "Edit" buttons.
+
+------------------------------------------------------------------------
+2G. INFO/WARNING BANNER
+------------------------------------------------------------------------
+Sources: Transactions page (info), Revenue recovery (warning)
+
+Two severity variants observed:
+
+Info banner:
+  +-------------------------------------------------------------+
+  | [Badge: "Resource"] [Informational text]  [Link] [X dismiss] |
+  +-------------------------------------------------------------+
+  - White/light background.
+  - Blue "Resource" badge (pill) on left.
+  - Text content with inline link.
+  - Dismiss X on far right.
+
+Warning banner:
+  +-------------------------------------------------------------+
+  | [⚠ Warning icon] [Warning text]                  [X dismiss] |
+  +-------------------------------------------------------------+
+  - Yellow/amber background.
+  - Warning triangle icon on left.
+  - Dismiss X on far right.
+
+------------------------------------------------------------------------
+2H. SETTINGS CARD
+------------------------------------------------------------------------
+Source: Settings hub page
+
+Anatomy:
+  [Icon]  [Title (blue link)]
+          [Description (muted)]
+
+  - Icon: muted/gray, ~20px, various styles (person, shield,
+    building, chart, etc.).
+  - Title: blue/purple link color, bold. Clickable → navigates to
+    settings detail page.
+  - Description: muted, 1-2 lines, regular weight.
+  - No border, no card container — just icon + text in a grid cell.
+  - Arranged in 3-column grid under section labels.
+
+------------------------------------------------------------------------
+2I. CONNECTED ACCOUNT ROW
+------------------------------------------------------------------------
+Source: Personal details > Google account section
+
+Anatomy:
+  +-------------------------------------------------------------+
+  | [Avatar (circle, initial)]  [Name]                           |
+  |                             [Email (muted)]                  |
+  +-------------------------------------------------------------+
+
+  - Avatar: circular, initial letter on colored background (purple "A").
+  - Name: primary text.
+  - Email: muted text below.
+  - Similar to Notion's MemberRow and Discord's UserProfileCard
+    but simpler — no role dropdown, no status indicator.
+
+------------------------------------------------------------------------
+2J. PROGRESS CHECKLIST
+------------------------------------------------------------------------
+Source: Revenue recovery sidebar
+
+Anatomy:
+  [✓ green]  Enable smart retries         <- completed
+  [● blue]   Enable recovery emails       <- active/in progress
+  [○ gray]   Use hosted recovery surface  <- not started
+
+  - Vertical list of items.
+  - Each item: status indicator (checkmark/filled circle/empty
+    circle) + link text.
+  - Three states: completed (green check), active (blue filled
+    circle), incomplete (gray empty circle).
+  - Items are clickable links.
+
+------------------------------------------------------------------------
+2K. SETUP GUIDE / ONBOARDING WIDGET
+------------------------------------------------------------------------
+Source: Every page (floating bottom-right)
+
+Anatomy:
+  +-------------------------------------+
+  | Setup guide                    [📌]  |
+  | [====-------] progress bar          |
+  | Next: [Verify your business] link   |
+  +-------------------------------------+
+
+  - Floating card, bottom-right corner.
+  - Persistent across all pages.
+  - Header + pin/expand icon.
+  - Progress bar (filled portion indicates completion).
+  - "Next" CTA link.
+
+
+========================================================================
+3. ATOMIC COMPONENTS
+========================================================================
+
+------------------------------------------------------------------------
+3A. BUTTON
+------------------------------------------------------------------------
+Variants observed:
+  1. Primary (filled): Purple/blue background, white text. "+ Create
+     payment", "Save", "Enable Authenticator App". For primary actions.
+  2. Secondary (outlined): Border, no fill, dark text. "Create
+     invoice", "Edit", "Add passkey", "Sign out all other sessions",
+     "Analyze", "Give feedback". For secondary actions.
+  3. Destructive (filled): Red background, white text. "Disconnect
+     Google account". For dangerous/irreversible actions. Different
+     from Discord (which uses red TEXT, not red FILL for destructive).
+  4. Icon-only: Top bar utility icons (grid, help, bell, gear).
+     Muted by default.
+  5. Ghost/text: "View" links beside metric values, "More details"
+     links on cards, "Show more" on detail sidebar. Styled as links
+     but function as navigation buttons.
+  6. Add action: "+ Add" with plus icon prefix. Outlined style.
+
+States: Default, Hover (expected), Active (expected), Disabled
+  (expected for locked features).
+
+------------------------------------------------------------------------
+3B. TOGGLE / SWITCH
+------------------------------------------------------------------------
+Not directly observed in screenshots. Stripe's settings use dropdowns
+and buttons rather than inline toggles (unlike Notion and Discord
+which use toggles extensively in settings).
+
+------------------------------------------------------------------------
+3C. SELECT / DROPDOWN
+------------------------------------------------------------------------
+Observed in: Filter bars, Language setting, metric selectors
+
+Variants:
+  1. Form select: "Auto-detect" with chevron, full-width bordered
+     input. Traditional form element. Used in Language section.
+  2. Filter dropdown: "Last 7 days" with chevron, compact. Used in
+     overview filter bar.
+  3. Metric selector: "Gross volume" with chevron, styled as
+     interactive text. Used in Today section.
+
+------------------------------------------------------------------------
+3D. CHECKBOX
+------------------------------------------------------------------------
+Observed in: Data table row selection (Transactions, Subscriptions)
+
+  - Square, in the leftmost column of data tables.
+  - Header checkbox: selects/deselects all rows.
+  - Row checkbox: selects individual rows for bulk actions.
+  - Unchecked state: empty square.
+  - Checked state: not observed (no rows were selected).
+
+------------------------------------------------------------------------
+3E. BADGE / PILL
+------------------------------------------------------------------------
+Variants observed:
+  1. Status badge: "Active" (green pill with text), "Canceled"
+     (orange/amber pill with X icon + text). Used in data tables.
+  2. Info badge: "Resource" (blue pill). Used in info banners.
+  3. Feature badge: "New" (green pill). Used on form fields
+     (Backup email) to indicate new features.
+  4. Setting badge: "Global setting" (muted gray pill with info
+     icon). Used on page headers.
+  5. Keyboard shortcut badge: "c i", "c s", "c p" (muted text).
+     Used in create dropdown.
+
+------------------------------------------------------------------------
+3F. AVATAR
+------------------------------------------------------------------------
+Observed in: Top bar (user avatar), Connected account row, Workspace
+  selector
+
+  - Circular, ~32px for inline uses.
+  - User avatar: image or initials on colored background.
+  - Top bar avatar: has green status indicator dot.
+  - Workspace avatar: purple "T" with workspace initial.
+  - Simpler than Discord's (fewer sizes, no banner image) but
+    includes status indicator like Discord.
+
+------------------------------------------------------------------------
+3G. TABS
+------------------------------------------------------------------------
+Observed in: Transactions page, Revenue recovery page, Customer
+  detail (Settings security/standing)
+
+  - Underline style: active tab has blue underline + blue text.
+  - Inactive: muted text, no underline.
+  - Same pattern as Notion's underline tabs and Discord's settings
+    tabs. This is universal across all three products.
+
+------------------------------------------------------------------------
+3H. DIVIDER / SEPARATOR
+------------------------------------------------------------------------
+Observed in: Between form sections, table rows, settings section groups
+
+  - Subtle horizontal lines where visible.
+  - Many sections use spacing alone (no visible divider).
+  - Stripe is the most minimal with dividers — relies heavily on
+    whitespace.
+
+------------------------------------------------------------------------
+3I. INPUT / TEXT FIELD
+------------------------------------------------------------------------
+Observed in: Search (top bar), Language select, Filter chips
+
+Variants:
+  1. Search input: magnifying glass icon + "Search" placeholder.
+     Prominent, centered in top bar. Bordered, rounded.
+  2. Form select input: bordered, full-width, with chevron.
+     "Auto-detect" in Language section.
+  3. Action inputs: "Add backup email", "Add contact phone number"
+     — presented as outlined buttons, not traditional inputs. The
+     input appears when the button is clicked (assumed).
+
+------------------------------------------------------------------------
+3J. SEGMENTED CONTROL
+------------------------------------------------------------------------
+Observed in: Revenue recovery time range selector
+
+  - Horizontal button group: "3m", "6m", "1y", "2y".
+  - Active: bordered/filled with stronger visual weight.
+  - Inactive: muted, no border.
+  - Adjacent to a text date range.
+  - NOT tabs (doesn't navigate) — changes the data view.
+  - Unique to Stripe among the three products.
+
+------------------------------------------------------------------------
+3K. ICON
+------------------------------------------------------------------------
+Consistent icon system:
+  - Navigation: wallet (Payments), document (Billing), chart
+    (Reporting), terminal (Developers).
+  - Utility: magnifying glass (search), bell (notifications), gear
+    (settings), grid (apps), help circle, pen (edit).
+  - Content: info circle (i) for tooltips, copy (clipboard), plus
+    (+) for add actions, X for dismiss/close, three dots for menus.
+  - Chart icons: small chart icon in metric cards.
+  - Status: checkmark (green), filled circle (blue), empty circle
+    (gray) in progress checklist.
+  - Style: outlined, consistent stroke weight, muted by default.
+    Similar style to Notion and Discord.
+
+------------------------------------------------------------------------
+3L. CHART / SPARKLINE
+------------------------------------------------------------------------
+Observed in: Home dashboard, Revenue recovery
+
+  - Sparkline: minimal line chart in "Today" section, just axis
+    labels, no legend.
+  - Mini chart: within metric cards, with date axis below.
+  - Full chart: stacked bar chart with line overlay in Revenue
+    recovery. Includes legend row with colored squares.
+  - Charts are not interactive in screenshots (would need live
+    interaction to confirm hover tooltips etc.).
+
+
+========================================================================
+4. INTERACTION PATTERNS
+========================================================================
+
+4A. BREADCRUMB NAVIGATION
+  Detail pages use a breadcrumb link above the title to navigate
+  back to the parent page ("Customers" → Customer detail, "Settings"
+  → Personal details). Single level, not multi-level. This is more
+  explicit than Notion (which uses the sidebar active state) or
+  Discord (which uses the ESC/X button).
+
+4B. EXPANDABLE SIDEBAR SECTIONS
+  Product sections in the sidebar (Payments, Billing, Reporting)
+  expand on click to reveal sub-items. The chevron rotates. Same
+  concept as Notion's sidebar nesting and Discord's category collapse.
+
+4C. INLINE METRIC SELECTORS
+  On the Home dashboard, "Gross volume" and "Yesterday" are
+  clickable dropdowns that change the displayed metrics without
+  navigating. This is "filter in context" — the metric display and
+  its filter control are the same element.
+
+4D. STATUS FILTER PILLS
+  On the Transactions page, clicking a status pill filters the table
+  to show only that status. "All" is the default. Only one can be
+  active at a time (single-select). This is a filter interaction
+  unique to Stripe.
+
+4E. PERSISTENT ONBOARDING
+  The Setup guide widget appears on every page, floating in the
+  bottom-right. It persists across navigation and tracks progress.
+  This is an onboarding pattern not seen in Notion or Discord.
+
+4F. SECTION-LEVEL ACTIONS
+  On detail pages, each content section has its own action button
+  (+) for adding items to that specific section. This is granular
+  — the action is contextual to the section, not page-level.
+
+4G. COPY-TO-CLIPBOARD
+  Property values like Customer ID and email have a copy icon next
+  to them. Clicking copies the value. This is a micro-interaction
+  for developer-facing values.
+
+
+========================================================================
+5. NOTABLE DESIGN DECISIONS
+========================================================================
+
+5A. LIGHT MODE DEFAULT
+  Stripe is the only audited product in light mode. White backgrounds,
+  subtle gray borders, blue/purple accent color. This creates a
+  clean, professional, "financial" feel — appropriate for a payments
+  platform. The contrast with Notion/Discord's dark modes is
+  significant.
+
+5B. MINIMAL SIDEBAR
+  Stripe's sidebar is the most minimal of the three. Most nav items
+  are text-only (no icons). The sidebar is narrower. There's less
+  visual weight in the navigation — the content area dominates.
+  This reflects Stripe's dashboard-first design philosophy.
+
+5C. SETTINGS AS CARD GRID (UNIQUE)
+  Stripe is the ONLY product that presents top-level settings as a
+  card grid rather than a sidebar navigation. This works because
+  Stripe has many independent settings categories that don't need
+  sequential navigation. It's a design decision, not a limitation.
+
+5D. NO INLINE TOGGLES IN SETTINGS
+  Unlike Notion and Discord (which use toggle switches extensively
+  in settings), Stripe uses buttons ("Edit", "Add", "Save") and
+  page navigation. Settings are changed by entering an edit mode,
+  not by flipping inline switches. This is a more traditional form-
+  based approach.
+
+5E. BLUE/PURPLE ACCENT ONLY
+  Stripe uses a single accent color (blue/purple) for all interactive
+  elements — links, active states, primary buttons, badge accents.
+  Green and red/orange are used semantically only (success/status
+  badges, destructive buttons). This is more restrained than
+  Discord (which uses role colors extensively) and Notion (which
+  uses blue for toggles but otherwise minimal color).
+
+5F. CONTEXTUAL SIDEBARS WITHIN CONTENT
+  The Customer detail page and Revenue recovery page both have right
+  sidebars — but these are WITHIN the content area, not app-level
+  sidebars. They contain contextual information (Details card,
+  optimization checklist) related to the specific page. Neither
+  Notion nor Discord uses this pattern.
+
+5G. DATA DENSITY
+  Stripe surfaces more data per page than either Notion or Discord.
+  The Transactions page shows: page header, tabs, info banner,
+  status pills, filter chips, data table with 8 columns — all
+  visible simultaneously. This data density is appropriate for a
+  financial tool and demonstrates a different design constraint
+  than the other products.
+
+5H. KEYBOARD SHORTCUTS AS FIRST-CLASS
+  The create dropdown shows keyboard shortcuts (c i, c s, c l, c p)
+  next to each action. The settings footer includes a "Keyboard
+  shortcuts" link. Stripe treats keyboard efficiency as a core UX
+  consideration — similar to Notion's command palette shortcuts but
+  more pervasive.
+
+
+========================================================================
+6. EXTRACTION CANDIDATES FOR NEIGHBORHOOD
+========================================================================
+
+TIER 1 — HIGH PRIORITY (compositional, unique, expand range):
+  - DataTable: the most complex data display component. Column
+    headers, typed cells, checkboxes, row actions, pagination.
+    Not seen at this level of complexity in Notion or Discord.
+  - MetricCard: title + value + comparison + chart + footer.
+    Dashboard-essential. Unique to Stripe.
+  - ListPage layout: header + tabs + banners + filters + table.
+    The canonical SaaS page template.
+  - StatusFilterBar: horizontal selectable pills. Unique to Stripe.
+  - FormSection: header + description + content + action. The
+    primary form organization pattern.
+  - ContentSection: header + add action + content area. The primary
+    detail page organizer.
+  - SegmentedControl: horizontal button group for value selection.
+    Unique to Stripe.
+
+TIER 2 — STRONG CANDIDATES (compositional, cross-product):
+  - FilterBar (dropdown + chip variants): two filter patterns.
+  - PropertyRow (Stripe variant): two sub-variants (sidebar and
+    form). Cross-product comparison value.
+  - DetailPage layout: breadcrumb + header + main + sidebar.
+  - InfoBanner / WarningBanner: severity-variant alert banners.
+  - SettingsCard: icon + title + description navigation card.
+  - ProgressChecklist: status-indicated vertical list.
+  - MetricStrip: inline metrics without charts.
+  - SetupGuide / OnboardingWidget: persistent floating guide.
+
+TIER 3 — ATOMIC FOUNDATION (confirms cross-product universals):
+  - Button (primary, secondary, destructive — Stripe's destructive
+    uses RED FILL, unlike Discord's red text).
+  - Select/Dropdown (form variant with border, filter variant compact).
+  - Badge/Pill (5 variants — status, info, feature, setting, shortcut).
+  - Tabs (underline style — universal across all three).
+  - Checkbox (in data tables — bulk selection pattern).
+  - Avatar (with status indicator, like Discord).
+  - Input/Search.
+  - Divider.
+  - Icon system.
+  - Chart/Sparkline.
+
+NOTABLE ABSENCE — compared to Notion and Discord:
+  - No toggle/switch component observed.
+  - No command palette / search overlay.
+  - No context menu (right-click). Stripe uses three-dot dropdowns.
+  - No message/feed pattern (expected — it's not a communication app).
+  - No modal/dialog captured (the create dropdown was too small to
+    count). This is a gap in the audit — a modal likely exists for
+    actions like creating payments or editing settings.
+
+
+========================================================================
+CROSS-PRODUCT OBSERVATIONS (ALL THREE — PRELIMINARY)
+========================================================================
+
+UNIVERSAL PATTERNS (present in all three):
+  - Two-column app shell (sidebar + content). Discord adds a third.
+  - Tabs (underline style).
+  - Button variants (primary filled, secondary outlined, destructive).
+  - Badge/Pill (all three use them, each with unique variants).
+  - Avatar (circular, with status indicator in Stripe + Discord).
+  - Select/Dropdown.
+  - Divider/Separator.
+  - Icon system (outlined, consistent stroke weight).
+  - Input (search variant in all three).
+  - Empty state (all three, but different visual treatments).
+  - Sidebar navigation with expandable/collapsible sections.
+  - Page header (title + action buttons).
+  - Breadcrumb (Stripe + Notion explicit, Discord implicit via X/ESC).
+
+FOUND IN TWO:
+  - Toggle/Switch: Notion + Discord (not observed in Stripe).
+  - Setting row (label + description + control): Notion + Discord.
+  - Context menu (right-click): Discord only. Notion + Stripe use
+    three-dot dropdowns.
+  - Data table: Stripe + Notion (as database view). Discord doesn't
+    have traditional tables.
+  - Filter chips: Notion (command palette) + Stripe (additive filters).
+  - Command palette: Notion only.
+  - Message row: Discord only.
+  - Metric card: Stripe only.
+  - Reaction badge: Discord only.
+  - Swatch selector: Discord only.
+  - Segmented control: Stripe only.
+
+SAME PATTERN, DIFFERENT IMPLEMENTATIONS:
+  - Settings: Notion (sidebar modal), Discord (full-page sidebar),
+    Stripe (card grid hub + form pages).
+  - Empty state: Notion (dashed border + icon + action), Discord
+    (not observed), Stripe (simple centered text).
+  - Property row: Notion (icon + label + value), Discord (label
+    above value + edit), Stripe (two variants).
+  - Banners: Notion (callout block in content), Discord (unread
+    message banner), Stripe (info/warning banners with dismiss).
+
+
+========================================================================
+END OF STRIPE AUDIT
+========================================================================
+Next steps:
+  1. Cross-product synthesis document (combining all three audits)
+  2. Final Neighborhood v0.1 component inventory
+  3. Visual identity and token decisions
+  4. Begin building

@@ -1,5 +1,19 @@
 const projectsdata = [
     {
+        id: 7,
+        title: "Neighborhood",
+        tag: "Design System",
+        body: "A component library and design system with warmth, motion, and personality baked into every token.",
+        color: "bg-white",
+        shadow: "rgba(22, 168, 90, 0.3)",
+        tags: ["Design Systems", "UI Engineering", "Documentation"],
+        image: null,
+        video: null,
+        link: "/projects/neighborhood",
+        gradient: null,
+        tier: "primary",
+    },
+    {
         id: 0,
         title: "Sifty",
         tag: "Application",
@@ -61,7 +75,7 @@ const projectsdata = [
         video: "/projects/instadesign/igthumbW.webm",
         videoMobile: "/projects/instadesign/igthumbM.mp4",
         link: "/projects/instadesign",
-        tier: "primary",
+        tier: "secondary",
         gradient: {
             control: "props",
             animate: "on",

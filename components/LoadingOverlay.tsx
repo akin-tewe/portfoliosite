@@ -35,7 +35,7 @@ export function BootOverlay() {
                     transition={{ duration: 0.4, ease: "easeInOut" }}
                 >
                     <motion.div
-                        className="relative text-white w-[300px] h-[300px] md:w-[400px] md:h-[400px]"
+                        className="relative text-white w-[220px] h-[220px] md:w-[300px] md:h-[300px]"
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{
                             scale: fadeOut ? 1.1 : 1,

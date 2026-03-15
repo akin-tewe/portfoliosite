@@ -436,6 +436,41 @@ const ResearchCardOverlay = memo(function ResearchCardOverlay() {
 });
 
 
+const NeighborhoodCardOverlay = memo(function NeighborhoodCardOverlay() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+      <div
+        className="relative rounded-xl overflow-hidden"
+        style={{
+          width: '78%',
+          aspectRatio: '16/10',
+          transform: 'perspective(1200px) rotateY(-4deg) rotateX(2deg)',
+          boxShadow: '0 25px 60px -15px rgba(0,0,0,0.25), 0 8px 20px -8px rgba(0,0,0,0.12)',
+        }}
+      >
+        {/* Browser chrome */}
+        <div className="relative bg-[#f5f5f5] pt-6 h-full rounded-xl overflow-hidden border border-black/[0.08]">
+          {/* Traffic lights */}
+          <div className="absolute top-2 left-3 flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+          </div>
+          {/* Page content */}
+          <div className="w-full h-full overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/projects/neighborhood/thumbnail-dashboard.png"
+              alt="Neighborhood dashboard"
+              className="w-full h-full object-cover object-top"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSecondary }: {
   project: typeof projectsdata[number];
   i: number;
@@ -463,19 +498,7 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
           <div
             className={`relative bg-[#ececec] rounded-2xl overflow-hidden transition-all duration-300 ease-out
                         group-hover:-translate-y-2 ${isSecondary ? 'aspect-card-secondary' : ''}`}
-            style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06)', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
-            onMouseEnter={(e) => {
-              let shadow = project.shadow;
-              if (project.id === 5 && project.slideshow) {
-                shadow = slideshowIndex % project.slideshow.length === 0
-                  ? 'rgba(220, 50, 50, 0.45)'
-                  : 'rgba(167, 139, 250, 0.4)';
-              }
-              e.currentTarget.style.boxShadow = `0 20px 50px -12px ${shadow}`;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06)';
-            }}
+            style={{ boxShadow: '0 0 6.2px 1px rgba(85, 90, 100, 0.14), 0 1px 5.5px 2px rgba(181, 193, 204, 0.06)', ...(!isSecondary ? { aspectRatio: '9/5' } : {}) }}
           >
             {/* Card content — fades in over placeholder */}
             <div
@@ -505,6 +528,7 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
             )}
 
             {project.id === 2 && <ResearchCardOverlay />}
+            {project.id === 7 && <NeighborhoodCardOverlay />}
 
             {project.id === 6 && (
               <div
@@ -661,37 +685,43 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
               </div>
             )}
 
-            <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 gap-3 whitespace-nowrap lg:hidden">
+
+
+            {/* Desktop: dark gradient + text on card */}
+            <div
+              className="absolute bottom-0 left-0 right-0 z-[15] pointer-events-none hidden md:block"
+              style={{
+                height: '65%',
+                background: isSecondary
+                  ? 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 100%)'
+                  : 'linear-gradient(to top, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.22) 40%, transparent 100%)',
+                borderRadius: 'inherit',
+              }}
+            />
+            <div className={`absolute bottom-0 left-0 right-0 z-[25] pointer-events-none hidden md:block ${isSecondary ? 'p-4' : 'p-5'}`}>
+              <span className={`${pixelify.className} text-white ${isSecondary ? 'text-base uppercase' : 'text-2xl'} tracking-wider font-bold`}>
+                {project.title}
+              </span>
+              <p className={`${roboto.className} text-white/80 ${isSecondary ? 'text-sm' : 'text-base'} font-light ${isSecondary ? 'mt-0.5' : 'mt-1'}`}>
+                {project.body}
+              </p>
+            </div>
+
+            {/* Mobile: dark pill */}
+            <div className="absolute bottom-4 left-4 z-20 flex items-center bg-black/80 backdrop-blur-lg rounded-full shadow-sm px-4 py-2 whitespace-nowrap md:hidden">
               <span className={`${pixelify.className} text-white text-sm tracking-wider uppercase`}>
                 {project.title}
               </span>
             </div>
 
             </div>
+            {/* Inner shadow overlay */}
+            <div className="absolute inset-0 pointer-events-none rounded-[inherit] z-[30]" style={{ boxShadow: 'inset 0 0 5px 0.5px rgba(0,0,0,0.25)' }} />
           </div>
-          {/* Caption below card */}
-          <div className="mt-3 px-1">
-            <div className="flex items-center justify-between gap-2">
-              <span className={`${pixelify.className} text-gray-900 ${isSecondary ? 'text-lg' : 'text-xl'} tracking-wider`}>
-                {project.title}
-              </span>
-              {project.tags && project.tags.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 justify-end">
-                  {project.tags.map((tag: string) => (
-                    <span
-                      key={tag}
-                      className={`${pixelify.className} text-xs uppercase tracking-wider text-black/40 bg-black/[0.04] rounded-full px-2.5 py-1`}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-            <p className={`${roboto.className} text-black/50 text-base font-light mt-1`}>
-              {project.body}
-            </p>
-          </div>
+          {/* Mobile: description below */}
+          <p className={`${roboto.className} text-black/50 text-sm font-light mt-3 px-1 md:hidden`}>
+            {project.body}
+          </p>
         </Link>
     </AnimatedSection>
   );
@@ -707,8 +737,17 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
 
 function ProjectsGrid() {
   const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(false);
   const sentinelRef = useRef(null);
   const sentinelInView = useInView(sentinelRef, { amount: 0.5, once: false });
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    setIsDesktop(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -741,8 +780,8 @@ function ProjectsGrid() {
       {/* Secondary projects — 4 column */}
       <motion.div
         className="grid grid-cols-1 md:grid-cols-4 gap-x-6 gap-y-10"
-        animate={{ opacity: sentinelInView ? 1 : 0.6 }}
-        whileHover={{ opacity: 1 }}
+        animate={{ opacity: isDesktop ? (sentinelInView ? 1 : 0.6) : 1 }}
+        whileHover={isDesktop ? { opacity: 1 } : undefined}
         transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         {secondary.map((project, i) => (

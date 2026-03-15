@@ -444,7 +444,7 @@ const NeighborhoodCardOverlay = memo(function NeighborhoodCardOverlay() {
         style={{
           width: '78%',
           aspectRatio: '16/10',
-          transform: 'perspective(1200px) rotateY(-4deg) rotateX(2deg)',
+          transform: 'none',
           boxShadow: '0 25px 60px -15px rgba(0,0,0,0.25), 0 8px 20px -8px rgba(0,0,0,0.12)',
         }}
       >
@@ -458,11 +458,14 @@ const NeighborhoodCardOverlay = memo(function NeighborhoodCardOverlay() {
           </div>
           {/* Page content */}
           <div className="w-full h-full overflow-hidden">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/projects/neighborhood/thumbnail-dashboard.png"
-              alt="Neighborhood dashboard"
-              className="w-full h-full object-cover object-top"
+            <video
+              src="/projects/neighborhood/thumbnail.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+              style={{ transform: 'scale(1.09) translateX(-1%)', transformOrigin: 'center' }}
             />
           </div>
         </div>
@@ -687,24 +690,21 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
 
 
 
-            {/* Desktop: dark gradient + text on card */}
+            {/* Desktop: blur gradient + title */}
             <div
-              className="absolute bottom-0 left-0 right-0 z-[15] pointer-events-none hidden md:block"
+              className="absolute bottom-0 left-0 right-0 z-[15] pointer-events-none hidden md:block backdrop-blur-md"
               style={{
-                height: '65%',
-                background: isSecondary
-                  ? 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 40%, transparent 100%)'
-                  : 'linear-gradient(to top, rgba(0,0,0,0.58) 0%, rgba(0,0,0,0.22) 40%, transparent 100%)',
+                height: isSecondary ? '85%' : '70%',
+                background: 'transparent',
                 borderRadius: 'inherit',
+                maskImage: 'linear-gradient(to top, black 0%, black 10%, transparent 80%)',
+                WebkitMaskImage: 'linear-gradient(to top, black 0%, black 10%, transparent 80%)',
               }}
             />
             <div className={`absolute bottom-0 left-0 right-0 z-[25] pointer-events-none hidden md:block ${isSecondary ? 'p-4' : 'p-5'}`}>
-              <span className={`${pixelify.className} text-white ${isSecondary ? 'text-base uppercase' : 'text-2xl'} tracking-wider font-bold`}>
+              <span className={`${pixelify.className} ${(project.id === 6 || project.id === 3 || project.id === 2) ? 'text-white' : 'text-gray-900'} ${isSecondary ? 'text-base' : 'text-2xl'} tracking-wider font-bold uppercase`}>
                 {project.title}
               </span>
-              <p className={`${roboto.className} text-white/80 ${isSecondary ? 'text-sm' : 'text-base'} font-light ${isSecondary ? 'mt-0.5' : 'mt-1'}`}>
-                {project.body}
-              </p>
             </div>
 
             {/* Mobile: dark pill */}
@@ -718,8 +718,7 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
             {/* Inner shadow overlay */}
             <div className="absolute inset-0 pointer-events-none rounded-[inherit] z-[30]" style={{ boxShadow: 'inset 0 0 5px 0.5px rgba(0,0,0,0.25)' }} />
           </div>
-          {/* Mobile: description below */}
-          <p className={`${roboto.className} text-black/50 text-sm font-light mt-3 px-1 md:hidden`}>
+          <p className={`${roboto.className} text-black/70 ${isSecondary ? 'text-sm' : 'text-base'} font-light mt-3 px-1`}>
             {project.body}
           </p>
         </Link>
@@ -737,13 +736,15 @@ const ProjectCard = memo(function ProjectCard({ project, i, slideshowIndex, isSe
 
 function ProjectsGrid() {
   const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const isDesktopRef = useRef(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const sentinelRef = useRef(null);
   const sentinelInView = useInView(sentinelRef, { amount: 0.5, once: false });
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 768px)');
-    setIsDesktop(mq.matches);
+    isDesktopRef.current = mq.matches;
+    requestAnimationFrame(() => setIsDesktop(isDesktopRef.current));
     const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);

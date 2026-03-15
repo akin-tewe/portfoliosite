@@ -1,5 +1,15 @@
-import { redirect } from "next/navigation";
+import AlbumCover from "./AlbumCover";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Album Cover Design - Akin Tewe",
+  description: "Design of a remix album cover for Young Nudy's 'Peaches and Eggplants'.",
+};
 
 export default function Page() {
-    redirect("/");
+    return (
+        <main>
+            <AlbumCover/>
+        </main>
+    )
 }

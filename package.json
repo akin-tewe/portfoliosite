@@ -10,6 +10,8 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@neighborhood/ui": "github:akin-tewe/neighborhood-ui",
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "@vercel/analytics": "^1.6.1",

@@ -29,7 +29,7 @@ export default function ProjectMetrics({ metrics }: { metrics: Metric[] }) {
                         <span className={`${roboto.className} text-gray-800 text-sm md:text-base font-normal leading-snug`}>
                             {m.value.includes(' · ') ? (
                                 m.value.split(' · ').map((part, j) => (
-                                    <span key={j} className="block">{part.trim()}</span>
+                                    <span key={j} className={`block ${part.trim() === 'Active Development' ? 'text-blue-500' : ''}`}>{part.trim()}</span>
                                 ))
                             ) : (
                                 m.value

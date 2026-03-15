@@ -130,8 +130,8 @@ function SolutionSubsection({ number, title, children }: { number: string; title
     return (
         <motion.div variants={fadeInUp} className="mb-16 md:mb-20">
             <div className="flex items-baseline gap-4 mb-6">
-                <span className={`${pixelify.className} text-3xl md:text-4xl text-gray-300`}>{number}.</span>
-                <h3 className={`${roboto.className} font-light text-lg md:text-xl text-gray-800 uppercase tracking-wider`}>{title}</h3>
+                <span className={`${pixelify.className} text-lg md:text-xl text-gray-300`}>{number}.</span>
+                <h3 className={`${roboto.className} font-light text-sm md:text-base text-gray-800 uppercase tracking-wider`}>{title}</h3>
             </div>
             {children}
         </motion.div>

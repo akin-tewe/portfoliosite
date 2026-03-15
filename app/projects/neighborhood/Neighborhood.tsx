@@ -1,637 +1,368 @@
 "use client";
 import { pixelify, roboto } from "@/app/ui/fonts"
+import { Space_Grotesk } from "next/font/google"
 import Image from "next/image"
 import { MagneticWrapper } from "@/components/MagneticButton";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ExternalLink, Github } from "lucide-react";
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import ProjectMetrics from "@/components/ProjectMetrics";
 import CaseStudySidebar from "@/components/CaseStudySidebar";
 import {
     Toggle, Badge, Button, SettingRow, PropertyRow,
     Avatar, Tabs, Input, Banner, Divider, EmptyState,
-    SegmentedControl, Select, Checkbox, Tooltip,
+    SegmentedControl, Select, Checkbox, Tooltip, Menu,
 } from "@neighborhood/ui";
 import "@neighborhood/ui/tokens.css";
 
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], weight: ['500', '600', '700'] });
+
 const neighborhoodSections = [
-    { id: 'why', label: 'Why' },
-    { id: 'methodology', label: 'Methodology' },
-    { id: 'extraction', label: 'Extraction' },
+    { id: 'showcase', label: 'Showcase' },
     { id: 'tokens', label: 'Tokens' },
     { id: 'components', label: 'Components' },
+    { id: 'composition', label: 'Composition' },
+    { id: 'methodology', label: 'Methodology' },
+    { id: 'tradeoffs', label: 'Tradeoffs & Scope' },
     { id: 'demos', label: 'Demos' },
     { id: 'whats-next', label: "What's Next" },
 ];
 
-const fadeInUp = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 }
-};
+const EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
-const staggerContainer = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.2 } }
-};
+// ─── Layout ─────────────────────────────────────────────────
 
 function GridContainer({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
-    return <div id={id} className={`w-full max-w-[1000px] mx-auto px-8 ${className}`}>{children}</div>;
+    return <div id={id} className={`w-full max-w-[1000px] mx-auto px-6 md:px-8 ${className}`}>{children}</div>;
+}
+
+function WideContainer({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+    return <div className={`w-full max-w-[1200px] mx-auto px-6 md:px-8 ${className}`}>{children}</div>;
 }
 
 function SectionDivider() {
-    return <div className="w-full max-w-[1000px] mx-auto px-8"><div className="h-px bg-gradient-to-r from-transparent via-black/15 to-transparent" /></div>;
+    return <div className="w-full max-w-[1000px] mx-auto px-8"><div className="h-px bg-gradient-to-r from-transparent via-black/10 to-transparent" /></div>;
 }
 
-function AnimatedSection({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true, margin: "-50px" });
-    return (
-        <motion.div ref={ref} initial="hidden" animate={isInView ? "visible" : "hidden"} variants={staggerContainer} className={className}>
-            {children}
-        </motion.div>
-    );
+function SectionLabel({ children }: { children: React.ReactNode }) {
+    return <span className={`${spaceGrotesk.className} text-sm text-black/35 uppercase tracking-[0.15em] font-medium`}>{children}</span>;
 }
 
 function TechPill({ name }: { name: string }) {
     return <span className={`${roboto.className} text-xs md:text-sm text-white bg-gray-900 px-3 py-1 rounded-full`}>{name}</span>;
 }
 
-function TradeoffBlock({ children }: { children: React.ReactNode }) {
+// ─── Animation ──────────────────────────────────────────────
+
+function RevealOnScroll({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true, margin: "-60px" });
     return (
-        <div className="bg-gray-100 rounded-2xl p-6 md:p-8 mt-6">
-            <p className={`${roboto.className} text-black/60 font-light text-sm md:text-base italic leading-relaxed`}>{children}</p>
-        </div>
+        <motion.div ref={ref} initial={{ opacity: 0, y: 24 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.55, delay, ease: EASE }} className={className}>
+            {children}
+        </motion.div>
     );
 }
 
-// Audit image with caption
-function AuditImage({ src, alt, caption, product }: { src: string; alt: string; caption: string; product: "notion" | "discord" | "stripe" }) {
-    const colors = { notion: "bg-gray-800", discord: "bg-indigo-600", stripe: "bg-violet-600" };
-    const labels = { notion: "Notion", discord: "Discord", stripe: "Stripe" };
+// Auto-toggling toggle
+function AutoToggle({ delay = 0, interval = 2500 }: { delay?: number; interval?: number }) {
+    const [on, setOn] = useState(false);
+    const ref = useRef(null);
+    const inView = useInView(ref, { once: true });
+    useEffect(() => {
+        if (!inView) return;
+        const start = setTimeout(() => {
+            setOn(true);
+            const flip = setInterval(() => setOn(v => !v), interval);
+            return () => clearInterval(flip);
+        }, delay + 800);
+        return () => clearTimeout(start);
+    }, [inView, delay, interval]);
+    return <div ref={ref}><Toggle checked={on} onChange={setOn} /></div>;
+}
+
+// Pulsing dot for passive animation
+function PulsingDot({ color, size = 6, delay = 0 }: { color: string; size?: number; delay?: number }) {
     return (
-        <div className="group">
-            <div className="relative overflow-hidden rounded-2xl border border-black/5">
-                <div className={`absolute top-3 left-3 z-10 ${colors[product]} text-white text-xs px-2 py-1 rounded-full font-medium`}>
-                    {labels[product]}
-                </div>
-                <Image src={src} alt={alt} width={1400} height={900} className="w-full h-auto" />
+        <motion.div className="rounded-full" style={{ width: size, height: size, background: color }}
+            animate={{ scale: [1, 1.4, 1], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2.5, delay, repeat: Infinity, ease: "easeInOut" }} />
+    );
+}
+
+// ─── Color Data ─────────────────────────────────────────────
+
+type BadgeColor = "primary" | "berry" | "terracotta" | "amber" | "sky" | "plum" | "sage";
+
+const colorFamilies: { name: string; subtitle: string; key: BadgeColor; colors: string[]; useCases: string }[] = [
+    { name: "Primary", subtitle: "Grass Green", key: "primary", colors: ["#edfcf2","#d3f8e0","#6de29e","#34cc76","#16a85a","#0b8847","#093e24"], useCases: "Primary actions, success states, CTA" },
+    { name: "Berry", subtitle: "Strawberry", key: "berry", colors: ["#fff1f2","#ffe4e6","#ff8f98","#ff5c6a","#e8364a","#c41d35","#6e1624"], useCases: "Error states, destructive actions" },
+    { name: "Terracotta", subtitle: "Campfire", key: "terracotta", colors: ["#fff6ed","#ffe8d0","#ffa964","#ff8530","#f06810","#cc5008","#6e2b10"], useCases: "Warm accents, activity indicators" },
+    { name: "Amber", subtitle: "Gold Ingot", key: "amber", colors: ["#fffbeb","#fff3c4","#ffd04a","#ffbc20","#f5a000","#d47d02","#72390d"], useCases: "Warning states, pending, highlights" },
+    { name: "Sky", subtitle: "Clear Day", key: "sky", colors: ["#eff8ff","#dbeeff","#8ac6ff","#52a8ff","#2a88f0","#166cd4","#163d6e"], useCases: "Links, info states, focus rings" },
+    { name: "Plum", subtitle: "Nether Portal", key: "plum", colors: ["#faf4ff","#f2e5ff","#d3a6ff","#ba72ff","#a248f0","#8a28d8","#4e1878"], useCases: "Premium features, categories" },
+    { name: "Sage", subtitle: "Prismarine", key: "sage", colors: ["#eefcf8","#d5f6ed","#79dcc4","#42c4a8","#26a88e","#1a8773","#18473f"], useCases: "Health indicators, environment" },
+];
+
+const neutralColors = ["#faf8f6","#f3f0ed","#e6e2dd","#d1cbc4","#a69f96","#7a736b","#5c554e","#45403b","#2e2a26","#1a1816","#0d0c0a"];
+
+// ─── Token Playground ───────────────────────────────────────
+
+function TokenPlayground() {
+    const [active, setActive] = useState(0);
+    const family = colorFamilies[active];
+
+    return (
+        <div className="rounded-2xl border border-black/[0.06] bg-white overflow-hidden">
+            {/* Family strip selector */}
+            <div className="flex border-b border-black/[0.04] overflow-x-auto">
+                {colorFamilies.map((f, i) => (
+                    <button key={f.key} onClick={() => setActive(i)}
+                        className={`flex items-center gap-2 px-4 py-3 shrink-0 transition-all text-sm border-b-2 ${
+                            active === i ? 'border-gray-900 text-gray-900' : 'border-transparent text-black/35 hover:text-black/60'
+                        }`}>
+                        <div className="w-3 h-3 rounded-full" style={{ background: f.colors[3] }} />
+                        <span className={`${spaceGrotesk.className} font-medium text-xs`}>{f.name}</span>
+                    </button>
+                ))}
             </div>
-            <span className={`${roboto.className} text-black/35 text-sm mt-3 block text-center italic`}>{caption}</span>
+
+            <AnimatePresence mode="wait">
+                <motion.div key={family.key} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="p-5 md:p-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Left: swatch + info */}
+                        <div className="flex flex-col gap-4">
+                            <div>
+                                <p className={`${spaceGrotesk.className} text-lg font-semibold text-gray-800`}>{family.name}</p>
+                                <p className={`${roboto.className} text-sm text-black/40`}>{family.subtitle} · {family.colors.length} steps</p>
+                            </div>
+                            <div className="flex gap-1 rounded-lg overflow-hidden">
+                                {family.colors.map((c) => (
+                                    <motion.div key={c} style={{ background: c, flex: 1, height: 40 }}
+                                        whileHover={{ scaleY: 1.25 }} transition={{ duration: 0.15 }} className="origin-bottom cursor-default" />
+                                ))}
+                            </div>
+                            <div className="text-sm">
+                                <PropertyRow label="Token" value={<code className="text-xs bg-black/[0.04] px-1.5 py-0.5 rounded font-mono">--{family.key}-*</code>} />
+                                <PropertyRow label="Use cases" value={family.useCases} />
+                            </div>
+                        </div>
+
+                        {/* Right: live component preview */}
+                        <div className="flex flex-col gap-4 bg-[#faf8f6] rounded-xl p-4">
+                            <span className={`${spaceGrotesk.className} text-[10px] text-black/25 uppercase tracking-[0.15em] font-medium`}>Live Preview</span>
+                            <div className="flex flex-wrap gap-1.5">
+                                <Badge label="Active" color={family.key} />
+                                <Badge label="Pending" color={family.key} variant="subtle" />
+                                <Badge label="Draft" color={family.key} variant="outline" />
+                                <Badge label="New" color={family.key} dot />
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                                    style={{ background: family.colors[3] }}>
+                                    {family.name.slice(0, 2).toUpperCase()}
+                                </div>
+                                <div>
+                                    <p className={`${roboto.className} text-sm font-medium text-gray-800`}>{family.name}</p>
+                                    <p className={`${roboto.className} text-xs text-black/35`}>{family.useCases}</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-2">
+                                <Button variant="primary" size="sm">Confirm</Button>
+                                <Button variant="ghost" size="sm">Cancel</Button>
+                            </div>
+                        </div>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
         </div>
     );
 }
 
-// Live component demo surface
-function DemoSurface({ children, label }: { children: React.ReactNode; label?: string }) {
+// ─── Assembly ───────────────────────────────────────────────
+
+function AssemblyAnimation() {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.85", "end 0.5"] });
+
+    const label = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
+    const row1 = useTransform(scrollYProgress, [0.1, 0.25], [0, 1]);
+    const div1 = useTransform(scrollYProgress, [0.25, 0.35], [0, 1]);
+    const row2 = useTransform(scrollYProgress, [0.35, 0.5], [0, 1]);
+    const div2 = useTransform(scrollYProgress, [0.5, 0.6], [0, 1]);
+    const row3 = useTransform(scrollYProgress, [0.6, 0.75], [0, 1]);
+    const complete = useTransform(scrollYProgress, [0.8, 0.95], [0, 1]);
+
+    const [t1, setT1] = useState(false);
+    const [t2, setT2] = useState(false);
+
     return (
-        <div className="rounded-2xl border border-black/10 bg-white p-6 md:p-8">
-            {label && (
-                <span className={`${pixelify.className} text-xs text-black/30 uppercase tracking-[0.15em] mb-4 block`}>{label}</span>
-            )}
-            <div className="flex flex-col gap-4">{children}</div>
+        <div ref={ref} className="min-h-[50vh] flex items-center">
+            <div className="w-full">
+                <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+                    <motion.div style={{ opacity: label }} className="mb-4">
+                        <span className={`${spaceGrotesk.className} text-[11px] text-black/25 uppercase tracking-[0.15em] font-medium`}>
+                            Building a settings panel...
+                        </span>
+                    </motion.div>
+
+                    <motion.div style={{ opacity: row1, y: useTransform(row1, [0, 1], [10, 0]) }}>
+                        <SettingRow label="Dark mode" description="Switch between light and dark themes" control={<Toggle checked={t1} onChange={setT1} />} />
+                    </motion.div>
+                    <motion.div style={{ opacity: div1 }} className="my-1"><Divider /></motion.div>
+                    <motion.div style={{ opacity: row2, y: useTransform(row2, [0, 1], [10, 0]) }}>
+                        <SettingRow label="Notifications" description="Receive alerts for new activity" control={<Toggle checked={t2} onChange={setT2} />} />
+                    </motion.div>
+                    <motion.div style={{ opacity: div2 }} className="my-1"><Divider /></motion.div>
+                    <motion.div style={{ opacity: row3, y: useTransform(row3, [0, 1], [10, 0]) }}>
+                        <SettingRow label="Language" description="Choose your preferred language" control={<Menu trigger={<Select value="English" variant="form" size="sm" />} items={[{ label: "English", checked: true, onCheckedChange: () => {} }, { label: "Spanish" }, { label: "French" }]} />} />
+                    </motion.div>
+                </div>
+
+                <motion.div style={{ opacity: complete }} className="flex items-center gap-2 mt-4 justify-center">
+                    <PulsingDot color="#34cc76" size={8} />
+                    <span className={`${roboto.className} text-sm text-black/40`}>3 atoms → 1 composed settings panel</span>
+                </motion.div>
+            </div>
         </div>
     );
 }
+
+// ─── Methodology ────────────────────────────────────────────
+
+type AuditProduct = "notion" | "discord" | "stripe";
+
+const auditImages: Record<AuditProduct, { src: string; caption: string }[]> = {
+    notion: [
+        { src: "/projects/neighborhood/audit/notion-settings-preferences.png", caption: "Settings preferences — the densest setting row page across all audits" },
+        { src: "/projects/neighborhood/audit/notion-settings-people.png", caption: "People settings — empty states, tabs, and invite input patterns" },
+        { src: "/projects/neighborhood/audit/notion-command-palette.png", caption: "Command palette — search overlay with categorized results" },
+        { src: "/projects/neighborhood/audit/notion-home.png", caption: "Home — content-first layout with warm typography and sidebar navigation" },
+        { src: "/projects/neighborhood/audit/notion-share-popover.png", caption: "Share popover with input, permissions, and avatar row" },
+    ],
+    discord: [],
+    stripe: [
+        { src: "/projects/neighborhood/audit/stripe-payments.png", caption: "Payments — data table with typed cells, status badges, selection" },
+        { src: "/projects/neighborhood/audit/stripe-settings-details.png", caption: "Business settings — form sections with grouped inputs" },
+        { src: "/projects/neighborhood/audit/stripe-dashboard.png", caption: "Dashboard — metric cards, charts, and property displays" },
+        { src: "/projects/neighborhood/audit/stripe-customers.png", caption: "Customer list with filters, search, and table composition" },
+        { src: "/projects/neighborhood/audit/stripe-revenue.png", caption: "Revenue metrics with chart and segment breakdown" },
+    ],
+};
+
+// ─── Audit Carousel (drag-scroll) ───────────────────────────
+
+function AuditCarousel({ product }: { product: AuditProduct }) {
+    const scrollRef = useRef<HTMLDivElement>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const [startX, setStartX] = useState(0);
+    const [scrollLeft, setScrollLeft] = useState(0);
+
+    const images = auditImages[product];
+
+    const handleMouseDown = (e: React.MouseEvent) => {
+        setIsDragging(true);
+        setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
+        setScrollLeft(scrollRef.current?.scrollLeft || 0);
+    };
+    const handleMouseUp = () => setIsDragging(false);
+    const handleMouseLeave = () => setIsDragging(false);
+    const handleMouseMove = (e: React.MouseEvent) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - (scrollRef.current?.offsetLeft || 0);
+        const walk = (x - startX) * 2;
+        if (scrollRef.current) scrollRef.current.scrollLeft = scrollLeft - walk;
+    };
+
+    return (
+        <AnimatePresence mode="wait">
+            <motion.div key={product} initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
+                <div
+                    ref={scrollRef}
+                    onMouseDown={handleMouseDown}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseLeave}
+                    onMouseMove={handleMouseMove}
+                    className="cursor-grab active:cursor-grabbing select-none"
+                    style={{
+                        display: 'flex',
+                        gap: 16,
+                        overflowX: 'scroll',
+                        overflowY: 'hidden',
+                        paddingBottom: 16,
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none',
+                        WebkitOverflowScrolling: 'touch',
+                    }}
+                >
+                    {images.map((img, i) => (
+                        <div key={`${product}-${i}`} style={{ width: 900, minWidth: 900, flexShrink: 0 }}>
+                            <div className="overflow-hidden rounded-2xl border border-black/[0.06]" style={{ aspectRatio: '16/10' }}>
+                                <Image src={img.src} alt={img.caption} width={1400} height={900}
+                                    className="w-full h-full object-cover object-top pointer-events-none" draggable={false} />
+                            </div>
+                            <p className={`${roboto.className} text-black/40 text-sm font-light mt-3 line-clamp-2`} style={{ minHeight: 40 }}>{img.caption}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="flex justify-center mt-1 gap-1">
+                    {images.map((_, i) => (
+                        <div key={i} className="w-1.5 h-1.5 rounded-full bg-black/10" />
+                    ))}
+                </div>
+            </motion.div>
+        </AnimatePresence>
+    );
+}
+
+// ═══════════════════════════════════════════════════════════
+// MAIN
+// ═══════════════════════════════════════════════════════════
 
 export default function Neighborhood() {
     const heroRef = useRef(null);
     const isHeroInView = useInView(heroRef, { once: true });
+
     const [demoToggle1, setDemoToggle1] = useState(true);
     const [demoToggle2, setDemoToggle2] = useState(false);
-    const [demoTab, setDemoTab] = useState("overview");
-    const [demoSegment, setDemoSegment] = useState("monthly");
-    const [demoCheck, setDemoCheck] = useState(true);
+    const [showcaseTab, setShowcaseTab] = useState("overview");
+    const [showcaseSegment, setShowcaseSegment] = useState("monthly");
+    const [motionBracketTab, setMotionBracketTab] = useState("overview");
+    const [motionLandingTab, setMotionLandingTab] = useState("overview");
+    const [demoTab, setDemoTab] = useState("general");
+    const [demoSegment, setDemoSegment] = useState("us");
+    const [buttonVariant, setButtonVariant] = useState("primary");
+    const [auditProduct, setAuditProduct] = useState<AuditProduct>("notion");
 
     return (
-        <main className="overflow-x-clip">
-            {/* Hero */}
-            <section ref={heroRef} className="relative w-full flex flex-col pt-32 md:pt-40 pb-16 md:pb-24 bg-[#fafafa]">
-                <GridContainer>
+        <main className="overflow-x-hidden bg-white">
+
+            {/* ═══════ HERO ═══════ */}
+            <section ref={heroRef} className="relative w-full pt-32 md:pt-40 pb-16 md:pb-24 overflow-hidden">
+                <GridContainer className="relative z-10">
                     <motion.div initial={{ opacity: 0, y: 40 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-                        className="flex flex-col items-start text-left max-w-4xl relative z-10">
-                    <motion.h1 initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className={`${pixelify.className} text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4`}>
-                        Neighborhood
-                    </motion.h1>
-                    <motion.span initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.3 }}
-                        className={`${pixelify.className} text-green-500 italic text-lg md:text-xl uppercase tracking-wider mb-8`}>
-                        Design System v0.1
-                    </motion.span>
-                    <motion.p initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.4 }}
-                        className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}>
-                        A component library and design system built from the ground up, with warmth, motion, and personality baked into every token. 18 components, 6 token categories, a living documentation site, and three full demo pages. This case study covers the initial conception and v0.1 implementation. Neighborhood is actively under development.
-                    </motion.p>
-
-                    <motion.div initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-                        transition={{ duration: 0.6, delay: 0.5 }}
-                        className="flex flex-wrap gap-4 mt-10 justify-center md:justify-start">
-                        <MagneticWrapper>
-                            <a href="https://nbhd.dev" target="_blank" rel="noopener noreferrer"
-                                className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}>
-                                <ExternalLink className="w-4 h-4" />Documentation Site
-                            </a>
-                        </MagneticWrapper>
-                        <MagneticWrapper>
-                            <a href="https://github.com/akin-tewe/neighborhood-ui" target="_blank" rel="noopener noreferrer"
-                                className={`${pixelify.className} px-6 py-3 bg-white border border-gray-300 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-gray-50 transition-colors flex items-center gap-2`}>
-                                <Github className="w-4 h-4" />GitHub
-                            </a>
-                        </MagneticWrapper>
-                    </motion.div>
-                    </motion.div>
-                </GridContainer>
-                <ProjectMetrics metrics={[
-                    { label: "Role", value: "Sole Designer · Developer" },
-                    { label: "Components", value: "18 (11 Atomic · 7 Compositional)" },
-                    { label: "Type", value: "Design System + Documentation" },
-                    { label: "Status", value: "v0.1 Shipped · Active Development" },
-                ]} />
-            </section>
-
-            {/* Sidebar + Content */}
-            <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
-                <CaseStudySidebar sections={neighborhoodSections} />
-                <div className="lg:-translate-x-[100px]">
-
-            {/* Overview */}
-            <section className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="relative z-10">
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            Neighborhood is a design system I built from scratch: a fully packaged npm component library, a token architecture spanning six categories, and a documentation site that consumes its own components as proof they work. The system was extracted from a structured cross-product audit of three real products (Notion, Discord, and Stripe), and every component included earned its place through observed frequency and compositional value, not from a checklist.
+                        transition={{ duration: 0.8, ease: EASE }} className="max-w-4xl">
+                        <motion.h1 initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.2 }}
+                            className={`${pixelify.className} text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4`}>
+                            Neighborhood
+                        </motion.h1>
+                        <motion.span initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className={`${pixelify.className} text-green-500 italic text-lg md:text-xl uppercase tracking-wider mb-8 block`}>
+                            Design System v0.1
+                        </motion.span>
+                        <motion.p initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                            className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}>
+                            A component library and design system built from the ground up, with warmth, motion, and personality baked into every token. This case study covers the initial v0.1 conception and implementation. Neighborhood is actively under development, and the system continues to evolve beyond what is documented here.
                         </motion.p>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* WHY */}
-            <section id="why" className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}>
-                            WHY BUILD A DESIGN SYSTEM
-                        </motion.h2>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            As a designer who also writes production code, I think in systems. A design system is the purest expression of that instinct: it forces every decision to be explicit, documented, and reusable. Rather than demonstrating this thinking implicitly through project work, Neighborhood makes it the entire point.
-                        </motion.p>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            The specific motivation was strategic. My portfolio read well as creative and technical work, but it didn&#39;t immediately signal the systematic design thinking that product design roles require. Shipping a design system (not just designing one in Figma) sends a clear message: I understand token architecture, component APIs, documentation, accessibility, and composition patterns, and I can build all of it in production code.
-                        </motion.p>
-
-                        {/* Live demo: this IS the system */}
-                        <motion.div variants={fadeInUp}>
-                            <DemoSurface label="Live components — these are Neighborhood">
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <Badge label="Shipped" color="success" />
-                                    <Badge label="v0.1" color="primary" variant="subtle" />
-                                    <Badge label="18 Components" color="plum" variant="outline" />
-                                    <Badge label="npm Package" color="sky" />
-                                </div>
-                                <Divider />
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <Button variant="primary">Primary</Button>
-                                    <Button variant="secondary">Secondary</Button>
-                                    <Button variant="ghost">Ghost</Button>
-                                    <Button variant="destructive">Destructive</Button>
-                                </div>
-                            </DemoSurface>
-                        </motion.div>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* METHODOLOGY */}
-            <section id="methodology" className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}>
-                            METHODOLOGY
-                        </motion.h2>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            Rather than pulling components from a UI kit or a personal wishlist, I conducted structured audits of three shipping products, analyzing their interfaces at three layers of abstraction: full-page layouts, mid-level compositional patterns, and individual atomic elements.
-                        </motion.p>
-
-                        {/* Audit stat cards */}
-                        <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div className="bg-gray-800 text-white rounded-2xl p-6 text-center">
-                                <p className={`${pixelify.className} text-3xl mb-2`}>Notion</p>
-                                <p className={`${roboto.className} text-white/60 text-sm font-light`}>9 views · Warmth, composition, content-first</p>
-                            </div>
-                            <div className="bg-indigo-600 text-white rounded-2xl p-6 text-center">
-                                <p className={`${pixelify.className} text-3xl mb-2`}>Discord</p>
-                                <p className={`${roboto.className} text-white/60 text-sm font-light`}>12 views · Personality, real-time feedback</p>
-                            </div>
-                            <div className="bg-violet-600 text-white rounded-2xl p-6 text-center">
-                                <p className={`${pixelify.className} text-3xl mb-2`}>Stripe</p>
-                                <p className={`${roboto.className} text-white/60 text-sm font-light`}>8 views · Rigor, data density, forms</p>
-                            </div>
-                        </motion.div>
-
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            Three products were chosen as a deliberate triangle. Together they cover the full range of interface contexts a design system should handle: content tools, data dashboards, and social platforms. If a component appeared in all three, it was non-negotiable. If it appeared in two, it was strongly considered. If it appeared in only one but demonstrated high compositional value, it earned a place as a distinctive pattern.
-                        </motion.p>
-
-                        {/* Audit screenshots — Notion */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Notion: composition and settings patterns
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <AuditImage src="/projects/neighborhood/audit/notion-settings-preferences.png" alt="Notion settings preferences" caption="SettingRow pattern: label + description + control. Appears 10+ times on a single page." product="notion" />
-                                <AuditImage src="/projects/neighborhood/audit/notion-settings-people.png" alt="Notion settings people" caption="EmptyState with dashed border, tab variants, and section organization." product="notion" />
-                            </div>
-                        </motion.div>
-
-                        {/* Discord */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Discord: personality and interaction density
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <AuditImage src="/projects/neighborhood/audit/discord-user-popover.png" alt="Discord user popover" caption="The richest popover across all three audits: avatar, banner, badges, roles, bio, and inline input." product="discord" />
-                                <AuditImage src="/projects/neighborhood/audit/discord-settings-notifications.png" alt="Discord notification settings" caption="Toggle rows confirming the SettingRow pattern with simpler anatomy than Notion." product="discord" />
-                            </div>
-                        </motion.div>
-
-                        {/* Stripe */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Stripe: data density and form rigor
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <AuditImage src="/projects/neighborhood/audit/stripe-payments.png" alt="Stripe payments" caption="DataTable with typed cells, row selection, status badges, and pagination." product="stripe" />
-                                <AuditImage src="/projects/neighborhood/audit/stripe-settings-details.png" alt="Stripe settings detail" caption="FormSection pattern: grouped inputs with labels, edit actions, and destructive buttons." product="stripe" />
-                            </div>
-                        </motion.div>
-
-                        <TradeoffBlock>
-                            Auditing live products rather than referencing existing design system documentation (like Polaris or Primer) was a deliberate choice. Existing systems document what they built, not how real interfaces compose. By analyzing Notion, Discord, and Stripe directly, I could observe which patterns are truly universal versus product-specific.
-                        </TradeoffBlock>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* EXTRACTION */}
-            <section id="extraction" className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}>
-                            EXTRACTION
-                        </motion.h2>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            The audits produced hundreds of observations. The synthesis phase compressed them into a prioritized component inventory using a single principle: a component earns inclusion if it appears across multiple products confirming universality, or represents a distinctively valuable pattern that demonstrates design range.
-                        </motion.p>
-
-                        {/* PropertyRow case study — the key insight */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Same need, three implementations
-                            </h3>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mb-6`}>
-                                PropertyRow is the clearest example of the extraction insight. All three products display labeled data, but each does it differently. Neighborhood supports all three layouts through a single component API.
-                            </p>
-                            {/* Live PropertyRow demos */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <DemoSurface label="Notion style">
-                                    <PropertyRow label="Status" value={<Badge label="Active" color="success" size="sm" />} />
-                                    <PropertyRow label="Due date" value="March 15, 2026" />
-                                    <PropertyRow label="Assignee" value="Akin Tewe" />
-                                </DemoSurface>
-                                <DemoSurface label="Stripe style">
-                                    <PropertyRow label="Email" value="akin@example.com" />
-                                    <PropertyRow label="Plan" value={<Badge label="Pro" color="plum" size="sm" />} />
-                                    <PropertyRow label="Balance" value="$2,450.00" />
-                                </DemoSurface>
-                                <DemoSurface label="Discord style">
-                                    <PropertyRow label="Display Name" value="paid actor" />
-                                    <PropertyRow label="Username" value="eightybot" />
-                                    <PropertyRow label="Member Since" value="Jan 2024" />
-                                </DemoSurface>
-                            </div>
-                        </motion.div>
-
-                        {/* SettingRow — the key compositional extraction */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                SettingRow: the composition that matters
-                            </h3>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mb-6`}>
-                                SettingRow appeared more than ten times on a single Notion preferences page and was confirmed by Discord&#39;s notification settings. Its anatomy is deceptively simple: a label and description on the left, a control slot on the right. The control slot accepts any component. This is not just an atom. It&#39;s the composition that proves the system thinks in assembled patterns.
-                            </p>
-                            <DemoSurface label="Live SettingRow demos — try the toggles">
-                                <SettingRow label="Dark mode" description="Switch between light and dark themes" control={<Toggle checked={demoToggle1} onChange={setDemoToggle1} />} />
-                                <Divider />
-                                <SettingRow label="Notifications" description="Receive alerts for new activity" control={<Toggle checked={demoToggle2} onChange={setDemoToggle2} />} />
-                                <Divider />
-                                <SettingRow label="Language" description="Choose your preferred language" control={<Select value="English" variant="form" />} />
-                            </DemoSurface>
-                        </motion.div>
-
-                        {/* Included vs excluded */}
-                        <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div className="border-l-2 border-green-500 pl-6">
-                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>v0.1 SHIPPED</h3>
-                                <ul className={`${roboto.className} font-light text-sm md:text-base leading-relaxed text-black/80 space-y-2`}>
-                                    <li>• 11 Atomic: Avatar, Badge, Button, Checkbox, Divider, Input, SegmentedControl, Select, Tabs, Toggle, Tooltip</li>
-                                    <li>• 7 Compositional: Banner, ContentSection, DataTable, EmptyState, FormSection, Menu, PropertyRow, SettingRow</li>
-                                    <li>• 6 Token categories</li>
-                                    <li>• 3 Demo pages</li>
-                                </ul>
-                            </div>
-                            <div className="border-l-2 border-red-400/50 pl-6">
-                                <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>DOCUMENTED FOR v0.2</h3>
-                                <ul className={`${roboto.className} font-light text-sm md:text-base leading-relaxed text-black/80 space-y-2`}>
-                                    <li>• MetricCard — rich dashboard widget from Stripe</li>
-                                    <li>• CommandPalette — search + filters overlay from Notion</li>
-                                    <li>• UserProfileCard — dense popover from Discord</li>
-                                    <li>• StatusFilterBar, FilterChipRow, Textarea, Radio Group</li>
-                                </ul>
-                            </div>
-                        </motion.div>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* TOKENS */}
-            <section id="tokens" className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}>
-                            TOKEN SYSTEM
-                        </motion.h2>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            The token system was locked before any components were built. Every visual decision is defined as a CSS custom property, and components reference tokens exclusively. No hardcoded hex values, no magic numbers. The tokens are the single source of truth.
-                        </motion.p>
-
-                        {/* Color palette visual */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Warm stone neutrals
-                            </h3>
-                            <div className="flex gap-1 rounded-2xl overflow-hidden mb-4">
-                                {["#faf8f6","#f3f0ed","#e6e2dd","#d1cbc4","#a69f96","#7a736b","#5c554e","#45403b","#2e2a26","#1a1816","#0d0c0a"].map((c) => (
-                                    <div key={c} style={{ background: c, flex: 1, height: 48 }} />
-                                ))}
-                            </div>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                                Most design systems use cool grays. Neighborhood uses a warm stone palette: eleven steps with visible warmth that makes surfaces feel approachable rather than clinical.
-                            </p>
-                        </motion.div>
-
-                        {/* Extended palette */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Extended palette
-                            </h3>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-                                {[
-                                    { name: "Primary", subtitle: "Grass Green", colors: ["#edfcf2","#34cc76","#0b8847","#093e24"] },
-                                    { name: "Berry", subtitle: "Strawberry", colors: ["#fff1f2","#ff5c6a","#c41d35","#6e1624"] },
-                                    { name: "Terracotta", subtitle: "Campfire", colors: ["#fff6ed","#ff8530","#cc5008","#6e2b10"] },
-                                    { name: "Amber", subtitle: "Gold Ingot", colors: ["#fffbeb","#ffbc20","#d47d02","#72390d"] },
-                                    { name: "Sky", subtitle: "Clear Day", colors: ["#eff8ff","#52a8ff","#166cd4","#163d6e"] },
-                                    { name: "Plum", subtitle: "Nether Portal", colors: ["#faf4ff","#ba72ff","#8a28d8","#4e1878"] },
-                                    { name: "Sage", subtitle: "Prismarine", colors: ["#eefcf8","#42c4a8","#1a8773","#18473f"] },
-                                ].map((family) => (
-                                    <div key={family.name} className="rounded-xl overflow-hidden border border-black/5">
-                                        <div className="flex">
-                                            {family.colors.map((c) => <div key={c} style={{ background: c, flex: 1, height: 32 }} />)}
-                                        </div>
-                                        <div className="p-3 bg-white">
-                                            <p className={`${roboto.className} text-sm font-medium text-gray-800`}>{family.name}</p>
-                                            <p className={`${roboto.className} text-xs text-black/40`}>{family.subtitle}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                                Seven extended color families provide range for semantic use, data visualization, and category identification. The naming draws from tactile and natural references: grass green, strawberry red, campfire orange. Memorable names reduce cognitive load when referencing tokens across a team.
-                            </p>
-                        </motion.div>
-
-                        {/* Radius and elevation */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Role-based radius and elevation
-                            </h3>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mb-6`}>
-                                Most systems define radius as small/medium/large. Neighborhood uses role-based tokens: --radius-control (8px) for interactive elements, --radius-surface (12px) for cards, --radius-pill (9999px) for badges. A developer doesn&#39;t choose a size. They choose a role.
-                            </p>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                <div className="bg-white border border-black/10 p-6 text-center" style={{ borderRadius: 8 }}>
-                                    <p className={`${pixelify.className} text-base text-gray-800 mb-1`}>Control</p>
-                                    <p className={`${roboto.className} text-xs text-black/40`}>8px — buttons, inputs</p>
-                                </div>
-                                <div className="bg-white border border-black/10 p-6 text-center" style={{ borderRadius: 12 }}>
-                                    <p className={`${pixelify.className} text-base text-gray-800 mb-1`}>Surface</p>
-                                    <p className={`${roboto.className} text-xs text-black/40`}>12px — cards, panels</p>
-                                </div>
-                                <div className="bg-white border border-black/10 p-6 text-center" style={{ borderRadius: 9999 }}>
-                                    <p className={`${pixelify.className} text-base text-gray-800 mb-1`}>Pill</p>
-                                    <p className={`${roboto.className} text-xs text-black/40`}>9999px — badges, pills</p>
-                                </div>
-                            </div>
-                        </motion.div>
-
-                        {/* Motion tokens */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Motion: every interaction has motion
-                            </h3>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mb-6`}>
-                                Four easing curves (default, spring, pop, loop) and four durations (120ms, 200ms, 350ms, 1.4s), each mapped to specific interaction types. Two signature selection patterns emerged: bracket bars for primary navigation and landing-settle for text-heavy lists.
-                            </p>
-                            <DemoSurface label="Live Tabs — bracket selection pattern">
-                                <Tabs items={[
-                                    { label: "Overview", value: "overview" },
-                                    { label: "Guidelines", value: "guidelines" },
-                                    { label: "Tokens", value: "tokens" },
-                                ]} activeValue={demoTab} onChange={setDemoTab} />
-                            </DemoSurface>
-                        </motion.div>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* COMPONENTS */}
-            <section id="components" className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}>
-                            COMPONENTS
-                        </motion.h2>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            The 18-component inventory splits into two layers. Eleven atomic components handle individual interaction primitives. Seven compositional components handle mid-level patterns that compose atoms into reusable groups. The compositional layer is where the real systems thinking lives. Anyone can build a button. The harder question is how buttons, toggles, and selects compose into a settings interface.
-                        </motion.p>
-
-                        {/* Atomic component showcase */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Atomic components
-                            </h3>
-                            <DemoSurface label="11 atomic primitives">
-                                <div className="flex flex-wrap items-center gap-4">
-                                    <Avatar initials="AT" size="md" status="online" />
-                                    <Avatar initials="NB" size="md" />
-                                    <Badge label="Success" color="success" />
-                                    <Badge label="Warning" color="warning" variant="subtle" />
-                                    <Badge label="Error" color="error" variant="outline" />
-                                </div>
-                                <Divider />
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <Toggle checked={demoToggle1} onChange={setDemoToggle1} />
-                                    <Checkbox checked={demoCheck} onChange={setDemoCheck} label="Remember me" />
-                                    <SegmentedControl options={[
-                                        { label: "Monthly", value: "monthly" },
-                                        { label: "Yearly", value: "yearly" },
-                                    ]} activeValue={demoSegment} onChange={setDemoSegment} />
-                                </div>
-                                <Divider />
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <Input placeholder="Search components..." variant="search" />
-                                </div>
-                                <Divider />
-                                <div className="flex flex-wrap items-center gap-3">
-                                    <Tooltip content="This is a tooltip" position="top">
-                                        <Button variant="secondary">Hover me</Button>
-                                    </Tooltip>
-                                    <Select value="Select option" variant="form" />
-                                </div>
-                            </DemoSurface>
-                        </motion.div>
-
-                        {/* Compositional showcase */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Compositional components
-                            </h3>
-                            <DemoSurface label="Banner — four severity levels">
-                                <Banner severity="info" message="This is an informational banner with an optional action." />
-                                <Banner severity="success" message="Changes saved successfully." />
-                                <Banner severity="warning" message="Your trial expires in 3 days." />
-                                <Banner severity="error" message="Failed to save. Please try again." />
-                            </DemoSurface>
-                        </motion.div>
-
-                        <motion.div variants={fadeInUp}>
-                            <DemoSurface label="EmptyState — the signature dashed border">
-                                <EmptyState variant="full" title="No projects yet" description="Create your first project to get started." action={<Button variant="primary">Create Project</Button>} />
-                            </DemoSurface>
-                        </motion.div>
-
-                        {/* Architecture */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
-                                Two-repo architecture
-                            </h3>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mb-4`}>
-                                Components are published as a separate npm package (@neighborhood/ui) installed from GitHub. The documentation site imports from the package, not from local files. The separation enforces a clean API boundary: the doc site can&#39;t accidentally depend on internal implementation details.
-                            </p>
-                            <div className="bg-gray-900 rounded-2xl p-6 font-mono text-sm text-gray-300">
-                                <span className="text-gray-500">$</span> <span className="text-green-400">npm</span> install github:akin-tewe/neighborhood-ui
-                            </div>
-                        </motion.div>
-
-                        {/* Accessibility */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-3`}>
-                                Accessibility as non-negotiable
-                            </h3>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                                Every interactive component has a visible focus ring for keyboard navigation using :focus-visible (not :focus, so rings only appear on keyboard nav). The spec is consistent: 2px solid sky-400 with 2px offset. Every keyboard interaction documented on a component page actually works in the component. Claims without implementation are worse than no claims at all.
-                            </p>
-                        </motion.div>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* DEMOS */}
-            <section id="demos" className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-10 md:gap-12 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}>
-                            DEMOS
-                        </motion.h2>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            Components in isolation prove they exist. Components composed into real interfaces prove they work. Neighborhood ships three demo pages, each demonstrating a different composition context. None are clones of the audited products. They are original compositions using Neighborhood&#39;s visual identity.
-                        </motion.p>
-
-                        {/* Demo page screenshots */}
-                        <motion.div variants={fadeInUp}>
-                            <h3 className={`${roboto.className} font-light text-xs md:text-sm uppercase tracking-wider text-gray-800 mb-4`}>
-                                Settings: 14 of 18 components in one view
-                            </h3>
-                            <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mb-6`}>
-                                The settings demo was chosen as the primary demo because it naturally requires the most component variety in a single view. Sidebar rail with bracket selection, tabs, SettingRows with Toggle/Select/Button controls, FormSections, PropertyRows, Banner, Badges, EmptyState, Dividers, and Buttons across all variants.
-                            </p>
-                            <div className="relative overflow-hidden rounded-2xl border border-black/5">
-                                <Image src="/projects/neighborhood/thumbnail-dashboard.png" alt="Neighborhood dashboard demo" width={1400} height={900} className="w-full h-auto" />
-                            </div>
-                            <span className={`${roboto.className} text-black/35 text-sm mt-3 block text-center italic`}>Dashboard demo — DataTable with typed cells, property displays, and dense data composition</span>
-                        </motion.div>
-
-                        <TradeoffBlock>
-                            Three demos is a constraint. More contexts (messaging, e-commerce, analytics) would demonstrate wider range. But three well-built demos that each exercise a different composition pattern are more convincing than ten shallow ones. The settings demo alone uses 14 components. That&#39;s a stronger proof of composition than five demos using three components each.
-                        </TradeoffBlock>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* WHAT'S NEXT */}
-            <section id="whats-next" className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col gap-8 md:gap-10 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal`}>
-                            WHAT&#39;S NEXT
-                        </motion.h2>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            Neighborhood v0.1 is shipped, but the system is actively evolving. The v0.2 roadmap includes seven additional components: MetricCard for dashboard contexts, CommandPalette for power-user search, UserProfileCard for identity-rich popovers, StatusFilterBar and FilterChipRow for data filtering, and Textarea and Radio Group as foundational additions.
-                        </motion.p>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80`}>
-                            Beyond components, future work includes additional demo pages covering messaging and e-commerce contexts, expanded accessibility documentation with ARIA patterns, and a formal dark mode implementation using the token architecture.
-                        </motion.p>
-                    </AnimatedSection>
-                </GridContainer>
-            </section>
-
-            <SectionDivider />
-
-            {/* Built With + CTA */}
-            <section className="relative py-16 md:py-20">
-                <GridContainer>
-                    <AnimatedSection className="flex flex-col items-center gap-8 md:gap-10 relative z-10">
-                        <motion.h2 variants={fadeInUp} className={`${roboto.className} text-sm md:text-base text-black/40 uppercase tracking-[0.2em] font-normal text-center`}>
-                            BUILT WITH
-                        </motion.h2>
-                        <motion.div variants={fadeInUp} className="flex flex-wrap justify-center gap-2 md:gap-3">
-                            <TechPill name="Next.js 16" />
-                            <TechPill name="React 19" />
-                            <TechPill name="TypeScript" />
-                            <TechPill name="Tailwind CSS 4" />
-                            <TechPill name="CSS Custom Properties" />
-                        </motion.div>
-                        <motion.p variants={fadeInUp} className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/80 mx-auto text-center`}>
-                            The token system uses CSS custom properties rather than Tailwind&#39;s config-based approach, which means tokens work anywhere CSS works. The component package is published via GitHub and installed with a single command.
-                        </motion.p>
-                        <motion.div variants={fadeInUp} className="flex flex-wrap gap-4 justify-center">
+                        <motion.div initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
+                            transition={{ duration: 0.6, delay: 0.5 }} className="flex flex-wrap gap-4 mt-10">
                             <MagneticWrapper>
                                 <a href="https://nbhd.dev" target="_blank" rel="noopener noreferrer"
                                     className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}>
@@ -645,7 +376,659 @@ export default function Neighborhood() {
                                 </a>
                             </MagneticWrapper>
                         </motion.div>
-                    </AnimatedSection>
+                    </motion.div>
+                </GridContainer>
+                <ProjectMetrics metrics={[
+                    { label: "Role", value: "Sole Designer · Developer" },
+                    { label: "Components", value: "18 Components · 11 Atomic · 7 Compositional" },
+                    { label: "Type", value: "Design System · Documentation" },
+                    { label: "Status", value: "v0.1 Shipped · Active Development" },
+                ]} />
+            </section>
+
+            {/* Hero preview */}
+            <section className="relative py-12 md:py-16">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <div className="rounded-2xl overflow-hidden bg-gray-900 p-2 md:p-3">
+                            <div className="flex items-center gap-2 px-2 py-2 mb-2">
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                                <a href="https://nbhd.dev" target="_blank" rel="noopener noreferrer" className={`${roboto.className} text-[11px] text-white/30 ml-2 hover:text-white/50 transition-colors`}>nbhd.dev</a>
+                            </div>
+                            <div className="overflow-hidden rounded-xl">
+                                <video src="/projects/neighborhood/thumbnail.mp4" autoPlay loop muted playsInline
+                                    className="w-full h-full object-cover"
+                                    style={{ transform: 'scale(1.09) translateX(-1%)', transformOrigin: 'center' }} />
+                            </div>
+                        </div>
+                    </RevealOnScroll>
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            <div className="lg:grid lg:grid-cols-[200px_minmax(0,1fr)]">
+                <CaseStudySidebar sections={neighborhoodSections} />
+                <div className="lg:-translate-x-[100px]">
+
+            {/* ═══════ SHOWCASE ═══════ */}
+            <section id="showcase" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>The System at a Glance</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
+                            Every component below is live — not a screenshot, not a mockup. These are the actual shipped npm components rendered on this page. Interact with them.
+                        </p>
+                    </RevealOnScroll>
+                </GridContainer>
+                <WideContainer>
+                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        {/* Each cell is dense — no wasted space */}
+                        {[
+                            { label: "Button", delay: 0, content: (
+                                <div className="flex gap-2">
+                                    <Button variant="primary">Primary</Button>
+                                    <Button variant="secondary">Secondary</Button>
+                                </div>
+                            )},
+                            { label: "Badge", delay: 0.04, content: (
+                                <div className="flex gap-1.5">
+                                    <Badge label="Shipped" color="success" />
+                                    <Badge label="v0.1" color="primary" variant="subtle" />
+                                    <Badge label="npm" color="sky" />
+                                    <Badge label="18" color="plum" variant="outline" />
+                                </div>
+                            )},
+                            { label: "Toggle", delay: 0.08, content: (
+                                <div className="flex items-center justify-between flex-1">
+                                    <AutoToggle /> <AutoToggle delay={400} interval={3000} /> <AutoToggle delay={800} interval={3500} />
+                                </div>
+                            )},
+                            { label: "Tabs", delay: 0.12, content: (
+                                <Tabs items={[
+                                    { label: "Overview", value: "overview" },
+                                    { label: "Tokens", value: "tokens" },
+                                ]} activeValue={showcaseTab} onChange={setShowcaseTab} />
+                            )},
+                            { label: "Input", delay: 0.16, content: <Input placeholder="Search components..." variant="search" /> },
+                            { label: "Avatar", delay: 0.2, content: (
+                                <div className="flex items-center justify-between flex-1">
+                                    <Avatar initials="AT" size="md" status="online" />
+                                    <Avatar initials="NB" size="md" status="busy" />
+                                    <Avatar initials="DS" size="md" status="away" />
+                                    <Avatar initials="UI" size="md" />
+                                </div>
+                            )},
+                            { label: "Switcher", delay: 0.24, content: (
+                                <SegmentedControl options={[
+                                    { label: "Monthly", value: "monthly" },
+                                    { label: "Yearly", value: "yearly" },
+                                    { label: "Lifetime", value: "lifetime" },
+                                ]} activeValue={showcaseSegment} onChange={setShowcaseSegment} />
+                            )},
+                            { label: "Banner", delay: 0.28, content: <Banner severity="success" message="Changes saved." /> },
+                            { label: "Empty State", delay: 0.32, content: <EmptyState variant="minimal" title="No results" description="Try a different search." /> },
+                        ].map((cell) => {
+                            const cellRef = useRef(null);
+                            const cellInView = useInView(cellRef, { once: true, margin: "-40px" });
+                            return (
+                                <motion.div key={cell.label} ref={cellRef}
+                                    initial={{ opacity: 0, y: 16 }} animate={cellInView ? { opacity: 1, y: 0 } : {}}
+                                    transition={{ duration: 0.4, delay: cell.delay, ease: EASE }}
+                                    className="rounded-2xl border border-black/[0.06] bg-white p-4 flex items-center gap-4">
+                                    <span className={`${spaceGrotesk.className} text-[10px] text-black/25 uppercase tracking-[0.15em] font-medium shrink-0 w-16`}>{cell.label}</span>
+                                    <div className="flex-1 min-w-0">{cell.content}</div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </WideContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ TOKENS ═══════ */}
+            <section id="tokens" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>Token System</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
+                            Every visual decision is a CSS custom property. Components reference tokens exclusively — no hardcoded values. Six categories: typography, color, spacing, radius, elevation, and motion. The token system was finalized before any components were built.
+                        </p>
+                    </RevealOnScroll>
+
+                    {/* Neutrals */}
+                    <RevealOnScroll>
+                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Warm Stone Neutrals</span>
+                        <div className="flex gap-0.5 rounded-xl overflow-hidden mb-2">
+                            {neutralColors.map((c) => (
+                                <motion.div key={c} style={{ background: c, flex: 1, height: 36 }}
+                                    whileHover={{ scaleY: 1.3 }} transition={{ duration: 0.15 }} className="origin-bottom cursor-default" />
+                            ))}
+                        </div>
+                        <p className={`${roboto.className} font-light text-sm text-black/45`}>11 warm steps. Approachable, not clinical.</p>
+                    </RevealOnScroll>
+
+                    {/* Palette playground */}
+                    <RevealOnScroll className="mt-8">
+                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-4 block`}>Extended Palette</span>
+                        <TokenPlayground />
+                    </RevealOnScroll>
+
+                    {/* Radius + Motion side by side */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
+                        <RevealOnScroll>
+                            <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Role-Based Radius</span>
+                            <div className="flex flex-col gap-4">
+                                {[
+                                    { label: "Control", val: "8px", desc: "Buttons, inputs", r: 8 },
+                                    { label: "Surface", val: "12px", desc: "Cards, panels", r: 12 },
+                                    { label: "Pill", val: "9999px", desc: "Badges, chips", r: 9999 },
+                                ].map((item) => (
+                                    <motion.div key={item.label} whileHover={{ scale: 1.02 }} transition={{ duration: 0.15 }}
+                                        className="bg-white p-5 flex justify-between items-center cursor-default"
+                                        style={{ borderRadius: item.r, boxShadow: '0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05)' }}>
+                                        <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800`}>{item.label}</span>
+                                        <span className={`${roboto.className} text-xs text-black/35`}>{item.val}</span>
+                                    </motion.div>
+                                ))}
+                            </div>
+                        </RevealOnScroll>
+
+                        <RevealOnScroll delay={0.1}>
+                            <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Motion Tokens</span>
+                            <p className={`${roboto.className} font-light text-sm text-black/50 mb-4`}>
+                                4 easing curves · 4 durations. Click to compare bracket and landing selection patterns.
+                            </p>
+                            <div className="flex flex-col gap-3">
+                                <div className="rounded-xl border border-black/[0.06] bg-white p-4">
+                                    <span className={`${roboto.className} text-[10px] text-black/25 uppercase tracking-wider mb-2 block`}>Bracket variant</span>
+                                    <Tabs items={[
+                                        { label: "Overview", value: "overview" },
+                                        { label: "Guidelines", value: "guidelines" },
+                                        { label: "Tokens", value: "tokens" },
+                                    ]} activeValue={motionBracketTab} onChange={setMotionBracketTab} variant="bracket" />
+                                </div>
+                                <div className="rounded-xl border border-black/[0.06] bg-white p-4">
+                                    <span className={`${roboto.className} text-[10px] text-black/25 uppercase tracking-wider mb-2 block`}>Landing variant</span>
+                                    <Tabs items={[
+                                        { label: "Overview", value: "overview" },
+                                        { label: "Guidelines", value: "guidelines" },
+                                        { label: "Tokens", value: "tokens" },
+                                    ]} activeValue={motionLandingTab} onChange={setMotionLandingTab} variant="landing" />
+                                </div>
+                            </div>
+                            <div className="flex flex-wrap gap-2 mt-3">
+                                {["--ease-default","--ease-spring","--ease-pop","--ease-loop"].map((t) => (
+                                    <span key={t} className={`${roboto.className} text-[10px] text-black/25 bg-black/[0.03] px-2 py-1 rounded font-mono`}>{t}</span>
+                                ))}
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ COMPONENTS ═══════ */}
+            <section id="components" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>Components</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
+                            18 components in two layers. Eleven atomic primitives handle individual interactions. Seven compositional components compose atoms into reusable patterns — this is where the systems thinking lives.
+                        </p>
+                    </RevealOnScroll>
+
+                    {/* Full-width component demos — each is a self-contained block */}
+                    <div className="flex flex-col gap-6">
+
+                        {/* Button */}
+                        <RevealOnScroll>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+                                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+                                    <div>
+                                        <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800`}>Button</span>
+                                        <p className={`${roboto.className} text-sm text-black/45 font-light mt-1`}>
+                                            4 variants · hover, active, focus, disabled, loading states
+                                        </p>
+                                    </div>
+                                    <SegmentedControl options={[
+                                        { label: "Primary", value: "primary" },
+                                        { label: "Secondary", value: "secondary" },
+                                        { label: "Ghost", value: "ghost" },
+                                        { label: "Destructive", value: "destructive" },
+                                    ]} activeValue={buttonVariant} onChange={setButtonVariant} size="sm" />
+                                </div>
+                                <div className="flex gap-3">
+                                    <Button variant={buttonVariant as "primary" | "secondary" | "ghost" | "destructive"}>Click me</Button>
+                                    <Button variant={buttonVariant as "primary" | "secondary" | "ghost" | "destructive"} disabled>Disabled</Button>
+                                    <Button variant={buttonVariant as "primary" | "secondary" | "ghost" | "destructive"} loading>Loading</Button>
+                                </div>
+                            </div>
+                        </RevealOnScroll>
+
+                        {/* SettingRow */}
+                        <RevealOnScroll>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800`}>Setting Row</span>
+                                <p className={`${roboto.className} text-sm text-black/45 font-light mt-1 mb-4`}>
+                                    Appeared 10+ times on a single Notion page. Label + description left, any control right. The slot accepts any atom.
+                                </p>
+                                <SettingRow label="Dark mode" description="Switch themes" control={<Toggle checked={demoToggle1} onChange={setDemoToggle1} />} />
+                                <div className="my-1"><Divider /></div>
+                                <SettingRow label="Notifications" description="Receive alerts" control={<Toggle checked={demoToggle2} onChange={setDemoToggle2} />} />
+                                <div className="my-1"><Divider /></div>
+                                <SettingRow label="Language" description="Display language" control={<Menu trigger={<Select value="English" variant="form" size="sm" />} items={[{ label: "English", checked: true, onCheckedChange: () => {} }, { label: "Spanish" }, { label: "French" }]} />} />
+                            </div>
+                        </RevealOnScroll>
+
+                        {/* PropertyRow */}
+                        <RevealOnScroll>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800`}>Property</span>
+                                <p className={`${roboto.className} text-sm text-black/45 font-light mt-1 mb-4`}>
+                                    All three products display labeled data differently. One component API unifies them.
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="bg-[#faf8f6] rounded-xl p-4">
+                                        <span className={`${roboto.className} text-[10px] text-black/25 uppercase tracking-wider`}>Notion style</span>
+                                        <div className="mt-2">
+                                            <PropertyRow label="Status" value={<Badge label="Active" color="success" size="sm" />} />
+                                            <PropertyRow label="Assignee" value="Akin Tewe" />
+                                            <PropertyRow label="Due" value="Mar 15, 2026" />
+                                        </div>
+                                    </div>
+                                    <div className="bg-[#faf8f6] rounded-xl p-4">
+                                        <span className={`${roboto.className} text-[10px] text-black/25 uppercase tracking-wider`}>Stripe style</span>
+                                        <div className="mt-2">
+                                            <PropertyRow label="Plan" value={<Badge label="Pro" color="plum" size="sm" />} />
+                                            <PropertyRow label="Balance" value="$2,450.00" />
+                                            <PropertyRow label="Email" value="akin@example.com" />
+                                        </div>
+                                    </div>
+                                    <div className="bg-[#faf8f6] rounded-xl p-4">
+                                        <span className={`${roboto.className} text-[10px] text-black/25 uppercase tracking-wider`}>Discord style</span>
+                                        <div className="mt-2">
+                                            <PropertyRow label="Name" value="paid actor" />
+                                            <PropertyRow label="User" value="eightybot" />
+                                            <PropertyRow label="Since" value="Jan 2024" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </RevealOnScroll>
+
+                        {/* Banner + EmptyState */}
+                        <RevealOnScroll>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800`}>Banner + Empty State</span>
+                                <p className={`${roboto.className} text-sm text-black/45 font-light mt-1 mb-4`}>
+                                    4 severity levels. Empty State uses a signature dashed border. Both support action slots.
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="flex flex-col gap-2">
+                                        <Banner severity="info" message="New version available." />
+                                        <Banner severity="success" message="Saved successfully." />
+                                        <Banner severity="warning" message="Trial expires in 3 days." />
+                                        <Banner severity="error" message="Failed to save." />
+                                    </div>
+                                    <EmptyState variant="full" title="No projects yet" description="Create your first project to get started." action={<Button variant="primary" size="sm">Create</Button>} />
+                                </div>
+                            </div>
+                        </RevealOnScroll>
+
+                        {/* Architecture + A11y */}
+                        <RevealOnScroll>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
+                                    <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Two-Repo Architecture</span>
+                                    <p className={`${roboto.className} font-light text-sm text-black/50 mb-3`}>
+                                        Published as @neighborhood/ui. Doc site imports from the package, not local files — enforcing a clean API boundary.
+                                    </p>
+                                    <div className="bg-gray-900 rounded-lg p-3 font-mono text-xs text-gray-300">
+                                        <span className="text-gray-500">$</span> <span className="text-green-400">npm</span> install github:akin-tewe/neighborhood-ui
+                                    </div>
+                                </div>
+                                <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
+                                    <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Accessibility</span>
+                                    <p className={`${roboto.className} font-light text-sm text-black/50`}>
+                                        Every component has a visible focus ring via :focus-visible. Consistent spec: 2px solid sky-400, 2px offset. Every documented keyboard interaction works. Claims without implementation are worse than no claims.
+                                    </p>
+                                </div>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ COMPOSITION ═══════ */}
+            <section id="composition" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>Composition</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3`}>
+                            Atoms compose into patterns. Scroll to watch a settings panel assemble itself from individual components — the thesis made visible.
+                        </p>
+                    </RevealOnScroll>
+
+                    <AssemblyAnimation />
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ METHODOLOGY ═══════ */}
+            <section id="methodology" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>Methodology</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
+                            Structured audits of three shipping products — analyzing full-page layouts, mid-level patterns, and atomic elements. Three products chosen as a triangle: content tools, data dashboards, social platforms.
+                        </p>
+                    </RevealOnScroll>
+
+                    {/* Product selector */}
+                    <RevealOnScroll>
+                        <div className="grid grid-cols-3 gap-3 mb-6">
+                            {([
+                                { key: "notion" as AuditProduct, label: "Notion", views: "9 views", bg: "bg-gray-800", clickable: true },
+                                { key: "discord" as AuditProduct, label: "Discord", views: "Screenshots omitted for privacy", bg: "bg-indigo-600", clickable: false },
+                                { key: "stripe" as AuditProduct, label: "Stripe", views: "8 views", bg: "bg-violet-600", clickable: true },
+                            ]).map((p) => (
+                                p.clickable ? (
+                                    <motion.button key={p.key} onClick={() => setAuditProduct(p.key)}
+                                        whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}
+                                        className={`${p.bg} text-white rounded-xl p-4 md:p-5 text-left transition-all duration-200 ${
+                                            auditProduct === p.key ? 'ring-2 ring-offset-2 ring-black/15' : 'opacity-50 hover:opacity-80'
+                                        }`}>
+                                        <p className={`${spaceGrotesk.className} text-lg md:text-xl font-semibold`}>{p.label}</p>
+                                        <p className={`${roboto.className} text-white/50 text-xs`}>{p.views}</p>
+                                    </motion.button>
+                                ) : (
+                                    <div key={p.key} className={`${p.bg} text-white rounded-xl p-4 md:p-5 text-left opacity-50`}>
+                                        <p className={`${spaceGrotesk.className} text-lg md:text-xl font-semibold`}>{p.label}</p>
+                                        <p className={`${roboto.className} text-white/40 text-xs italic`}>{p.views}</p>
+                                    </div>
+                                )
+                            ))}
+                        </div>
+                    </RevealOnScroll>
+
+                    {/* Scrollable audit carousel */}
+                    <AuditCarousel product={auditProduct} />
+
+                    <RevealOnScroll className="mt-8">
+                        <p className={`${roboto.className} font-light text-base leading-relaxed text-black/60`}>
+                            If a component appeared in all three, it was non-negotiable. Two appearances meant strong consideration. One appearance required high compositional value to earn inclusion. Setting rows, property displays, and banners all passed. Command palette and user profile card are documented for v0.2.
+                        </p>
+                    </RevealOnScroll>
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ TRADEOFFS + SCOPE ═══════ */}
+            <section id="tradeoffs" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>Tradeoffs</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-6`}>
+                            Every decision to include a component was also a decision to exclude others. The inventory is deliberately tight — 18 components with clear cross-product rationale over 40 from a checklist.
+                        </p>
+                    </RevealOnScroll>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                        <RevealOnScroll>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Same Need, Different Solutions</span>
+                                <p className={`${roboto.className} font-light text-sm leading-relaxed text-black/60`}>
+                                    Settings architecture alone had three valid approaches — Notion uses a modal overlay, Discord does a full-page takeover, Stripe uses a card grid hub. Property display had three implementations. Destructive actions used red fill (Stripe) vs red text (Discord). Neighborhood documents the analysis and picks the right approach per context, not per preference.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                        <RevealOnScroll delay={0.05}>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Inclusion vs Exclusion</span>
+                                <p className={`${roboto.className} font-light text-sm leading-relaxed text-black/60`}>
+                                    Toggle appeared in Notion (10+ instances) and Discord but not Stripe — included because two products confirmed universality. Switcher appeared only in Stripe but its compositional value (filtering data in place without navigating) earned inclusion as a distinctive pattern. Metric Card was excluded from v0.1 — rich and reusable, but too specific to data-dense dashboards for a system establishing its identity. Reaction badges (Discord-only) were excluded entirely: high personality, low cross-product applicability.
+                                </p>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+
+                    <RevealOnScroll>
+                        <SectionLabel>Scope</SectionLabel>
+                        <div className="mt-4" />
+                    </RevealOnScroll>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <RevealOnScroll>
+                            <div className="border-l-2 border-green-500 pl-5 py-1">
+                                <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/40 font-medium mb-2 block`}>In Scope — v0.1 Shipped</span>
+                                <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/70 space-y-1`}>
+                                    <li>• 11 Atomic: Avatar, Badge, Button, Checkbox, Divider, Input, Switcher, Select, Tabs, Toggle, Tooltip</li>
+                                    <li>• 7 Compositional: Banner, Block, Table, Empty State, Form Group, Menu, Property, Setting Row</li>
+                                </ul>
+                            </div>
+                        </RevealOnScroll>
+                        <RevealOnScroll delay={0.1}>
+                            <div className="border-l-2 border-red-400/40 pl-5 py-1">
+                                <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/40 font-medium mb-2 block`}>Up Next — v0.2 Roadmap</span>
+                                <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/70 space-y-1`}>
+                                    <li>• Emerging patterns: card system, showcase surfaces, flat strip indicator</li>
+                                    <li>• New components: Command Palette, avatar color prop</li>
+                                    <li>• Dark mode via token architecture · messaging + e-commerce demos</li>
+                                </ul>
+                            </div>
+                        </RevealOnScroll>
+                    </div>
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ DEMOS ═══════ */}
+            <section id="demos" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>Demos</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-6`}>
+                            Three demo pages, each exercising a different composition context. The settings demo below uses 14 of 18 components. Switch tabs to see the content change.
+                        </p>
+                    </RevealOnScroll>
+
+                    {/* Live interactive demo — content switches with tabs */}
+                    <RevealOnScroll>
+                        <div className="rounded-2xl border border-black/[0.06] bg-white overflow-hidden">
+                            <div className="flex items-center gap-2 px-4 py-3 border-b border-black/[0.04]">
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f57]" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#febc2e]" />
+                                <div className="w-2.5 h-2.5 rounded-full bg-[#28c840]" />
+                                <a href="https://nbhd.dev/demo/settings" target="_blank" rel="noopener noreferrer" className={`${roboto.className} text-[11px] text-black/25 ml-2 hover:text-black/40 transition-colors`}>nbhd.dev/demo/settings</a>
+                            </div>
+                            <div className="p-5 md:p-6">
+                                <Tabs items={[
+                                    { label: "General", value: "general" },
+                                    { label: "Appearance", value: "appearance" },
+                                    { label: "Notifications", value: "notifications" },
+                                ]} activeValue={demoTab} onChange={setDemoTab} />
+
+                                <AnimatePresence mode="wait">
+                                    <motion.div key={demoTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.25 }} className="mt-4">
+
+                                        {demoTab === "general" && (
+                                            <div>
+                                                <SettingRow label="Display name" description="Your public username" control={<Input placeholder="Akin Tewe" size="sm" />} />
+                                                <div className="my-1"><Divider /></div>
+                                                <SettingRow label="Language" description="Display language" control={
+                                                    <Menu trigger={<Select value="English" variant="form" size="sm" />} items={[
+                                                        { label: "English", checked: true, onCheckedChange: () => {} },
+                                                        { label: "Spanish" },
+                                                        { label: "French" },
+                                                        { label: "Japanese" },
+                                                    ]} />
+                                                } />
+                                                <div className="my-1"><Divider /></div>
+                                                <SettingRow label="Timezone" description="Set your local timezone" control={
+                                                    <Menu trigger={<Select value="UTC-5 (EST)" variant="form" size="sm" />} items={[
+                                                        { label: "UTC-5 (EST)", checked: true, onCheckedChange: () => {} },
+                                                        { label: "UTC-8 (PST)" },
+                                                        { label: "UTC+0 (GMT)" },
+                                                        { label: "UTC+9 (JST)" },
+                                                    ]} />
+                                                } />
+                                            </div>
+                                        )}
+
+                                        {demoTab === "appearance" && (
+                                            <div>
+                                                <SettingRow label="Dark mode" description="Use dark theme across the app" control={<Toggle checked={demoToggle1} onChange={setDemoToggle1} />} />
+                                                <div className="my-1"><Divider /></div>
+                                                <SettingRow label="Compact view" description="Reduce spacing in lists" control={<Toggle checked={demoToggle2} onChange={setDemoToggle2} />} />
+                                                <div className="my-1"><Divider /></div>
+                                                <SettingRow label="Date format" description="How dates are displayed" control={
+                                                    <SegmentedControl options={[
+                                                        { label: "MM/DD", value: "us" },
+                                                        { label: "DD/MM", value: "eu" },
+                                                    ]} activeValue={demoSegment} onChange={setDemoSegment} size="sm" />
+                                                } />
+                                            </div>
+                                        )}
+
+                                        {demoTab === "notifications" && (
+                                            <div>
+                                                <SettingRow label="Email alerts" description="Get notified about important updates" control={<Toggle checked={demoToggle1} onChange={setDemoToggle1} />} />
+                                                <div className="my-1"><Divider /></div>
+                                                <SettingRow label="Push notifications" description="Browser push notifications" control={<Toggle checked={demoToggle2} onChange={setDemoToggle2} />} />
+                                                <div className="my-1"><Divider /></div>
+                                                <Banner severity="info" message="Push notifications require browser permission." />
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                    </RevealOnScroll>
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ WHAT'S NEXT ═══════ */}
+            <section id="whats-next" className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll>
+                        <SectionLabel>What&apos;s Next</SectionLabel>
+                        <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
+                            v0.1 shipped the foundation — but several patterns emerged during documentation site development that are actively shaping the next version.
+                        </p>
+                    </RevealOnScroll>
+
+                    <div className="flex flex-col gap-6">
+                        {/* Emerging patterns */}
+                        <RevealOnScroll>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-3 block`}>Emerging Patterns</span>
+                                <p className={`${roboto.className} text-sm text-black/50 font-light mb-4`}>
+                                    Patterns observed during doc site construction that are candidates for formal components. Cards, showcase surfaces, and a flat strip indicator (the non-rounded sibling of Banner, purpose-built for unified card compositions) have all been documented and are being evaluated for extraction. Expanded usage guidelines and implementation guidance per component are also in progress.
+                                </p>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                    {["Card System", "Showcase Surface", "Flat Strip", "Usage Guidelines"].map((p) => (
+                                        <div key={p} className="bg-[#faf8f6] rounded-lg p-3 text-center">
+                                            <span className={`${roboto.className} text-xs text-black/50 font-medium`}>{p}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </RevealOnScroll>
+
+                        {/* New components */}
+                        <RevealOnScroll delay={0.05}>
+                            <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-3 block`}>v0.2 Roadmap</span>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <span className={`${spaceGrotesk.className} text-xs text-black/30 uppercase tracking-wider font-medium mb-2 block`}>New Components</span>
+                                        <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/55 space-y-1`}>
+                                            <li>• Metric Card (Stripe), Command Palette (Notion), Profile Card (Discord)</li>
+                                            <li>• Avatar color prop, card system, showcase surfaces</li>
+                                            <li>• Dark mode via token architecture</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <span className={`${spaceGrotesk.className} text-xs text-black/30 uppercase tracking-wider font-medium mb-2 block`}>Emerging Patterns</span>
+                                        <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/55 space-y-1`}>
+                                            <li>• Flat strip indicator, detailed usage + implementation guidelines</li>
+                                            <li>• Doc page layout abstraction</li>
+                                            <li>• Messaging + e-commerce demo pages</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </RevealOnScroll>
+
+                        {/* Selection patterns + motion */}
+                        <RevealOnScroll delay={0.1}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
+                                    <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Selection Patterns</span>
+                                    <p className={`${roboto.className} text-sm text-black/50 font-light`}>
+                                        Two signature selection patterns have been established. Bracket (primary-400 vertical bars, spring animation) for primary navigation and tabs. Landing (translateY settle with inset shadow) for secondary nav and text-heavy lists. Both are documented with specific motion curves and use-case rules.
+                                    </p>
+                                </div>
+                                <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
+                                    <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Responsive Infrastructure</span>
+                                    <p className={`${roboto.className} text-sm text-black/50 font-light`}>
+                                        CSS-first responsive system with two breakpoints (768px tablet, 640px mobile). Components include their own mobile behavior — Setting Row wraps controls, Block hides descriptions, Switcher stacks vertically inside settings. Pages use layout classes and the CSS handles the rest.
+                                    </p>
+                                </div>
+                            </div>
+                        </RevealOnScroll>
+
+                        {/* Additional demos */}
+                        <RevealOnScroll delay={0.15}>
+                            <p className={`${roboto.className} font-light text-base leading-relaxed text-black/60`}>
+                                Additional demo pages covering messaging and e-commerce contexts are planned to demonstrate wider compositional range. Dark mode implementation via the existing token architecture is also in scope — the CSS custom property foundation means it&apos;s a matter of defining alternate values, not restructuring components.
+                            </p>
+                        </RevealOnScroll>
+                    </div>
+                </GridContainer>
+            </section>
+
+            <SectionDivider />
+
+            {/* ═══════ BUILT WITH ═══════ */}
+            <section className="relative py-16 md:py-20">
+                <GridContainer>
+                    <RevealOnScroll className="flex flex-col items-center gap-6">
+                        <SectionLabel>Built With</SectionLabel>
+                        <div className="flex flex-wrap justify-center gap-2">
+                            <TechPill name="Next.js 16" /> <TechPill name="React 19" /> <TechPill name="TypeScript" />
+                            <TechPill name="Tailwind CSS 4" /> <TechPill name="CSS Custom Properties" />
+                        </div>
+                        <p className={`${roboto.className} font-light text-sm text-black/50 text-center max-w-xl`}>
+                            Tokens use CSS custom properties — they work anywhere CSS works.
+                        </p>
+                        <div className="flex flex-wrap gap-4 justify-center">
+                            <MagneticWrapper>
+                                <a href="https://nbhd.dev" target="_blank" rel="noopener noreferrer"
+                                    className={`${pixelify.className} px-6 py-3 bg-gray-900 rounded text-white text-base tracking-wide uppercase hover:bg-gray-800 transition-colors flex items-center gap-2`}>
+                                    <ExternalLink className="w-4 h-4" />Documentation Site
+                                </a>
+                            </MagneticWrapper>
+                            <MagneticWrapper>
+                                <a href="https://github.com/akin-tewe/neighborhood-ui" target="_blank" rel="noopener noreferrer"
+                                    className={`${pixelify.className} px-6 py-3 bg-white border border-gray-300 rounded text-gray-800 text-base tracking-wide uppercase hover:bg-gray-50 transition-colors flex items-center gap-2`}>
+                                    <Github className="w-4 h-4" />GitHub
+                                </a>
+                            </MagneticWrapper>
+                        </div>
+                    </RevealOnScroll>
                 </GridContainer>
             </section>
 

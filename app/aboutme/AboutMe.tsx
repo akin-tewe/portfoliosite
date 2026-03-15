@@ -49,7 +49,7 @@ function GridOverlay() {
 const carouselItems = [
     { type: "video" as const, src: "/about-me-carousel/truvideo.mp4", href: "/projects/truereligion" },
     { type: "video" as const, src: "/about-me-carousel/crystal-collection.mp4", href: null },
-    { type: "image" as const, src: "/about-me-carousel/finalcover.jpg", href: "/projects/albumcover" },
+    { type: "image" as const, src: "/about-me-carousel/finalcover.jpg", href: null },
     { type: "video" as const, src: "/about-me-carousel/ragelowq.mp4", href: "/projects/yourrage" },
 ];
 

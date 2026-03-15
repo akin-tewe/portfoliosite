@@ -148,23 +148,6 @@ const projectsdata = [
         gradient: null,
         tier: "secondary",
     },
-    {
-        id: 5,
-        title: "Peaches & Eggplants",
-        tag: "Commission",
-        body: "Remix cover art for Young Nudy, Latto, and Sexyy Red — 33M+ streams.",
-        color: "bg-violet-500",
-        shadow: "rgba(167, 139, 250, 0.4)",
-        tags: ["Commission", "Graphic Design"],
-        image: null,
-        slideshow: [
-            "/projects/albumcover/originalcover.jpg",
-            "/projects/albumcover/finalcover.jpg",
-        ],
-        link: "/projects/albumcover",
-        gradient: null,
-        tier: "secondary",
-    },
 ]
 
 export default projectsdata

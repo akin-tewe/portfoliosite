@@ -327,6 +327,15 @@ export default function Neighborhood() {
     const heroRef = useRef(null);
     const isHeroInView = useInView(heroRef, { once: true });
 
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia('(max-width: 640px)');
+        setIsMobile(mq.matches);
+        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mq.addEventListener('change', handler);
+        return () => mq.removeEventListener('change', handler);
+    }, []);
+
     const [demoToggle1, setDemoToggle1] = useState(true);
     const [demoToggle2, setDemoToggle2] = useState(false);
     const [showcaseTab, setShowcaseTab] = useState("overview");
@@ -424,17 +433,17 @@ export default function Neighborhood() {
                     </RevealOnScroll>
                 </GridContainer>
                 <WideContainer>
-                    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {/* Each cell is dense — no wasted space */}
                         {[
                             { label: "Button", delay: 0, content: (
                                 <div className="flex gap-2">
-                                    <Button variant="primary">Primary</Button>
-                                    <Button variant="secondary">Secondary</Button>
+                                    <div className="flex-1"><Button variant="primary">Primary</Button></div>
+                                    <div className="flex-1"><Button variant="secondary">Secondary</Button></div>
                                 </div>
                             )},
                             { label: "Badge", delay: 0.04, content: (
-                                <div className="flex gap-1.5">
+                                <div className="flex gap-1.5 justify-center sm:justify-start flex-wrap">
                                     <Badge label="Shipped" color="success" />
                                     <Badge label="v0.1" color="primary" variant="subtle" />
                                     <Badge label="npm" color="sky" />
@@ -447,10 +456,12 @@ export default function Neighborhood() {
                                 </div>
                             )},
                             { label: "Tabs", delay: 0.12, content: (
-                                <Tabs items={[
-                                    { label: "Overview", value: "overview" },
-                                    { label: "Tokens", value: "tokens" },
-                                ]} activeValue={showcaseTab} onChange={setShowcaseTab} />
+                                <div className="w-full flex justify-center sm:justify-start">
+                                    <Tabs items={[
+                                        { label: "Overview", value: "overview" },
+                                        { label: "Tokens", value: "tokens" },
+                                    ]} activeValue={showcaseTab} onChange={setShowcaseTab} />
+                                </div>
                             )},
                             { label: "Input", delay: 0.16, content: <Input placeholder="Search components..." variant="search" /> },
                             { label: "Avatar", delay: 0.2, content: (
@@ -462,11 +473,13 @@ export default function Neighborhood() {
                                 </div>
                             )},
                             { label: "Switcher", delay: 0.24, content: (
-                                <SegmentedControl options={[
-                                    { label: "Monthly", value: "monthly" },
-                                    { label: "Yearly", value: "yearly" },
-                                    { label: "Lifetime", value: "lifetime" },
-                                ]} activeValue={showcaseSegment} onChange={setShowcaseSegment} />
+                                <div className="flex justify-center sm:justify-start">
+                                    <SegmentedControl options={[
+                                        { label: "Monthly", value: "monthly" },
+                                        { label: "Yearly", value: "yearly" },
+                                        { label: "Lifetime", value: "lifetime" },
+                                    ]} activeValue={showcaseSegment} onChange={setShowcaseSegment} />
+                                </div>
                             )},
                             { label: "Banner", delay: 0.28, content: <Banner severity="success" message="Changes saved." /> },
                             { label: "Empty State", delay: 0.32, content: <EmptyState variant="minimal" title="No results" description="Try a different search." /> },
@@ -477,8 +490,8 @@ export default function Neighborhood() {
                                 <motion.div key={cell.label} ref={cellRef}
                                     initial={{ opacity: 0, y: 16 }} animate={cellInView ? { opacity: 1, y: 0 } : {}}
                                     transition={{ duration: 0.4, delay: cell.delay, ease: EASE }}
-                                    className="rounded-2xl border border-black/[0.06] bg-white p-4 flex items-center gap-4">
-                                    <span className={`${spaceGrotesk.className} text-[10px] text-black/25 uppercase tracking-[0.15em] font-medium shrink-0 w-16`}>{cell.label}</span>
+                                    className="rounded-2xl border border-black/[0.06] bg-white p-4 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+                                    <span className={`${spaceGrotesk.className} text-[10px] text-black/25 uppercase tracking-[0.15em] font-medium shrink-0 sm:w-16`}>{cell.label}</span>
                                     <div className="flex-1 min-w-0">{cell.content}</div>
                                 </motion.div>
                             );
@@ -545,19 +558,29 @@ export default function Neighborhood() {
                             <div className="flex flex-col gap-3">
                                 <div className="rounded-xl border border-black/[0.06] bg-white p-4">
                                     <span className={`${roboto.className} text-[10px] text-black/25 uppercase tracking-wider mb-2 block`}>Bracket variant</span>
-                                    <Tabs items={[
-                                        { label: "Overview", value: "overview" },
-                                        { label: "Guidelines", value: "guidelines" },
-                                        { label: "Tokens", value: "tokens" },
-                                    ]} activeValue={motionBracketTab} onChange={setMotionBracketTab} variant="bracket" />
+                                    <div className="flex justify-center">
+                                        <Tabs items={isMobile ? [
+                                            { label: "Overview", value: "overview" },
+                                            { label: "Tokens", value: "tokens" },
+                                        ] : [
+                                            { label: "Overview", value: "overview" },
+                                            { label: "Guidelines", value: "guidelines" },
+                                            { label: "Tokens", value: "tokens" },
+                                        ]} activeValue={motionBracketTab} onChange={setMotionBracketTab} variant="bracket" />
+                                    </div>
                                 </div>
                                 <div className="rounded-xl border border-black/[0.06] bg-white p-4">
                                     <span className={`${roboto.className} text-[10px] text-black/25 uppercase tracking-wider mb-2 block`}>Landing variant</span>
-                                    <Tabs items={[
-                                        { label: "Overview", value: "overview" },
-                                        { label: "Guidelines", value: "guidelines" },
-                                        { label: "Tokens", value: "tokens" },
-                                    ]} activeValue={motionLandingTab} onChange={setMotionLandingTab} variant="landing" />
+                                    <div className="flex justify-center">
+                                        <Tabs items={isMobile ? [
+                                            { label: "Overview", value: "overview" },
+                                            { label: "Tokens", value: "tokens" },
+                                        ] : [
+                                            { label: "Overview", value: "overview" },
+                                            { label: "Guidelines", value: "guidelines" },
+                                            { label: "Tokens", value: "tokens" },
+                                        ]} activeValue={motionLandingTab} onChange={setMotionLandingTab} variant="landing" />
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex flex-wrap gap-2 mt-3">
@@ -852,7 +875,10 @@ export default function Neighborhood() {
                                 <a href="https://nbhd.dev/demo/settings" target="_blank" rel="noopener noreferrer" className={`${roboto.className} text-[11px] text-black/25 ml-2 hover:text-black/40 transition-colors`}>nbhd.dev/demo/settings</a>
                             </div>
                             <div className="p-5 md:p-6">
-                                <Tabs items={[
+                                <Tabs items={isMobile ? [
+                                    { label: "General", value: "general" },
+                                    { label: "Appearance", value: "appearance" },
+                                ] : [
                                     { label: "General", value: "general" },
                                     { label: "Appearance", value: "appearance" },
                                     { label: "Notifications", value: "notifications" },

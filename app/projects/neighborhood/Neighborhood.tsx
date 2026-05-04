@@ -96,13 +96,13 @@ function PulsingDot({ color, size = 6, delay = 0 }: { color: string; size?: numb
 type BadgeColor = "primary" | "berry" | "terracotta" | "amber" | "sky" | "plum" | "sage";
 
 const colorFamilies: { name: string; subtitle: string; key: BadgeColor; colors: string[]; useCases: string }[] = [
-    { name: "Primary", subtitle: "Grass Green", key: "primary", colors: ["#edfcf2","#d3f8e0","#6de29e","#34cc76","#16a85a","#0b8847","#093e24"], useCases: "Primary actions, success states, CTA" },
-    { name: "Berry", subtitle: "Strawberry", key: "berry", colors: ["#fff1f2","#ffe4e6","#ff8f98","#ff5c6a","#e8364a","#c41d35","#6e1624"], useCases: "Error states, destructive actions" },
-    { name: "Terracotta", subtitle: "Campfire", key: "terracotta", colors: ["#fff6ed","#ffe8d0","#ffa964","#ff8530","#f06810","#cc5008","#6e2b10"], useCases: "Warm accents, activity indicators" },
-    { name: "Amber", subtitle: "Gold Ingot", key: "amber", colors: ["#fffbeb","#fff3c4","#ffd04a","#ffbc20","#f5a000","#d47d02","#72390d"], useCases: "Warning states, pending, highlights" },
-    { name: "Sky", subtitle: "Clear Day", key: "sky", colors: ["#eff8ff","#dbeeff","#8ac6ff","#52a8ff","#2a88f0","#166cd4","#163d6e"], useCases: "Links, info states, focus rings" },
-    { name: "Plum", subtitle: "Nether Portal", key: "plum", colors: ["#faf4ff","#f2e5ff","#d3a6ff","#ba72ff","#a248f0","#8a28d8","#4e1878"], useCases: "Premium features, categories" },
-    { name: "Sage", subtitle: "Prismarine", key: "sage", colors: ["#eefcf8","#d5f6ed","#79dcc4","#42c4a8","#26a88e","#1a8773","#18473f"], useCases: "Health indicators, environment" },
+    { name: "Primary", subtitle: "Grass Green", key: "primary", colors: ["#edfcf2","#d3f8e0","#6de29e","#34cc76","#16a85a","#0b8847","#093e24"], useCases: "Primary actions, success states, call-to-action elements" },
+    { name: "Berry", subtitle: "Strawberry", key: "berry", colors: ["#fff1f2","#ffe4e6","#ff8f98","#ff5c6a","#e8364a","#c41d35","#6e1624"], useCases: "Error states, destructive actions, critical alerts" },
+    { name: "Terracotta", subtitle: "Campfire", key: "terracotta", colors: ["#fff6ed","#ffe8d0","#ffa964","#ff8530","#f06810","#cc5008","#6e2b10"], useCases: "Warm accents, activity indicators, engagement" },
+    { name: "Amber", subtitle: "Gold Ingot", key: "amber", colors: ["#fffbeb","#fff3c4","#ffd04a","#ffbc20","#f5a000","#d47d02","#72390d"], useCases: "Warning states, pending status, attention highlights" },
+    { name: "Sky", subtitle: "Clear Day", key: "sky", colors: ["#eff8ff","#dbeeff","#8ac6ff","#52a8ff","#2a88f0","#166cd4","#163d6e"], useCases: "Links, informational states, focus indicators" },
+    { name: "Plum", subtitle: "Nether Portal", key: "plum", colors: ["#faf4ff","#f2e5ff","#d3a6ff","#ba72ff","#a248f0","#8a28d8","#4e1878"], useCases: "Premium features, categories, creative accents" },
+    { name: "Sage", subtitle: "Prismarine", key: "sage", colors: ["#eefcf8","#d5f6ed","#79dcc4","#42c4a8","#26a88e","#1a8773","#18473f"], useCases: "Health indicators, environmental, secondary success" },
 ];
 
 const neutralColors = ["#faf8f6","#f3f0ed","#e6e2dd","#d1cbc4","#a69f96","#7a736b","#5c554e","#45403b","#2e2a26","#1a1816","#0d0c0a"];
@@ -508,25 +508,69 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>Token System</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
-                            Every visual decision is a CSS custom property. Components completely reference tokens (not hardcoded values), ensuring structure and consistency throughout. Currently we have six primary token categories: typography, color, spacing, radius, elevation, and motion. This token system was finalized before any components were built.
+                            Every visual decision is a CSS custom property. Components reference tokens mapped to specific roles — background, border, text, interactive, semantic — rather than raw palette values. This means a developer never picks a hex color; they pick a role. The system currently has six primary token categories: typography, color, spacing, radius, elevation, and motion. This token system was finalized before any components were built.
                         </p>
+                    </RevealOnScroll>
+
+                    {/* Typography */}
+                    <RevealOnScroll className="mb-10">
+                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Type Scale</span>
+                        <p className={`${roboto.className} font-light text-sm text-black/45 mb-4`}>Space Grotesk for display and headings. DM Sans for body and UI text. Each size has a defined role — not just a pixel value.</p>
+                        <div className="rounded-2xl border border-black/[0.06] bg-white overflow-hidden">
+                            {[
+                                { name: "Display", token: "--text-display", spec: "Space Grotesk 700 · 64px", role: "Hero sections, marketing headlines", sample: "Neighborhood", style: { fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05 } },
+                                { name: "H1", token: "--text-5xl", spec: "Space Grotesk 700 · 48px", role: "Page titles, view headers", sample: "Wonder and class", style: { fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.1 } },
+                                { name: "Body", token: "--text-base", spec: "DM Sans 400 · 16px", role: "Paragraphs, descriptions, long-form content", sample: "Components are designed to work together, not just exist in isolation.", style: { fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
+                                { name: "Caption", token: "--text-xs", spec: "DM Sans 500 · 12px", role: "Labels, annotations, status indicators", sample: "STATUS · 2 ITEMS", style: { fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, lineHeight: 1.4, textTransform: "uppercase" as const, letterSpacing: "0.05em", color: "var(--neutral-500)" } },
+                            ].map((row, i, arr) => (
+                                <div key={row.name} className={`flex items-start gap-6 p-4 ${i < arr.length - 1 ? 'border-b border-black/[0.04]' : ''}`}>
+                                    <div className="flex-1 min-w-0">
+                                        <div style={row.style}>{row.sample}</div>
+                                    </div>
+                                    <div className="shrink-0 w-48 text-right">
+                                        <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 block`}>{row.name}</span>
+                                        <span className={`${roboto.className} text-xs text-black/35 block`}>{row.spec}</span>
+                                        <code className="text-[10px] bg-black/[0.04] px-1.5 py-0.5 rounded font-mono text-black/45 inline-block mt-1">{row.token}</code>
+                                        <span className={`${roboto.className} text-[10px] text-black/30 italic block mt-0.5`}>{row.role}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </RevealOnScroll>
 
                     {/* Neutrals */}
                     <RevealOnScroll>
-                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Warm Stone Neutrals</span>
+                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Color Roles — Neutral Scale</span>
                         <div className="flex gap-0.5 rounded-xl overflow-hidden mb-2">
                             {neutralColors.map((c) => (
                                 <motion.div key={c} style={{ background: c, flex: 1, height: 36 }}
                                     whileHover={{ scaleY: 1.3 }} transition={{ duration: 0.15 }} className="origin-bottom cursor-default" />
                             ))}
                         </div>
-                        <p className={`${roboto.className} font-light text-sm text-black/45`}>11 warm steps. Approachable, not clinical.</p>
+                        <p className={`${roboto.className} font-light text-sm text-black/45`}>11 warm steps mapped to surface, border, and text roles. Approachable, not clinical.</p>
+                    </RevealOnScroll>
+
+                    {/* Color role cards */}
+                    <RevealOnScroll className="mt-6 mb-2">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {[
+                                { role: "Background", tokens: "--neutral-50, --neutral-100", desc: "Page and card surfaces" },
+                                { role: "Border", tokens: "--neutral-200, --neutral-300", desc: "Dividers, outlines" },
+                                { role: "Text", tokens: "--neutral-900 to --neutral-400", desc: "Primary through disabled" },
+                                { role: "Interactive", tokens: "--primary-500, --sky-400", desc: "Actions, links, focus" },
+                            ].map((item) => (
+                                <div key={item.role} className="bg-[#faf8f6] rounded-lg p-3">
+                                    <span className={`${spaceGrotesk.className} text-xs font-semibold text-gray-800 block`}>{item.role}</span>
+                                    <code className="text-[9px] bg-black/[0.04] px-1 py-0.5 rounded font-mono text-black/40 block mt-1">{item.tokens}</code>
+                                    <span className={`${roboto.className} text-[10px] text-black/35 block mt-0.5`}>{item.desc}</span>
+                                </div>
+                            ))}
+                        </div>
                     </RevealOnScroll>
 
                     {/* Palette playground */}
                     <RevealOnScroll className="mt-8">
-                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-4 block`}>Extended Palette</span>
+                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-4 block`}>Color Roles — Extended Families</span>
                         <TokenPlayground />
                     </RevealOnScroll>
 

@@ -518,16 +518,16 @@ export default function Neighborhood() {
                         <p className={`${roboto.className} font-light text-sm text-black/45 mb-4`}>Space Grotesk for display and headings. DM Sans for body and UI text. Each size has a defined role — not just a pixel value.</p>
                         <div className="rounded-2xl border border-black/[0.06] bg-white overflow-hidden">
                             {[
-                                { name: "Display", token: "--text-display", spec: "Space Grotesk 700 · 64px", role: "Hero sections, marketing headlines", sample: "Neighborhood", style: { fontFamily: "var(--font-display)", fontSize: 40, fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05 } },
+                                { name: "Display", token: "--text-display", spec: "Space Grotesk 700 · 64px", role: "Hero sections, marketing headlines", sample: "Neighborhood", style: { fontFamily: "var(--font-display)", fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05 } },
                                 { name: "H1", token: "--text-5xl", spec: "Space Grotesk 700 · 48px", role: "Page titles, view headers", sample: "Wonder and class", style: { fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.1 } },
                                 { name: "Body", token: "--text-base", spec: "DM Sans 400 · 16px", role: "Paragraphs, descriptions, long-form content", sample: "Components are designed to work together, not just exist in isolation.", style: { fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
                                 { name: "Caption", token: "--text-xs", spec: "DM Sans 500 · 12px", role: "Labels, annotations, status indicators", sample: "STATUS · 2 ITEMS", style: { fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, lineHeight: 1.4, textTransform: "uppercase" as const, letterSpacing: "0.05em", color: "var(--neutral-500)" } },
                             ].map((row, i, arr) => (
-                                <div key={row.name} className={`flex items-start gap-6 p-4 ${i < arr.length - 1 ? 'border-b border-black/[0.04]' : ''}`}>
+                                <div key={row.name} className={`flex flex-col md:flex-row md:items-start gap-3 md:gap-6 p-4 ${i < arr.length - 1 ? 'border-b border-black/[0.04]' : ''}`}>
                                     <div className="flex-1 min-w-0">
                                         <div style={row.style}>{row.sample}</div>
                                     </div>
-                                    <div className="shrink-0 w-48 text-right">
+                                    <div className="shrink-0 md:w-48 md:text-right">
                                         <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 block`}>{row.name}</span>
                                         <span className={`${roboto.className} text-xs text-black/35 block`}>{row.spec}</span>
                                         <code className="text-[10px] bg-black/[0.04] px-1.5 py-0.5 rounded font-mono text-black/45 inline-block mt-1">{row.token}</code>

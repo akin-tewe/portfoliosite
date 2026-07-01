@@ -363,12 +363,12 @@ export default function Neighborhood() {
                         <motion.span initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.3 }}
                             className={`${pixelify.className} text-green-500 italic text-lg md:text-xl uppercase tracking-wider mb-8 block`}>
-                            Design System v0.1
+                            Design System v0.2
                         </motion.span>
                         <motion.p initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.4 }}
                             className={`${roboto.className} text-black/50 font-light text-base md:text-lg lg:text-xl mt-6 leading-relaxed`}>
-                            A component library and design system built completely by me from the ground up. This case study exclusively covers the thinking and decision making behind the v0.1 release. Neighborhood is still under active development, and the system continues to evolve beyond what&apos;s documented here.
+                            A component library and design system built completely by me from the ground up. This case study exclusively covers the thinking and decision making behind the v0.2 release. Neighborhood is still under active development, and the system continues to evolve beyond what&apos;s documented here.
                         </motion.p>
                         <motion.div initial={{ opacity: 0, y: 20 }} animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
                             transition={{ duration: 0.6, delay: 0.5 }} className="flex flex-wrap gap-4 mt-10">
@@ -391,7 +391,7 @@ export default function Neighborhood() {
                     { label: "Role", value: "Sole Designer · Developer" },
                     { label: "Components", value: "18 Components · 11 Atomic · 7 Compositional" },
                     { label: "Type", value: "Design System · Documentation" },
-                    { label: "Status", value: "v0.1 Released · Active Development" },
+                    { label: "Status", value: "v0.2 Released · Active Development" },
                 ]} />
             </section>
 
@@ -445,7 +445,7 @@ export default function Neighborhood() {
                             { label: "Badge", delay: 0.04, content: (
                                 <div className="flex gap-1.5 justify-center sm:justify-start flex-wrap">
                                     <Badge label="Shipped" color="success" />
-                                    <Badge label="v0.1" color="primary" variant="subtle" />
+                                    <Badge label="v0.2" color="primary" variant="subtle" />
                                     <Badge label="npm" color="sky" />
                                     <Badge label="18" color="plum" variant="outline" />
                                 </div>
@@ -862,7 +862,7 @@ export default function Neighborhood() {
                             <div className="rounded-2xl border border-black/[0.06] bg-white p-5">
                                 <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-2 block`}>Inclusion vs Exclusion</span>
                                 <p className={`${roboto.className} font-light text-sm leading-relaxed text-black/60`}>
-                                    Toggle appeared in Notion (10+ instances) and Discord but not Stripe. This meant it should still be included because two products confirmed universality. Switcher appeared only in Stripe but its compositional value (filtering data in place without navigating) earned inclusion as a distinctive pattern. A metric card was deliberately excluded from v0.1. It was deemed too specific to data-dense dashboards for a system still establishing its identity.
+                                    Toggle appeared in Notion (10+ instances) and Discord but not Stripe. This meant it should still be included because two products confirmed universality. Switcher appeared only in Stripe but its compositional value (filtering data in place without navigating) earned inclusion as a distinctive pattern. A metric card was deliberately excluded from v0.2. It was deemed too specific to data-dense dashboards for a system still establishing its identity.
                                 </p>
                             </div>
                         </RevealOnScroll>
@@ -875,7 +875,7 @@ export default function Neighborhood() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <RevealOnScroll>
                             <div className="border-l-2 border-green-500 pl-5 py-1">
-                                <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/40 font-medium mb-2 block`}>In Scope — v0.1 Shipped</span>
+                                <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/40 font-medium mb-2 block`}>In Scope — v0.2 Shipped</span>
                                 <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/70 space-y-1`}>
                                     <li>• 11 Atomic: Avatar, Badge, Button, Checkbox, Divider, Input, Switcher, Select, Tabs, Toggle, Tooltip</li>
                                     <li>• 7 Compositional: Banner, Block, Table, Empty State, Form Group, Menu, Property, Setting Row</li>
@@ -884,7 +884,7 @@ export default function Neighborhood() {
                         </RevealOnScroll>
                         <RevealOnScroll delay={0.1}>
                             <div className="border-l-2 border-red-400/40 pl-5 py-1">
-                                <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/40 font-medium mb-2 block`}>Up Next — v0.2 Roadmap</span>
+                                <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/40 font-medium mb-2 block`}>Up Next — v0.3 Roadmap</span>
                                 <ul className={`${roboto.className} font-light text-sm leading-relaxed text-black/70 space-y-1`}>
                                     <li>• Emerging patterns: fleshed out card system, showcase surfaces, flat strip indicator</li>
                                     <li>• New components: Command Palette, avatar color props</li>
@@ -996,7 +996,7 @@ export default function Neighborhood() {
                     <RevealOnScroll>
                         <SectionLabel>What&apos;s Next</SectionLabel>
                         <p className={`${roboto.className} font-light text-base md:text-lg leading-relaxed text-black/70 mt-3 mb-8`}>
-                            While v0.1 shipped the foundation, several patterns emerged during documentation site development that are already actively shaping the next version.
+                            While v0.2 shipped the foundation, several patterns emerged during documentation site development that are already actively shaping the next version.
                         </p>
                     </RevealOnScroll>
 
@@ -1021,7 +1021,7 @@ export default function Neighborhood() {
                         {/* New components */}
                         <RevealOnScroll delay={0.05}>
                             <div className="rounded-2xl border border-black/[0.06] bg-white p-5 md:p-6">
-                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-3 block`}>v0.2 Roadmap</span>
+                                <span className={`${spaceGrotesk.className} text-sm font-semibold text-gray-800 mb-3 block`}>v0.3 Roadmap</span>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <span className={`${spaceGrotesk.className} text-xs text-black/30 uppercase tracking-wider font-medium mb-2 block`}>New Components</span>

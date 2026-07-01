@@ -521,7 +521,7 @@ export default function Neighborhood() {
                                 { name: "Display", token: "--text-display", spec: "Space Grotesk 700 · 64px", role: "Hero sections, marketing headlines", sample: "Neighborhood", style: { fontFamily: "var(--font-display)", fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05 } },
                                 { name: "H1", token: "--text-5xl", spec: "Space Grotesk 700 · 48px", role: "Page titles, view headers", sample: "Wonder and class", style: { fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.1 } },
                                 { name: "Body", token: "--text-base", spec: "DM Sans 400 · 16px", role: "Paragraphs, descriptions, long-form content", sample: "Components are designed to work together, not just exist in isolation.", style: { fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
-                                { name: "Caption", token: "--text-xs", spec: "DM Sans 500 · 12px", role: "Labels, annotations, status indicators", sample: "STATUS · 2 ITEMS", style: { fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, lineHeight: 1.4, textTransform: "uppercase" as const, letterSpacing: "0.05em", color: "var(--neutral-500)" } },
+                                { name: "Caption", token: "--text-xs", spec: "DM Sans 500 · 12px", role: "Labels, annotations, status indicators", sample: "STATUS · 2 ITEMS", style: { fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, lineHeight: 1.4, textTransform: "uppercase" as const, letterSpacing: "0.05em", color: "var(--text-muted)" } },
                             ].map((row, i, arr) => (
                                 <div key={row.name} className={`flex flex-col md:flex-row md:items-start gap-3 md:gap-6 p-4 ${i < arr.length - 1 ? 'border-b border-black/[0.04]' : ''}`}>
                                     <div className="flex-1 min-w-0">
@@ -554,10 +554,10 @@ export default function Neighborhood() {
                     <RevealOnScroll className="mt-6 mb-2">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             {[
-                                { role: "Background", tokens: "--neutral-50, --neutral-100", desc: "Page and card surfaces" },
-                                { role: "Border", tokens: "--neutral-200, --neutral-300", desc: "Dividers, outlines" },
-                                { role: "Text", tokens: "--neutral-900 to --neutral-400", desc: "Primary through disabled" },
-                                { role: "Interactive", tokens: "--primary-500, --sky-400", desc: "Actions, links, focus" },
+                                { role: "Background", tokens: "--bg-page, --bg-card, --bg-surface", desc: "Page and card surfaces" },
+                                { role: "Border", tokens: "--border-default, --border-strong", desc: "Dividers, outlines" },
+                                { role: "Text", tokens: "--text-primary to --text-disabled", desc: "Primary through disabled" },
+                                { role: "Interactive", tokens: "--interactive-primary, --focus-ring", desc: "Actions, links, focus" },
                             ].map((item) => (
                                 <div key={item.role} className="bg-[#faf8f6] rounded-lg p-3">
                                     <span className={`${spaceGrotesk.className} text-xs font-semibold text-gray-800 block`}>{item.role}</span>

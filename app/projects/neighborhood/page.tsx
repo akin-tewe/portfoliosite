@@ -12,7 +12,13 @@ export const metadata: Metadata = {
 
 export default function Page() {
     return (
-        <main className={`${spaceGrotesk.variable} ${dmSans.variable}`}>
+        <main
+            className={`${spaceGrotesk.variable} ${dmSans.variable}`}
+            style={{
+                ['--font-display' as string]: 'var(--font-space-grotesk), sans-serif',
+                ['--font-body' as string]: 'var(--font-dm-sans), sans-serif',
+            } as React.CSSProperties}
+        >
             <Neighborhood />
         </main>
     )

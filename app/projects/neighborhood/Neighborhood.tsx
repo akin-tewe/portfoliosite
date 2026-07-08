@@ -514,14 +514,14 @@ export default function Neighborhood() {
 
                     {/* Typography */}
                     <RevealOnScroll className="mb-10">
-                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Type Scale</span>
-                        <p className={`${roboto.className} font-light text-sm text-black/45 mb-4`}>Space Grotesk for display and headings. DM Sans for body and UI text. Each size has a defined role — not just a pixel value.</p>
+                        <span className={`${spaceGrotesk.className} text-xs uppercase tracking-wider text-black/30 font-medium mb-3 block`}>Type Styles</span>
+                        <p className={`${roboto.className} font-light text-sm text-black/45 mb-4`}>Every named style is a composite token — family, size, weight, line-height, and tracking are all tokenized (--type-h1-*), with utility classes (.text-h1) layered on top. Space Grotesk for display and headings. DM Sans for body and UI text.</p>
                         <div className="rounded-2xl border border-black/[0.06] bg-white overflow-hidden">
                             {[
-                                { name: "Display", token: "--text-display", spec: "Space Grotesk 700 · 64px", role: "Hero sections, marketing headlines", sample: "Neighborhood", style: { fontFamily: "var(--font-display)", fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05 } },
-                                { name: "H1", token: "--text-5xl", spec: "Space Grotesk 700 · 48px", role: "Page titles, view headers", sample: "Wonder and class", style: { fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.1 } },
-                                { name: "Body", token: "--text-base", spec: "DM Sans 400 · 16px", role: "Paragraphs, descriptions, long-form content", sample: "Components are designed to work together, not just exist in isolation.", style: { fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
-                                { name: "Caption", token: "--text-xs", spec: "DM Sans 500 · 12px", role: "Labels, annotations, status indicators", sample: "STATUS · 2 ITEMS", style: { fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, lineHeight: 1.4, textTransform: "uppercase" as const, letterSpacing: "0.05em", color: "var(--text-muted)" } },
+                                { name: "Display", token: "--type-display-*", spec: "Space Grotesk 700 · 64px", role: "Hero sections, marketing headlines", sample: "Neighborhood", style: { fontFamily: "var(--font-display)", fontSize: "clamp(28px, 5vw, 40px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05 } },
+                                { name: "H1", token: "--type-h1-*", spec: "Space Grotesk 700 · 48px", role: "Page titles, view headers", sample: "Wonder and class", style: { fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.1 } },
+                                { name: "Body", token: "--type-body-*", spec: "DM Sans 400 · 16px", role: "Paragraphs, descriptions, long-form content", sample: "Components are designed to work together, not just exist in isolation.", style: { fontFamily: "var(--font-body)", fontSize: 16, fontWeight: 400, lineHeight: 1.6 } },
+                                { name: "Caption", token: "--type-caption-*", spec: "DM Sans 500 · 12px", role: "Labels, annotations, status indicators", sample: "STATUS · 2 ITEMS", style: { fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 500, lineHeight: 1.4, textTransform: "uppercase" as const, letterSpacing: "0.05em", color: "var(--text-muted)" } },
                             ].map((row, i, arr) => (
                                 <div key={row.name} className={`flex flex-col md:flex-row md:items-start gap-3 md:gap-6 p-4 ${i < arr.length - 1 ? 'border-b border-black/[0.04]' : ''}`}>
                                     <div className="flex-1 min-w-0">
@@ -566,6 +566,7 @@ export default function Neighborhood() {
                                 </div>
                             ))}
                         </div>
+                        <p className={`${roboto.className} font-light text-[11px] text-black/40 mt-3`}>Interactive and semantic colors now carry -hover / -active state tokens, and semantic colors alias directly into the palette.</p>
                     </RevealOnScroll>
 
                     {/* Palette playground */}

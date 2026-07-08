@@ -554,19 +554,28 @@ export default function Neighborhood() {
                     <RevealOnScroll className="mt-6 mb-2">
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             {[
-                                { role: "Background", tokens: "--bg-page, --bg-card, --bg-surface", desc: "Page and card surfaces" },
-                                { role: "Border", tokens: "--border-default, --border-strong", desc: "Dividers, outlines" },
-                                { role: "Text", tokens: "--text-primary to --text-disabled", desc: "Primary through disabled" },
-                                { role: "Interactive", tokens: "--interactive-primary, --focus-ring", desc: "Actions, links, focus" },
+                                { role: "Background", tokens: "--bg-page, --bg-card, --bg-surface", desc: "Page and card surfaces", swatches: [{ c: "#ffffff", t: "--bg-page" }, { c: "#faf8f6", t: "--bg-card" }, { c: "#f3f0ed", t: "--bg-surface" }] },
+                                { role: "Border", tokens: "--border-default, --border-strong, --border-prominent", desc: "Dividers, outlines", swatches: [{ c: "#e6e2dd", t: "--border-default" }, { c: "#d1cbc4", t: "--border-strong" }, { c: "#a69f96", t: "--border-prominent" }] },
+                                { role: "Text", tokens: "--text-primary to --text-disabled", desc: "Primary through disabled", swatches: [{ c: "#1a1816", t: "--text-primary" }, { c: "#45403b", t: "--text-secondary" }, { c: "#7a736b", t: "--text-muted" }, { c: "#a69f96", t: "--text-disabled" }] },
+                                { role: "Interactive", tokens: "--interactive-primary, --focus-ring", desc: "Actions, links, focus", caption: "+ -hover / -active state tokens", swatches: [{ c: "#16a85a", t: "--interactive-primary" }, { c: "#34cc76", t: "--accent" }, { c: "#edfcf2", t: "--tint" }, { c: "#52a8ff", t: "--focus-ring" }] },
+                                { role: "Semantic", tokens: "--success, --warning, --error, --info", desc: "Status feedback — aliased into the palette", caption: "+ -hover states", swatches: [{ c: "#16a85a", t: "--success" }, { c: "#d47d02", t: "--warning" }, { c: "#c41d35", t: "--error" }, { c: "#166cd4", t: "--info" }] },
                             ].map((item) => (
                                 <div key={item.role} className="bg-[#faf8f6] rounded-lg p-3">
                                     <span className={`${spaceGrotesk.className} text-xs font-semibold text-gray-800 block`}>{item.role}</span>
-                                    <code className="text-[9px] bg-black/[0.04] px-1 py-0.5 rounded font-mono text-black/40 block mt-1">{item.tokens}</code>
+                                    <div className="flex gap-1 mt-1.5">
+                                        {item.swatches.map((s) => (
+                                            <div key={s.t} title={s.t} style={{ background: s.c }}
+                                                className="w-3 h-3 rounded-[3px] border border-[#e6e2dd]" />
+                                        ))}
+                                    </div>
+                                    <code className="text-[9px] bg-black/[0.04] px-1 py-0.5 rounded font-mono text-black/40 block mt-2">{item.tokens}</code>
                                     <span className={`${roboto.className} text-[10px] text-black/35 block mt-0.5`}>{item.desc}</span>
+                                    {item.caption && (
+                                        <span className={`${roboto.className} text-[10px] text-black/25 block mt-1`}>{item.caption}</span>
+                                    )}
                                 </div>
                             ))}
                         </div>
-                        <p className={`${roboto.className} font-light text-[11px] text-black/40 mt-3`}>Interactive and semantic colors now carry -hover / -active state tokens, and semantic colors alias directly into the palette.</p>
                     </RevealOnScroll>
 
                     {/* Palette playground */}
